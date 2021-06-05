@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pi-temp
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pi-temp-agent
+  namespace: pi-temp
+  labels:
+    app: pi-temp-agent
+spec:
+  selector:
+    matchLabels:
+      app: pi-temp-agent
+  template:
+    metadata:
+      labels:
+        app: pi-temp-agent
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: pi-temp-agent
+        image: mthorley/pi-temp-agent:latest
+        env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pi-temp-headless
+  namespace: pi-temp
+spec:
+  clusterIP: None
+  selector:
+    app: pi-temp-agent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pi-temp-public
+  namespace: pi-temp
+spec:
+  selector:
+    app: pi-temp-agent
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
+

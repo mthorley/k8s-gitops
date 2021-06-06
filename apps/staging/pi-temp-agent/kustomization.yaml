@@ -1,8 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: pi-temp2
 resources:
-- namespace.yaml
-- daemonset.yaml
-- service.yaml
-- loadbalancer.yaml
+  - namespace.yaml
+  - daemonset.yaml
+  - service.yaml
+  - loadbalancer.yaml
 

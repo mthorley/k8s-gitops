@@ -3,5 +3,5 @@ kind: Kustomization
 namespace: pi-temp
 resources:
   - ../common/pi-temp-agent
-#patchesStrategicMerge:
-#  - pi-temp-agent.yaml
+patchesStrategicMerge:
+  - pi-temp-agent-ip.yaml

@@ -13,4 +13,3 @@ spec:
   path: ./apps/staging
   prune: true
   validation: client
-

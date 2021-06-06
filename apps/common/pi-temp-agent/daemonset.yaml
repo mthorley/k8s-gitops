@@ -27,4 +27,3 @@ spec:
                 fieldPath: spec.nodeName
         ports:
         - containerPort: 5000
-

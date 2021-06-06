@@ -7,4 +7,3 @@ spec:
   clusterIP: None
   selector:
     app: pi-temp-agent
-

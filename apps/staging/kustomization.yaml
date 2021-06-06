@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: pi-temp2
+namespace: pi-temp
 resources:
   - ../common/pi-temp-agent
 #patchesStrategicMerge:

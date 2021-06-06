@@ -3,5 +3,5 @@ kind: Service
 metadata:
   name: pi-temp-public
 spec:
-  loadBalancerIP: 192.168.3.13
+  loadBalancerIP: 192.168.3.14
 

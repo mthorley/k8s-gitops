@@ -9,6 +9,7 @@ secretGenerator:
 - name: memberlist
   files:
     - secretkey
+  type: Opaque
 
 generatorOptions:
  disableNameSuffixHash: true

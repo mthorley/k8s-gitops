@@ -3,5 +3,4 @@ kind: Kustomization
 namespace: metallb-system
 resources:
   - ../common/metallb
-patchesStrategicMerge:
   - metallb-configmap.yaml

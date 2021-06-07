@@ -4,12 +4,3 @@ namespace: metallb-system
 resources:
   - ../common/metallb
   - metallb-configmap.yaml
-
-secretGenerator:
-- name: memberlist
-  files:
-    - secretkey
-  type: Opaque
-
-generatorOptions:
- disableNameSuffixHash: true

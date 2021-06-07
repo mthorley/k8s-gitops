@@ -4,3 +4,12 @@ namespace: metallb-system
 resources:
   - namespace.yaml
   - metallb.yaml
+
+secretGenerator:
+- name: memberlist
+  files:
+    - secret
+  type: Opaque
+
+generatorOptions:
+  disableNameSuffixHash: true

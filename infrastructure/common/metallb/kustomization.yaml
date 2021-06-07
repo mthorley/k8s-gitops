@@ -8,7 +8,7 @@ resources:
 secretGenerator:
 - name: memberlist
   files:
-    - secret.yaml
+    - secretkey
   type: Opaque
 
 generatorOptions:

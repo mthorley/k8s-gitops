@@ -8,6 +8,6 @@ resources:
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: nfs-client
+namespace: nfs-client2
 resources:
   - ../common/nfs-storage

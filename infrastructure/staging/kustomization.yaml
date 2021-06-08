@@ -4,3 +4,4 @@ namespace: metallb-system
 resources:
   - ../common/metallb
   - metallb-configmap.yaml
+  - ../common/nfs-storage

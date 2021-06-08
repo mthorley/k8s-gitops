@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - rbac.yaml
   - deployment-qnap.yaml
+  - class.yaml

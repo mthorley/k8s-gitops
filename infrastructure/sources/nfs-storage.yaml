@@ -1,7 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
-metadata:
-  name: bitnami
-spec:
-  interval: 30s
-  url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/

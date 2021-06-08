@@ -1,7 +1,13 @@
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: metallb-system
 resources:
   - ../common/metallb
   - metallb-configmap.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: nfs-storage
+resources:
   - ../common/nfs-storage

@@ -2,5 +2,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: nfs-storage
-  labels:
-    app: nfs-storage

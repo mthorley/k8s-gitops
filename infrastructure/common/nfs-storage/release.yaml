@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
 #      chart: nginx-ingress-controller
-       chart: nfs-subdir-external-provisioner
+        chart: nfs-subdir-external-provisioner
       sourceRef:
         kind: HelmRepository
         #name: bitnami

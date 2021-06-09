@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rsyslog
+  labels:
+    app: rsyslog
+  namespace: rsyslog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rsyslog
+  template:
+    metadata:
+      labels:
+        app: rsyslog
+    spec:
+      containers:
+      - name: rsyslog
+        image: mthorley/rsyslog:latest
+        ports:
+        - containerPort: 514
+          name: rsyslog-udp
+          protocol: UDP
+#        - containerPort: 514
+#          name: rsyslog-tcp
+        volumeMounts:
+        - name: rsyslog-data
+          mountPath: /var/log
+      volumes:
+      - name: rsyslog-data
+        persistentVolumeClaim:
+          claimName: rsyslog-claim

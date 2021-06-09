@@ -2,6 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: rsyslog-claim
+  namespace: rsyslog
   annotations:
     volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:

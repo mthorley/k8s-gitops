@@ -3,4 +3,3 @@ kind: Kustomization
 namespace: vault
 resources:
   - namespace.yaml
-  - vault-stack.yaml

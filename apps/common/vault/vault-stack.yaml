@@ -6,7 +6,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: vault
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -25,7 +25,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vault-agent-injector
-  namespace: default
+  namespace: vault
   labels:
     app.kubernetes.io/name: vault-agent-injector
     app.kubernetes.io/instance: vault
@@ -36,7 +36,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vault
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -48,7 +48,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: vault-config
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -105,7 +105,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: vault-agent-injector
-  namespace: default
+  namespace: vault
 ---
 # Source: vault/templates/server-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -124,13 +124,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: vault
-  namespace: default
+  namespace: vault
 ---
 # Source: vault/templates/server-discovery-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: default
+  namespace: vault
   name: vault-discovery-role
   labels:
     helm.sh/chart: vault-0.12.0
@@ -147,7 +147,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: vault-discovery-rolebinding
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -160,14 +160,14 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: vault
-  namespace: default
+  namespace: vault
 ---
 # Source: vault/templates/injector-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: vault-agent-injector-svc
-  namespace: default
+  namespace: vault
   labels:
     app.kubernetes.io/name: vault-agent-injector
     app.kubernetes.io/instance: vault
@@ -189,7 +189,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vault-active
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -218,7 +218,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vault-standby
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -247,7 +247,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vault-internal
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -276,7 +276,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vault
-  namespace: default
+  namespace: vault
   labels:
     helm.sh/chart: vault-0.12.0
     app.kubernetes.io/name: vault
@@ -306,7 +306,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vault-agent-injector
-  namespace: default
+  namespace: vault
   labels:
     app.kubernetes.io/name: vault-agent-injector
     app.kubernetes.io/instance: vault
@@ -412,7 +412,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: vault
-  namespace: default
+  namespace: vault
   labels:
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
@@ -601,7 +601,7 @@ webhooks:
     clientConfig:
       service:
         name: vault-agent-injector-svc
-        namespace: default
+        namespace: vault
         path: "/mutate"
       caBundle: ""
     rules:

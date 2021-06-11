@@ -4,5 +4,6 @@ resources:
   - ../common/pi-temp-agent
   - ../common/rsyslog
   - ../commom/mqtt
+  - mqtt-configmap.yaml
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml

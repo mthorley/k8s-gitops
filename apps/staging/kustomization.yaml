@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ../common/pi-temp-agent
   - ../common/rsyslog
-  - ../commom/mqtt
+  - ../common/mqtt
   - mqtt-configmap.yaml
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml

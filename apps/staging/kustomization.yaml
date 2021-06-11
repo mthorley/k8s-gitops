@@ -6,3 +6,4 @@ resources:
   - ../common/mqtt
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml
+  - mqtt-ip.yaml

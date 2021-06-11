@@ -6,4 +6,5 @@ resources:
   - serviceaccount.yaml
   - service.yaml
   - pvc.yaml
+  - configmap.yaml
   - deployment.yaml

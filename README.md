@@ -1,12 +1,12 @@
 # k8s-gitops
 
-k8s gitops using FluxCD for a home cluster running on raspberry pi's to support IoT and home automation. This repo targets two clusters staging and production and aims to keep a common set of manifests between them, using kustomize to patch values specific for the target cluster.
+k8s gitops using FluxCD for home clusters running on raspberry pi's to support IoT and home automation. This repo targets two clusters: staging and production and aims to keep a common set of manifests between them, using kustomize to patch values specific for the target clusters.
 
 This is very much WIP.
 
 ## How it works
 
-Uses [FluxCD](https://fluxcd.io/docs/) to "synchronise" manifests in this repo to local Pi cluster. The cluster will eventually be consistent with manifests in this repo.
+Uses [FluxCD](https://fluxcd.io/docs/) to "synchronise" manifests in this repo to local Pi clusters. Each cluster will eventually be consistent with manifests in this repo.
 
 ## Configuration
 
@@ -41,6 +41,7 @@ Two physically separate Pi clusters
 ## TODO
 
 * Add prometheus/grafana monitoring
+* Add nodered
 * Fix up NFS storage as its a single node point of failure
 * Get vault auto unsealing or use SOPS
 * Publish network management repo for unifi and tasmota

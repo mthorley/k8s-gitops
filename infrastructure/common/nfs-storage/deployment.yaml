@@ -30,9 +30,9 @@ spec:
             - name: NFS_SERVER
               value: 192.168.3.111
             - name: NFS_PATH
-              value: /k8s
+              value: /mnt/ssd
       volumes:
         - name: nfs-client-root
           nfs:
             server: 192.168.3.111
-            path: /k8s
+            path: /mnt/ssd

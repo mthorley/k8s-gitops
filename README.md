@@ -43,5 +43,6 @@ Two physically separate Pi clusters
 * Add prometheus/grafana monitoring
 * Add nodered
 * Fix up NFS storage as its a single node point of failure
+* Decommission MetalLB and migrate to Cilium
 * Get vault auto unsealing or use SOPS
 * Publish network management repo for unifi and tasmota

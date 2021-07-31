@@ -4,5 +4,5 @@ namespace: nfs-client
 resources:
   - namespace.yaml
   - rbac.yaml
-  - deployment.yaml
+  - deployment-arm.yaml
   - class.yaml

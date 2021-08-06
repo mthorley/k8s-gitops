@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: node-red
-        image: nodered/node-red:latest
+        image: mthorley/node-red:latest
         ports:
         - containerPort: 1880
           name: node-red-ui

@@ -19,7 +19,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: pi-temp-agent
-        image: mthorley/pi-temp-agent:latest
+        image: mthorley/pi-temp-agent:0.0.1
         env:
           - name: MY_NODE_NAME
             valueFrom:

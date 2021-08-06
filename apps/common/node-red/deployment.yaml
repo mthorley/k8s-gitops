@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: node-red
-        image: mthorley/node-red:634c4f0f6057339fff24d65e51b90bac6e15ccc9
+        image: mthorley/node-red:v0.0.1
         ports:
         - containerPort: 1880
           name: node-red-ui

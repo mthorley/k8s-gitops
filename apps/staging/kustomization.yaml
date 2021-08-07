@@ -5,8 +5,8 @@ resources:
   - ../common/rsyslog
   - ../common/mqtt
   - ../common/node-red
-  - ../common/pi-hole
+#  - ../common/pi-hole
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml
   - mqtt-ip.yaml
-  - pi-hole-ip.yaml
+#  - pi-hole-ip.yaml

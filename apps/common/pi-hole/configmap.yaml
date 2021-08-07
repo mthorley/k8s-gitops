@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-custom-dnsmasq
+  namespace: pi-hole
+  labels:
+    app: pihole
+data:
+  02-custom.conf: |
+    addn-hosts=/etc/addn-hosts
+    dhcp-option=6,192.168.3.17
+  addn-hosts: |

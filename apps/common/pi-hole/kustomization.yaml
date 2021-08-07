@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: pi-hole
-resources:
-  - namespace.yaml
-  - configmap.yaml
-  - pvc.yaml
-  - deployment.yaml
-  - services.yaml

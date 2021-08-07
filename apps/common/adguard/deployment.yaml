@@ -71,6 +71,8 @@ spec:
               subPath: AdGuardHome.yaml
             - name: config
               mountPath: /opt/adguardhome/conf
+            - name: work
+              mountPath: /opt/adguardhome/work
           livenessProbe:
             tcpSocket:
               port: 3000
@@ -97,5 +99,8 @@ spec:
           configMap:
             name: adguard-home-config
         - name: config
+          persistentVolumeClaim:
+            claimName: adguard-home-config
+        - name: work
           persistentVolumeClaim:
             claimName: adguard-home-config

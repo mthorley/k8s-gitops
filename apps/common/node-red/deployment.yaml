@@ -16,8 +16,7 @@ spec:
         app: node-red
     spec:
       containers:
-        - name: node-red
-#        image: mthorley/node-red:0.0.1
+      - name: node-red
         image: nodered/node-red:latest
         ports:
         - containerPort: 1880

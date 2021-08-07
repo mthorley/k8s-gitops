@@ -9,7 +9,7 @@ metadata:
     volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:
   accessModes:
-    - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
       storage: "500Mi"

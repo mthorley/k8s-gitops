@@ -18,6 +18,7 @@ spec:
       containers:
       - name: node-red
         image: mthorley/node-red:0.0.1
+        imagePullPolicy: Always
         ports:
         - containerPort: 1880
           name: node-red-ui

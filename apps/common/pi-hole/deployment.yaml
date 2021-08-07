@@ -49,7 +49,8 @@ spec:
             value: 8.8.8.8
           - name: 'DNS2'
             value: 8.8.4.4
-          image: "pihole/pihole:v5.8.1"
+#          image: "pihole/pihole:v5.8.1"
+          image: "pihole/pihole:v5.7"
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: false

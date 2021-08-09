@@ -5,4 +5,4 @@ resources:
   - metallb-configmap.yaml
   - ../common/nfs-storage
   - ../common/vault
-  - ../common/mongodb
+#  - ../common/mongodb

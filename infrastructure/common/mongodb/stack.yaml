@@ -178,7 +178,8 @@ spec:
       initContainers:
       containers:
         - name: mongodb-arbiter
-          image: docker.io/bitnami/mongodb:4.4.8-debian-10-r0
+#          image: docker.io/bitnami/mongodb:4.4.8-debian-10-r0
+          image: library/mongo:5.0.2
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsUser: 1001
@@ -294,7 +295,8 @@ spec:
         sysctls: []
       containers:
         - name: mongodb
-          image: docker.io/bitnami/mongodb:4.4.8-debian-10-r0
+#          image: docker.io/bitnami/mongodb:4.4.8-debian-10-r0
+          image: library/mongo:5.0.2
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsNonRoot: true

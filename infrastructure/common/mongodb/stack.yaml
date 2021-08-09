@@ -41,6 +41,8 @@ metadata:
     app.kubernetes.io/instance: mongodb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: mongodb
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:
   accessModes:
     - "ReadWriteOnce"

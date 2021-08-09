@@ -128,7 +128,7 @@ spec:
         sysctls: []
       containers:
         - name: mongodb
-          image: docker.io/arm64v8/mongo:latest
+          image: arm64v8/mongo:latest
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsNonRoot: true

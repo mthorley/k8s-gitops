@@ -179,7 +179,7 @@ spec:
       containers:
         - name: mongodb-arbiter
 #          image: docker.io/bitnami/mongodb:4.4.8-debian-10-r0
-          image: library/mongo:5.0.2
+          image: arm64v8/mongo:latest
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsUser: 1001
@@ -296,7 +296,7 @@ spec:
       containers:
         - name: mongodb
 #          image: docker.io/bitnami/mongodb:4.4.8-debian-10-r0
-          image: library/mongo:5.0.2
+          image: arm64v8/mongo:latest
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsNonRoot: true

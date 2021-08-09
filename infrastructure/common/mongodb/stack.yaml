@@ -399,8 +399,6 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: datadir
-        annotations:
-          volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
       spec:
         accessModes:
           - "ReadWriteOnce"

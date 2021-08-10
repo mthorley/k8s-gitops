@@ -29,9 +29,11 @@ Two physically separate Pi clusters
 
 | Workload | Source | Purpose |
 | -------- | ------ | ------- |
-| mqtt | raw manifests | [MQTT broker (mosquitto)](https://mosquitto.org/) for Tasmota, NodeRed etc |
-| rsyslog | raw manifests | Syslog |
-| pi-temp-agent | raw manifests | Measure pi temps of each node - used by NodeRed |
+| [mqtt](https://mosquitto.org/) | raw manifests | MQTT broker (mosquitto) for Tasmota, Node-RED etc |
+| rsyslog | raw manifests | Syslog to capture logs from NAS, UPS etc. |
+| pi-temp-agent | raw manifests | Measure temps of each RaspberryPi cluster node - used by NodeRed |
+| [node-red](https://nodered.org/) | raw manifests | Node-RED low code for home automation |
+| [adguard]() | helm template | AdGuard Home to block ADs, safe search and browsing | 
 
 ## How it fits in 
 
@@ -41,7 +43,6 @@ Two physically separate Pi clusters
 ## TODO
 
 * Add prometheus/grafana monitoring
-* Add nodered
 * Fix up NFS storage as its a single node point of failure
 * Decommission MetalLB and migrate to Cilium
 * Get vault auto unsealing or use SOPS

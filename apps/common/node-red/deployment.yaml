@@ -30,6 +30,8 @@ spec:
         env:
         - name: TZ
           value: Australia/Melbourne
+        - name: MQTT_IP
+          value: 192.168.3.14
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

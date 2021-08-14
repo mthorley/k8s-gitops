@@ -16,14 +16,19 @@ spec:
         app: node-red
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-status: "update"
         vault.hashicorp.com/agent-init-first: 'true'
         vault.hashicorp.com/role: 'nodered'
-        vault.hashicorp.com/tls-skip-verify: 'true' # testing
-        vault.hashicorp.com/agent-inject-secret-config: 'secret/nodered/MQTT_IP'
+        vault.hashicorp.com/agent-inject-secret-config: 'secret/nodered'
         vault.hashicorp.com/agent-inject-template-config: |
-          {{ with secret "secret/nodered/MQTT_IP" -}}
-            export MQTT_IP="{{ .Data.nodered.MQTT_IP }}"
+          {{- with secret "secret/nodered" -}}
+          export MQTT_IP       = "{{ .Data.MQTT_IP }}"
+          export MQTT_PASSWORD = "{{ .Data.MQTT_PASSWORD }}"
           {{- end }}
+        vault.hashicorp.com/ca-cert: "/vault/tls/ca.crt"
+        vault.hashicorp.com/client-cert: "/vault/tls/client.crt"
+        vault.hashicorp.com/client-key: "/vault/tls/client.key"
+        vault.hashicorp.com/tls-secret: "vault-tls-client"
     spec:
       containers:
       - name: node-red

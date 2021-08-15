@@ -29,6 +29,7 @@ spec:
 #        vault.hashicorp.com/client-key: "/vault/tls/client.key"
 #        vault.hashicorp.com/tls-secret: "vault-tls-client"
     spec:
+      serviceAccountName: node-red
       containers:
       - name: node-red
         image: mthorley/node-red:v0.0.1

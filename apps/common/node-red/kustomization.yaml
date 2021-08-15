@@ -4,5 +4,6 @@ namespace: node-red
 resources:
   - namespace.yaml
   - pvc.yaml
+  - serviceaccount.yaml
   - deployment.yaml
   - loadbalancer.yaml

@@ -31,6 +31,8 @@ spec:
           #  httpGet:
           #    path: /
           #    port: http
+        securityContext:
+          privileged: true
         volumeMounts:
         - name: tasmo-admin-data
           mountPath: /data

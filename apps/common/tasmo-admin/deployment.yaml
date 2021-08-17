@@ -31,9 +31,9 @@ spec:
           #  httpGet:
           #    path: /
           #    port: http
-          volumeMounts:
-          - name: tasmo-admin-data
-            mountPath: /data
+        volumeMounts:
+        - name: tasmo-admin-data
+          mountPath: /data
       volumes:
       - name: tasmo-admin-data
         persistentVolumeClaim:

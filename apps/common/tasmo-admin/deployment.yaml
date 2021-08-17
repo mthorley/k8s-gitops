@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tasmo-admin
+  namespace: tasmo-admin
   labels:
     app: tasmo-admin
-  namespace: tasmo-admin
 spec:
   replicas: 1
   selector:
@@ -21,10 +21,8 @@ spec:
         image: "raymondmm/tasmoadmin:v1.7.0"
         imagePullPolicy: IfNotPresent
         ports:
-          ports:
-            - name: tasmo-admin-ui
-              containerPort: 80
-              protocol: TCP
+        - containerPort: 80
+          name: tasmo-admin-ui
           #livenessProbe:
           #  httpGet:
           #    path: /
@@ -33,11 +31,9 @@ spec:
           #  httpGet:
           #    path: /
           #    port: http
-          resources:
-            {}
           volumeMounts:
-            - name: tasmo-admin-data
-              mountPath: /data
+          - name: tasmo-admin-data
+            mountPath: /data
       volumes:
       - name: tasmo-admin-data
         persistentVolumeClaim:

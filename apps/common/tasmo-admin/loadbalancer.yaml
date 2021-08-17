@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasmo-admin
+  namespace: tasmo-admin
+spec:
+  selector:
+    app: tasmo-admin
+  type: LoadBalancer
+  ports:
+    - name: tasmo-admin-ui
+      port: 80
+      protocol: TCP
+      targetPort: tasmo-admin-ui

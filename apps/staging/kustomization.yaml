@@ -6,7 +6,6 @@ resources:
   - ../common/mqtt
   - ../common/node-red
   - ../common/adguard
-  - ../common/tasmo-admin
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml
   - mqtt-ip.yaml

@@ -2,18 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
 resources:
-  - setup/0namespace-namespace.yaml
-  - setup/prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
-  - setup/prometheus-operator-0podmonitorCustomResourceDefinition.yaml
-  - setup/prometheus-operator-0prometheusCustomResourceDefinition.yaml
-  - setup/prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
-  - setup/prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
-  - setup/prometheus-operator-0thanosrulerCustomResourceDefinition.yaml
-  - setup/prometheus-operator-clusterRole.yaml
-  - setup/prometheus-operator-clusterRoleBinding.yaml
-  - setup/prometheus-operator-deployment.yaml
-  - setup/prometheus-operator-service.yaml
-  - setup/prometheus-operator-serviceAccount.yaml
   - alertmanager-alertmanager.yaml
   - alertmanager-secret.yaml
   - alertmanager-service.yaml

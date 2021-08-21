@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyternb
+  namespace: jupyter
+  labels:
+    app: jupyternb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyternb
+  template:
+    metadata:
+      labels:
+        app: jupyternb
+    spec:
+      containers:
+      - name: jupyternb
+        image: mthorley/jnb:1.0
+        ports:
+        - containerPort: 8888
+          name: jupyternb-ui
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: jupyternb-data
+          mountPath: /data
+      volumes:
+      - name: jupyternb-data
+        persistentVolumeClaim:
+          claimName: jupyternb-claim

@@ -6,7 +6,9 @@ resources:
   - ../common/mqtt
   - ../common/node-red
   - ../common/adguard
+  - ../common/jupyternb
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml
   - mqtt-ip.yaml
   - adguard-ip.yaml
+  - jupyternb-ip.yaml

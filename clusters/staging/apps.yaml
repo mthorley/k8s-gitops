@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   timeout: 2m0s
-  interval: 30s
+  interval: 10m0s
   dependsOn:
     - name: infrastructure
   sourceRef:

@@ -48,7 +48,7 @@ spec:
         - name: MQTT_IP
           value: 192.168.3.14
         - name: NODE_RED_ENABLE_PROJECTS
-          value: true
+          value: "true"
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

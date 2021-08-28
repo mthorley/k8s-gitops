@@ -18,6 +18,7 @@ spec:
         vault.hashicorp.com/agent-inject: 'true'
 #        vault.hashicorp.com/agent-inject-status: "update"
 #        vault.hashicorp.com/agent-init-first: 'true'
+        vault.hashicorp.com/namespace: vault
         vault.hashicorp.com/role: 'nodered'
         vault.hashicorp.com/auth-path: "auth/kubernetes"
         vault.hashicorp.com/agent-inject-secret-config: 'secret/nodered'

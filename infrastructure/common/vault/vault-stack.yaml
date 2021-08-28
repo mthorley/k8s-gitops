@@ -358,7 +358,7 @@ spec:
             - name: AGENT_INJECT_LOG_LEVEL
               value: info
             - name: AGENT_INJECT_VAULT_ADDR
-              value: http://vault:8200
+              value: http://vault.vault.svc:8200
             - name: AGENT_INJECT_VAULT_AUTH_PATH
               value: auth/kubernetes
             - name: AGENT_INJECT_VAULT_IMAGE

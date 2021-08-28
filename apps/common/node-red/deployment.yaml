@@ -16,8 +16,8 @@ spec:
         app: node-red
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/agent-inject-status: "update"
-        vault.hashicorp.com/agent-init-first: 'true'
+#        vault.hashicorp.com/agent-inject-status: "update"
+#        vault.hashicorp.com/agent-init-first: 'true'
         vault.hashicorp.com/role: 'nodered'
         vault.hashicorp.com/agent-inject-secret-config: 'secret/nodered'
         vault.hashicorp.com/agent-inject-template-config: |

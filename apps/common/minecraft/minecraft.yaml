@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: minecraft-minecraft
+  name: minecraft-bedrock-minecraft
   labels:
-    app: minecraft-minecraft
+    app: minecraft-bedrock-minecraft
     chart: "minecraft-3.4.2"
-    release: "minecraft"
+    release: "minecraft-bedrock"
     heritage: "Helm"
 type: Opaque
 data:
@@ -17,11 +17,11 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: minecraft-minecraft
+  name: minecraft-bedrock-minecraft
   labels:
-    app: minecraft-minecraft
+    app: minecraft-bedrock-minecraft
     chart: "minecraft-3.4.2"
-    release: "minecraft"
+    release: "minecraft-bedrock"
     heritage: "Helm"
   annotations:
     {}
@@ -33,34 +33,34 @@ spec:
     targetPort: minecraft
     protocol: TCP
   selector:
-    app: minecraft-minecraft
+    app: minecraft-bedrock-minecraft
 ---
 # Source: minecraft/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: minecraft-minecraft
+  name: minecraft-bedrock-minecraft
   labels:
-    app: minecraft-minecraft
+    app: minecraft-bedrock-minecraft
     chart: "minecraft-3.4.2"
-    release: "minecraft"
+    release: "minecraft-bedrock"
     heritage: "Helm"
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: minecraft-minecraft
+      app: minecraft-bedrock-minecraft
   template:
     metadata:
       labels:
-        app: minecraft-minecraft
+        app: minecraft-bedrock-minecraft
     spec:
       securityContext:
         runAsUser: 1000
         fsGroup: 2000
       containers:
-      - name: minecraft-minecraft
+      - name: minecraft-bedrock-minecraft
         image: "itzg/minecraft-server:latest"
         imagePullPolicy: Always
         resources:

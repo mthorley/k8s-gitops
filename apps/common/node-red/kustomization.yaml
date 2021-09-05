@@ -7,3 +7,4 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - loadbalancer.yaml
+  - vaultsecret.yaml

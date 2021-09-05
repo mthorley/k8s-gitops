@@ -49,11 +49,11 @@ spec:
           value: 192.168.3.14
         - name: NODE_RED_ENABLE_PROJECTS
           value: "true"
-        - name: MQTT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: MQTT_PASSWORD
-              key: MQTT_PASSWORD
+#        - name: MQTT_PASSWORD
+#          valueFrom:
+#            secretKeyRef:
+#              name: MQTT_PASSWORD
+#              key: MQTT_PASSWORD
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

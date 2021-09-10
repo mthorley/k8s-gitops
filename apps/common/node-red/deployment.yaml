@@ -52,8 +52,8 @@ spec:
         - name: MQTT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: MQTT_PASSWORD
-              key: MQTT_PASSWORD
+              name: mqtt_password
+              key: mqtt_password
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

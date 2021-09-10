@@ -52,7 +52,7 @@ spec:
         - name: MQTT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mqtt-password
+              name: secret-nodered
               key: mqtt-password
       volumes:
       - name: node-red-data

@@ -4,4 +4,3 @@ namespace: minecraft
 resources:
   - namespace.yaml
   - minecraft.yaml
-  - pvc.yaml

@@ -78,8 +78,8 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: data
-      annotations:
-        volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+        annotations:
+          volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
       spec:
         accessModes:
           - ReadWriteOnce

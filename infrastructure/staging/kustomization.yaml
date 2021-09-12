@@ -9,5 +9,6 @@ resources:
   - ../common/monitoring/setup
   - ../common/monitoring
 #  - ../common/mongodb
+  - ../common/influxdb
 patchesStrategicMerge:
   - grafana-ip.yaml

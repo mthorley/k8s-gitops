@@ -78,7 +78,7 @@ metadata:
     app.kubernetes.io/version: "1.8.6"
     app.kubernetes.io/managed-by: Helm
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - name: api
     port: 8086

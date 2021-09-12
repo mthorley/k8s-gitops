@@ -4,3 +4,4 @@ namespace: minecraft
 resources:
   - namespace.yaml
   - minecraft.yaml
+  - loadbalancer.yaml

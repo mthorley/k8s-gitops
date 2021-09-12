@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: itzg/minecraft-server:multiarch
+          image: itzg/minecraft-bedrock-server
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

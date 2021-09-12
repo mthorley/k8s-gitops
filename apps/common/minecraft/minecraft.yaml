@@ -141,7 +141,7 @@ spec:
         - name: LEVEL
           value: "world"
         - name: ONLINE_MODE
-          value: "true"
+          value: "false"
         - name: MEMORY
           value: "1024M"
         - name: JVM_OPTS

@@ -117,7 +117,7 @@ spec:
       serviceAccountName: influxdb
       containers:
       - name: influxdb
-        image: "influxdb:1.8.6-alpine"
+        image: "influxdb:1.8.9"
         imagePullPolicy: "IfNotPresent"
         resources:
           {}

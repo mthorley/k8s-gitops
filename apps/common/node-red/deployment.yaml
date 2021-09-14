@@ -29,17 +29,24 @@ spec:
         - name: node-red-data
           mountPath: /data
         env:
-        - name: TZ
-          value: Australia/Melbourne
+        - name: HUE_IP
+          value: 192.168.1.191
+        - name: HUE_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: hue-token
         - name: MQTT_IP
           value: 192.168.3.14
-        - name: NODE_RED_ENABLE_PROJECTS
-          value: "true"
         - name: MQTT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: secret-nodered
               key: mqtt-password
+        - name: NODE_RED_ENABLE_PROJECTS
+          value: "true"
+        - name: TZ
+          value: Australia/Melbourne
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

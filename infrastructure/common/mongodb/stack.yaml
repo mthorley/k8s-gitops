@@ -7,7 +7,7 @@ metadata:
   namespace: default
   labels:
     app.kubernetes.io/name: mongodb
-    helm.sh/chart: mongodb-10.23.9
+    helm.sh/chart: mongodb-10.25.1
     app.kubernetes.io/instance: mongodb
     app.kubernetes.io/managed-by: Helm
 secrets:
@@ -21,13 +21,13 @@ metadata:
   namespace: default
   labels:
     app.kubernetes.io/name: mongodb
-    helm.sh/chart: mongodb-10.23.9
+    helm.sh/chart: mongodb-10.25.1
     app.kubernetes.io/instance: mongodb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: mongodb
 type: Opaque
 data:
-  mongodb-root-password: "R1pKNjFDRGFMaw=="
+  mongodb-root-password: "UzVQcHpPTG9pVA=="
 ---
 # Source: mongodb/templates/standalone/pvc.yaml
 kind: PersistentVolumeClaim
@@ -37,7 +37,7 @@ metadata:
   namespace: default
   labels:
     app.kubernetes.io/name: mongodb
-    helm.sh/chart: mongodb-10.23.9
+    helm.sh/chart: mongodb-10.25.1
     app.kubernetes.io/instance: mongodb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: mongodb
@@ -58,7 +58,7 @@ metadata:
   namespace: default
   labels:
     app.kubernetes.io/name: mongodb
-    helm.sh/chart: mongodb-10.23.9
+    helm.sh/chart: mongodb-10.25.1
     app.kubernetes.io/instance: mongodb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: mongodb
@@ -82,7 +82,7 @@ metadata:
   namespace: default
   labels:
     app.kubernetes.io/name: mongodb
-    helm.sh/chart: mongodb-10.23.9
+    helm.sh/chart: mongodb-10.25.1
     app.kubernetes.io/instance: mongodb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: mongodb
@@ -99,7 +99,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: mongodb
-        helm.sh/chart: mongodb-10.23.9
+        helm.sh/chart: mongodb-10.25.1
         app.kubernetes.io/instance: mongodb
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: mongodb
@@ -128,7 +128,7 @@ spec:
         sysctls: []
       containers:
         - name: mongodb
-          image: mongo:5.0.2
+          image: docker.io/arm64v8/mongo:latest
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsNonRoot: true

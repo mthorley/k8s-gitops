@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: mongodb-standalone
-        image: mongo:4.4.8
+        image: mongo:4.4.8 # dont use 5.X due to CPU capability gaps: https://github.com/docker-library/mongo/issues/485 
         env:
           - name: MONGO_INITDB_ROOT_USERNAME
             valueFrom:

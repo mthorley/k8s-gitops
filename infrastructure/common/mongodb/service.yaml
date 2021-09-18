@@ -6,10 +6,6 @@ metadata:
   labels:
     app: mongodb
 spec:
-  type: LoadBalancer
-  ports:
-    - name: db
-      port: 27017
-      protocol: TCP
+  clusterIP: None
   selector:
     app: mongodb

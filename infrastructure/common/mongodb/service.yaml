@@ -6,7 +6,7 @@ metadata:
   labels:
     app: mongodb
 spec:
-  type: LoadBalancerIP
+  type: LoadBalancer
   ports:
     - name: db
       port: 27017

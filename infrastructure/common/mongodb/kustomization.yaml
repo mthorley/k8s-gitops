@@ -6,3 +6,4 @@ resources:
   - vaultsecret.yaml
   - statefulset.yaml
   - service.yaml
+  - loadbalancer.yaml

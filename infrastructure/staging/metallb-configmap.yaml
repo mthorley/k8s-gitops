@@ -10,7 +10,7 @@ data:
     - name: staging
       protocol: bgp
       addresses:
-      - 192.168.3.10-192.168.3.20
+      - 192.168.3.10-192.168.3.30
       avoid-buggy-ips: true
 metadata:
   name: config

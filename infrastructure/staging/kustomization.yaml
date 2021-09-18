@@ -12,3 +12,4 @@ resources:
   - ../common/influxdb
 patchesStrategicMerge:
   - grafana-ip.yaml
+  - mongodb-ip.yaml

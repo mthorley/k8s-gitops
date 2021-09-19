@@ -7,7 +7,7 @@ resources:
   - ../common/node-red
   - ../common/adguard
   - ../common/jupyternb
-  - ../common/minecraft
+#  - ../common/minecraft
   - ../common/crypto-automation
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml

@@ -22,7 +22,7 @@ data:
       bind_hosts:
       - 0.0.0.0
       port: 53
-      statistics_interval: 1
+      statistics_interval: 30
       querylog_enabled: true
       querylog_file_enabled: true
       querylog_interval: 90
@@ -40,17 +40,21 @@ data:
       refuse_any: true
       upstream_dns:
       - https://dns10.quad9.net/dns-query
+      - 192.168.1.1
       upstream_dns_file: ""
       bootstrap_dns:
       - 9.9.9.10
       - 149.112.112.10
       - 2620:fe::10
       - 2620:fe::fe:10
-      all_servers: false
+      all_servers: true
       fastest_addr: false
       allowed_clients: []
       disallowed_clients: []
-      blocked_hosts: []
+      blocked_hosts:
+      - version.bind
+      - id.server
+      - hostname.bind
       cache_size: 4194304
       cache_ttl_min: 0
       cache_ttl_max: 0
@@ -62,8 +66,8 @@ data:
       ipset: []
       filtering_enabled: true
       filters_update_interval: 24
-      parental_enabled: false
-      safesearch_enabled: false
+      parental_enabled: true
+      safesearch_enabled: true
       safebrowsing_enabled: false
       safebrowsing_cache_size: 1048576
       safesearch_cache_size: 1048576
@@ -94,14 +98,38 @@ data:
       url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
       name: AdGuard DNS filter
       id: 1
-    - enabled: false
+    - enabled: true
       url: https://adaway.org/hosts.txt
       name: AdAway
       id: 2
-    - enabled: false
+    - enabled: true
       url: https://www.malwaredomainlist.com/hostslist/hosts.txt
       name: MalwareDomainList.com Hosts List
       id: 4
+    - enabled: true
+      url: https://someonewhocares.org/hosts/zero/hosts
+      name: Dan Pollock's List
+      id: 1628461331
+    - enabled: true
+      url: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/GameConsoleAdblockList.txt
+      name: Game Console Adblock List
+      id: 1628461332
+    - enabled: true
+      url: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV-AGH.txt
+      name: Perflyst and Dandelion Sprout's Smart-TV Blocklist
+      id: 1628461333
+    - enabled: true
+      url: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+      name: WindowsSpyBlocker - Hosts spy rules
+      id: 1628461334
+    - enabled: true
+      url: https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext
+      name: Peter Lowe's List
+      id: 1628461335
+    - enabled: true
+      url: https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt
+      name: EasyList
+      id: 1628461336
     whitelist_filters: []
     user_rules: []
     dhcp:
@@ -120,7 +148,72 @@ data:
         lease_duration: 86400
         ra_slaac_only: false
         ra_allow_slaac: false
-    clients: []
+    clients:
+    - name: Master Bedroom TV
+      tags:
+      - device_tv
+      ids:
+      - 10.10.11.10
+      use_global_settings: true
+      filtering_enabled: false
+      parental_enabled: false
+      safesearch_enabled: false
+      safebrowsing_enabled: false
+      use_global_blocked_services: true
+      blocked_services: []
+      upstreams: []
+    - name: Oli's iPad
+      tags:
+      - user_child
+      ids:
+      - 192.168.1.143
+      use_global_settings: true
+      filtering_enabled: false
+      parental_enabled: false
+      safesearch_enabled: false
+      safebrowsing_enabled: false
+      use_global_blocked_services: true
+      blocked_services: []
+      upstreams: []
+    - name: Matt's MacBookAir
+      tags:
+      - user_regular
+      ids:
+      - 192.168.1.233
+      use_global_settings: true
+      filtering_enabled: false
+      parental_enabled: false
+      safesearch_enabled: false
+      safebrowsing_enabled: false
+      use_global_blocked_services: true
+      blocked_services: []
+      upstreams: []
+    - name: Lounge TV
+      tags:
+      - device_tv
+      ids:
+      - 10.10.11.20
+      use_global_settings: true
+      filtering_enabled: false
+      parental_enabled: false
+      safesearch_enabled: false
+      safebrowsing_enabled: false
+      use_global_blocked_services: true
+      blocked_services: []
+      upstreams: []
+    - name: Retreat TV
+      tags:
+      - device_tv
+      ids:
+      - 10.10.11.88
+      use_global_settings: true
+      filtering_enabled: false
+      parental_enabled: false
+      safesearch_enabled: false
+      safebrowsing_enabled: false
+      use_global_blocked_services: true
+      blocked_services: []
+      upstreams: []
     log_compress: false
     log_localtime: false
     log_max_backups: 0

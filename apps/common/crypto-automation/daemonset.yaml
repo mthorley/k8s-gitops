@@ -21,30 +21,30 @@ spec:
       - name: crypto-agent
         image: mthorley/crypto-automate:latest
         env:
-        - name: COINSPOT_SECRET_RO
+        - name: SECRET_RO
           valueFrom:
             secretKeyRef:
               name: secret-cryptoautomation
-              key: coinspot-secret-ro
-        - name: COINSPOT_KEY_RO
+              key: secret-ro
+        - name: KEY_RO
           valueFrom:
             secretKeyRef:
               name: secret-cryptoautomation
-              key: coinspot-key-ro
-        - name: TELEGRAM_BOT_NAME
+              key: key-ro
+        - name: BOT_NAME
           valueFrom:
             secretKeyRef:
               name: secret-cryptoautomation
-              key: telegram-bot-name
-        - name: TELEGRAM_BOT_TOKEN
+              key: bot-name
+        - name: BOT_TOKEN
           valueFrom:
             secretKeyRef:
               name: secret-cryptoautomation
-              key: telegram-bot-token
-        - name: TELEGRAM_CHAT_ID
+              key: bot-token
+        - name: CHAT_ID
           valueFrom:
             secretKeyRef:
               name: secret-cryptoautomation
-              key: telegram-chat-id
+              key: chat-id
         ports:
         - containerPort: 8080

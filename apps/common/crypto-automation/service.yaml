@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: crypto-agent-headless
+  namespace: crypto-automate
+spec:
+  clusterIP: None
+  selector:
+    app: crypto-agent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crypto-agent-public
+  namespace: crypto-automate
+spec:
+  selector:
+    app: crypto-agent
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

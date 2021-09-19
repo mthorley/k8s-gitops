@@ -8,8 +8,10 @@ resources:
   - ../common/adguard
   - ../common/jupyternb
   - ../common/minecraft
+  - ../common/crypto-automation
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml
   - mqtt-ip.yaml
   - adguard-ip.yaml
   - jupyternb-ip.yaml
+  - crypto-automation.yaml

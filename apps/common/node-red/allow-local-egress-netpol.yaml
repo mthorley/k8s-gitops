@@ -1,7 +1,7 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "cidr-rule"
+  name: "allow-local-egress"
 spec:
   endpointSelector:
     matchLabels:

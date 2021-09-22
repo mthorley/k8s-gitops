@@ -8,3 +8,4 @@ resources:
   - deployment.yaml
   - loadbalancer.yaml
   - vaultsecret.yaml
+  - deny-all-egress-cilium-netpol.yaml

@@ -10,3 +10,4 @@ resources:
   - vaultsecret.yaml
   - deny-all-egress-cilium-netpol.yaml
   - allow-local-egress-cilium-netpol.yaml
+  - allow-local-egress-dns-netpol.yaml

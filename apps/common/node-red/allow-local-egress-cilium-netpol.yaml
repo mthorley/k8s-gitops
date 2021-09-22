@@ -1,0 +1,11 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "cidr-rule"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: nodered
+  egress:
+  - toCIDR:
+    - 192.168.0.0/16

@@ -1,0 +1,11 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-external-egress"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: node-red
+  egress:
+  - toCIDR:
+    - 192.168.0.0/16

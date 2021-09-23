@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: node-red
   egress:
-    - toServices:
-      - k8sService:
-          serviceName: influxdb
-          namespace: influxdb
+  - toEndpoints:
+    - matchLabels:
+        "k8s:io.kubernetes.pod.namespace": influxdb
+        "app.kubernetes.io/name": influxdb

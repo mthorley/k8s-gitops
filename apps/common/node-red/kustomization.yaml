@@ -9,6 +9,6 @@ resources:
   - loadbalancer.yaml
   - vaultsecret.yaml
   - deny-all-egress-netpol.yaml
-  - allow-local-egress-netpol.yaml
+  - allow-ext-egress-netpol.yaml
   - allow-local-egress-dns-netpol.yaml
   - allow-local-egress-influxdb-netpol.yaml

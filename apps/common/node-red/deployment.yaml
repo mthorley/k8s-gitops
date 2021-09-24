@@ -18,7 +18,7 @@ spec:
       serviceAccountName: nodered
       containers:
       - name: node-red
-        image: mthorley/node-red:c6be554dd3d6e02f6bc3b6f7513ee7132600aa46
+        image: mthorley/node-red:363ff1d75458dd5747a1b6b0b1288d4d91102308
         imagePullPolicy: Always
         ports:
         - containerPort: 1880

@@ -4,7 +4,7 @@ resources:
   - ../common/pi-temp-agent
   - ../common/rsyslog
   - ../common/mqtt
-  - ../common/node-red
+#  - ../common/node-red
   - ../common/adguard
   - ../common/jupyternb
 #  - ../common/minecraft

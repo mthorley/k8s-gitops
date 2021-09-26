@@ -1,0 +1,13 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-external-egress"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: crypto-agent
+  egress:
+  - toEndpoints:
+    - toFQDNs:
+      - matchName: "coinspot.com.au"
+      - matchName: "telegram.org"

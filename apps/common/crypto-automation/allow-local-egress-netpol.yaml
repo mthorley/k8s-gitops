@@ -9,4 +9,4 @@ spec:
   egress:
     - toFQDNs:
       - matchName: "coinspot.com.au"
-      - matchName: "telegram.org"
+      - matchName: "*.telegram.org"

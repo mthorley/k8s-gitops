@@ -7,7 +7,6 @@ spec:
     matchLabels:
       app: crypto-agent
   egress:
-  - toEndpoints:
     - toFQDNs:
       - matchName: "coinspot.com.au"
       - matchName: "telegram.org"

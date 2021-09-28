@@ -16,6 +16,9 @@ spec:
         app: node-red
     spec:
       serviceAccountName: nodered
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: node-red
         image: mthorley/node-red:1e8ed1e3bfa2b8db5a6f8304d3ba893abbf18c5a

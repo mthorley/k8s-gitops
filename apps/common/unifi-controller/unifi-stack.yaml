@@ -50,7 +50,7 @@ spec:
     app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi
   type: LoadBalancer
-  loadBalancerIP: 192.168.3.22
+  loadBalancerIP: 192.168.3.23
 ---
 kind: Service
 apiVersion: v1
@@ -68,7 +68,7 @@ spec:
     app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi
   type: LoadBalancer
-  loadBalancerIP: 192.168.3,22
+  loadBalancerIP: 192.168.3.23
 ---
 # Source: unifi/templates/common.yaml
 apiVersion: apps/v1

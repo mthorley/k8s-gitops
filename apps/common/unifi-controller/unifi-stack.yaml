@@ -1,0 +1,166 @@
+---
+# Source: unifi/templates/common.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: unifi-data
+  labels:
+    helm.sh/chart: unifi-4.2.2
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+    app.kubernetes.io/version: "v6.2.26"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "20Gi"
+  storageClassName: "managed-nfs-storage"
+---
+# Source: unifi/templates/common.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi
+  labels:
+    helm.sh/chart: unifi-4.2.2
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+    app.kubernetes.io/version: "v6.2.26"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.3.22
+  externalTrafficPolicy: Local
+  ports:
+  - port: 8080
+    targetPort: controller
+    protocol: TCP
+    name: controller
+  - port: 10001
+    targetPort: discovery
+    protocol: UDP
+    name: discovery
+  - port: 8443
+    targetPort: http
+    protocol: TCP
+    name: http
+  - port: 6789
+    targetPort: speedtest
+    protocol: TCP
+    name: speedtest
+  - port: 3478
+    targetPort: stun
+    protocol: UDP
+    name: stun
+  - port: 5514
+    targetPort: syslog
+    protocol: UDP
+    name: syslog
+  selector:
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+---
+# Source: unifi/templates/common.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi
+  labels:
+    helm.sh/chart: unifi-4.2.2
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+    app.kubernetes.io/version: "v6.2.26"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: unifi
+      app.kubernetes.io/instance: unifi
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: unifi
+        app.kubernetes.io/instance: unifi
+    spec:
+      
+      serviceAccountName: default
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      containers:
+        - name: unifi
+          image: "jacobalberty/unifi:v6.2.26"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "JVM_INIT_HEAP_SIZE"
+              value: 
+            - name: "JVM_MAX_HEAP_SIZE"
+              value: "1024M"
+            - name: "RUNAS_UID0"
+              value: "false"
+            - name: "TZ"
+              value: "Australia/Melbourne"
+            - name: "UNIFI_GID"
+              value: "999"
+            - name: "UNIFI_STDOUT"
+              value: "true"
+            - name: "UNIFI_UID"
+              value: "999"
+          ports:
+            - name: controller
+              containerPort: 8080
+              protocol: TCP
+            - name: discovery
+              containerPort: 10001
+              protocol: UDP
+            - name: http
+              containerPort: 8443
+              protocol: TCP
+            - name: speedtest
+              containerPort: 6789
+              protocol: TCP
+            - name: stun
+              containerPort: 3478
+              protocol: UDP
+            - name: syslog
+              containerPort: 5514
+              protocol: UDP
+          volumeMounts:
+            - name: data
+              mountPath: /unifi
+          livenessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 0
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+          resources:
+            limits:
+              memory: 750Mi
+            requests:
+              cpu: 15m
+              memory: 500Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: unifi-data

@@ -1,0 +1,23 @@
+
+image:
+  repository: jacobalberty/unifi
+  tag: v6.2.26
+service:
+  main:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.3.22
+    externalTrafficPolicy: Local
+persistence:
+  data:
+    enabled: true
+    size: 20Gi
+    storageClass: managed-nfs-storage
+    accessMode: ReadWriteOnce
+env:
+  TZ: "Australia/Melbourne"
+resources:
+    requests:
+      memory: 500Mi
+      cpu: 15m
+    limits:
+      memory: 750Mi

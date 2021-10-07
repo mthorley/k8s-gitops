@@ -18,49 +18,57 @@ spec:
       storage: "20Gi"
   storageClassName: "managed-nfs-storage"
 ---
-# Source: unifi/templates/common.yaml
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: unifi
-  labels:
-    helm.sh/chart: unifi-4.2.2
-    app.kubernetes.io/name: unifi
-    app.kubernetes.io/instance: unifi
-    app.kubernetes.io/version: "v6.2.26"
-    app.kubernetes.io/managed-by: Helm
+  name: lb-unifi
+  annotations:
+    metallb.universe.tf/allow-shared-ip: 'true'
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.3.22
-  externalTrafficPolicy: Local
   ports:
-  - port: 8080
-    targetPort: controller
-    protocol: TCP
-    name: controller
-  - port: 10001
-    targetPort: discovery
-    protocol: UDP
-    name: discovery
-  - port: 8443
-    targetPort: http
-    protocol: TCP
-    name: http
-  - port: 6789
-    targetPort: speedtest
-    protocol: TCP
-    name: speedtest
-  - port: 3478
-    targetPort: stun
-    protocol: UDP
-    name: stun
-  - port: 5514
-    targetPort: syslog
-    protocol: UDP
-    name: syslog
+    - name: '8080'
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: '8443'
+      protocol: TCP
+      port: 8443
+      targetPort: 8443
+    - name: '8843'
+      protocol: TCP
+      port: 8843
+      targetPort: 8843
+    - name: '8880'
+      protocol: TCP
+      port: 8880
+      targetPort: 8880
+    - name: '6789'
+      protocol: TCP
+      port: 6789
+      targetPort: 6789
   selector:
     app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi
+  type: LoadBalancer
+  loadBalancerIP: 192.168.3.22
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: lb-unifi-udp
+  annotations:
+    metallb.universe.tf/allow-shared-ip: 'true'
+spec:
+  ports:
+    - name: '3478'
+      protocol: UDP
+      port: 3478
+      targetPort: 3478
+  selector:
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+  type: LoadBalancer
+  loadBalancerIP: 192.168.3,22
 ---
 # Source: unifi/templates/common.yaml
 apiVersion: apps/v1

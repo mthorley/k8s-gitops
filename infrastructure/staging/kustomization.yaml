@@ -10,7 +10,6 @@ resources:
   - ../common/monitoring
   - ../common/mongodb
   - ../common/influxdb
-  - ../common/unifi-controller
 patchesStrategicMerge:
   - grafana-ip.yaml
   - mongodb-ip.yaml

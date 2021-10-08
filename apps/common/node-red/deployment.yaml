@@ -32,8 +32,6 @@ spec:
         - name: node-red-data
           mountPath: /data
         env:
-        - name: HUE_IP
-          value: philips-hue.localdomain
         - name: HUE_TOKEN
           valueFrom:
             secretKeyRef:

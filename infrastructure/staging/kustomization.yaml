@@ -10,6 +10,7 @@ resources:
   - ../common/monitoring
   - ../common/mongodb
   - ../common/influxdb
+  - ../common/apparmor
 patchesStrategicMerge:
   - grafana-ip.yaml
   - mongodb-ip.yaml

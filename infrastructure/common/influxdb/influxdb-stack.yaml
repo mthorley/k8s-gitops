@@ -101,8 +101,6 @@ metadata:
     app.kubernetes.io/instance: influxdb
     app.kubernetes.io/version: "1.8.6"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    container.apparmor.security.beta.kubernetes.io/influxdb: localhost/k8s-apparmor-audit-writes
 spec:
   replicas: 1
   selector:
@@ -115,6 +113,8 @@ spec:
       labels:
         app.kubernetes.io/name: influxdb
         app.kubernetes.io/instance: influxdb
+    annotations:
+      container.apparmor.security.beta.kubernetes.io/influxdb: localhost/k8s-apparmor-audit-writes
     spec:
       serviceAccountName: influxdb
       containers:

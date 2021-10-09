@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: apparmor-loader
+  namespace: apparmor
+  labels:
+    daemon: apparmor-loader
+spec:
+  selector:
+    matchLabels:
+      daemon: apparmor-loader
+  template:
+    metadata:
+      name: apparmor-loader
+      labels:
+        daemon: apparmor-loader
+    spec:
+      containers:
+      - name: apparmor-loader
+        image: gcr.io/kubernetes-e2e-test-images/apparmor-loader-arm64:1.1
+        args:
+          # Poll the /profiles directory every 30 seconds
+          - -poll
+          - 30s
+          - /profiles
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: sys
+          mountPath: /sys
+          readOnly: true
+        - name: apparmor-includes
+          mountPath: /etc/apparmor.d
+          readOnly: true
+        - name: profiles
+          mountPath: /profiles
+          readOnly: true
+      volumes:
+      # Mount the /sys directory to interact with the AppArmor module.
+      - name: sys
+        hostPath:
+          path: /sys
+      # Mount the /etc/apparmor.d directory for apparmor templates.
+      - name: apparmor-includes
+        hostPath:
+          path: /etc/apparmor.d
+      # Source the Profile data from config map
+      - name: profiles
+        configMap:
+          name: apparmor-profiles

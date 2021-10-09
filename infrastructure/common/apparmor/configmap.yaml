@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apparmor-profiles
+  namespace: apparmor
+data:
+  ...
+  k8s-apparmor-audit-writes: |-
+    #include <tunables/global>
+    profile k8s-apparmor-audit-writes flags=(attach_disconnected) {
+      #include <abstractions/base>
+      file,
+      # Audit all file writes.
+      audit /** w,
+    }
+  ...

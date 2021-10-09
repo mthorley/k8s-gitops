@@ -4,3 +4,6 @@ namespace: unifi-controller
 resources:
   - namespace.yaml
   - unifi-stack.yaml
+  - allow-ext-egress-netpol.yaml
+  - allow-local-egress-dns-netpol.yaml
+  - deny-all-egress-netpol.yaml

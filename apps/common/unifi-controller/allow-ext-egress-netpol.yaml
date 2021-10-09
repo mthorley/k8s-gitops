@@ -1,0 +1,13 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-external-egress"
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: unifi
+  egress:
+  - toCIDR:
+    - 192.168.0.0/16
+  - toFQDNs:
+    - matchName: "ips1.unifi-ai.com" # IDS/IPS rule updates

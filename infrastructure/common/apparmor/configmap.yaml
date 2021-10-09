@@ -4,7 +4,6 @@ metadata:
   name: apparmor-profiles
   namespace: apparmor
 data:
-  ...
   k8s-apparmor-audit-writes: |-
     #include <tunables/global>
     profile k8s-apparmor-audit-writes flags=(attach_disconnected) {
@@ -13,4 +12,3 @@ data:
       # Audit all file writes.
       audit /** w,
     }
-  ...

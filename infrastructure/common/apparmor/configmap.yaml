@@ -8,7 +8,15 @@ data:
     #include <tunables/global>
     profile k8s-apparmor-audit-writes flags=(attach_disconnected) {
       #include <abstractions/base>
-      file,
+
+      network inet tcp,    # network tcp inet protocols 
+
+      deny network raw,
+      deny network packet,
+
+      audit file,
+      audit umount,        # allow any mount
+
       # Audit all file writes.
       audit /** w,
     }

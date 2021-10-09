@@ -5,7 +5,7 @@ image:
 service:
   main:
     type: LoadBalancer
-    loadBalancerIP: 192.168.3.22
+    loadBalancerIP: 192.168.3.23
     externalTrafficPolicy: Local
 persistence:
   data:

@@ -11,3 +11,6 @@ spec:
     - 192.168.0.0/16
   - toFQDNs:
     - matchName: "ips1.unifi-ai.com" # IDS/IPS rule updates
+    - matchName: "config.ubnt.com"
+    - matchName: "static.ubnt.com"
+    - matchName: "trace.svc.ui.com"

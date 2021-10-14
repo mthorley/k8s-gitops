@@ -60,6 +60,16 @@ spec:
             secretKeyRef:
               name: secret-nodered
               key: sonos-diningroom-l
+        - name: SONOS_WHISKYROOM_L
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: sonos-whiskyroom-l
+        - name: SONOS_WHISKYROOM_R
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: sonos-whiskyroom-r
         - name: UNIFI_USER
           valueFrom:
             secretKeyRef:

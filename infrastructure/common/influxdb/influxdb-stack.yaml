@@ -113,8 +113,8 @@ spec:
       labels:
         app.kubernetes.io/name: influxdb
         app.kubernetes.io/instance: influxdb
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/influxdb: localhost/k8s-apparmor-audit-writes
+#      annotations:
+#        container.apparmor.security.beta.kubernetes.io/influxdb: localhost/k8s-apparmor-audit-writes
     spec:
       serviceAccountName: influxdb
       containers:

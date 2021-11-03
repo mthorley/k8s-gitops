@@ -12,9 +12,6 @@ data:
       # Allow all rules
       capability,
       network,
-      network raw,
-      network inet stream,
-      network netlink raw,
       mount,
       remount,
       umount,

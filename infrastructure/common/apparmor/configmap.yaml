@@ -9,12 +9,11 @@ data:
     profile k8s-apparmor-audit-writes flags=(attach_disconnected) {
       #include <abstractions/base>
 
-      # Audit all file access
-      audit /** mklrw,
-
       # Allow all rules
       capability,
       network,
+      network raw,
+      network inet stream,
       mount,
       remount,
       umount,
@@ -24,4 +23,8 @@ data:
       dbus,
       unix,
       file,
+
+      # Audit all file access
+      audit /** mklrw,
+
     }

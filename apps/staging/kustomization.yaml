@@ -10,6 +10,7 @@ resources:
 #  - ../common/minecraft
   - ../common/crypto-automation
   - ../common/unifi-controller
+  - ../common/homeassistant
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml
   - mqtt-ip.yaml

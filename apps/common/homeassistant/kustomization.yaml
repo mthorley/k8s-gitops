@@ -4,3 +4,4 @@ namespace: homeassistant
 resources:
   - namespace.yaml
   - home-assistant-stack.yaml
+  - lb.yaml

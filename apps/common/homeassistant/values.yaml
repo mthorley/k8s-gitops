@@ -1,0 +1,7 @@
+persistence:
+  config:
+    enabled: true
+
+hostNetwork: true
+dnsPolicy: ClusterFirstWithHostNet
+

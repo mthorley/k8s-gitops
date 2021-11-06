@@ -1,5 +1,25 @@
 ---
 # Source: home-assistant/templates/common.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: home-assistant-config
+  labels:
+    helm.sh/chart: home-assistant-11.1.0
+    app.kubernetes.io/name: home-assistant
+    app.kubernetes.io/instance: home-assistant
+    app.kubernetes.io/version: "2021.6.3"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "1Gi"
+---
+# Source: home-assistant/templates/common.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -65,6 +85,9 @@ spec:
             - name: http
               containerPort: 8123
               protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /config
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -86,3 +109,7 @@ spec:
             failureThreshold: 30
             timeoutSeconds: 1
             periodSeconds: 5
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: home-assistant-config

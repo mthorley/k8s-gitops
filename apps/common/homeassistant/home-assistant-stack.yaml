@@ -10,8 +10,6 @@ metadata:
     app.kubernetes.io/instance: home-assistant
     app.kubernetes.io/version: "2021.6.3"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:
   accessModes:
     - "ReadWriteOnce"
@@ -70,7 +68,8 @@ spec:
     spec:
       
       serviceAccountName: default
-      dnsPolicy: ClusterFirst
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       enableServiceLinks: true
       containers:
         - name: home-assistant

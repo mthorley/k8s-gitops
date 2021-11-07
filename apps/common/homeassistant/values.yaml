@@ -3,5 +3,3 @@ persistence:
     enabled: true
 
 hostNetwork: true
-dnsPolicy: ClusterFirstWithHostNet
-

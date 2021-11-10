@@ -70,8 +70,8 @@ spec:
     spec:
       
       serviceAccountName: default
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
+#      hostNetwork: true
+#      dnsPolicy: ClusterFirstWithHostNet
       enableServiceLinks: true
       containers:
         - name: home-assistant

@@ -81,7 +81,7 @@ spec:
             privileged: null
           env:
             - name: "TZ"
-              value: "UTC"
+              value: "Australia/Melbourne"
           ports:
             - name: http
               containerPort: 8123

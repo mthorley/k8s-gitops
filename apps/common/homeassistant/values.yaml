@@ -2,4 +2,4 @@ persistence:
   config:
     enabled: true
 
-hostNetwork: true
+hostNetwork: false

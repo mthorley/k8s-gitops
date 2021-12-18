@@ -223,7 +223,7 @@ spec:
       enableServiceLinks: true
       initContainers:
       - name: fsgroup-volume
-        image: "arm64v8/busybox:latest"
+        image: "busybox:latest"
         command: ['sh', '-c']
         args:
           - 'chown -R 1000:1000 /usr/share/opensearch/data'

@@ -221,17 +221,17 @@ spec:
         configMap:
           name: opensearch-cluster-master-config
       enableServiceLinks: true
-      initContainers:
-      - name: fsgroup-volume
-        image: "alpine:latest"
-        command: ['sh', '-c']
-        args:
-          - 'chown -R 1000:1000 /usr/share/opensearch/data'
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-          - name: "opensearch-cluster-master"
-            mountPath: /usr/share/opensearch/data
+#      initContainers:
+#      - name: fsgroup-volume
+#        image: "alpine:latest"
+#        command: ['sh', '-c']
+#        args:
+#          - 'chown -R 1000:1000 /usr/share/opensearch/data'
+#        securityContext:
+#          runAsUser: 0
+#        volumeMounts:
+#          - name: "opensearch-cluster-master"
+#            mountPath: /usr/share/opensearch/data
 
       containers:
       - name: "opensearch"

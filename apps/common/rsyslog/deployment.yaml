@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: rsyslog
-        image: mthorley/rsyslog:fac92077091f820bfb1eb9a65605a4f7cbe49c0f
+        image: mthorley/rsyslog:80adc4220f9e927c38df3c589a6ad9749899f3e4
         ports:
         - containerPort: 514
           name: rsyslog-udp

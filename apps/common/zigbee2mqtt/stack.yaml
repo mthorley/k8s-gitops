@@ -20,6 +20,7 @@ data:
       log_output:
       - console
       network_key: GENERATE
+      rtscts: false # https://electrolama.com/radio-docs/zigbee2mqtt/
     experimental:
       new_api: true
     frontend:
@@ -33,6 +34,8 @@ data:
       server: mqtt://k8smqtt
       user: test
     permit_join: true
+    serial:
+      port: /dev/ttyUSB0
 ---
 # Source: zigbee2mqtt/templates/common.yaml
 kind: PersistentVolumeClaim

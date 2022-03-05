@@ -31,11 +31,11 @@ data:
       client_id: zigbee2mqtt
       include_device_information: true
       password: test
-      server: mqtt://k8smqtt
+      server: mqtt://k8smqtt:1883
       user: test
     permit_join: true
     serial:
-      port: tcp://zigbee2-ser2sock:10000
+      port: /dev/ttyUSB0
 ---
 # Source: zigbee2mqtt/templates/common.yaml
 kind: PersistentVolumeClaim
@@ -117,6 +117,8 @@ spec:
           securityContext:
             privileged: true
           env:
+            - name: "TZ"
+              value: "Australia/Melbourne"
             - name: "ZIGBEE2MQTT_DATA"
               value: "/data"
           ports:
@@ -126,8 +128,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
-            - name: usb
-              mountPath: /dev/ttyUSB0
             - name: zigbee2mqtt-settings
               mountPath: /app/configuration.yaml
               subPath: configuration.yaml
@@ -156,9 +156,6 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: zigbee2mqtt-data
-        - name: usb
-          hostPath:
-            path: /dev/ttyUSB0
         - name: zigbee2mqtt-settings
           configMap:
             name: zigbee2mqtt-settings

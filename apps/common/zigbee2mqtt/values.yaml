@@ -18,6 +18,7 @@ image:
 env:
   # -- Set the data folder for Zigbee2MQTT.
   ZIGBEE2MQTT_DATA: /data
+  TZ: Australia/Melbourne
 
 # -- Configures service settings for the chart. Normally this does not need to be modified.
 # @default -- See values.yaml
@@ -43,16 +44,18 @@ persistence:
   data:
     enabled: true
     mountPath: /data
+    storageClass: "managed-nfs-storage"
     accessMode: ReadWriteOnce
     size: 1Gi
-    storageClassName: "managed-nfs-storage"
 
-  # -- Configure a hostPathMount to mount a USB device in the container.
-  # @default -- See values.yaml
-  usb:
-    enabled: true
-    type: hostPath
-    hostPath: /dev/ttyUSB0
+additionalVolumeMounts:
+  - name: usb
+    mountPath: /dev/ttyUSB0
+
+additionalVolumes:
+  - name: usb
+    hostPath:
+      path: /dev/ttyUSB0
 
 # -- Affinity constraint rules to place the Pod on a specific node.
 # [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
@@ -86,7 +89,7 @@ config:
     # MQTT base topic for zigbee2mqtt MQTT messages
     base_topic: zigbee2mqtt
     # MQTT server URL
-    server: "mqtt://k8smqtt"
+    server: "mqtt://k8smqtt:1883"
     # MQTT server authentication, uncomment if required:
     user: test
     password: test
@@ -100,7 +103,7 @@ config:
   # USB / Serial settings
   serial:
     # Location of your zigbee device
-    port: "tcp://zigbee2-ser2sock:10000"
+    port: /dev/ttyUSB0
 
     # Optional: adapter type, not needed unless you are experiencing problems (options: zstack, deconz)
     # adapter: deconz

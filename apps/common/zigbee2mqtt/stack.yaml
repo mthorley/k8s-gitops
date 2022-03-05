@@ -20,7 +20,7 @@ data:
       log_output:
       - console
       network_key: GENERATE
-      rtscts: true
+      rtscts: false
     experimental:
       new_api: true
     frontend:
@@ -35,7 +35,7 @@ data:
       user: test
     permit_join: true
     serial:
-      port: null
+      port: /dev/ttyUSB0
 ---
 # Source: zigbee2mqtt/templates/common.yaml
 kind: PersistentVolumeClaim

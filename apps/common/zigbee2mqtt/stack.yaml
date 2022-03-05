@@ -35,7 +35,7 @@ data:
       user: test
     permit_join: true
     serial:
-      port: /dev/ttyUSB0
+      port: null
 ---
 # Source: zigbee2mqtt/templates/common.yaml
 kind: PersistentVolumeClaim

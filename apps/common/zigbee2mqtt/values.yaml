@@ -100,7 +100,7 @@ config:
   # USB / Serial settings
   serial:
     # Location of your zigbee device
-    port: /dev/ttyUSB0
+    port: "tcp://zigbee2-ser2sock:10000"
 
     # Optional: adapter type, not needed unless you are experiencing problems (options: zstack, deconz)
     # adapter: deconz

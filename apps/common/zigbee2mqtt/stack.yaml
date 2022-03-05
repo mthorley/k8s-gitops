@@ -20,7 +20,7 @@ data:
       log_output:
       - console
       network_key: GENERATE
-      rtscts: false # https://electrolama.com/radio-docs/zigbee2mqtt/
+      rtscts: true
     experimental:
       new_api: true
     frontend:

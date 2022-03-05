@@ -4,3 +4,4 @@ namespace: zigbee2mqtt
 resources:
   - namespace.yaml
   - stack.yaml
+  - loadbalancer.yaml

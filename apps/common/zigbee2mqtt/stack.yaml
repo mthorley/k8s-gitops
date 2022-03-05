@@ -16,7 +16,7 @@ data:
       homeassistant_discovery_topic: homeassistant
       homeassistant_status_topic: homeassistant/status
       last_seen: ISO_8601
-      log_level: info
+      log_level: debug
       log_output:
       - console
       network_key: GENERATE
@@ -112,7 +112,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: zigbee2mqtt
-          image: "koenkk/zigbee2mqtt:1.17.1"
+          image: "koenkk/zigbee2mqtt:1.24.0"
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true

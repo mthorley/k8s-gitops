@@ -133,9 +133,6 @@ spec:
             - name: syslog
               containerPort: 5514
               protocol: UDP
-            - name: ssh
-              containerPort: 22
-              protocol: SSH
           volumeMounts:
             - name: data
               mountPath: /unifi

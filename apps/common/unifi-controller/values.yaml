@@ -1,7 +1,7 @@
 
 image:
   repository: jacobalberty/unifi
-  tag: v6.2.26
+  tag: v6.5.55
 service:
   main:
     type: LoadBalancer

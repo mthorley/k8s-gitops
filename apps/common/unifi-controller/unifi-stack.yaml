@@ -105,15 +105,15 @@ spec:
             - name: "JVM_MAX_HEAP_SIZE"
               value: "1024M"
             - name: "RUNAS_UID0"
-              value: "false"
+              value: "true"
             - name: "TZ"
               value: "Australia/Melbourne"
-            - name: "UNIFI_GID"
-              value: "999"
+#            - name: "UNIFI_GID"
+#              value: "999"
             - name: "UNIFI_STDOUT"
               value: "true"
-            - name: "UNIFI_UID"
-              value: "999"
+#            - name: "UNIFI_UID"
+#              value: "999"
           ports:
             - name: controller
               containerPort: 8080

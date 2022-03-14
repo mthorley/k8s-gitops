@@ -13,4 +13,5 @@ spec:
     - matchName: "ips1.unifi-ai.com" # IDS/IPS rule updates
     - matchName: "config.ubnt.com"
     - matchName: "static.ubnt.com"
+    - matchName: "fw-update.ubnt.com"
 #    - matchName: "trace.svc.ui.com" # Block analytics from ui

@@ -12,7 +12,21 @@ customConfig:
       mode: udp
       path: /path/to/socket
   sinks:
-    blackhole_id:
-      type: blackhole
+#    blackhole_id:
+#      type: blackhole
+#      inputs:
+#        - syslog_source_id
+    loki_sink_id:
+      type: loki
       inputs:
         - syslog_source_id
+      endpoint: http://loki.loki:3100
+      labels:
+        forwarder: vector
+        event: "{{ event_field }}"
+        key: value
+        "\"{{ event_field }}\"": "{{ another_event_field }}"
+      compression: none
+      encoding:
+        codec: json
+      healthcheck: null

@@ -10,7 +10,6 @@ customConfig:
       address: 0.0.0.0:514
       max_length: 102400
       mode: udp
-      path: /path/to/socket
   sinks:
 #    blackhole_id:
 #      type: blackhole
@@ -29,4 +28,5 @@ customConfig:
       compression: none
       encoding:
         codec: json
+      out_of_order_action: rewrite_timestamp
 #      healthcheck: null

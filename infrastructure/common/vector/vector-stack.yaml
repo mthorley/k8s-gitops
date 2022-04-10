@@ -44,13 +44,13 @@ data:
         - syslog_source_id
         labels:
           forwarder: vector
+        out_of_order_action: rewrite_timestamp
         type: loki
     sources:
       syslog_source_id:
         address: 0.0.0.0:514
         max_length: 102400
         mode: udp
-        path: /path/to/socket
         type: syslog
 ---
 # Source: vector/templates/service-headless.yaml
@@ -139,7 +139,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 3d00082f229d718798fcad8ca914d71aa281bc00cdd7ca6867a618241b49eca0
+        checksum/config: d5e27b990ad954cdc333a0eae4669e2e8c89ef90f439646d462b63ed607f0426
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector

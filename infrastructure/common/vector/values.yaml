@@ -1,0 +1,19 @@
+customConfig:
+  data_dir: /vector-data-dir
+  api:
+    enabled: true
+    address: 127.0.0.1:8686
+    playground: false
+  sources:
+    syslog_source_id:
+      type: syslog
+      address: 0.0.0.0:514
+      max_length: 102400
+      mode: udp
+      path: /path/to/socket
+  sinks:
+    stdout:
+      type: console
+      inputs: [vector]
+      encoding:
+        codec: json

@@ -12,6 +12,7 @@ resources:
   - ../common/influxdb
   - ../common/apparmor
 #  - ../common/opensearch
+  - ../common/vector
 patchesStrategicMerge:
   - grafana-ip.yaml
   - mongodb-ip.yaml

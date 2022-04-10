@@ -1,0 +1,176 @@
+---
+# Source: vector/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vector
+  labels:
+    helm.sh/chart: vector-0.7.0
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Aggregator
+    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/managed-by: Helm
+    
+automountServiceAccountToken: true
+---
+# Source: vector/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vector
+  labels:
+    helm.sh/chart: vector-0.7.0
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Aggregator
+    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/managed-by: Helm
+    
+data:
+  vector.yaml: |
+    api:
+      address: 127.0.0.1:8686
+      enabled: true
+      playground: false
+    data_dir: /vector-data-dir
+    sinks:
+      stdout:
+        encoding:
+          codec: json
+        inputs:
+        - vector
+        type: console
+    sources:
+      syslog_source_id:
+        address: 0.0.0.0:514
+        max_length: 102400
+        mode: udp
+        path: /path/to/socket
+        type: syslog
+---
+# Source: vector/templates/service-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vector-headless
+  labels:
+    helm.sh/chart: vector-0.7.0
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Aggregator
+    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/managed-by: Helm
+    
+  annotations:
+spec:
+  clusterIP: None
+  ports:    
+    - name: api
+      port: 8686
+      protocol: TCP
+      targetPort: 8686
+    - name: syslog-source-id
+      port: 514
+      protocol: UDP
+      targetPort: 514
+  selector:
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Aggregator
+  type: ClusterIP
+---
+# Source: vector/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vector
+  labels:
+    helm.sh/chart: vector-0.7.0
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Aggregator
+    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/managed-by: Helm
+    
+  annotations:
+spec:
+  ports:    
+    - name: api
+      port: 8686
+      protocol: TCP
+      targetPort: 8686
+    - name: syslog-source-id
+      port: 514
+      protocol: UDP
+      targetPort: 514
+  selector:
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Aggregator
+  type: ClusterIP
+---
+# Source: vector/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vector
+  labels:
+    helm.sh/chart: vector-0.7.0
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Aggregator
+    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/managed-by: Helm
+    
+spec:
+  replicas: 1
+  podManagementPolicy: OrderedReady
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vector
+      app.kubernetes.io/instance: vector
+      app.kubernetes.io/component: Aggregator
+  serviceName: vector-headless
+  template:
+    metadata:
+      annotations:
+        checksum/config: 593aab43de80480c9ad671b6791a4dedf697879d0d8fa5a54c2c536e37709b0c
+      labels:
+        app.kubernetes.io/name: vector
+        app.kubernetes.io/instance: vector
+        app.kubernetes.io/component: Aggregator
+    spec:
+      serviceAccountName: vector
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: vector
+          image: "timberio/vector:0.20.0-distroless-libc"
+          imagePullPolicy: IfNotPresent
+          args:
+            - --config-dir
+            - /etc/vector/
+          env:
+          ports:      
+            - name: api
+              containerPort: 8686
+              protocol: TCP
+            - name: syslog-source-id
+              containerPort: 514
+              protocol: UDP
+          volumeMounts:
+            - name: data
+              mountPath: "/vector-data-dir"
+            - name: config
+              mountPath: "/etc/vector/"
+              readOnly: true
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config
+          projected:
+            sources:
+              - configMap:
+                  name: vector
+  volumeClaimTemplates:

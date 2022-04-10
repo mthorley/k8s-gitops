@@ -40,7 +40,6 @@ data:
         encoding:
           codec: json
         endpoint: http://loki.loki:3100
-        healthcheck: null
         inputs:
         - syslog_source_id
         labels:
@@ -140,7 +139,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69a6afe5b5e1da1990082b3cf250fde73ff5d39e992a04ec37e53791d7227196
+        checksum/config: 3d00082f229d718798fcad8ca914d71aa281bc00cdd7ca6867a618241b49eca0
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector

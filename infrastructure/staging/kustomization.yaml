@@ -13,6 +13,7 @@ resources:
   - ../common/apparmor
 #  - ../common/opensearch
   - ../common/vector
+  - ../common/loki
 patchesStrategicMerge:
   - grafana-ip.yaml
   - mongodb-ip.yaml

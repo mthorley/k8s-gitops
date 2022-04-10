@@ -4,3 +4,4 @@ namespace: vector
 resources:
   - namespace.yaml
   - vector-stack.yaml
+  - loadbalancer.yaml

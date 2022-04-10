@@ -35,12 +35,10 @@ data:
       playground: false
     data_dir: /vector-data-dir
     sinks:
-      stdout:
-        encoding:
-          codec: json
+      blackhole_id:
         inputs:
-        - vector
-        type: console
+        - syslog_source_id
+        type: blackhole
     sources:
       syslog_source_id:
         address: 0.0.0.0:514
@@ -135,7 +133,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 593aab43de80480c9ad671b6791a4dedf697879d0d8fa5a54c2c536e37709b0c
+        checksum/config: 5405ce4136faa1ea705224f0811fc1892855d041b7772063590f434965a4ec3e
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector

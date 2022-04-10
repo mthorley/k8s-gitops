@@ -155,7 +155,7 @@ spec:
             - name: api
               containerPort: 8686
               protocol: TCP
-            - name: syslog-source-id
+            - name: syslog-source-i
               containerPort: 514
               protocol: UDP
           volumeMounts:

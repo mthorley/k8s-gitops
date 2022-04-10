@@ -12,8 +12,7 @@ customConfig:
       mode: udp
       path: /path/to/socket
   sinks:
-    stdout:
-      type: console
-      inputs: [vector]
-      encoding:
-        codec: json
+    blackhole_id:
+      type: blackhole
+      inputs:
+        - syslog_source_id

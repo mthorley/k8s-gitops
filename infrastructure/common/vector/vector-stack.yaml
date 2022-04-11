@@ -43,7 +43,7 @@ data:
         inputs:
         - syslog_source_id
         labels:
-          datasource: vector
+          forwarder: vector
         out_of_order_action: rewrite_timestamp
         type: loki
     sources:
@@ -139,7 +139,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 3b5c58c654818d6452636764a5bad3af9f530a1bfc4007cd516a6af007c21809
+        checksum/config: 9cbf5310f0ae8bcc5b33cec25d73d3c021ed53f59b5ed4eb364f4db70d3631b8
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector

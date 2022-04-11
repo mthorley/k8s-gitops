@@ -38,7 +38,7 @@ data:
       loki_sink_id:
         compression: none
         encoding:
-          codec: json
+          codec: text
         endpoint: http://loki.loki:3100
         inputs:
         - syslog_source_id
@@ -139,7 +139,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 2aa85fd4df726357d55df248eabbb54d9d6e5c81e50680be75fe8aebd45359cc
+        checksum/config: 3b5c58c654818d6452636764a5bad3af9f530a1bfc4007cd516a6af007c21809
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector

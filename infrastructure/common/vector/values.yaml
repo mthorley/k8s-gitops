@@ -27,6 +27,6 @@ customConfig:
 #        "\"{{ event_field }}\"": "{{ another_event_field }}"
       compression: none
       encoding:
-        codec: json
+        codec: text
       out_of_order_action: rewrite_timestamp
 #      healthcheck: null

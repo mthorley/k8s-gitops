@@ -35,15 +35,10 @@ data:
       playground: false
     data_dir: /vector-data-dir
     sinks:
-      loki_sink:
+      blackhole_id:
         inputs:
         - syslog_source_id
-        rawConfig: |
-          endpoint = "http://loki.loki:3100"
-          labels.source = "vector"
-          encoding.codex = "text"
-          out_of_order_action = "rewrite_timestamp"
-        type: loki
+        type: blackhole
     sources:
       syslog_source_id:
         address: 0.0.0.0:514
@@ -137,7 +132,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 785d0d22c7269650d14032ef4f2bcf67a43195a88a092de163d51faba644302c
+        checksum/config: 8ccd2174bc1efac68ef6d8148e9c3695e7367ace019a095eb495aa7cf6113b0b
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector

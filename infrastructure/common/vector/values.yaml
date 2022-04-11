@@ -21,7 +21,7 @@ customConfig:
         - syslog_source_id
       endpoint: http://loki.loki:3100
       labels:
-        forwarder: vector
+        datasource: "vector"
 #        event: "{{ event_field }}"
 #        key: value
 #        "\"{{ event_field }}\"": "{{ another_event_field }}"

@@ -11,22 +11,19 @@ customConfig:
       max_length: 102400
       mode: udp
   sinks:
-   blackhole_id:
-     type: blackhole
-     inputs:
-       - syslog_source_id
-#     loki_sink:
-#       type: loki
-#       inputs: 
-#         - syslog_source_id
-#       endpoint: "http://loki.loki:3100"
-#       labels:
-#         forwarder: "vector"
-# #        event: "{{ event_field }}"
-# #        key: value
-# #        "\"{{ event_field }}\"": "{{ another_event_field }}"
-#       compression: none
-#       encoding:
-#         codec: text
-#       out_of_order_action: "rewrite_timestamp"
-# #      healthcheck: null
+#   blackhole_id:
+#     type: blackhole
+#     inputs:
+#       - syslog_source_id
+    loki_sink:
+      type: loki
+      inputs: 
+        - syslog_source_id
+      endpoint: http://loki.loki.svc.cluster.local:3100
+      labels:
+        forwarder: "vector"
+      compression: none
+      encoding:
+        codec: json
+      out_of_order_action: rewrite_timestamp
+      healthcheck: true

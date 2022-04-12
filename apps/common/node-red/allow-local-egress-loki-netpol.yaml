@@ -10,3 +10,4 @@ spec:
   - toEndpoints:
     - matchLabels:
         app: loki
+        namespace: loki

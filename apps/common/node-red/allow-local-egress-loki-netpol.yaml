@@ -10,4 +10,4 @@ spec:
   - toEndpoints:
     - matchLabels:
         "app": loki
-        "namespace": loki
+        "k8s:io.kubernetes.pod.namespace": loki

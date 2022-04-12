@@ -9,5 +9,4 @@ spec:
   egress:
   - toEndpoints:
     - matchLabels:
-        "namespace": loki
-        "name": loki
+        app: loki

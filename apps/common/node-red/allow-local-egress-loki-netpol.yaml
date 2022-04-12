@@ -9,5 +9,5 @@ spec:
   egress:
   - toEndpoints:
     - matchLabels:
-        "k8s:io.kubernetes.pod.namespace": loki
-        "app.kubernetes.io/name": loki
+        "namespace": loki
+        "name": loki

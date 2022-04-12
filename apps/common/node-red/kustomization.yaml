@@ -13,3 +13,4 @@ resources:
   - allow-local-egress-dns-netpol.yaml
   - allow-local-egress-influxdb-netpol.yaml
   - allow-local-egress-unifi-netpol.yaml
+  - allow-local-egress-loki-netpol.yaml

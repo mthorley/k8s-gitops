@@ -1,3 +1,5 @@
 config:
   limits_config:
     reject_old_samples: false
+extraArgs:
+  log.level: debug

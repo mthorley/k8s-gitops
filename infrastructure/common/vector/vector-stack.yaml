@@ -5,11 +5,11 @@ kind: ServiceAccount
 metadata:
   name: vector
   labels:
-    helm.sh/chart: vector-0.7.0
+    helm.sh/chart: vector-0.10.1
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
     app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/version: "0.21.1-distroless-libc"
     app.kubernetes.io/managed-by: Helm
     
 automountServiceAccountToken: true
@@ -20,11 +20,11 @@ kind: ConfigMap
 metadata:
   name: vector
   labels:
-    helm.sh/chart: vector-0.7.0
+    helm.sh/chart: vector-0.10.1
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
     app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/version: "0.21.1-distroless-libc"
     app.kubernetes.io/managed-by: Helm
     
 data:
@@ -34,12 +34,6 @@ data:
       enabled: true
       playground: false
     data_dir: /vector-data-dir
-    sources:
-      syslog_source_id:
-        address: 0.0.0.0:514
-        max_length: 102400
-        mode: udp
-        type: syslog
     sinks:
       loki_sink:
         compression: none
@@ -53,6 +47,12 @@ data:
           forwarder: vector
         out_of_order_action: rewrite_timestamp
         type: loki
+    sources:
+      syslog_source_id:
+        address: 0.0.0.0:514
+        max_length: 102400
+        mode: udp
+        type: syslog
 ---
 # Source: vector/templates/service-headless.yaml
 apiVersion: v1
@@ -60,11 +60,11 @@ kind: Service
 metadata:
   name: vector-headless
   labels:
-    helm.sh/chart: vector-0.7.0
+    helm.sh/chart: vector-0.10.1
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
     app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/version: "0.21.1-distroless-libc"
     app.kubernetes.io/managed-by: Helm
     
   annotations:
@@ -91,11 +91,11 @@ kind: Service
 metadata:
   name: vector
   labels:
-    helm.sh/chart: vector-0.7.0
+    helm.sh/chart: vector-0.10.1
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
     app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/version: "0.21.1-distroless-libc"
     app.kubernetes.io/managed-by: Helm
     
   annotations:
@@ -121,11 +121,11 @@ kind: StatefulSet
 metadata:
   name: vector
   labels:
-    helm.sh/chart: vector-0.7.0
+    helm.sh/chart: vector-0.10.1
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
     app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.20.0-distroless-libc"
+    app.kubernetes.io/version: "0.21.1-distroless-libc"
     app.kubernetes.io/managed-by: Helm
     
 spec:
@@ -140,7 +140,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e2b387d1117fc17f7140885793013cd011abddbcd5b901b87f2c02cbeb462ff0
+        checksum/config: fb87dcdea645fcdaec1ef163bbb655568cc0a80eea732403ee13d2d8c27dbb8e
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector
@@ -150,7 +150,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: vector
-          image: "timberio/vector:0.20.0-distroless-libc"
+          image: "timberio/vector:0.21.1-distroless-libc"
           imagePullPolicy: IfNotPresent
           args:
             - --config-dir

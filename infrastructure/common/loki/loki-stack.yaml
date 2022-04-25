@@ -200,7 +200,6 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
-            - "-log.level=debug"
           volumeMounts:
             - name: tmp
               mountPath: /tmp

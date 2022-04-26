@@ -1,0 +1,11 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-ext-egress-geoplugin"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: node-red
+  egress:
+  - toFQDNs:
+    - matchPattern: "www.geoplugin.net"

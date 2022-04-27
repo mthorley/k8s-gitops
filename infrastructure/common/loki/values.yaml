@@ -3,3 +3,11 @@ config:
     reject_old_samples: false
 # extraArgs:
 #  log.level: debug
+persistence:
+  enabled: true
+  accessModes:
+  - ReadWriteOnce
+  size: 20Gi
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+  storageClassName: managed-nfs-storage

@@ -71,7 +71,7 @@ spec:
       
       serviceAccountName: default
       automountServiceAccountToken: true
-      dnsPolicy: ClusterFirst
+#      dnsPolicy: ClusterFirst
       enableServiceLinks: true
       containers:
         - name: home-assistant

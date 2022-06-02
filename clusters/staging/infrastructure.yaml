@@ -11,3 +11,7 @@ spec:
   path: ./infrastructure/staging
   prune: true
   validation: client
+  postBuild:
+    substitute:
+      cluster_lb_grafana: 192.168.3.10
+    substituteFrom: {}

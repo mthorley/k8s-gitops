@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: flux-system
+  name: cluster-config
+data:
+  CLUSTER_LB_GRAFANA: '192.168.3.10'

@@ -11,3 +11,4 @@ spec:
       port: 80
       targetPort: 3000
   type: LoadBalancer
+  loadBalancerIP: '${CLUSTER_LB_GRAFANA}'

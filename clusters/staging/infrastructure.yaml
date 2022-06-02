@@ -13,5 +13,5 @@ spec:
   validation: client
   postBuild:
     substitute:
-      cluster_lb_grafana: 192.168.3.10
+      cluster_lb_grafana: '192.168.3.10'
     substituteFrom:

@@ -11,8 +11,3 @@ spec:
   path: ./infrastructure/staging
   prune: true
   validation: client
-  postBuild:
-    substitute: {}
-    substituteFrom:
-      - kind: ConfigMap
-        name: cluster-config

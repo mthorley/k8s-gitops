@@ -15,5 +15,5 @@ resources:
   - ../common/vector
   - ../common/loki
 patchesStrategicMerge:
-#  - grafana-ip.yaml
+  - grafana-ip.yaml
   - mongodb-ip.yaml

@@ -126,7 +126,7 @@ spec:
             - name: "JVM_INIT_HEAP_SIZE"
               value: 
             - name: "JVM_MAX_HEAP_SIZE"
-              value: "1024M"
+              value: "2048M"
             - name: "RUNAS_UID0"
               value: "true"
             - name: "TZ"

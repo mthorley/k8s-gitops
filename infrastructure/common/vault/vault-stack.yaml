@@ -2,13 +2,13 @@
 # Source: vault/templates/server-disruptionbudget.yaml
 # PodDisruptionBudget to prevent degrading the server cluster through
 # voluntary cluster changes.
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: vault
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -20,6 +20,17 @@ spec:
       app.kubernetes.io/instance: vault
       component: server
 ---
+# Source: vault/templates/injector-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-agent-injector
+  namespace: vault
+  labels:
+    app.kubernetes.io/name: vault-agent-injector
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: Helm
+---
 # Source: vault/templates/server-serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -27,7 +38,7 @@ metadata:
   name: vault
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -39,7 +50,7 @@ metadata:
   name: vault-config
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -60,13 +71,49 @@ data:
     
     service_registration "kubernetes" {}
 ---
+# Source: vault/templates/injector-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vault-agent-injector-clusterrole
+  labels:
+    app.kubernetes.io/name: vault-agent-injector
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: Helm
+rules:
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources: ["mutatingwebhookconfigurations"]
+  verbs:
+    - "get"
+    - "list"
+    - "watch"
+    - "patch"
+---
+# Source: vault/templates/injector-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vault-agent-injector-binding
+  labels:
+    app.kubernetes.io/name: vault-agent-injector
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vault-agent-injector-clusterrole
+subjects:
+- kind: ServiceAccount
+  name: vault-agent-injector
+  namespace: vault
+---
 # Source: vault/templates/server-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: vault-server-binding
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -86,7 +133,7 @@ metadata:
   namespace: vault
   name: vault-discovery-role
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -102,7 +149,7 @@ metadata:
   name: vault-discovery-rolebinding
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -115,6 +162,27 @@ subjects:
   name: vault
   namespace: vault
 ---
+# Source: vault/templates/injector-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-agent-injector-svc
+  namespace: vault
+  labels:
+    app.kubernetes.io/name: vault-agent-injector
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: Helm
+  
+spec:
+  ports:
+  - name: https
+    port: 443
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: vault-agent-injector
+    app.kubernetes.io/instance: vault
+    component: webhook
+---
 # Source: vault/templates/server-ha-active-service.yaml
 # Service for active Vault pod
 apiVersion: v1
@@ -123,7 +191,7 @@ metadata:
   name: vault-active
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -152,7 +220,7 @@ metadata:
   name: vault-standby
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -181,7 +249,7 @@ metadata:
   name: vault-internal
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -210,7 +278,7 @@ metadata:
   name: vault
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.15.0
+    helm.sh/chart: vault-0.20.1
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -231,6 +299,120 @@ spec:
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     component: server
+---
+# Source: vault/templates/injector-deployment.yaml
+# Deployment for the injector
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-agent-injector
+  namespace: vault
+  labels:
+    app.kubernetes.io/name: vault-agent-injector
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: Helm
+    component: webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault-agent-injector
+      app.kubernetes.io/instance: vault
+      component: webhook
+  
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vault-agent-injector
+        app.kubernetes.io/instance: vault
+        component: webhook
+    spec:
+      
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: vault-agent-injector
+                  app.kubernetes.io/instance: "vault"
+                  component: webhook
+              topologyKey: kubernetes.io/hostname
+  
+      
+      
+      
+      serviceAccountName: "vault-agent-injector"
+      hostNetwork: false
+      securityContext:
+        runAsNonRoot: true
+        runAsGroup: 1000
+        runAsUser: 100
+      containers:
+        - name: sidecar-injector
+          
+          image: "hashicorp/vault-k8s:0.16.1"
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            allowPrivilegeEscalation: false
+          env:
+            - name: AGENT_INJECT_LISTEN
+              value: :8080
+            - name: AGENT_INJECT_LOG_LEVEL
+              value: info
+            - name: AGENT_INJECT_VAULT_ADDR
+              value: http://vault.vault.svc:8200
+            - name: AGENT_INJECT_VAULT_AUTH_PATH
+              value: auth/kubernetes
+            - name: AGENT_INJECT_VAULT_IMAGE
+              value: "hashicorp/vault:1.10.3"
+            - name: AGENT_INJECT_TLS_AUTO
+              value: vault-agent-injector-cfg
+            - name: AGENT_INJECT_TLS_AUTO_HOSTS
+              value: vault-agent-injector-svc,vault-agent-injector-svc.vault,vault-agent-injector-svc.vault.svc
+            - name: AGENT_INJECT_LOG_FORMAT
+              value: standard
+            - name: AGENT_INJECT_REVOKE_ON_SHUTDOWN
+              value: "false"
+            - name: AGENT_INJECT_CPU_REQUEST
+              value: "250m"
+            - name: AGENT_INJECT_CPU_LIMIT
+              value: "500m"
+            - name: AGENT_INJECT_MEM_REQUEST
+              value: "64Mi"
+            - name: AGENT_INJECT_MEM_LIMIT
+              value: "128Mi"
+            - name: AGENT_INJECT_DEFAULT_TEMPLATE
+              value: "map"
+            - name: AGENT_INJECT_TEMPLATE_CONFIG_EXIT_ON_RETRY_FAILURE
+              value: "true"
+            
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          args:
+            - agent-inject
+            - 2>&1
+          livenessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+              scheme: HTTPS
+            failureThreshold: 2
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+              scheme: HTTPS
+            failureThreshold: 2
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            successThreshold: 1
+            timeoutSeconds: 5
 ---
 # Source: vault/templates/server-statefulset.yaml
 # StatefulSet to run the actual vault server cluster.
@@ -257,7 +439,7 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: vault-0.15.0
+        helm.sh/chart: vault-0.20.1
         app.kubernetes.io/name: vault
         app.kubernetes.io/instance: vault
         component: server
@@ -273,6 +455,7 @@ spec:
                   component: server
               topologyKey: kubernetes.io/hostname
   
+      
       
       
       terminationGracePeriodSeconds: 10
@@ -294,7 +477,7 @@ spec:
       containers:
         - name: vault
           
-          image: hashicorp/vault:1.8.1
+          image: hashicorp/vault:1.10.3
           imagePullPolicy: IfNotPresent
           command:
           - "/bin/sh"
@@ -409,3 +592,79 @@ spec:
           requests:
             storage: 10Gi
         storageClassName: managed-nfs-storage
+---
+# Source: vault/templates/injector-mutating-webhook.yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: vault-agent-injector-cfg
+  labels:
+    app.kubernetes.io/name: vault-agent-injector
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: Helm
+webhooks:
+  - name: vault.hashicorp.com
+    failurePolicy: Ignore
+    matchPolicy: Exact
+    sideEffects: None
+    timeoutSeconds: 30
+    admissionReviewVersions: ["v1", "v1beta1"]
+    clientConfig:
+      service:
+        name: vault-agent-injector-svc
+        namespace: vault
+        path: "/mutate"
+      caBundle: ""
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    objectSelector:
+      matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: NotIn
+        values:
+        - vault-agent-injector
+---
+# Source: vault/templates/tests/server-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "vault-server-test"
+  namespace: vault
+  annotations:
+    "helm.sh/hook": test
+spec:
+  
+  containers:
+    - name: vault-server-test
+      image: hashicorp/vault:1.10.3
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: VAULT_ADDR
+          value: http://vault.vault.svc:8200
+        
+      command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Checking for sealed info in 'vault status' output"
+          ATTEMPTS=10
+          n=0
+          until [ "$n" -ge $ATTEMPTS ]
+          do
+            echo "Attempt" $n...
+            vault status -format yaml | grep -E '^sealed: (true|false)' && break
+            n=$((n+1))
+            sleep 5
+          done
+          if [ $n -ge $ATTEMPTS ]; then
+            echo "timed out looking for sealed info in 'vault status' output"
+            exit 1
+          fi
+
+          exit 0
+      volumeMounts:
+  volumes:
+  restartPolicy: Never

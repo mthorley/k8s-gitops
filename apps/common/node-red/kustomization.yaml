@@ -8,6 +8,7 @@ resources:
   - deployment.yaml
   - loadbalancer.yaml
   - vaultsecret.yaml
+  - vault-secrets-store.yaml
   - deny-all-egress-netpol.yaml
   - allow-ext-egress-netpol.yaml
   - allow-local-egress-dns-netpol.yaml

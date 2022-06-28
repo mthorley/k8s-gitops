@@ -3,7 +3,8 @@ kind: Kustomization
 namespace: mongodb
 resources:
   - namespace.yaml
-  - vaultsecret.yaml
   - statefulset.yaml
   - service.yaml
   - loadbalancer.yaml
+  - vault-secret-store.yaml
+  - external-secrets.yaml

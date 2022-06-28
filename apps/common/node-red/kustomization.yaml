@@ -7,7 +7,6 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - loadbalancer.yaml
-  - vaultsecret.yaml
   - vault-secrets-store.yaml
   - external-secrets.yaml
   - deny-all-egress-netpol.yaml

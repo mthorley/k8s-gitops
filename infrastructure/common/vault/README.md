@@ -11,3 +11,8 @@ helm template vault hashicorp/vault \
     --set 'server.dataStorage.storageClass=managed-nfs-storage' \
     --namespace='vault' > vault-stack.yaml
 ```
+
+helm template vault hashicorp/vault \
+    --namespace='vault' \
+    --values values.yaml > vault-stack.yaml
+```

@@ -4,5 +4,3 @@ namespace: external-secrets
 resources:
   - namespace.yaml
   - external-secrets-stack.yaml
-  - vault-secrets-store.yaml
-  - external-secret.yaml

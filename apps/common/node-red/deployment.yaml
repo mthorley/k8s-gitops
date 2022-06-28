@@ -80,6 +80,11 @@ spec:
             secretKeyRef:
               name: secret-nodered
               key: unifi-password
+        - name: ZEN_WIFI_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: zen-wifi-user
         - name: TZ
           value: Australia/Melbourne
       volumes:

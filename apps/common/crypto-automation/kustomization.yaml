@@ -6,8 +6,8 @@ resources:
   - daemonset.yaml
   - service.yaml
   - vaultsecret.yaml
-  - external-secrets.yaml
   - vault-secret-store.yaml
+  - external-secrets.yaml
   - deny-all-egress-netpol.yaml
   - allow-local-egress-dns-netpol.yaml
   - allow-local-egress-netpol.yaml

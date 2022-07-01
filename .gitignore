@@ -2,3 +2,5 @@ infrastructure/**/unseal.sh
 **/.DS_Store
 .env
 .unseal.sh
+**/.terraform*
+**/terraform.tfstate*

@@ -18,3 +18,4 @@ resources:
 patchesStrategicMerge:
   - grafana-ip.yaml
   - mongodb-ip.yaml
+  - influxdb-ip.yaml

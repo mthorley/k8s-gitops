@@ -4,6 +4,5 @@ metadata:
   name: pi-temp-headless
   namespace: pi-temp
 spec:
-  clusterIP: None
   selector:
     app: pi-temp-agent

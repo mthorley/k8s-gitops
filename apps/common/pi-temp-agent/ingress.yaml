@@ -12,6 +12,6 @@ spec:
         pathType: Prefix
         backend:
           service: 
-            name: pi-temp-agent
+            name: pi-temp-headless
             port: 
               number: 5000

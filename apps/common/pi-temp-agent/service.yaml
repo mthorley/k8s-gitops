@@ -6,3 +6,7 @@ metadata:
 spec:
   selector:
     app: pi-temp-agent
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000

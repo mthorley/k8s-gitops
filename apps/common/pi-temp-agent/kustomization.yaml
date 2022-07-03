@@ -6,3 +6,4 @@ resources:
   - daemonset.yaml
   - service.yaml
   - loadbalancer.yaml
+  - ingress.yaml

@@ -1,0 +1,16 @@
+kind: Ingress
+metadata:
+  name: ingress-with-auth
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: pi-temp-agent
+            port: 
+              number: 5000

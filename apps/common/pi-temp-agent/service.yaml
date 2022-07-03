@@ -4,9 +4,6 @@ metadata:
   name: pi-temp-headless
   namespace: pi-temp
 spec:
+  clusterIP: None
   selector:
     app: pi-temp-agent
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000

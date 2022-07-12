@@ -16,7 +16,7 @@ resources:
   - ../common/external-secrets
   - ../common/certmanager
   - ../common/ingress
-  - ../common/flux-system
+#  - ../common/flux-system
 patchesStrategicMerge:
   - grafana-ip.yaml
   - mongodb-ip.yaml

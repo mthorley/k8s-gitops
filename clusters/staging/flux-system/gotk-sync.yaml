@@ -26,16 +26,3 @@ spec:
     kind: GitRepository
     name: flux-system
   validation: client
-#---
-#apiVersion: infra.contrib.fluxcd.io/v1alpha1
-#kind: Terraform
-#metadata:
-#  name: influxdb-tf
-#  namespace: flux-system
-#spec:
-#  path: ./setup/influxdb
-#  interval: 1m
-#  sourceRef:
-#    kind: GitRepository
-#    name: flux-system
-#    namespace: flux-system

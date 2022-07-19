@@ -1,3 +1,0 @@
-
-persistence:
-  storageClass: "managed-nfs-storage"

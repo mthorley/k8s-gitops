@@ -10,7 +10,6 @@ resources:
   - ../common/mongodb
   - ../common/influxdb
   - ../common/apparmor
-#  - ../common/opensearch
   - ../common/vector
   - ../common/loki
   - ../common/external-secrets

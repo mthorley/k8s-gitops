@@ -67,7 +67,7 @@ To flash, execute the following python
 
 e.g.
 
-```python3 cc2538-bsl.py -p /dev/tty.usbserial-1410 -evw cCC2652R_coordinator_20220219.hex```
+```python3 cc2538-bsl.py -p /dev/tty.usbserial-1410 -evw CC2652R_coordinator_20220219.hex```
 
 ### Output
 

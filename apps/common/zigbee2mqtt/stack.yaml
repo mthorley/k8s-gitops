@@ -36,6 +36,7 @@ data:
       - 111
       - 112
       - 113
+      pan_id: 6755
       rtscts: false
     experimental:
       new_api: true

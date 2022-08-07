@@ -47,6 +47,8 @@ data:
       - 14
       pan_id: 8035
       rtscts: false
+    external_converters:
+      - SPP02GIP.js
     experimental:
       new_api: true
     frontend:

@@ -124,6 +124,8 @@ Press the small button on the base of the larger sensor for over 5 seconds and t
 
 ## Mercator Ikuu Outdoor Socket
 
+Press the left (or right) switch down for over 7 seconds, and the red light will start to flash to pair.
+
 If the device is not recognised with an error similar to
 
 ```

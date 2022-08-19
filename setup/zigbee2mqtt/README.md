@@ -33,7 +33,7 @@ Device is zzh from https://shop.electrolama.com/collections/usb-rf-sticks/produc
 
 Take the coordinator firmware from zigbee2mqtt recommended https://www.zigbee2mqtt.io/guide/adapters/#recommended - refer to coordindator link.
 
-Download zip contains `cCC2652R_coordinator_20220219.hex` file.
+Downloaded zip contains `cCC2652R_coordinator_20220219.hex` file.
 
 ## Download python to flash
 
@@ -51,7 +51,7 @@ Install dependencies
 
 From https://electrolama.com/radio-docs/flash-cc-bsl/.
 
-Basically hold down small button on zzh stick before placing in usb socket.
+Basically hold down small button on zzh stick before placing in usb socket and release once in the socket.
 
 ## Verify port on Mac
 
@@ -110,7 +110,7 @@ PASS|OK
 
 # Device Pairing
 
-Ensure the device joining is enabled in the ui by clicking the "Permit Join (All)" button. This will allow any device to join within 255 seconds where it will disable.
+Ensure the device joining is enabled in the ui by clicking the "Permit Join (All)" button. This will allow any device to join within 255 seconds after which it will disable.
 
 [Zigbee2Mqtt UI](./device_ui.png)
 

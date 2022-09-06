@@ -147,4 +147,21 @@ This is based on https://community.home-assistant.io/t/mercator-ikuu-double-outd
       new_api: true
 ```
 
-And add the [SPP02GIP.js](../../apps/common/zigbee2mqtt/SPP02GIP.js) file to the container /apps directory next to the ```configuration.yaml``` file. 
+And add the [SPP02GIP.js](../../apps/common/zigbee2mqtt/SPP02GIP.js) file to the container /apps directory next to the ```configuration.yaml``` file.
+
+# Troubleshooting
+
+## Error: SRSP - ZDO - mgmtPermitJoinReq after 6000ms
+
+After period of stable running (approx 30 days), get the above error.
+
+### Workaround (not fix)
+
+- Restarting zigbee2mqtt does not fix
+- Replugging usb stick **does** fix 
+
+zigbee2mqtt version: `koenkk/zigbee2mqtt:1.24.0`
+
+zzh firmware version: `CC2652R_coordinator_20220219.hex`
+
+Some discussion here https://github.com/Koenkk/zigbee2mqtt/issues/5015

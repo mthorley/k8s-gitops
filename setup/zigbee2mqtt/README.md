@@ -164,4 +164,6 @@ zigbee2mqtt version: `koenkk/zigbee2mqtt:1.24.0`
 
 zzh firmware version: `CC2652R_coordinator_20220219.hex`
 
+Existing devices already registered will resync and not require re-registration.
+
 Some discussion here https://github.com/Koenkk/zigbee2mqtt/issues/5015

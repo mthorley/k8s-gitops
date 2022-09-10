@@ -86,7 +86,8 @@ spec:
               name: secret-nodered
               key: zen-wifi-user
         - name: TZ
-          value: Australia/Melbourne
+#          value: Australia/Melbourne
+          value: "${cluster_tz}"
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

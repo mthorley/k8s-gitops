@@ -5,11 +5,12 @@ apiVersion: v1
 metadata:
   name: unifi-data
   labels:
-    helm.sh/chart: unifi-4.6.1
-    app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi
-    app.kubernetes.io/version: "v6.5.55"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/version: v7.1.68
+    helm.sh/chart: unifi-5.1.2
+  annotations:
 spec:
   accessModes:
     - "ReadWriteOnce"
@@ -22,15 +23,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: unifi-tcp
+  name: unifi
   labels:
-    helm.sh/chart: unifi-4.6.1
-    app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi
-    app.kubernetes.io/version: "v6.5.55"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/version: v7.1.68
+    helm.sh/chart: unifi-5.1.2
   annotations:
-    traefik.ingress.kubernetes.io/service.serversscheme: https
     metallb.universe.tf/allow-shared-ip: "unifi-controller"
 spec:
   type: LoadBalancer
@@ -41,6 +41,10 @@ spec:
     targetPort: controller
     protocol: TCP
     name: controller
+  - port: 10001
+    targetPort: discovery
+    protocol: UDP
+    name: discovery
   - port: 8443
     targetPort: http
     protocol: TCP
@@ -49,32 +53,6 @@ spec:
     targetPort: speedtest
     protocol: TCP
     name: speedtest
-  selector:
-    app.kubernetes.io/name: unifi
-    app.kubernetes.io/instance: unifi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: unifi-udp
-  labels:
-    helm.sh/chart: unifi-4.6.1
-    app.kubernetes.io/name: unifi
-    app.kubernetes.io/instance: unifi
-    app.kubernetes.io/version: "v6.5.55"
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    traefik.ingress.kubernetes.io/service.serversscheme: https
-    metallb.universe.tf/allow-shared-ip: "unifi-controller"
-spec:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.3.23
-  externalTrafficPolicy: Local
-  ports:
-  - port: 10001
-    targetPort: discovery
-    protocol: UDP
-    name: discovery
   - port: 3478
     targetPort: stun
     protocol: UDP
@@ -93,11 +71,11 @@ kind: Deployment
 metadata:
   name: unifi
   labels:
-    helm.sh/chart: unifi-4.6.1
-    app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi
-    app.kubernetes.io/version: "v6.5.55"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/version: v7.1.68
+    helm.sh/chart: unifi-5.1.2
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -116,27 +94,29 @@ spec:
       
       serviceAccountName: default
       automountServiceAccountToken: true
+      securityContext:
+        fsGroup: 999
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       containers:
         - name: unifi
-          image: "jacobalberty/unifi:v6.5.55"
+          image: "jacobalberty/unifi:v7.1.66"
           imagePullPolicy: IfNotPresent
           env:
-            - name: "JVM_INIT_HEAP_SIZE"
-              value: 
-            - name: "JVM_MAX_HEAP_SIZE"
-              value: "2048M"
-            - name: "RUNAS_UID0"
+            - name: JVM_INIT_HEAP_SIZE
+              value: null
+            - name: JVM_MAX_HEAP_SIZE
+              value: 1024M
+            - name: RUNAS_UID0
+              value: "false"
+            - name: TZ
+              value: Australia/Melbourne
+            - name: UNIFI_GID
+              value: "999"
+            - name: UNIFI_STDOUT
               value: "true"
-            - name: "TZ"
-              value: "Australia/Melbourne"
-#            - name: "UNIFI_GID"
-#              value: "999"
-            - name: "UNIFI_STDOUT"
-              value: "true"
-#            - name: "UNIFI_UID"
-#              value: "999"
+            - name: UNIFI_UID
+              value: "999"
           ports:
             - name: controller
               containerPort: 8080

@@ -19,17 +19,15 @@ spec:
       storage: "20Gi"
   storageClassName: "managed-nfs-storage"
 ---
-# Source: unifi/templates/common.yaml
+# Source: manual NOT helm.
+# Required since single service LoadBalancer's cannot have multi protocol.
 apiVersion: v1
 kind: Service
 metadata:
-  name: unifi
+  name: unifi-tcp
   labels:
-    app.kubernetes.io/instance: unifi
-    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: unifi
-    app.kubernetes.io/version: v7.1.68
-    helm.sh/chart: unifi-5.1.2
+    app.kubernetes.io/instance: unifi
   annotations:
     metallb.universe.tf/allow-shared-ip: "unifi-controller"
 spec:
@@ -41,10 +39,6 @@ spec:
     targetPort: controller
     protocol: TCP
     name: controller
-#  - port: 10001
-#    targetPort: discovery
-#    protocol: UDP
-#    name: discovery
   - port: 8443
     targetPort: http
     protocol: TCP
@@ -53,14 +47,38 @@ spec:
     targetPort: speedtest
     protocol: TCP
     name: speedtest
-#  - port: 3478
-#    targetPort: stun
-#    protocol: UDP
-#    name: stun
-#  - port: 5514
-#    targetPort: syslog
-#    protocol: UDP
-#    name: syslog
+  selector:
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+---
+# Source: manual NOT helm.
+# Required since single service LoadBalancer's cannot have multi protocol.
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-udp
+  labels:
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "unifi-controller"
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.3.23
+  externalTrafficPolicy: Local
+  ports:
+  - port: 10001
+    targetPort: discovery
+    protocol: UDP
+    name: discovery
+  - port: 3478
+    targetPort: stun
+    protocol: UDP
+    name: stun
+  - port: 5514
+    targetPort: syslog
+    protocol: UDP
+    name: syslog
   selector:
     app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi

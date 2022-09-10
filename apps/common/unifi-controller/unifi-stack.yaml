@@ -41,10 +41,10 @@ spec:
     targetPort: controller
     protocol: TCP
     name: controller
-  - port: 10001
-    targetPort: discovery
-    protocol: UDP
-    name: discovery
+#  - port: 10001
+#    targetPort: discovery
+#    protocol: UDP
+#    name: discovery
   - port: 8443
     targetPort: http
     protocol: TCP
@@ -53,14 +53,14 @@ spec:
     targetPort: speedtest
     protocol: TCP
     name: speedtest
-  - port: 3478
-    targetPort: stun
-    protocol: UDP
-    name: stun
-  - port: 5514
-    targetPort: syslog
-    protocol: UDP
-    name: syslog
+#  - port: 3478
+#    targetPort: stun
+#    protocol: UDP
+#    name: stun
+#  - port: 5514
+#    targetPort: syslog
+#    protocol: UDP
+#    name: syslog
   selector:
     app.kubernetes.io/name: unifi
     app.kubernetes.io/instance: unifi

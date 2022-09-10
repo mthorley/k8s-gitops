@@ -24,6 +24,7 @@ e.g. `backup_6.5.55_20220910_1100.unf`
  - Get the version of the controller image from https://hub.docker.com/r/jacobalberty/unifi/tags
  - Update [values.yaml](./values.yaml) values.yaml with image tag
  - Execute install steps above (e.g. helm generate)
+ - Delete `services` fragment from [unifi-stack.yaml](./unifi-stack.yaml)
  - git push to k8s-repo, wait for fluxcd update
 
 ### Restore backup

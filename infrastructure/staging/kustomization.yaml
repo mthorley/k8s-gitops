@@ -18,6 +18,6 @@ resources:
 #  - ../common/flux-system
 #  - ../common/trivy-system
 patchesStrategicMerge:
-  - grafana-ip.yaml
+#  - grafana-ip.yaml
   - mongodb-ip.yaml
   - influxdb-ip.yaml

@@ -9,7 +9,7 @@ resources:
 #  - ../common/monitoring
   - ../common/mongodb
   - ../common/influxdb
-  - ../common/apparmor
+#  - ../common/apparmor
   - ../common/vector
   - ../common/loki
   - ../common/external-secrets

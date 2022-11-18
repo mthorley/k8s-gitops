@@ -5,8 +5,8 @@ resources:
   - metallb-configmap.yaml
   - ../common/nfs-storage
   - ../common/vault
-#  - ../common/monitoring/setup
-#  - ../common/monitoring
+  - ../common/monitoring/setup
+  - ../common/monitoring
   - ../common/mongodb
   - ../common/influxdb
 #  - ../common/apparmor
@@ -18,6 +18,6 @@ resources:
 #  - ../common/flux-system
 #  - ../common/trivy-system
 patchesStrategicMerge:
-#  - grafana-ip.yaml
+  - grafana-ip.yaml
   - mongodb-ip.yaml
   - influxdb-ip.yaml

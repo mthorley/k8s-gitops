@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: influxdb-dev
+  labels:
+    helm.sh/chart: influxdb-4.10.0
+    app.kubernetes.io/name: influxdb-dev
+    app.kubernetes.io/instance: influxdb-dev
+    app.kubernetes.io/version: "1.8.6"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: influxdb-dev
+      app.kubernetes.io/instance: influxdb-dev
+  serviceName: "influxdb"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: influxdb-dev
+        app.kubernetes.io/instance: influxdb-dev
+    spec:
+      serviceAccountName: influxdb
+      containers:
+      - name: influxdb-dev
+        image: "influxdb:1.8.9"
+        imagePullPolicy: "IfNotPresent"
+        resources:
+          {}
+        ports:
+        - name: api
+          containerPort: 8086
+        - name: rpc
+          containerPort: 8088
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: api
+            scheme: HTTP
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: api
+            scheme: HTTP
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        volumeMounts:
+        - name: influxdb-data-dev
+          mountPath: /var/lib/influxdb
+        - name: config
+          mountPath: /etc/influxdb
+        - name: nfs-volume
+          mountPath: /k8s
+      volumes:
+      - name: config
+        configMap:
+          name: influxdb
+      - name: nfs-volume
+        nfs:
+          server: 192.168.1.147
+          path: /
+      # Cannot use existing claim in enterprise mode
+  # Must use volume claim template in enterprise mode
+  volumeClaimTemplates:
+    - metadata:
+        name: influxdb-data-dev
+        annotations:
+          volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+        volumes:
+          - name: nfs-volume
+            nfs:
+              server: 192.168.1.147
+              path: /

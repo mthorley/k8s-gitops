@@ -42,8 +42,26 @@ Two physically separate Pi clusters
 
 ## TODO
 
-* Add prometheus/grafana monitoring
+General
 * Fix up NFS storage as its a single node point of failure
 * Decommission MetalLB and migrate to Cilium
 * Get vault auto unsealing or use SOPS
 * Publish network management repo for unifi and tasmota
+* QNAP stats to influx
+
+Backup
+ - [ ] Backup data using influxd backup daily
+ - [ ] Deploy grafana operator
+ - [ ] Remove grafana from monitoring ns
+ - [ ] Get datasources, dashboards etc as code
+ - [ ] Upgrade influx (will require upgrade of nodered nodes?)
+ - [ ] Restore data to influx
+ - [ ] Upgrade grafana via operator
+ - [ ] Nodered backup to git repo - private
+ - [ ] Homeassistant backup 
+ - [ ] Secrets backup - manual? 
+
+ - [ ] Rebuild cluster with latest k8s/ubuntu
+
+Maintain
+ - [ ] Renovate

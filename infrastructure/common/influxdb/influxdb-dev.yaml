@@ -75,8 +75,3 @@ spec:
         resources:
           requests:
             storage: "8Gi"
-        volumes:
-          - name: nfs-volume
-            nfs:
-              server: 192.168.1.147
-              path: /

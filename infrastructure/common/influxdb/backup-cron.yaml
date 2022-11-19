@@ -21,8 +21,8 @@ spec:
               - name: nfs-volume
                 mountPath: /backup
           restartPolicy: OnFailure
-        volumes:
-          - name: nfs-volume
-            nfs:
-              server: 192.168.1.147
-              path: /k8s/backup/influxdb
+          volumes:
+            - name: nfs-volume
+              nfs:
+                server: 192.168.1.147
+                path: /k8s/backup/influxdb

@@ -17,6 +17,7 @@ resources:
 #  - ../common/ingress
 #  - ../common/flux-system
 #  - ../common/trivy-system
+  - ../common/grafana
 patchesStrategicMerge:
   - grafana-ip.yaml
   - mongodb-ip.yaml

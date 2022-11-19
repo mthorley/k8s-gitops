@@ -50,7 +50,7 @@ General
 * QNAP stats to influx
 
 Backup
- - [ ] Backup data using influxd backup daily
+ - [x] Backup data using influxd backup daily
  - [ ] Deploy grafana operator
  - [ ] Remove grafana from monitoring ns
  - [ ] Get datasources, dashboards etc as code

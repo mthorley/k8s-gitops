@@ -1,0 +1,473 @@
+---
+# Source: grafana-operator/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grafana-operator
+  namespace: "grafana"
+  labels:
+    app.kubernetes.io/name: grafana-operator
+    helm.sh/chart: grafana-operator-2.7.4
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: true
+---
+# Source: grafana-operator/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: grafana-operator-leader-election
+  namespace: "grafana"
+  labels:
+    app.kubernetes.io/name: grafana-operator
+    helm.sh/chart: grafana-operator-2.7.4
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: Helm
+rules:
+- apiGroups:
+    - ""
+  resources:
+    - configmaps
+  verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiGroups:
+    - coordination.k8s.io
+  resources:
+    - leases
+  verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiGroups:
+    - ""
+  resources:
+    - events
+  verbs:
+    - create
+    - patch
+---
+# Source: grafana-operator/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: grafana-operator
+  labels:
+    app.kubernetes.io/name: grafana-operator
+    helm.sh/chart: grafana-operator-2.7.4
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - persistentvolumeclaims
+      - secrets
+      - serviceaccounts
+      - services
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - patch
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps
+      - extensions
+    resources:
+      - deployments
+      - deployments/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafanadashboards
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafanadashboards/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafanadatasources
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafanadatasources/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafananotificationchannels
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafananotificationchannels/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafanas
+      - grafanas/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafanas/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - route.openshift.io
+    resources:
+      - routes
+      - routes/custom-host
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+# Source: grafana-operator/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: grafana-operator-leader-election
+  namespace: "grafana"
+  labels:
+    app.kubernetes.io/name: grafana-operator
+    helm.sh/chart: grafana-operator-2.7.4
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: grafana-operator-leader-election
+subjects:
+  - kind: ServiceAccount
+    name: grafana-operator
+---
+# Source: grafana-operator/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: grafana-operator
+  labels:
+    app.kubernetes.io/name: grafana-operator
+    helm.sh/chart: grafana-operator-2.7.4
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  name: grafana-operator
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: grafana-operator
+---
+# Source: grafana-operator/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-operator
+  namespace: "grafana"
+  labels:
+    app.kubernetes.io/name: grafana-operator
+    helm.sh/chart: grafana-operator-2.7.4
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grafana-operator
+      app.kubernetes.io/instance: grafana-operator
+  strategy: 
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grafana-operator
+        helm.sh/chart: grafana-operator-2.7.4
+        app.kubernetes.io/instance: grafana-operator
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: grafana-operator
+                    app.kubernetes.io/instance: grafana-operator
+                    app.kubernetes.io/component: grafana-operator
+                namespaces:
+                  - "grafana"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+      serviceAccountName: grafana-operator
+      securityContext:
+        fsGroup: 1001
+        runAsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+        supplementalGroups: []
+      containers:
+        - name: grafana-operator
+          image: docker.io/bitnami/grafana-operator:4.6.0-debian-11-r10
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+          command:
+            - grafana-operator
+          args:
+            - --grafana-image=docker.io/bitnami/grafana
+            - --grafana-image-tag=9.1.5-debian-11-r1
+            - --grafana-plugins-init-container-image=docker.io/bitnami/grafana
+            - --grafana-plugins-init-container-tag=9.1.5-debian-11-r1
+            - --leader-elect=True
+          env:
+            - name: TEMPLATE_PATH
+              value: /usr/local/bin/templates
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: grafana-operator
+          envFrom:
+          ports:
+            - containerPort: 8080
+              name: metrics
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /healthz
+              port: 8081
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /metrics
+              port: metrics
+          startupProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /metrics
+              port: metrics
+---
+# Source: grafana-operator/templates/grafana.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: Grafana
+metadata:
+  name: grafana-operator-grafana
+  namespace: "grafana"
+  labels:
+    app.kubernetes.io/name: grafana-operator
+    helm.sh/chart: grafana-operator-2.7.4
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: Helm
+spec:
+  baseImage: docker.io/bitnami/grafana:9.1.5-debian-11-r1
+  client:
+    timeout: 5
+    preferService: true
+  service:
+    labels:
+      app.kubernetes.io/name: grafana-operator
+      helm.sh/chart: grafana-operator-2.7.4
+      app.kubernetes.io/instance: grafana-operator
+      app.kubernetes.io/managed-by: Helm
+    type: ClusterIP
+  livenessProbeSpec:
+    initialDelaySeconds: 120
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 6
+  readinessProbeSpec:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 6
+  deployment:
+    labels:
+      app.kubernetes.io/name: grafana-operator
+      helm.sh/chart: grafana-operator-2.7.4
+      app.kubernetes.io/instance: grafana-operator
+      app.kubernetes.io/managed-by: Helm
+    replicas: 1
+    skipCreateAdminAccount: false
+    securityContext:
+      fsGroup: 1001
+      runAsGroup: 0
+      runAsNonRoot: true
+      runAsUser: 1001
+      supplementalGroups: []
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      privileged: false
+      runAsGroup: 0
+      runAsNonRoot: true
+      runAsUser: 1001
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: grafana-operator
+                  app.kubernetes.io/instance: grafana-operator
+                  app.kubernetes.io/component: grafana
+              namespaces:
+                - "grafana"
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+  resources:
+    limits: {}
+    requests: {}
+  ingress:
+    enabled: false
+    hostname: grafana.local
+    tlsEnabled: false
+    tlsSecretName: grafana.local-tls
+    path: /
+    pathType: ImplementationSpecific
+  config:
+    alerting:
+      enabled: false
+    analytics:
+      check_for_updates: false
+      reporting_enabled: false
+    log:
+      level: warn
+      mode: console
+    security:
+      disable_gravatar: false
+    server:
+      root_url: |-
+        http://localhost:3000
+  dashboardLabelSelector:
+    - matchLabels:
+        app.kubernetes.io/instance: 'grafana-operator'
+  jsonnet:
+    libraryLabelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: 'grafana-operator'

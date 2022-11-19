@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: influxdb-backup
+spec:
+  schedule: "0 0 * * *" # once a day at midnight
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: influxdb-backup
+            image: "influxdb:1.8.9"
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - DATE="$(date +%Y%m%d_%H%M%S)"; influxd backup -portable -host influxdb.influxdb:8088 -since 2021-01-01T00:00:00Z "/backup/$DATE"
+            volumeMounts:
+              - name: nfs-volume
+                mountPath: /backup
+          restartPolicy: OnFailure
+        volumes:
+          - name: nfs-volume
+            nfs:
+              server: 192.168.1.147
+              path: /k8s/backup/influxdb

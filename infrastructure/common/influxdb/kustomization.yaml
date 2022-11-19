@@ -4,3 +4,4 @@ namespace: influxdb
 resources:
   - namespace.yaml
   - influxdb-stack.yaml
+  - influxdb-dev.yaml

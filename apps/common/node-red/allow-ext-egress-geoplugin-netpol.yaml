@@ -1,7 +1,7 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "allow-ext-egress-geoplugin"
+  name: "allow-ext-egress-geolocator"
 spec:
   endpointSelector:
     matchLabels:
@@ -9,3 +9,4 @@ spec:
   egress:
   - toFQDNs:
     - matchPattern: "www.geoplugin.net"
+    - matchPattern: "ip-api.com"

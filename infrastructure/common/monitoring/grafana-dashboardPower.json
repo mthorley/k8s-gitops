@@ -24,14 +24,14 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 31,
+  "id": 34,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "T4ubpe3nz"
+        "uid": "gvJin5OVz"
       },
       "fieldConfig": {
         "defaults": {
@@ -104,10 +104,10 @@
       },
       "targets": [
         {
-          "alias": "Water Heater/Pool Heater",
+          "alias": "Water/Pool Heater",
           "datasource": {
             "type": "influxdb",
-            "uid": "T4ubpe3nz"
+            "uid": "gvJin5OVz"
           },
           "groupBy": [
             {
@@ -123,7 +123,6 @@
               "type": "fill"
             }
           ],
-          "key": "Q-b04bae7e-5569-4f79-b213-eac47620352b-0",
           "measurement": "power-externalswitchA",
           "orderByTime": "ASC",
           "policy": "default",
@@ -146,10 +145,10 @@
           "tags": []
         },
         {
-          "alias": "Pool lights/Spa Bubbles",
+          "alias": "Pool Lights",
           "datasource": {
             "type": "influxdb",
-            "uid": "T4ubpe3nz"
+            "uid": "gvJin5OVz"
           },
           "groupBy": [
             {
@@ -165,7 +164,7 @@
               "type": "fill"
             }
           ],
-          "key": "Q-c104b89f-0b18-4efa-a39c-6b607fc16e51-1",
+          "hide": false,
           "measurement": "power-poolswitchA",
           "orderByTime": "ASC",
           "policy": "default",
@@ -188,10 +187,10 @@
           "tags": []
         },
         {
-          "alias": "Main Pool Pump",
+          "alias": "Pool Pump/Spa Bubbles",
           "datasource": {
             "type": "influxdb",
-            "uid": "T4ubpe3nz"
+            "uid": "gvJin5OVz"
           },
           "groupBy": [
             {
@@ -207,7 +206,7 @@
               "type": "fill"
             }
           ],
-          "key": "Q-ea1383d2-00e3-4e02-9d5c-c893858c53b1-2",
+          "hide": false,
           "measurement": "power-poolswitchB",
           "orderByTime": "ASC",
           "policy": "default",
@@ -249,6 +248,6 @@
   "timezone": "",
   "title": "Power",
   "uid": "OTmrp63nk",
-  "version": 7,
+  "version": 2,
   "weekStart": ""
 }

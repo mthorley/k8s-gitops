@@ -10,7 +10,7 @@ resources:
   - ../common/mongodb
   - ../common/influxdb
 #  - ../common/apparmor
-  - ../common/vector
+#  - ../common/vector
   - ../common/loki
   - ../common/external-secrets
 #  - ../common/certmanager

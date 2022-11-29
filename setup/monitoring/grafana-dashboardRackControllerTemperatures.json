@@ -21,6 +21,7 @@
       }
     ]
   },
+  "description": "Unifi rack controller temperatures",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -780,6 +781,6 @@
   "timezone": "Australia/Melbourne",
   "title": "Rack Controller Temperatures",
   "uid": "wLGZooSnz",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }

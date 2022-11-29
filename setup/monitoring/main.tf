@@ -16,11 +16,8 @@ provider "grafana" {
 
 locals {
   influxdb_url = "http://influxdb.influxdb:8086"
+  loki_url = "http://loki.loki:3100"
 }
-
-//resource "grafana_dashboard" "networklogs" {
-//  config_json = file("../../infrastructure/common/monitoring/grafana-dashboardNetworklogs.json")
-//}
 
 resource "grafana_data_source" "influxdb_power" {
   type                = "influxdb"
@@ -54,17 +51,25 @@ resource "grafana_data_source" "influxdb_unifitemps" {
   json_data_encoded   = jsonencode({})
 }
 
-//resource "grafana_dashboard" "networklogs" {
-//  config_json = file("../../infrastructure/common/monitoring/grafana-dashboardNetworklogs.json")
-//}
+resource "grafana_data_source" "loki" {
+  type                = "loki"
+  name                = "Loki"
+  url                 = local.loki_url
+  json_data_encoded   = jsonencode({})
+}
 
+resource "grafana_dashboard" "power" {
+  config_json = file("grafana-dashboardPower.json")
+}
 
 resource "grafana_dashboard" "rackcontroller" {
   config_json = file("grafana-dashboardRackControllerTemperatures.json")
 }
 
-/*resource "grafana_dashboard" "tasmota" {
+resource "grafana_dashboard" "tasmota" {
   config_json = file("grafana-dashboardTasmota.json")
 }
-*/
 
+resource "grafana_dashboard" "networklogs" {
+  config_json = file("grafana-dashboardNetworklogs.json")
+}

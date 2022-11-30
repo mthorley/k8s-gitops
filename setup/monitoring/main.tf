@@ -7,9 +7,14 @@ terraform {
   }
 }
 
+variable "GRAFANA_APIKEY" {
+  type = string
+  description = "Grafana internal API key (not cloud)."
+}
+
 provider "grafana" {
   url = "http://192.168.3.10/"
-  auth = "eyJrIjoiQVVSNFc1YUZvNFNIRnZFWHBac21pSTFCRFF5VlN0aVUiLCJuIjoidGVycmFmb3JtIiwiaWQiOjF9"
+  auth = var.GRAFANA_APIKEY
   insecure_skip_verify = true
   org_id = 1
 }

@@ -51,12 +51,12 @@ General
 
 Backup
  - [x] Backup data using influxd backup daily
- - [ ] Deploy grafana operator
- - [ ] Remove grafana from monitoring ns
- - [ ] Get datasources, dashboards etc as code
+ - [-] Deploy grafana operator
+ - [-] Remove grafana from monitoring ns
+ - [x] Get datasources, dashboards etc as code
  - [ ] Upgrade influx (will require upgrade of nodered nodes?)
  - [ ] Restore data to influx
- - [ ] Upgrade grafana via operator
+ - [-] Upgrade grafana via operator (nah)
  - [ ] Nodered backup to git repo - private
  - [ ] Homeassistant backup 
  - [ ] Secrets backup - manual? 
@@ -65,3 +65,15 @@ Backup
 
 Maintain
  - [ ] Renovate
+
+
+{job="ubnt-kern"} |~ "LAN_LOCAL" |~ "eth0.30"
+
+{job="ubnt-kern"} |~ "LAN_LOCAL" |~ "DST=10" !~ "UDP"
+
+
+ingress from private to NoT
+{job="ubnt-kern"} !~ "UDP" |~ "OUT=eth0.40"
+
+{job="ubnt-kern"} !~ "UDP" |~ "IN=eth0.40 OUT=eth0.35"
+

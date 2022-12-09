@@ -32,6 +32,10 @@ resource "grafana_rule_group" "security_rules" {
 
             model = jsonencode({
                 editorMode    = "code"
+                // https://community.ui.com/questions/Analyzing-USG-firewall-logs-for-attack-visibility/91068a06-1627-4e3e-a673-410f51434528
+                // `-D` represents dropped firewall logs 
+                // `WAN_OUT` represents internet egress
+                // $__interval is derived from relative_time_range above
                 expr          = "rate(({job=\"ubnt-kern\"} |= `WAN_OUT` |= `-D`)[$__interval])"
                 groupBy       = [
                     {

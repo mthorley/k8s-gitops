@@ -8,6 +8,7 @@ spec:
     app.kubernetes.io/name: home-assistant
     app.kubernetes.io/instance: home-assistant
   type: LoadBalancer
+  loadBalancerIP: ${homeassistant_ip}
   ports:
     - name: ha-ui
       port: 8123

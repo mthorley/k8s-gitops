@@ -22,3 +22,4 @@ spec:
       pi_temp_agent_ip: 192.168.3.13
       mqtt_ip: 192.168.3.14
       jupyter_ip: 192.168.3.18
+      crypto_agent_ip: 192.168.3.22

@@ -12,9 +12,3 @@ resources:
   - ../common/unifi-controller
   - ../common/homeassistant
   - ../common/zigbee2mqtt
-#patchesStrategicMerge:
-#  - pi-temp-agent-ip.yaml
-#  - mqtt-ip.yaml
-#  - adguard-ip.yaml
-#  - jupyternb-ip.yaml
-#  - crypto-automation.yaml

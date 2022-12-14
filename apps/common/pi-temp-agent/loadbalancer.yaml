@@ -11,3 +11,4 @@ spec:
       port: 80
       targetPort: 5000
   type: LoadBalancer
+  loadBalancerIP: ${pi_temp_agent_ip}

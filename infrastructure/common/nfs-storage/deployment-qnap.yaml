@@ -28,11 +28,11 @@ spec:
             - name: PROVISIONER_NAME
               value: nfs-storage
             - name: NFS_SERVER
-              value: 192.168.1.147
+              value: ${qnap_ip}
             - name: NFS_PATH
               value: /k8s
       volumes:
         - name: nfs-client-root
           nfs:
-            server: 192.168.1.147
+            server: ${qnap_ip}
             path: /k8s

@@ -24,3 +24,4 @@ spec:
       jupyter_ip: 192.168.3.18
       mqtt_ip: 192.168.3.14
       pi_temp_agent_ip: 192.168.3.13
+      qnap_ip: 192.168.1.147

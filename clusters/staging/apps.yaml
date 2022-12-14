@@ -17,3 +17,5 @@ spec:
   postBuild:
     substitute:
       cluster_tz: "Australia/Melbourne"
+      adguard_dns_ip: 192.168.3.16
+      adguard_web_ip: 192.168.3.17

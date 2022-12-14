@@ -15,6 +15,6 @@ resources:
 patchesStrategicMerge:
   - pi-temp-agent-ip.yaml
   - mqtt-ip.yaml
-  - adguard-ip.yaml
+#  - adguard-ip.yaml
   - jupyternb-ip.yaml
   - crypto-automation.yaml

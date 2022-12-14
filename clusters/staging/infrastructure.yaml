@@ -17,3 +17,4 @@ spec:
       grafana_ip: 192.168.3.10
       qnap_ip: 192.168.1.147
       mongodb_ip: 192.168.3.21
+      influxdb_ip: 192.168.3.20

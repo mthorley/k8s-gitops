@@ -12,4 +12,4 @@ spec:
       port: 1883 
       targetPort: 1883
   type: LoadBalancer
-  loadBalancerIP: ${mqtt_ip}
+  loadBalancerIP: "${mqtt_ip}"

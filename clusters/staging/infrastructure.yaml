@@ -15,4 +15,3 @@ spec:
     substitute:
       # FIXME: Ingress this up 
       grafana_ip: 192.168.3.10
-

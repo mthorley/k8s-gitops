@@ -21,3 +21,15 @@ helm template vault hashicorp/vault \
     --namespace='vault' \
     --values values.yaml > vault-stack.yaml
 ```
+
+## Gotchas
+
+```kustomize.toolkit.fluxcd.io/substitute: disabled``` 
+
+is required to avoid the fluxcd kustomize error
+
+```
+var substitution failed for 'vault': variable substitution failed: missing closing brace
+```
+as discussed here https://fluxcd.io/flux/components/kustomize/kustomization/#variable-substitution
+

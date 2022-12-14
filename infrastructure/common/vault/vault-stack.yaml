@@ -148,6 +148,7 @@ metadata:
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
+    kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   serviceName: vault-internal
   podManagementPolicy: Parallel

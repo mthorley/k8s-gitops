@@ -19,5 +19,5 @@ resources:
 #  - ../common/trivy-system
 patchesStrategicMerge:
 #  - grafana-ip.yaml
-  - mongodb-ip.yaml
+#  - mongodb-ip.yaml
   - influxdb-ip.yaml

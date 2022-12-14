@@ -14,5 +14,5 @@ spec:
   postBuild:
     substitute:
       # FIXME: Ingress this up 
-      grafana_ip: 192.168.3.10
+      grafana_ip: 192.168.3.29 # 10
       qnap_ip: 192.168.1.147

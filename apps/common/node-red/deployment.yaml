@@ -40,7 +40,7 @@ spec:
         - name: NODE_RED_ENABLE_PROJECTS
           value: "true"
         - name: MQTT_IP
-          value: 192.168.3.14
+          value: ${mqtt_ip}
         - name: MQTT_PASSWORD
           valueFrom:
             secretKeyRef:

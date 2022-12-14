@@ -17,6 +17,7 @@ spec:
   postBuild:
     substitute:
       cluster_tz: "Australia/Melbourne"
+      # FIXME: Ingress this up 
       adguard_web_ip: 192.168.3.16
       adguard_dns_ip: 192.168.3.17
       crypto_agent_ip: 192.168.3.22

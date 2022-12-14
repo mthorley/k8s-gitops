@@ -11,6 +11,3 @@ spec:
   path: ./infrastructure/staging
   prune: true
   validation: client
-#  postBuild:
-#    substitute:
-#      grafana_ip: 192.168.3.10

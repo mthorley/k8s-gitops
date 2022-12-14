@@ -50,7 +50,8 @@ General
 * QNAP stats to influx
 
 Backup
- - [x] Backup data using influxd backup daily
+ - [x] Backup data using influxdb backup daily
+ - [ ] Purge influxdb backups ==10
  - [-] Deploy grafana operator
  - [-] Remove grafana from monitoring ns
  - [x] Get datasources, dashboards etc as code
@@ -65,7 +66,7 @@ Secrets
  - [ ] Provisioning of secrets to vault
 
 Flux
- - [ ] Externalise IPs from all yaml or use DNS
+ - [x] Externalise IPs from all yaml or use DNS
 
 NodeRed
  - [ ] Build of Zen node and UI via CI 

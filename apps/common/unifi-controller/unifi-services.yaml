@@ -11,7 +11,7 @@ metadata:
     metallb.universe.tf/allow-shared-ip: "unifi-controller"
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.3.23
+  loadBalancerIP: ${unifi_ip}
   externalTrafficPolicy: Local
   ports:
   - port: 8080
@@ -43,7 +43,7 @@ metadata:
     metallb.universe.tf/allow-shared-ip: "unifi-controller"
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.3.23
+  loadBalancerIP: ${unifi_ip}
   externalTrafficPolicy: Local
   ports:
   - port: 10001

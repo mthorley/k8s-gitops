@@ -81,7 +81,7 @@ spec:
             privileged: null
           env:
             - name: "TZ"
-              value: "Australia/Melbourne"
+              value: "${cluster_tz}"
           ports:
             - name: http
               containerPort: 8123

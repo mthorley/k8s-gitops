@@ -147,7 +147,7 @@ spec:
             privileged: true
           env:
             - name: TZ
-              value: Australia/Melbourne
+              value: "${cluster_tz}"
             - name: ZIGBEE2MQTT_DATA
               value: /data
           ports:

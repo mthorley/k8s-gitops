@@ -64,7 +64,7 @@ spec:
             - name: RUNAS_UID0
               value: "true"
             - name: TZ
-              value: Australia/Melbourne
+              value: "${cluster_tz}"
             - name: UNIFI_GID
               value: "999"
             - name: UNIFI_STDOUT

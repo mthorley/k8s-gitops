@@ -18,7 +18,7 @@ image:
 env:
   # -- Set the data folder for Zigbee2MQTT.
   ZIGBEE2MQTT_DATA: /data
-  TZ: Australia/Melbourne
+  TZ: "${cluster_tz}"
 
 # -- Configures service settings for the chart. Normally this does not need to be modified.
 # @default -- See values.yaml

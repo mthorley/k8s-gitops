@@ -16,7 +16,7 @@ persistence:
     accessMode: ReadWriteOnce
 env:
   RUNAS_UID0: "true"
-  TZ: "Australia/Melbourne"
+  TZ: "${cluster_tz}"
 resources:
     requests:
       memory: 500Mi

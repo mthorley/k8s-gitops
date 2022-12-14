@@ -61,19 +61,31 @@ Backup
  - [ ] Homeassistant backup 
  - [ ] Secrets backup - manual? 
 
+Secrets
+ - [ ] Provisioning of secrets to vault
+
+Flux
+ - [ ] Externalise IPs from all yaml or use DNS
+
+NodeRed
+ - [ ] Build of Zen node and UI via CI 
+ - [ ] Migration of all key flows to prod B
+ - [ ] Migration of all dashboard UI to prod B
+ - [ ] Testing of each flow in prod B from IoT devices 
+
+Prod A
  - [ ] Rebuild cluster with latest k8s/ubuntu
+ - [ ] Install cilium, flux
 
 Maintain
  - [ ] Renovate
 
 
+Loki queries
 {job="ubnt-kern"} |~ "LAN_LOCAL" |~ "eth0.30"
-
 {job="ubnt-kern"} |~ "LAN_LOCAL" |~ "DST=10" !~ "UDP"
-
 
 ingress from private to NoT
 {job="ubnt-kern"} !~ "UDP" |~ "OUT=eth0.40"
-
 {job="ubnt-kern"} !~ "UDP" |~ "IN=eth0.40 OUT=eth0.35"
 

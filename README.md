@@ -64,6 +64,7 @@ Backup
 
 Secrets
  - [ ] Provisioning of secrets to vault
+ - [ ] Migrate zigbeemqtt keys to vault
 
 Flux
  - [x] Externalise IPs from all yaml or use DNS

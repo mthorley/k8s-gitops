@@ -63,7 +63,7 @@ Backup
  - [ ] Secrets backup - manual? 
 
 Secrets
- - [ ] Provisioning of secrets to vault
+ - [x] Provisioning of secrets to vault
  - [ ] Migrate zigbeemqtt keys to vault
 
 Flux

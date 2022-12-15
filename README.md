@@ -65,6 +65,7 @@ Backup
 Secrets
  - [x] Provisioning of secrets to vault
  - [ ] Migrate zigbeemqtt keys to vault
+ - [ ] Autounseal via AWS 
 
 Flux
  - [x] Externalise IPs from all yaml or use DNS

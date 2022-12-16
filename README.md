@@ -65,7 +65,7 @@ Backup
 Secrets
  - [x] Provisioning of secrets to vault
  - [ ] Migrate zigbeemqtt keys to vault
- - [ ] Autounseal via AWS 
+ - [ ] Vault autounseal via AWS 
 
 Flux
  - [x] Externalise IPs from all yaml or use DNS
@@ -83,7 +83,7 @@ Prod A
 Maintain
  - [ ] Renovate
 
-
+-------------------------
 Loki queries
 {job="ubnt-kern"} |~ "LAN_LOCAL" |~ "eth0.30"
 {job="ubnt-kern"} |~ "LAN_LOCAL" |~ "DST=10" !~ "UDP"
@@ -91,4 +91,3 @@ Loki queries
 ingress from private to NoT
 {job="ubnt-kern"} !~ "UDP" |~ "OUT=eth0.40"
 {job="ubnt-kern"} !~ "UDP" |~ "IN=eth0.40 OUT=eth0.35"
-

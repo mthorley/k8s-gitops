@@ -17,3 +17,4 @@ resources:
 #  - ../common/ingress
 #  - ../common/flux-system
 #  - ../common/trivy-system
+  - ../common/cilium

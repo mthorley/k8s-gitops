@@ -8,7 +8,7 @@ spec:
   selector:
     k8s-app: hubble-ui
   type: LoadBalancer
-  loadBalancerIP: "${hubble-ui_ip}"
+  loadBalancerIP: "${hubble_ui_ip}"
   ports:
     - protocol: TCP
       port: 80

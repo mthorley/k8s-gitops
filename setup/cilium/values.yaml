@@ -1,0 +1,26 @@
+# Refer https://github.com/cilium/cilium/blob/master/install/kubernetes/cilium/values.yaml
+
+hubble:
+  # -- Enable Hubble (true by default).
+  enabled: true
+
+  # -- Hubble metrics configuration.
+  # See https://docs.cilium.io/en/stable/operations/metrics/#hubble-metrics
+  metrics:
+    enabled:
+     - dns:query;ignoreAAAA
+     - drop
+     - tcp
+     - flow
+     - icmp
+     - http
+    serviceMonitor:
+      enabled: true
+
+  relay:
+    # -- Enable Hubble Relay (requires hubble.enabled=true)
+    enabled: true
+
+  ui:
+    # -- Whether to enable the Hubble UI.
+    enabled: true

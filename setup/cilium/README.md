@@ -5,7 +5,8 @@ Install CLI
 https://docs.cilium.io/en/v1.12/gettingstarted/k8s-install-default/#install-the-cilium-cli
 
 ```
-cilium install
+cd setup/cilium
+cilium install --helm-values ./values.yaml
 ```
 
 ```

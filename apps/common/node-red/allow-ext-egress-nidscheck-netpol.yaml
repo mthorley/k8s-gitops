@@ -1,0 +1,11 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-ext-egress-testnids"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: node-red
+  egress:
+  - toFQDNs:
+    - matchPattern: "testmynids.org"

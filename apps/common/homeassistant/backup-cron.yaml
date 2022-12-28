@@ -16,7 +16,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - cp -r /backups /target
+                - cp -r /config/backups /target
               volumeMounts:
                 - name: nfs-volume
                   mountPath: /target

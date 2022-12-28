@@ -28,3 +28,4 @@ spec:
       unifi_ip: 192.168.3.23
       nodered_syslog_ip: 192.168.3.26
       nodered_web_ip: 192.168.3.27
+      qnap_ip: 192.168.1.147

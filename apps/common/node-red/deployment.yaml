@@ -85,6 +85,11 @@ spec:
             secretKeyRef:
               name: secret-nodered
               key: zen-wifi-user
+        - name: ZEN_WIFI_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: zen-wifi-password
         - name: TZ
           value: "${cluster_tz}"
       volumes:

@@ -32,6 +32,8 @@ spec:
         - name: node-red-data
           mountPath: /data
         env:
+        - name: HUE_BRIDGE_IP
+          value: 192.168.1.161
         - name: HUE_TOKEN
           valueFrom:
             secretKeyRef:

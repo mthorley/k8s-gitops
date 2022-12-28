@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - home-assistant-stack.yaml
   - lb.yaml
+  - backup-cron.yaml

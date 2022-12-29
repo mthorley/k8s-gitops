@@ -54,7 +54,7 @@ spec:
             - --no-check-update
           env:
             - name: "TZ"
-              value: "UTC"
+              value: "${cluster_tz}"
           ports:
             - name: dns-tcp
               containerPort: 53

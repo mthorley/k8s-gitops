@@ -11,5 +11,6 @@ spec:
     - matchPattern: "user-field.aylanetworks.com"   # Fujitsu AC HA component
     - matchPattern: "ads-field.aylanetworks.com"    # Fujitsu AC HA component
     - matchPattern: "plex.tv"
+    - matchPattern: "*.api.met.no"                  # Weather 
   - toCIDR:
     - 239.255.255.250/32   # multicast IP for UPnP: https://www.grc.com/port_1900.htm

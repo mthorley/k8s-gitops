@@ -14,3 +14,4 @@ spec:
     - matchPattern: "*.api.met.no"                  # Weather 
   - toCIDR:
     - 239.255.255.250/32   # multicast IP for UPnP: https://www.grc.com/port_1900.htm
+    - 255.255.255.255/32   # local broadcast IP 

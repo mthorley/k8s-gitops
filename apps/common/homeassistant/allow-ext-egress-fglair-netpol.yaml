@@ -1,7 +1,7 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "allow-ext-egress-testnids"
+  name: "allow-ext-egress-fglair"
 spec:
   endpointSelector:
     matchLabels:

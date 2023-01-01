@@ -1,0 +1,13 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-ext-egress-components"  
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: home-assistant
+  egress:
+  - toFQDNs:
+    - matchPattern: "user-field.aylanetworks.com"   # Fujitsu AC HA component
+    - matchPattern: "ads-field.aylanetworks.com"    # Fujitsu AC HA component
+    - matchPattern: "plex.tv"

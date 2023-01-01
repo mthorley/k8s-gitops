@@ -5,8 +5,8 @@ resources:
   - namespace.yaml
   - home-assistant-stack.yaml
   - lb.yaml
-  - allow-ext-egress-netpol.yaml
   - allow-local-egress-unifi-netpol.yaml
-  - allow-ext-egress-fglair-netpol.yaml
   - allow-local-egress-dns-netpol.yaml
+  - allow-ext-egress-netpol.yaml
+  - allow-ext-egress-components-netpol.yaml
   - deny-all-egress-netpol.yaml

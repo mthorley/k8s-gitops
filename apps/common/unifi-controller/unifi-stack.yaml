@@ -54,7 +54,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: unifi
-          image: "jacobalberty/unifi:v7.1.66"
+          image: "jacobalberty/unifi:v7.2.95"
           imagePullPolicy: IfNotPresent
           env:
             - name: JVM_INIT_HEAP_SIZE
@@ -64,7 +64,7 @@ spec:
             - name: RUNAS_UID0
               value: "true"
             - name: TZ
-              value: "${cluster_tz}"
+              value: ${cluster_tz}
             - name: UNIFI_GID
               value: "999"
             - name: UNIFI_STDOUT

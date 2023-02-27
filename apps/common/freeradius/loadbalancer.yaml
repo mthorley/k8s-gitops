@@ -1,15 +1,31 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: freeradius-udp
+  name: freeradius-auth
   namespace: freeradius
 spec:
   selector:
     app: freeradius
   type: LoadBalancer
-#  loadBalancerIP: "${freeradius_ip}"
+#  loadBalancerIP: "${freeradius_auth_ip}"
   ports:
-    - name: freeradius-udp
+    - name: freeradius-auth
       port: 1812
       protocol: UDP
       targetPort: 1812
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: freeradius-acc
+  namespace: freeradius
+spec:
+  selector:
+    app: freeradius
+  type: LoadBalancer
+#  loadBalancerIP: "${freeradius_acc_ip}"
+  ports:
+    - name: freeradius-acc
+      port: 1813
+      protocol: UDP
+      targetPort: 1813

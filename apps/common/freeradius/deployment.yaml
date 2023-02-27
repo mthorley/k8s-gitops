@@ -21,11 +21,13 @@ spec:
           type: RuntimeDefault
       containers:
       - name: freeradius
-        image: mthorley/freeradius:9c6908172decbedadfecae9383f25d77396d1de7
+        image: mthorley/freeradius:f9dc9cc37ec2950c9324420bfa04ae330a3a958e
         imagePullPolicy: Always
         ports:
         - containerPort: 1812
-          name: freeradius-udp
+          name: freeradius-auth
+        - containerPort: 1813
+          name: freeradius-acc
         volumeMounts:
         - name: radius-conf
           mountPath: /etc/freeradius/radiusd.conf

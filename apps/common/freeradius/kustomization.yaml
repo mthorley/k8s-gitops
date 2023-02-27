@@ -6,7 +6,7 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - loadbalancer.yaml
-  - deny-all-egress-netpol.yaml
+#  - deny-all-egress-netpol.yaml
 configMapGenerator:
 - name: radius-config
   files:

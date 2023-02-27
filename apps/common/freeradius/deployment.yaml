@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freeradius
+  namespace: freeradius
+  labels:
+    app: freeradius
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: freeradius
+  template:
+    metadata:
+      labels:
+        app: freeradius
+    spec:
+      serviceAccountName: freeradius
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: freeradius
+        image: mthorley/freeradius:9c6908172decbedadfecae9383f25d77396d1de7
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 1812
+          name: freeradius-udp

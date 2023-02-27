@@ -26,3 +26,11 @@ spec:
         ports:
         - containerPort: 1812
           name: freeradius-udp
+        volumeMounts:
+        - name: radius-conf
+          mountPath: /etc/radiusd.conf
+          subPath: radiusd.conf
+      volumes:
+        - name: radius-conf
+          configMap:
+            name: radius-config

@@ -12,3 +12,4 @@ resources:
   - ../common/unifi-controller
   - ../common/homeassistant
   - ../common/zigbee2mqtt
+  - ../common/freeradius

@@ -28,7 +28,7 @@ spec:
           name: freeradius-udp
         volumeMounts:
         - name: radius-conf
-          mountPath: /etc/radiusd.conf
+          mountPath: /etc/freeradius
           subPath: radiusd.conf
       volumes:
         - name: radius-conf

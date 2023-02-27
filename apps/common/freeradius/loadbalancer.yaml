@@ -7,7 +7,7 @@ spec:
   selector:
     app: freeradius
   type: LoadBalancer
-  loadBalancerIP: "${freeradius_ip}"
+#  loadBalancerIP: "${freeradius_ip}"
   ports:
     - name: freeradius-udp
       port: 1812

@@ -32,6 +32,12 @@ spec:
         - name: radius-conf
           mountPath: /etc/freeradius/radiusd.conf
           subPath: radiusd.conf
+        env:
+        - name: RADIUS_SHARED_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: secret-freeradius
+              key: radius-shared-secret
       volumes:
         - name: radius-conf
           configMap:

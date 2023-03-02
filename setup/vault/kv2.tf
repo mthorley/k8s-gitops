@@ -80,7 +80,7 @@ variable "TELEGRAM_CHAT_ID" {
   type = string
 }
 
-variable "RADIUS_SHARED_SECRET" {
+variable "AUTH_SHARED_SECRET" {
   type = string
 }
 
@@ -289,7 +289,7 @@ resource "vault_kv_secret_v2" "freeradius" {
   name      = "freeradius"
   data_json = jsonencode(
     {
-      radius-shared-secret = var.RADIUS_SHARED_SECRET
+      auth-shared-secret = var.AUTH_SHARED_SECRET
     }
   )
 }

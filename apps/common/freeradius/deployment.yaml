@@ -33,11 +33,11 @@ spec:
           mountPath: /etc/freeradius/radiusd.conf
           subPath: radiusd.conf
         env:
-        - name: RADIUS_SHARED_SECRET
+        - name: AUTH_SHARED_SECRET
           valueFrom:
             secretKeyRef:
               name: secret-freeradius
-              key: radius-shared-secret
+              key: auth-shared-secret
       volumes:
         - name: radius-conf
           configMap:

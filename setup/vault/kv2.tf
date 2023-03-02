@@ -80,6 +80,10 @@ variable "TELEGRAM_CHAT_ID" {
   type = string
 }
 
+variable "RADIUS_SHARED_SECRET" {
+  type = string
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -212,6 +216,29 @@ resource "vault_kubernetes_auth_backend_role" "cryptoautomation" {
   token_policies                   = ["cryptoautomate-secrets-policy"]
 }
 
+# -----------------------------------------------------------------------------
+# freeradius
+
+resource "vault_policy" "freeradius-secrets-policy" {
+  name = "freeradius-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/freeradius" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "freeradius" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "freeradius-secrets-role"
+  bound_service_account_names      = ["freeradius"]
+  bound_service_account_namespaces = ["freeradius"]
+  token_ttl                        = 86400
+  token_policies                   = ["freeradius-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
 resource "vault_kv_secret_v2" "nodered" {
   mount     = vault_mount.kvv2.path
@@ -253,6 +280,16 @@ resource "vault_kv_secret_v2" "cryptoautomation" {
       bot-name  = var.TELEGRAM_BOT_NAME
       bot-token = var.TELEGRAM_BOT_TOKEN
       chat-id   = var.TELEGRAM_CHAT_ID
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "freeradius" {
+  mount     = vault_mount.kvv2.path
+  name      = "freeradius"
+  data_json = jsonencode(
+    {
+      radius-shared-secret = var.RADIUS_SHARED_SECRET
     }
   )
 }

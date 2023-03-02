@@ -7,6 +7,8 @@ resources:
   - deployment.yaml
   - loadbalancer.yaml
 #  - deny-all-egress-netpol.yaml
+  - external-secrets.yaml
+  - vault-secret-store.yaml
 configMapGenerator:
 - name: radius-config
   files:

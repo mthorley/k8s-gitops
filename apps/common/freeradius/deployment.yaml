@@ -38,6 +38,8 @@ spec:
             secretKeyRef:
               name: secret-freeradius
               key: auth-shared-secret
+        - name: APS_CIDR
+          value: 192.168.1.0/24
       volumes:
         - name: radius-conf
           configMap:

@@ -6,6 +6,6 @@ helm template \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.11.0 \
+  --version v1.10.2 \
   --set installCRDs=true > certmanager-stack.yaml
 ```

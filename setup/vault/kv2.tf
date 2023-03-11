@@ -84,6 +84,10 @@ variable "AUTH_SHARED_SECRET" {
   type = string
 }
 
+variable "MQTT_CREDS" {
+  type = string
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -239,6 +243,28 @@ resource "vault_kubernetes_auth_backend_role" "freeradius" {
 }
 
 # -----------------------------------------------------------------------------
+# mqtt
+
+resource "vault_policy" "mqtt-secrets-policy" {
+  name = "mqtt-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/mqtt" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "mqtt" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "mqtt-secrets-role"
+  bound_service_account_names      = ["mqtt-mosquitto"]
+  bound_service_account_namespaces = ["mqtt"]
+  token_ttl                        = 86400
+  token_policies                   = ["mqtt-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
 resource "vault_kv_secret_v2" "nodered" {
   mount     = vault_mount.kvv2.path
@@ -290,6 +316,16 @@ resource "vault_kv_secret_v2" "freeradius" {
   data_json = jsonencode(
     {
       auth-shared-secret = var.AUTH_SHARED_SECRET
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "mqtt" {
+  mount     = vault_mount.kvv2.path
+  name      = "mqtt"
+  data_json = jsonencode(
+    {
+      mqtt-creds = var.MQTT_CREDS
     }
   )
 }

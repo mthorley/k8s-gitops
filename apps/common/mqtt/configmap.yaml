@@ -15,5 +15,5 @@ data:
     listener 1883
     listener 9090
     protocol websockets
-#    allow_anonymous false
-#    password_file /mosquitto/data/users.txt
+    allow_anonymous false
+    password_file /mosquitto/data/users.txt

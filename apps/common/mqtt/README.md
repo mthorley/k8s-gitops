@@ -12,3 +12,7 @@ The container will not start until the secret is mounted via the secrets operato
 The configmap-boostrap.yaml ensure that Flux does not substitute variables (which breaks the resulting script structure) by using the annotation `kustomize.toolkit.fluxcd.io/substitute: disabled`
 
 Alternatives considered including using a custom plugin for MQTT authnentication/authorisation but this was deemed the simplest.
+
+# Test authenticated pub/sub
+
+Use MQTTLens (chrome plugin) http://www.steves-internet-guide.com/using-mqtt-lens/

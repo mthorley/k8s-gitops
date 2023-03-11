@@ -7,6 +7,7 @@ resources:
   - service.yaml
   - pvc.yaml
   - configmap.yaml
+  - configmap-bootstrap.yaml
   - deployment.yaml
   - external-secrets.yaml
   - vault-secret-store.yaml

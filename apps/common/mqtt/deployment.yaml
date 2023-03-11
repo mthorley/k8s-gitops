@@ -18,11 +18,25 @@ spec:
         app.kubernetes.io/instance: mqtt
     spec:
       serviceAccountName: mqtt-mosquitto
-      containers:
+      initContainers:
         - name: mosquitto
           image: "eclipse-mosquitto:1.6"
           imagePullPolicy: IfNotPresent
           command: ["/mosquitto/data/bootstrap.sh"]
+          volumeMounts:
+            - name: bootstrap
+              mountPath: /mosquitto/data/bootstrap.sh
+              subPath: bootstrap.sh
+          env:
+          - name: MQTT_CREDS
+            valueFrom:
+              secretKeyRef:
+                name: secret-mqtt
+                key: mqtt-creds
+      containers:
+        - name: mosquitto
+          image: "eclipse-mosquitto:1.6"
+          imagePullPolicy: IfNotPresent
           ports:
             - name: mqtt
               containerPort: 1883
@@ -47,15 +61,6 @@ spec:
             - name: data
               mountPath: /mosquitto/data
               subPath: 
-            - name: bootstrap
-              mountPath: /mosquitto/data/bootstrap.sh
-              subPath: bootstrap.sh
-          env:
-          - name: MQTT_CREDS
-            valueFrom:
-              secretKeyRef:
-                name: secret-mqtt
-                key: mqtt-creds
       volumes:
         - name: config
           configMap:

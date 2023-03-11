@@ -22,7 +22,7 @@ spec:
         - name: mosquitto
           image: "eclipse-mosquitto:1.6"
           imagePullPolicy: IfNotPresent
-          #command: ["/mosquitto/data/bootstrap.sh"]
+          command: ["/mosquitto/data/bootstrap.sh"]
           ports:
             - name: mqtt
               containerPort: 1883

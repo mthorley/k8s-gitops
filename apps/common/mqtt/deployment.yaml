@@ -19,7 +19,7 @@ spec:
     spec:
       serviceAccountName: mqtt-mosquitto
       initContainers:
-        - name: mosquitto
+        - name: mosquitto-init
           image: "eclipse-mosquitto:1.6"
           imagePullPolicy: IfNotPresent
           command: ["/mosquitto/data/bootstrap.sh"]

@@ -6,6 +6,8 @@ metadata:
   labels:
     app.kubernetes.io/name: mosquitto
     app.kubernetes.io/instance: mqtt
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
 data:
   bootstrap.sh: |
     #!/bin/sh

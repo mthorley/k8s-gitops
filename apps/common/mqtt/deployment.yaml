@@ -47,7 +47,7 @@ spec:
               mountPath: /mosquitto/data
               subPath: 
             - name: bootstrap
-              mountPath: /mosquitto/config/bootstrap.sh
+              mountPath: /mosquitto/data/bootstrap.sh
               subPath: bootstrap.sh
           env:
           - name: MQTT_CREDS

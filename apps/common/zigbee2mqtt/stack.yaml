@@ -150,6 +150,16 @@ spec:
               value: "${cluster_tz}"
             - name: ZIGBEE2MQTT_DATA
               value: /data
+            - name: MQTT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-zig2mqtt
+                  key: mqtt-user
+            - name: MQTT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-zig2mqtt
+                  key: mqtt-password
           ports:
             - name: http
               containerPort: 8080

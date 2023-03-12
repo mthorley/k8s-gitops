@@ -88,6 +88,14 @@ variable "MQTT_CREDS" {
   type = string
 }
 
+variable "ZIG2MQTT_MQTT_USER" {
+  type = string
+}
+
+variable "ZIG2MQTT_MQTT_PASSWORD" {
+  type = string
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -265,6 +273,28 @@ resource "vault_kubernetes_auth_backend_role" "mqtt" {
 }
 
 # -----------------------------------------------------------------------------
+# zigbee2mqtt
+
+resource "vault_policy" "zig2mqtt-secrets-policy" {
+  name = "zig2mqtt-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/zig2mqtt" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "zig2mqtt" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "zig2mqtt-secrets-role"
+  bound_service_account_names      = ["default"]
+  bound_service_account_namespaces = ["zigbee2mqtt"]
+  token_ttl                        = 86400
+  token_policies                   = ["zig2mqtt-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
 resource "vault_kv_secret_v2" "nodered" {
   mount     = vault_mount.kvv2.path
@@ -326,6 +356,17 @@ resource "vault_kv_secret_v2" "mqtt" {
   data_json = jsonencode(
     {
       mqtt-creds = var.MQTT_CREDS
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "zig2mqtt" {
+  mount     = vault_mount.kvv2.path
+  name      = "zig2mqtt"
+  data_json = jsonencode(
+    {
+      mqtt-user     = var.ZIG2MQTT_MQTT_USER
+      mqtt-password = var.ZIG2MQTT_MQTT_PASSWORD
     }
   )
 }

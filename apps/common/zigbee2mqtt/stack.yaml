@@ -58,9 +58,9 @@ data:
       base_topic: zigbee2mqtt
       client_id: zigbee2mqtt
       include_device_information: true
-      password: test
+#      user: test
+#      password: test
       server: mqtt://k8smqtt:1883
-      user: test
     permit_join: true
     serial:
       port: /dev/ttyUSB0
@@ -150,12 +150,12 @@ spec:
               value: "${cluster_tz}"
             - name: ZIGBEE2MQTT_DATA
               value: /data
-            - name: MQTT_USER
+            - name: ZIGBEE2MQTT_CONFIG_MQTT_USER
               valueFrom:
                 secretKeyRef:
                   name: secret-zig2mqtt
                   key: mqtt-user
-            - name: MQTT_PASSWORD
+            - name: ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secret-zig2mqtt

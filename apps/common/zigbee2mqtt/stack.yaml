@@ -58,8 +58,8 @@ data:
       base_topic: zigbee2mqtt
       client_id: zigbee2mqtt
       include_device_information: true
-#      user: test
-#      password: test
+      user: test
+      password: test
       server: mqtt://k8smqtt:1883
     permit_join: true
     serial:

@@ -4,6 +4,18 @@
 Dockerfile extended from https://github.com/tgbyte/docker-freeradius/blob/master/Dockerfile
 under https://github.com/mthorley/container-images/tree/main/apps/freeradius 
 
+# Configuration
+
+## Dynamic VLAN assignment per user
+[For dynamic VLAN users on Unifi](https://help.ui.com/hc/en-us/articles/360015268353-UniFi-USG-UDM-Configuring-RADIUS-Server), set the tunnel-type to (13) and the tunnel-medium-type to (6).
+
+	bob   Cleartext-Password := "my-wifi-password"
+			Reply-Message := "Hello, %{User-Name}",
+			Tunnel-Type = 13,
+			Tunnel-Medium-Type = 6,
+			Tunnel-Private-Group-ID = 100
+
+
 # Testing
 
 `radtest -x bob bob 192.168.3.25:1812 0 sharedSecret`

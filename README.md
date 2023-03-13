@@ -64,6 +64,7 @@ Backup
 
 Secrets
  - [x] Provisioning of secrets to vault
+ - [x] Migrate zigbeemqtt mqtt creds to vault
  - [ ] Migrate zigbeemqtt keys to vault
  - [ ] Vault autounseal via AWS 
 
@@ -75,6 +76,9 @@ NodeRed
  - [ ] Migration of all key flows to prod B
  - [ ] Migration of all dashboard UI to prod B
  - [ ] Testing of each flow in prod B from IoT devices 
+
+MQTT
+ - [x] MQTT creds via vault
 
 Prod A
  - [ ] Rebuild cluster with latest k8s/ubuntu

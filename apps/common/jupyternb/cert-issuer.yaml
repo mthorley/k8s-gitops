@@ -13,5 +13,5 @@ spec:
         role: issuer
         mountPath: /v1/auth/kubernetes
         secretRef:
-          name: default
+          name: default-token-db88m
           key: token

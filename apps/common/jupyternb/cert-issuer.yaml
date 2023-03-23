@@ -10,7 +10,7 @@ spec:
     #caBundle: <base64 encoded caBundle PEM file>
     auth:
       kubernetes:
-        role: issuer
+        role: jupyter-issuer-cert-role
         mountPath: /v1/auth/kubernetes
         secretRef:
           name: default-token-db88m

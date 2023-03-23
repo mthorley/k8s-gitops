@@ -7,5 +7,7 @@ helm template \
   --namespace cert-manager \
   --create-namespace \
   --version v1.10.2 \
+  --set startupapicheck.timeout=5m \
+  --set global.leaderElection.namespace=cert-manager \
   --set installCRDs=true > certmanager-stack.yaml
 ```

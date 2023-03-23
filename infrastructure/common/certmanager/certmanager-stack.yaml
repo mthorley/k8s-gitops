@@ -5721,7 +5721,7 @@ spec:
           args:
           - check
           - api
-          - --wait=1m
+          - --wait=5m
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

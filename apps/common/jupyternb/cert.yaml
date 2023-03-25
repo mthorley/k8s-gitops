@@ -1,11 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cert
+  name: internal-com
   namespace: jupyter
 spec:
+  commonName: interal.com
   dnsNames:
     - internal.com
-  secretName: vault-cert-tls
+  secretName: internal-com-tls
   issuerRef:
     name: vault-issuer

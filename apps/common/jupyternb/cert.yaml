@@ -6,7 +6,6 @@ metadata:
 spec:
   dnsNames:
     - internal.com
-    - jupyter.internal.com
   secretName: vault-cert-tls
   issuerRef:
     name: vault-issuer

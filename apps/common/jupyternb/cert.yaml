@@ -4,7 +4,7 @@ metadata:
   name: internal-com
   namespace: jupyter
 spec:
-  commonName: interal.com
+  commonName: internal.com
   dnsNames:
     - internal.com
   secretName: internal-com-tls

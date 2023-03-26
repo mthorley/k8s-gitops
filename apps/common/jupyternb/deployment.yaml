@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: jupyternb
-        image: mthorley/jupyternb:0.0.2
+        image: mthorley/jnb:1.0
         ports:
           - name: jupyternb-ui
             containerPort: 8888

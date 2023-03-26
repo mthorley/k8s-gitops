@@ -19,8 +19,9 @@ spec:
       - name: jupyternb
         image: mthorley/jnb:1.0
         ports:
-        - containerPort: 8888
-          name: jupyternb-ui
+          - name: jupyternb-ui
+            containerPort: 8888
+            protocol: TCP
         securityContext:
           privileged: true
         volumeMounts:

@@ -26,7 +26,13 @@ spec:
         volumeMounts:
         - name: jupyternb-data
           mountPath: /data
+        - name: tls-certs
+          mountPath: "/etc/ssl"
+          readOnly: true
       volumes:
       - name: jupyternb-data
         persistentVolumeClaim:
           claimName: jupyternb-claim
+      - name: tls-certs
+        secret:
+          secretName: internal-com-tls

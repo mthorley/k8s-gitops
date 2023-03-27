@@ -1,14 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jupyter-internal
+  name: jupyternb
   namespace: jupyter
 spec:
   selector:
     app: jupyternb
-  type: ClusterIP
+  type: LoadBalancer
+  loadBalancerIP: "${jupyter_ip}"
   ports:
-    - name: http
-      port: 80
+    - name: https
+      port: 443
       protocol: TCP
       targetPort: 8888

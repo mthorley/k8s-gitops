@@ -9,7 +9,7 @@ spec:
   type: LoadBalancer
   loadBalancerIP: "${jupyter_ip}"
   ports:
-    - name: https
-      port: 443
+    - name: http
+      port: 80
       protocol: TCP
       targetPort: 8888

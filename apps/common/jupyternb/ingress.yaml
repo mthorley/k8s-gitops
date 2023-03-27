@@ -4,6 +4,10 @@ metadata:
   name: ingress-jupyter
   namespace: jupyter
 spec:
+  tls:
+  - hosts:
+    - jupyter.internal.com
+    secretName: internal-com-tls
   rules:
   - host: jupyter.internal.com
     http:

@@ -4,9 +4,8 @@ metadata:
   name: internal-com
   namespace: jupyter
 spec:
-  commonName: internal.com
   dnsNames:
-    - internal.com
+    - jupyter.internal.com
   secretName: internal-com-tls
   issuerRef:
     name: vault-issuer

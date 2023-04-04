@@ -19,3 +19,4 @@ spec:
       mongodb_ip: 192.168.3.21
       influxdb_ip: 192.168.3.20
       hubble_ui_ip: 192.168.3.11
+      nginx_ip: 192.168.3.29

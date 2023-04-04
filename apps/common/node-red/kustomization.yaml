@@ -11,6 +11,8 @@ resources:
   - external-secrets.yaml
   - cert-issuer.yaml
   - cert.yaml
+  - service.yaml
+  - ingress.yaml
   - deny-all-egress-netpol.yaml
   - allow-ext-egress-netpol.yaml
   - allow-local-egress-dns-netpol.yaml

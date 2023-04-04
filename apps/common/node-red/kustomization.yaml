@@ -9,6 +9,8 @@ resources:
   - loadbalancer.yaml
   - vault-secret-store.yaml
   - external-secrets.yaml
+  - cert-issuer.yaml
+  - cert.yaml
   - deny-all-egress-netpol.yaml
   - allow-ext-egress-netpol.yaml
   - allow-local-egress-dns-netpol.yaml

@@ -9,9 +9,11 @@ The script is constrained to execute on the ash shell (mosquitto is based on bus
 
 The container will not start until the secret is mounted via the secrets operator and hence the environment variable will also be ready before the initContainer.
 
-The configmap-boostrap.yaml ensure that Flux does not substitute variables (which breaks the resulting script structure) by using the annotation `kustomize.toolkit.fluxcd.io/substitute: disabled`
+The configmap-boostrap.yaml ensures that Flux does not substitute variables (which breaks the resulting script structure) by using the annotation `kustomize.toolkit.fluxcd.io/substitute: disabled`
 
-Alternatives considered including using a custom plugin for MQTT authnentication/authorisation but this was deemed the simplest.
+Alternatives considered including using a custom plugin for MQTT authentication/authorisation but this was deemed the simplest.
+
+Refer [option 1](/setup/mqtt/README.md) for detailed configuration.
 
 # Test authenticated pub/sub
 

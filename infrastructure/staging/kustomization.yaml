@@ -18,4 +18,4 @@ resources:
 #  - ../common/flux-system
 #  - ../common/trivy-system
   - ../common/cilium
-  - ../common/tetragon
+#  - ../common/tetragon

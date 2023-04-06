@@ -6,7 +6,7 @@ metadata:
   name: tetragon
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-0.8.3
+    helm.sh/chart: tetragon-0.9.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -18,7 +18,7 @@ metadata:
   name: tetragon-config
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-0.8.3
+    helm.sh/chart: tetragon-0.9.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -32,10 +32,12 @@ data:
   export-file-max-backups: "5"
   export-file-compress: "false"
   export-allowlist: |-
-    {"event_set":["PROCESS_EXEC", "PROCESS_EXIT", "PROCESS_KPROBE"]}
+    {"event_set":["PROCESS_EXEC", "PROCESS_EXIT", "PROCESS_KPROBE", "PROCESS_UPROBE"]}
   export-denylist: |-
     {"health_check":true}
     {"namespace":["", "cilium", "kube-system"]}
+  field-filters: |-
+    {}
   export-rate-limit: "-1"
   enable-k8s-api: "true"
   metrics-server: :2112
@@ -48,7 +50,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon
   labels:
-    helm.sh/chart: tetragon-0.8.3
+    helm.sh/chart: tetragon-0.9.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -65,6 +67,7 @@ rules:
       - cilium.io
     resources:
       - tracingpolicies
+      - tracingpoliciesnamespaced
     verbs:
       - get
       - list
@@ -89,6 +92,7 @@ rules:
       - customresourcedefinitions
     resourceNames:
       - tracingpolicies.cilium.io
+      - tracingpoliciesnamespaced.cilium.io
     verbs:
       - update
       - get
@@ -100,7 +104,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon
   labels:
-    helm.sh/chart: tetragon-0.8.3
+    helm.sh/chart: tetragon-0.9.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -118,7 +122,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    helm.sh/chart: tetragon-0.8.3
+    helm.sh/chart: tetragon-0.9.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -131,7 +135,7 @@ spec:
       protocol: TCP
       targetPort: 2112
   selector:
-    helm.sh/chart: tetragon-0.8.3
+    helm.sh/chart: tetragon-0.9.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -142,7 +146,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    helm.sh/chart: tetragon-0.8.3
+    helm.sh/chart: tetragon-0.9.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -156,7 +160,7 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: tetragon-0.8.3
+        helm.sh/chart: tetragon-0.9.0
         app.kubernetes.io/name: tetragon
         app.kubernetes.io/instance: tetragon
         app.kubernetes.io/managed-by: Helm
@@ -166,11 +170,11 @@ spec:
       - name: tetragon-operator
         command:
         - tetragon-operator
-        image: "quay.io/cilium/tetragon-operator:v0.8.3"
+        image: "quay.io/cilium/tetragon-operator:v0.9.0"
         imagePullPolicy: IfNotPresent
       containers:
       - name: export-stdout
-        image: "quay.io/cilium/hubble-export-stdout:v1.0.2"
+        image: "quay.io/cilium/hubble-export-stdout:v1.0.3"
         imagePullPolicy: IfNotPresent
         env:
           []
@@ -188,16 +192,16 @@ spec:
       - name: tetragon
         securityContext:
           privileged: true
-        image: "quay.io/cilium/tetragon:v0.8.3"
+        image: "quay.io/cilium/tetragon:v0.9.0"
         imagePullPolicy: IfNotPresent
         command:
           - /usr/bin/tetragon
         args:
-          - --config-dir=/etc/tetragon
+          - --config-dir=/etc/tetragon/tetragon.conf.d/
         volumeMounts:
           - mountPath: /var/lib/tetragon/metadata
             name: metadata-files
-          - mountPath: /etc/tetragon
+          - mountPath: /etc/tetragon/tetragon.conf.d/
             name: tetragon-config
             readOnly: true
           - mountPath: /sys/fs/bpf
@@ -215,10 +219,12 @@ spec:
               fieldRef:
                   fieldPath: spec.nodeName
         livenessProbe:
-          exec:
-            command:
-            - tetra
-            - status
+           exec:
+             command:
+             - tetra
+             - status
+             - --server-address
+             - localhost:54321
       tolerations:
       - operator: Exists
       hostNetwork: true

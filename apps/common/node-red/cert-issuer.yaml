@@ -12,8 +12,9 @@ spec:
       kubernetes:
         role: nodered-issuer-cert-role
         mountPath: /v1/auth/kubernetes
-        serviceAccountRef:
-          name: nodered
-#        secretRef:
-#          name: nodered-token-brjkw # nodered service account
-#          key: token
+        # https://release-next--cert-manager-website.netlify.app/docs/configuration/vault/#secretless-authentication-with-a-service-account only works with v1.12.0 cert-manager, but this requires k8s 1.22, hence need to upgrade.
+#        serviceAccountRef:
+#          name: nodered
+        secretRef:
+          name: nodered-token-brjkw # nodered service account
+          key: token

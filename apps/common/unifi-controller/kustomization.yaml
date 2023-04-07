@@ -5,6 +5,8 @@ resources:
   - namespace.yaml
   - unifi-stack.yaml
   - unifi-services.yaml
+  - cert.yaml
+  - cert-issuer.yaml
   - allow-ext-egress-netpol.yaml
   - allow-local-egress-dns-netpol.yaml
   - deny-all-egress-netpol.yaml

@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: unifi-controller
+spec:
+  vault:
+    path: pki_int/sign/internal-dot-com
+    server: "http://vault.vault:8200"
+    #caBundle: <base64 encoded caBundle PEM file>
+    auth:
+      kubernetes:
+        role: unifi-issuer-cert-role
+        mountPath: /v1/auth/kubernetes
+        secretRef:
+          name: default-token-mdv8m
+          key: token

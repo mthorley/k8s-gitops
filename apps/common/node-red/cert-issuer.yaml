@@ -12,6 +12,8 @@ spec:
       kubernetes:
         role: nodered-issuer-cert-role
         mountPath: /v1/auth/kubernetes
-        secretRef:
-          name: nodered-token-brjkw # nodered service account
-          key: token
+        serviceAccountRef:
+          name: nodered
+#        secretRef:
+#          name: nodered-token-brjkw # nodered service account
+#          key: token

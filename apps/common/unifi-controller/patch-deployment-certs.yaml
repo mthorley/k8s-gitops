@@ -1,0 +1,25 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi
+spec:
+  template:
+    spec:
+      containers:
+        - name: unifi
+          volumeMounts:
+            - name: unifi-tls
+              mountPath: "/unifi/cert"
+              readOnly: true
+      volumes:
+        - name: unifi-tls
+          secret:
+            secretName: internal-com-tls
+            items: # refer https://hub.docker.com/r/jacobalberty/unifi/#certificate-support
+            - key: ca.crt
+              path: chain.pem
+            - key: tls.crt
+              path: cert.pem
+            - key: tls.key
+              path: privkey.pem

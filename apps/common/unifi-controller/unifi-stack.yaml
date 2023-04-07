@@ -93,9 +93,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /unifi
-            - name: unifi-tls
-              mountPath: "/unifi/cert"
-              readOnly: true
           livenessProbe:
             tcpSocket:
               port: 8443
@@ -128,13 +125,3 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: unifi-data
-        - name: unifi-tls
-          secret:
-            secretName: internal-com-tls
-            items:
-            - key: ca.crt
-              path: chain.pem
-            - key: tls.crt
-              path: cert.pem
-            - key: tls.key
-              path: privkey.pem

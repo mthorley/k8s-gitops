@@ -5,5 +5,5 @@ resources:
   - namespace.yaml
   - ingress-nginx-stack.yaml
 
-patches:
-  - patch-controller-config.yaml
+#patches:
+#  - patch-controller-config.yaml

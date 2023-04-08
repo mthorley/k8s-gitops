@@ -4,5 +4,5 @@ metadata:
   name: release-name-ingress-nginx-controller
   namespace: ingress-nginx
 data:
-  enable-modsecurity: true
-  enable-owasp-modsecurity-crs: true
+  enable-modsecurity: "true"
+  enable-owasp-modsecurity-crs: "true"

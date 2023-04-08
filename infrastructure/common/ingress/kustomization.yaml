@@ -4,3 +4,6 @@ namespace: ingress-nginx
 resources:
   - namespace.yaml
   - ingress-nginx-stack.yaml
+
+patches:
+  - patch-controller-config.yaml

@@ -4,6 +4,5 @@ namespace: authentik
 resources:
   - namespace.yaml
   - authentik-stack.yaml
-#  - loadbalancer.yaml
   - cert-issuer.yaml
   - cert.yaml

@@ -719,14 +719,13 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: data
-        annotations:
-          volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
       spec:
         accessModes:
           - "ReadWriteOnce"
         resources:
           requests:
             storage: "8Gi"
+        storageClassName: managed-nfs-storage
 ---
 # Source: authentik/charts/redis/templates/master/statefulset.yaml
 apiVersion: apps/v1
@@ -875,14 +874,13 @@ spec:
           app.kubernetes.io/name: redis
           app.kubernetes.io/instance: authentik
           app.kubernetes.io/component: master
-        annotations:
-          volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
       spec:
         accessModes:
           - "ReadWriteOnce"
         resources:
           requests:
             storage: "8Gi"
+        storageClassName: managed-nfs-storage
 ---
 # Source: authentik/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1

@@ -895,8 +895,12 @@ metadata:
     app.kubernetes.io/version: "2023.3.1"
     app.kubernetes.io/managed-by: Helm
 spec:
+  tls:
+  - hosts:
+    - auth.internal.com
+    secretName: internal-com-tls
   rules:
-    - host: "authentik.internal.com"
+    - host: "auth.internal.com"
       http:
         paths:
           - path: "/"

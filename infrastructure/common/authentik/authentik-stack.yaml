@@ -168,6 +168,7 @@ metadata:
     helm.sh/chart: redis-15.7.6
     app.kubernetes.io/instance: authentik
     app.kubernetes.io/managed-by: Helm
+    kustomize.toolkit.fluxcd.io/substitute: disabled
 data:
   start-master.sh: |
     #!/bin/bash

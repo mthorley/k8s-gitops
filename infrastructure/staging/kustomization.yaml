@@ -19,3 +19,4 @@ resources:
 #  - ../common/trivy-system
   - ../common/cilium
 #  - ../common/tetragon
+  - ../common/authentik

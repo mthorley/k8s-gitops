@@ -1,0 +1,39 @@
+
+[server]
+# required since grafana is proxied behind an ingress controller
+root_url = https://grafana.internal.com
+
+[session]
+provider = memory
+
+[auth]
+signout_redirect_url = https://${DOMAIN}/application/o/${APP_SLUG}/end-session/
+# Optionally enable auto-login
+oauth_auto_login = true
+
+[auth.generic_oauth]
+name = authentik
+enabled = true
+client_id = ${OAUTH_CLIENT_ID}
+client_secret = ${OAUTH_SECRET}
+scopes = openid email profile
+auth_url = https://${DOMAIN}/application/o/authorize/
+token_url = https://${DOMAIN}/application/o/token/
+api_url = https://${DOMAIN}/application/o/userinfo/
+# Optionally map user groups to Grafana roles
+role_attribute_path = contains(groups[*], 'grafana_admin') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
+
+tls_skip_verify_insecure = false
+tls_client_cert = 
+tls_client_key = 
+# Intermediate CA used for TLS
+tls_client_ca = /etc/oidc/ca.pem
+
+[smtp]
+enabled = true
+from_address = myemail@gmail.com
+from_name = Grafana Alert
+host = smtp-server.monitoring.svc:25
+password = 
+skip_verify = true
+user = 

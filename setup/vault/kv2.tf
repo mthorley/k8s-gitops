@@ -96,6 +96,16 @@ variable "ZIG2MQTT_MQTT_PASSWORD" {
   type = string
 }
 
+variable "AUTHENTIK_GRAFANA_CLIENTID" {
+  type = string
+  description = "Grafana client id for OAuth"
+}
+
+variable "AUTHENTIK_GRAFANA_SECRET" {
+  type = string
+  description = "Grafana client secret for OAuth"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {

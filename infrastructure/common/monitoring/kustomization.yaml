@@ -13,7 +13,7 @@ resources:
   - armexporter-service.yaml
   - armexporter-serviceAccount.yaml
   - armexporter-serviceMonitor.yaml
-  - grafana-config.yaml
+#  - grafana-config.yaml - now migrated to vault
   - grafana-dashboardDatasources.yaml
   - grafana-dashboardDefinitions.yaml
   - grafana-dashboardSources.yaml

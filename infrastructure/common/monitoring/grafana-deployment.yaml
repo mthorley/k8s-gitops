@@ -125,6 +125,10 @@ spec:
         - mountPath: /etc/grafana
           name: grafana-config
           readOnly: false
+        - mounthPath: /etc/oidc/ca.pem
+          name: oidc-ca-cert
+          subPath: "ca.pem"
+          readOnly: true
       nodeSelector:
         beta.kubernetes.io/os: linux
       securityContext:
@@ -223,3 +227,6 @@ spec:
       - name: grafana-config
         secret:
           secretName: secret-grafana-config
+      - name: oidc-ca-cert
+        secret:
+          secretName: secret-oidc-ca-cert

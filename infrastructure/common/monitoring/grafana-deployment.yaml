@@ -229,5 +229,4 @@ spec:
           secretName: secret-grafana-config
       - name: oidc-ca-cert
         secret:
-#          secretName: secret-oidc-ca-cert
-           secretName: grafana-oidc-secret
+          secretName: secret-oidc-ca-cert

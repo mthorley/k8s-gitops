@@ -75,3 +75,4 @@ resources:
   - prometheus-serviceMonitorKubelet.yaml
   - cert.yaml
   - cert-issuer.yaml
+  - vault-secrets-store.yaml

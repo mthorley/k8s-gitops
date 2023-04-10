@@ -125,7 +125,7 @@ spec:
         - mountPath: /etc/grafana
           name: grafana-config
           readOnly: false
-        - mounthPath: /etc/oidc/ca.pem
+        - mountPath: /etc/oidc/ca.pem
           name: oidc-ca-cert
           subPath: "ca.pem"
           readOnly: true

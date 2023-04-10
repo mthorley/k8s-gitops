@@ -26,3 +26,7 @@ variable "master_host_port_staging" {
 variable "vault_address_staging" {
    default = "http://192.168.3.28:8200"
 }
+
+variable "cert_domain" {
+   default = "internal.com"
+}

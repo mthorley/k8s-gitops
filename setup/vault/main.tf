@@ -1,4 +1,24 @@
 
+# Enable secrets engine and pki
+resource "vault_policy" "sys_mounts" {
+  name = "sys-mounts"
+
+  policy = <<EOT
+path "sys/mounts/*" {
+  capabilities = [ "create", "read", "update", "delete", "list" ]
+}
+
+# List enabled secrets engine
+path "sys/mounts" {
+  capabilities = [ "read", "list" ]
+}
+
+path "pki*" {
+  capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
+}
+EOT
+}
+
 # vault auth enable kubernetes
 resource "vault_auth_backend" "kubernetes" {
   type = "kubernetes"

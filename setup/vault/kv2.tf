@@ -370,3 +370,11 @@ resource "vault_kv_secret_v2" "zig2mqtt" {
     }
   )
 }
+
+#module "sandbox_secrets" {
+#  source = "./modules/vault_kv2_ksa"
+#
+#  name     = "sandbox"
+#  ksa_name = "default"
+#  kns      = "sandbox"
+#}

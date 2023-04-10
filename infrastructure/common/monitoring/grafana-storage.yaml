@@ -3,11 +3,11 @@ kind: PersistentVolumeClaim
 metadata:
   name: grafana-storage
   namespace: monitoring
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
       storage: 20Gi
+  storageClassName: managed-nfs-storage
+  volumeName: ""

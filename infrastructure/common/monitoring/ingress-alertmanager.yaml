@@ -1,17 +1,18 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: alertmanager-main
   namespace: monitoring
 spec:
   rules:
-  - host: alertmanager.192.168.1.15.nip.io
+  - host: alertmanager.internal.com
     http:
       paths:
       - backend:
-          serviceName: alertmanager-main
-          servicePort: web
+          service:
+            name: alertmanager-main
+            port:
+              name: web
         path: /
-  tls:
-  - hosts:
-    - alertmanager.192.168.1.15.nip.io
+        pathType: Prefix
+  ingressClassName: nginx

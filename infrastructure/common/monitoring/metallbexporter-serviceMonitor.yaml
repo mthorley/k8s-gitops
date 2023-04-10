@@ -17,6 +17,7 @@ spec:
       - __meta_kubernetes_pod_node_name
       targetLabel: instance
     scheme: http
+    scrapeTimeout: 30s
   jobLabel: metallb-exporter
   namespaceSelector:
     matchNames:

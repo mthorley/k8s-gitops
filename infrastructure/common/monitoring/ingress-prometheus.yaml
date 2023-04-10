@@ -1,17 +1,18 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: prometheus-k8s
   namespace: monitoring
 spec:
   rules:
-  - host: prometheus.192.168.1.15.nip.io
+  - host: prometheus.internal.com
     http:
       paths:
       - backend:
-          serviceName: prometheus-k8s
-          servicePort: web
+          service:
+            name: prometheus-k8s
+            port:
+              name: web
         path: /
-  tls:
-  - hosts:
-    - prometheus.192.168.1.15.nip.io
+        pathType: Prefix
+  ingressClassName: nginx

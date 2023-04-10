@@ -5,3 +5,5 @@ helm repo update
 helm template authentik authentik/authentik -f values.yaml \
   --namespace authentik \
   --create-namespace > authentik-stack.yaml
+
+helm chart does not respect namespaces, so the stack has been manually.

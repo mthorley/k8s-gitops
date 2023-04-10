@@ -76,3 +76,4 @@ resources:
   - cert.yaml
   - cert-issuer.yaml
   - vault-secret-store.yaml
+  - external-secrets.yaml

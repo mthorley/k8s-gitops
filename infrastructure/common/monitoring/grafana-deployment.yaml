@@ -222,4 +222,4 @@ spec:
         name: grafana-dashboard-workload-total
       - name: grafana-config
         secret:
-          secretName: grafana-config
+          secretName: secret-grafana-config

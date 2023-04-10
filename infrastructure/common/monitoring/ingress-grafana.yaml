@@ -4,6 +4,10 @@ metadata:
   name: grafana
   namespace: monitoring
 spec:
+  tls:
+  - hosts:
+    - grafana.internal.com
+    secretName: internal-com-tls
   rules:
   - host: grafana.internal.com
     http:

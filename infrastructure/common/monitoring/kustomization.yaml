@@ -73,3 +73,5 @@ resources:
   - prometheus-serviceMonitorKubeControllerManager.yaml
   - prometheus-serviceMonitorKubeScheduler.yaml
   - prometheus-serviceMonitorKubelet.yaml
+  - cert.yaml
+  - cert-issuer.yaml

@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: monitoring
+spec:
+  vault:
+    path: pki_int/sign/internal-dot-com
+    server: "http://vault.vault:8200"
+    #caBundle: <base64 encoded caBundle PEM file>
+    auth:
+      kubernetes:
+        role: grafana-issuer-cert-role
+        mountPath: /v1/auth/kubernetes
+        # https://release-next--cert-manager-website.netlify.app/docs/configuration/vault/#secretless-authentication-with-a-service-account only works with v1.12.0 cert-manager, but this requires min k8s 1.22.
+#        serviceAccountRef:
+#          name: nodered
+        secretRef:
+          name: grafana-token-b9gqg # grafana service account
+          key: token

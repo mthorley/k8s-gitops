@@ -140,3 +140,12 @@ resource "vault_kubernetes_auth_backend_role" "auth-issuer" {
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]
 }
+
+resource "vault_kubernetes_auth_backend_role" "grafana-issuer" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "grafana-issuer-cert-role"
+  bound_service_account_names      = ["grafana"]
+  bound_service_account_namespaces = ["monitoring"]
+  token_ttl                        = 86400
+  token_policies                   = ["issuer-cert-policy"]
+}

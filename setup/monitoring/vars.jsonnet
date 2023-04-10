@@ -48,12 +48,12 @@
   },
 
   // Domain suffix for the ingresses
-  suffixDomain: '192.168.1.15.nip.io',
+  suffixDomain: 'internal.com',
  // Additional domain suffixes for the ingresses.
   // For example suffixDomain could be an external one and this a local domain.
   additionalDomains: [],
   // If TLSingress is true, a self-signed HTTPS ingress with redirect will be created
-  TLSingress: true,
+  TLSingress: false,
   // If UseProvidedCerts is true, provided files will be used on created HTTPS ingresses.
   // Use a wildcard certificate for the domain like ex. "*.192.168.99.100.nip.io"
   UseProvidedCerts: false,

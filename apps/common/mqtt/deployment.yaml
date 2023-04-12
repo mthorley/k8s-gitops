@@ -67,3 +67,9 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: mqtt-claim
+        - name: mosquitto-secret
+          secret: 
+            secretName: mosquitto_secret
+        - name: external-config
+          emptyDir:
+            medium: Memory

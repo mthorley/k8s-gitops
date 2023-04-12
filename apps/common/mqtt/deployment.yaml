@@ -61,7 +61,7 @@ spec:
               mountPath: /mosquitto/data
               subPath: 
             - name: external-config
-              mountPath: /external_config
+              mountPath: /mosquitto/external_config
       volumes:
         - name: config
           configMap:

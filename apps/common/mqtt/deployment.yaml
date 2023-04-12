@@ -69,7 +69,7 @@ spec:
             claimName: mqtt-claim
         - name: mosquitto-secret
           secret: 
-            secretName: mosquitto_secret
+            secretName: mosquitto-secret
         - name: external-config
           emptyDir:
             medium: Memory

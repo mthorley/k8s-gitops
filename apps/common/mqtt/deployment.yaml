@@ -22,17 +22,16 @@ spec:
         - name: mosquitto-init
           image: "eclipse-mosquitto:1.6"
           imagePullPolicy: IfNotPresent
-          command: ["/mosquitto/data/bootstrap.sh"]
+          command:
+            - "/bin/sh"
+            - -c
+          args:
+            - cp /data/mosquitto_secret/* /data/external_config/ && mosquitto_passwd -U /data/external_config/mosquitto_pwds
           volumeMounts:
-            - name: bootstrap
-              mountPath: /mosquitto/data/bootstrap.sh
-              subPath: bootstrap.sh
-          env:
-          - name: MQTT_CREDS
-            valueFrom:
-              secretKeyRef:
-                name: secret-mqtt
-                key: mqtt-creds
+            - name: mosquitto-secret
+              mountPath: /data/mosquitto_secret
+            - name: external-config
+              mountPath: /data/external_config
       containers:
         - name: mosquitto
           image: "eclipse-mosquitto:1.6"
@@ -65,10 +64,6 @@ spec:
         - name: config
           configMap:
             name: mqtt-mosquitto
-        - name: bootstrap
-          configMap:
-            name: mqtt-bootstrap
-            defaultMode: 0500
         - name: data
           persistentVolumeClaim:
             claimName: mqtt-claim

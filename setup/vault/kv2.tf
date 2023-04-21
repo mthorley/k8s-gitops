@@ -1,10 +1,4 @@
 
-variable "NODERED_MQTT_PASSWORD" {
-   type = string
-   description = "mqtt password"
-   default = ""
-}
-
 variable "HUE_TOKEN" {
   type = string
   description = "Hue internal token"
@@ -84,7 +78,27 @@ variable "AUTH_SHARED_SECRET" {
   type = string
 }
 
-variable "MQTT_CREDS" {
+variable "NODERED_MQTT_USER" {
+  type = string
+}
+
+variable "NODERED_MQTT_PASSWORD" {
+  type = string
+}
+
+variable "TASMOTA_MQTT_USER" {
+  type = string
+}
+
+variable "TASMOTA_MQTT_PASSWORD" {
+  type = string
+}
+
+variable "TEMPCONTROLLER_MQTT_USER" {
+  type = string
+}
+
+variable "TEMPCONTROLLER_MQTT_PASSWORD" {
   type = string
 }
 
@@ -311,6 +325,7 @@ resource "vault_kv_secret_v2" "nodered" {
   name      = "nodered"
   data_json = jsonencode(
     {
+      mqtt-user          = var.NODERED_MQTT_USER
       mqtt-password      = var.NODERED_MQTT_PASSWORD
       hue-token          = var.HUE_TOKEN
       sonos-diningroom-r = var.SONOS_DININGROOM_R
@@ -365,7 +380,14 @@ resource "vault_kv_secret_v2" "mqtt" {
   name      = "mqtt"
   data_json = jsonencode(
     {
-      mqtt-creds = var.MQTT_CREDS
+      nodered_mqtt_user            = var.NODERED_MQTT_USER
+      nodered_mqtt_password        = var.NODERED_MQTT_PASSWORD
+      tasmota_mqtt_user            = var.TASMOTA_MQTT_USER
+      tasmota_mqtt_password        = var.TASMOTA_MQTT_PASSWORD
+      tempcontroller_mqtt_user     = var.TEMPCONTROLLER_MQTT_USER
+      tempcontroller_mqtt_password = var.TEMPCONTROLLER_MQTT_PASSWORD
+      zig2mqtt_mqtt_user           = var.ZIG2MQTT_MQTT_USER
+      zig2mqtt_mqtt_password       = var.ZIG2MQTT_MQTT_PASSWORD
     }
   )
 }

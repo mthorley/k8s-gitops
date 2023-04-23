@@ -27,6 +27,7 @@ variable "vault_address_staging" {
    default = "http://192.168.3.28:8200"
 }
 
-variable "cert_domain" {
-   default = "internal.com"
+variable "INTERNAL_DOMAIN" {
+  type = string
+  description = "domain e.g. example.com"
 }

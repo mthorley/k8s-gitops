@@ -13,6 +13,9 @@ resource "vault_policy" "grafana-secrets-policy" {
 path "secret/data/grafana" {
   capabilities = ["read", "list"]
 }
+path "secret/data/certs" {
+  capabilities = ["read", "list"]
+}
 EOT
 }
 
@@ -33,9 +36,19 @@ resource "vault_kv_secret_v2" "grafana" {
       "grafana.ini" = templatefile("${path.module}/grafana-ini-oauth.tftpl", {
          OAUTH_CLIENT_ID = var.AUTHENTIK_GRAFANA_CLIENTID,
          OAUTH_SECRET = var.AUTHENTIK_GRAFANA_SECRET,
-         DOMAIN = "auth.internal.com",
+         DOMAIN = "https://auth.${var.INTERNAL_DOMAIN}"
          APP_SLUG = "grafana"
       })
     }
   )
 }
+
+/*resource "vault_kv_secret_v2" "certs" {
+  mount     = vault_mount.kvv2.path
+  name      = "certs"
+  data_json = jsonencode(
+    {
+      intermediate-ca = vault_pki_secret_backend_intermediate_set_signed.intermediate.certificate
+    }
+  )
+}*/

@@ -17,7 +17,7 @@ resource "vault_mount" "root" {
 resource "vault_pki_secret_backend_root_cert" "root-2023" {
   backend               = vault_mount.root.path
   type                  = "internal"
-  common_name           = format("%s", var.cert_domain)
+  common_name           = format("%s", var.INTERNAL_DOMAIN)
   ttl                   = "315360000"
   format                = "pem"
   private_key_format    = "der"
@@ -41,14 +41,14 @@ resource "vault_mount" "intermediate" {
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   backend     = vault_mount.intermediate.path
   type        = vault_pki_secret_backend_root_cert.root-2023.type
-  common_name = format("%s Intermediate CA", var.cert_domain)
+  common_name = format("%s Intermediate CA", var.INTERNAL_DOMAIN)
 }
 
 // sign intermediate
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
   backend              = vault_mount.root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
-  common_name          = var.cert_domain
+  common_name          = var.INTERNAL_DOMAIN
   exclude_cn_from_sans = true
   ou                   = "k8s"
   organization         = "homes"
@@ -86,7 +86,7 @@ resource "vault_pki_secret_backend_role" "internal-dot-com" {
   key_type         = "rsa"
 #  key_bits         = 4096
 
-  allowed_domains    = [var.cert_domain]
+  allowed_domains    = [var.INTERNAL_DOMAIN]
   allow_subdomains   = true
   allow_any_name     = true
   allow_glob_domains = true

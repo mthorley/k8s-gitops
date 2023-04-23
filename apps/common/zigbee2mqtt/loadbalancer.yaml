@@ -6,6 +6,7 @@ spec:
   selector:
     app.kubernetes.io/name: zigbee2mqtt
   type: LoadBalancer
+  loadBalancerIP: "${zigbee2mqtt_ip}"
   ports:
     - protocol: TCP
       port: 80

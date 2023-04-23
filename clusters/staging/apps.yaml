@@ -30,3 +30,4 @@ spec:
       nodered_web_ip: 192.168.3.27
       qnap_ip: 192.168.1.147
       freeradius_ip: 192.168.3.28
+      zigbee2mqtt_ip: 192.168.3.30

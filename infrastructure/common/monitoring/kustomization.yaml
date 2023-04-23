@@ -22,7 +22,6 @@ resources:
   - grafana-serviceAccount.yaml
   - grafana-serviceMonitor.yaml
   - grafana-storage.yaml
-  - grafana-lb.yaml
   - ingress-alertmanager.yaml
   - ingress-grafana.yaml
   - ingress-prometheus.yaml

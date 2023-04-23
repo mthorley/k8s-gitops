@@ -7,7 +7,7 @@ spec:
   selector:
     app: freeradius
   type: LoadBalancer
-#  loadBalancerIP: "${freeradius_auth_ip}"
+  loadBalancerIP: "${freeradius_auth_ip}"
   ports:
     - name: freeradius-auth
       port: 1812
@@ -23,7 +23,7 @@ spec:
   selector:
     app: freeradius
   type: LoadBalancer
-#  loadBalancerIP: "${freeradius_acc_ip}"
+  loadBalancerIP: "${freeradius_acc_ip}"
   ports:
     - name: freeradius-acc
       port: 1813

@@ -8,6 +8,7 @@ spec:
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
   type: LoadBalancer
+  loadBalancerIP: "${vault_ip}"
   ports:
     - name: http
       port: 8200

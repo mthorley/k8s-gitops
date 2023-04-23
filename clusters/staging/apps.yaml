@@ -18,16 +18,18 @@ spec:
     substitute:
       cluster_tz: "Australia/Melbourne"
       # FIXME: Ingress this up 
+      pi_temp_agent_ip: 192.168.3.13
+      mqtt_ip: 192.168.3.14
       adguard_web_ip: 192.168.3.16
       adguard_dns_ip: 192.168.3.17
-      crypto_agent_ip: 192.168.3.22
-      homeassistant_ip: 192.168.3.19
       jupyter_ip: 192.168.3.18
-      mqtt_ip: 192.168.3.14
-      pi_temp_agent_ip: 192.168.3.13
+      homeassistant_ip: 192.168.3.19
+      crypto_agent_ip: 192.168.3.22
       unifi_ip: 192.168.3.23
+      freeradius_acc_ip: 192.168.24
+      freeradius_auth_ip: 192.168.25
       nodered_syslog_ip: 192.168.3.26
       nodered_web_ip: 192.168.3.27
-      qnap_ip: 192.168.1.147
-      freeradius_ip: 192.168.3.28
       zigbee2mqtt_ip: 192.168.3.30
+      # external
+      qnap_ip: 192.168.1.147

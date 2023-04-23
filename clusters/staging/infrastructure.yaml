@@ -17,7 +17,7 @@ spec:
       hubble_ui_ip: 192.168.3.11
       influxdb_ip: 192.168.3.20
       mongodb_ip: 192.168.3.21
-      vault_ip: 192.169.3.28
+      vault_ip: 192.168.3.28
       nginx_ip: 192.168.3.29
       # external
       qnap_ip: 192.168.1.147

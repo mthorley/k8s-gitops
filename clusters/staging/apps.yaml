@@ -26,8 +26,8 @@ spec:
       homeassistant_ip: 192.168.3.19
       crypto_agent_ip: 192.168.3.22
       unifi_ip: 192.168.3.23
-      freeradius_acc_ip: 192.168.24
-      freeradius_auth_ip: 192.168.25
+      freeradius_acc_ip: 192.168.3.24
+      freeradius_auth_ip: 192.168.3.25
       nodered_syslog_ip: 192.168.3.26
       nodered_web_ip: 192.168.3.27
       zigbee2mqtt_ip: 192.168.3.30

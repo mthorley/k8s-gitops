@@ -5,7 +5,7 @@ metadata:
   namespace: authentik
 spec:
   rules:
-    - host: adguard.internal.com
+    - host: auth.internal.com
       http:
         paths: /outpost.goauthentik.io
         pathType: Prefix

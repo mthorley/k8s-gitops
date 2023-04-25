@@ -46,8 +46,6 @@ metadata:
     app.kubernetes.io/instance: adguard-home
 spec:
   type: ClusterIP
-#  loadBalancerIP: "${adguard_web_ip}"
-  externalTrafficPolicy: Local
   ports:
   - port: 80
     targetPort: 3000

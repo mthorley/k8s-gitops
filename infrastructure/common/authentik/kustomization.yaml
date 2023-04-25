@@ -6,4 +6,4 @@ resources:
   - authentik-stack.yaml
   - cert-issuer.yaml
   - cert.yaml
-  - ingress-outpost.yaml
+#  - ingress-outpost.yaml

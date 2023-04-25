@@ -7,6 +7,6 @@ resources:
   - deployment.yaml
   - service.yaml
 #  - loadbalancer.yaml
-  - ingress.yaml
+#  - ingress.yaml
   - cert-issuer.yaml
   - cert.yaml

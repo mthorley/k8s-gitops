@@ -296,6 +296,7 @@ metadata:
   namespace: ingress-nginx
 spec:
   type: LoadBalancer
+  loadBalancerIP: "${nginx_ip}"
   ipFamilyPolicy: SingleStack
   ipFamilies: 
     - IPv4

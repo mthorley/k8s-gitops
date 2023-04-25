@@ -22,9 +22,9 @@ resources:
   - grafana-serviceAccount.yaml
   - grafana-serviceMonitor.yaml
   - grafana-storage.yaml
-  - ingress-alertmanager.yaml
-  - ingress-grafana.yaml
-  - ingress-prometheus.yaml
+#  - ingress-alertmanager.yaml
+#  - ingress-grafana.yaml
+#  - ingress-prometheus.yaml
   - kube-state-metrics-clusterRole.yaml
   - kube-state-metrics-clusterRoleBinding.yaml
   - kube-state-metrics-deployment.yaml

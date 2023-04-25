@@ -6,4 +6,4 @@ resources:
   - ingress-nginx-stack.yaml
 
 #patches:
-#  - patch-controller-config.yaml
+#  - patch-controller-config.yaml # runs slow on Pi's

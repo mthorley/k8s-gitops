@@ -9,4 +9,4 @@ resources:
   - services.yaml
   - cert-issuer.yaml
   - cert.yaml
-#  - ingress.yaml
+  - ingress.yaml

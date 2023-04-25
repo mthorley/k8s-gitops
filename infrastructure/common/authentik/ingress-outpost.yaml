@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: authentik-adguard-outpost
   namespace: authentik
+spec:
   rules:
   - host: auth.internal.com
     http:

@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: authentik-adguard-outpost
   namespace: authentik
-spec:
   rules:
-    - host: auth.internal.com
-      http:
-        paths: /outpost.goauthentik.io
+  - host: auth.internal.com
+    http:
+      paths: 
+      - path: /outpost.goauthentik.io
         pathType: Prefix
         backend:
           # Or, to use an external Outpost, create an ExternalName service and reference that here.

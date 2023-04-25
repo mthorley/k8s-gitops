@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-adguard
+  namespace: adguard-home
+#  annotations:
+#    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+#    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
+spec:
+  tls:
+  - hosts:
+    - adguard.internal.com
+    secretName: internal-com-tls
+  rules:
+  - host: adguard.internal.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: adguard-home-web
+            port:
+              number: 80
+  ingressClassName: nginx

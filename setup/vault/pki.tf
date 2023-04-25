@@ -149,3 +149,12 @@ resource "vault_kubernetes_auth_backend_role" "grafana-issuer" {
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]
 }
+
+resource "vault_kubernetes_auth_backend_role" "adguard-issuer" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "adguard-issuer-cert-role"
+  bound_service_account_names      = ["default"]
+  bound_service_account_namespaces = ["adguard-home"]
+  token_ttl                        = 86400
+  token_policies                   = ["issuer-cert-policy"]
+}

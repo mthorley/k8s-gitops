@@ -45,8 +45,8 @@ metadata:
     app.kubernetes.io/name: adguard-home
     app.kubernetes.io/instance: adguard-home
 spec:
-  type: LoadBalancer
-  loadBalancerIP: "${adguard_web_ip}"
+  type: ClusterIP
+#  loadBalancerIP: "${adguard_web_ip}"
   externalTrafficPolicy: Local
   ports:
   - port: 80

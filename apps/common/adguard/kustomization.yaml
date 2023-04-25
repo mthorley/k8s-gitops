@@ -7,3 +7,6 @@ resources:
   - pvc.yaml
   - deployment.yaml
   - services.yaml
+  - cert-issuer.yaml
+  - cert.yaml
+  - ingress.yaml

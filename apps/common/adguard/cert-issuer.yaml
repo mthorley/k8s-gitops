@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: adguard-home
+spec:
+  vault:
+    path: pki_int/sign/internal-dot-com
+    server: "http://vault.vault:8200"
+    #caBundle: <base64 encoded caBundle PEM file>
+    auth:
+      kubernetes:
+        role: adguard-issuer-cert-role
+        mountPath: /v1/auth/kubernetes
+        secretRef:
+          name: default-token-hcmrw
+          key: token

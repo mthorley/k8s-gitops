@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: internal-com
+  namespace: adguard-home
+spec:
+  dnsNames:
+    - adguard.internal.com
+  secretName: internal-com-tls
+  issuerRef:
+    name: vault-issuer

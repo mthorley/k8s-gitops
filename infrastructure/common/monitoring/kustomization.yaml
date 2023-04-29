@@ -76,5 +76,5 @@ resources:
   - cert-issuer.yaml
   - vault-secret-store.yaml
   - external-secrets.yaml
-  - vault-prometheus-serviceaccount.yaml
-  - vault-servicemonitor.yaml
+#  - vault-prometheus-serviceaccount.yaml
+#  - vault-servicemonitor.yaml

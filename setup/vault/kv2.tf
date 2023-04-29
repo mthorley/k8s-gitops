@@ -120,6 +120,11 @@ variable "AUTHENTIK_GRAFANA_SECRET" {
   description = "Grafana client secret for OAuth"
 }
 
+variable "AUTHENTIK_POSTGRESQL_PASSWORD" {
+  type = string
+  description = "Authentik PostgreSQL password"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -319,6 +324,28 @@ resource "vault_kubernetes_auth_backend_role" "zig2mqtt" {
 }
 
 # -----------------------------------------------------------------------------
+# authentik
+
+resource "vault_policy" "authentik-secrets-policy" {
+  name = "authentik-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/authentik" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "authentik" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "authentik-secrets-role"
+  bound_service_account_names      = ["authentik"]
+  bound_service_account_namespaces = ["authentik"]
+  token_ttl                        = 86400
+  token_policies                   = ["authentik-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
 resource "vault_kv_secret_v2" "nodered" {
   mount     = vault_mount.kvv2.path
@@ -399,6 +426,16 @@ resource "vault_kv_secret_v2" "zig2mqtt" {
     {
       mqtt-user     = var.ZIG2MQTT_MQTT_USER
       mqtt-password = var.ZIG2MQTT_MQTT_PASSWORD
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "authentik" {
+  mount     = vault_mount.kvv2.path
+  name      = "authentik"
+  data_json = jsonencode(
+    {
+      postgresql-password = var.AUTHENTIK_POSTGRESQL_PASSWORD
     }
   )
 }

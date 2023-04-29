@@ -6,7 +6,7 @@ metadata:
   name: vault
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.23.0
+    helm.sh/chart: vault-0.24.0
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -18,7 +18,7 @@ metadata:
   name: vault-config
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.23.0
+    helm.sh/chart: vault-0.24.0
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -34,6 +34,10 @@ data:
     }
     storage "file" {
       path = "/vault/data"
+    } 
+    telemetry {
+      disable_hostname = true
+      prometheus_retention_time = "12h"
     }
 ---
 # Source: vault/templates/server-clusterrolebinding.yaml
@@ -42,7 +46,7 @@ kind: ClusterRoleBinding
 metadata:
   name: vault-server-binding
   labels:
-    helm.sh/chart: vault-0.23.0
+    helm.sh/chart: vault-0.24.0
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -63,7 +67,7 @@ metadata:
   name: vault-internal
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.23.0
+    helm.sh/chart: vault-0.24.0
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -93,7 +97,7 @@ metadata:
   name: vault
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.23.0
+    helm.sh/chart: vault-0.24.0
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -122,7 +126,7 @@ metadata:
   name: vault-ui
   namespace: vault
   labels:
-    helm.sh/chart: vault-0.23.0
+    helm.sh/chart: vault-0.24.0
     app.kubernetes.io/name: vault-ui
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
@@ -164,7 +168,7 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: vault-0.23.0
+        helm.sh/chart: vault-0.24.0
         app.kubernetes.io/name: vault
         app.kubernetes.io/instance: vault
         component: server
@@ -203,7 +207,7 @@ spec:
       containers:
         - name: vault
           
-          image: hashicorp/vault:1.12.1
+          image: hashicorp/vault:1.13.1
           imagePullPolicy: IfNotPresent
           command:
           - "/bin/sh"
@@ -217,8 +221,6 @@ spec:
             [ -n "${API_ADDR}" ] && sed -Ei "s|API_ADDR|${API_ADDR?}|g" /tmp/storageconfig.hcl;
             [ -n "${TRANSIT_ADDR}" ] && sed -Ei "s|TRANSIT_ADDR|${TRANSIT_ADDR?}|g" /tmp/storageconfig.hcl;
             [ -n "${RAFT_ADDR}" ] && sed -Ei "s|RAFT_ADDR|${RAFT_ADDR?}|g" /tmp/storageconfig.hcl;
-            /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl 
-              /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl
             /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl 
    
           securityContext:

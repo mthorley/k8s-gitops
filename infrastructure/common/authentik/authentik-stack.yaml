@@ -5,19 +5,25 @@ kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
   name: authentik-redis
-  namespace: authentik
+  namespace: "authentik"
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-15.7.6
     app.kubernetes.io/instance: authentik
     app.kubernetes.io/managed-by: Helm
 ---
-# Source: authentik/templates/rbac.yaml
+# Source: authentik/charts/serviceAccount/templates/service-account.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: authentik
   namespace: authentik
+  labels:
+    helm.sh/chart: serviceAccount-1.1.0
+    app.kubernetes.io/name: serviceAccount
+    app.kubernetes.io/instance: authentik
+    app.kubernetes.io/version: "2021.10.2"
+    app.kubernetes.io/managed-by: Helm
 ---
 # Source: authentik/charts/postgresql/templates/secrets.yaml
 apiVersion: v1
@@ -32,7 +38,7 @@ metadata:
   namespace: authentik
 type: Opaque
 data:
-  postgresql-postgres-password: "OEpoZ0dOamtuaA=="
+  postgresql-postgres-password: "NEhLVFJ5QW1iNQ=="
   postgresql-password: "VGhpc0lzTm90QVNlY3VyZVBhc3N3b3Jk"
 ---
 # Source: authentik/charts/redis/templates/configmap.yaml
@@ -40,7 +46,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: authentik-redis-configuration
-  namespace: authentik
+  namespace: "authentik"
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-15.7.6
@@ -73,7 +79,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: authentik-redis-health
-  namespace: authentik
+  namespace: "authentik"
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-15.7.6
@@ -162,7 +168,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: authentik-redis-scripts
-  namespace: authentik
+  namespace: "authentik"
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-15.7.6
@@ -186,11 +192,57 @@ data:
     ARGS+=("--include" "/opt/bitnami/redis/etc/master.conf")
     exec redis-server "${ARGS[@]}"
 ---
-# Source: authentik/templates/rbac.yaml
+# Source: authentik/charts/serviceAccount/templates/cluster-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  name: authentik-authentik
+  labels:
+    helm.sh/chart: serviceAccount-1.1.0
+    app.kubernetes.io/name: serviceAccount
+    app.kubernetes.io/instance: authentik
+    app.kubernetes.io/version: "2021.10.2"
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - list
+---
+# Source: authentik/charts/serviceAccount/templates/cluster-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: authentik-authentik
+  labels:
+    helm.sh/chart: serviceAccount-1.1.0
+    app.kubernetes.io/name: serviceAccount
+    app.kubernetes.io/instance: authentik
+    app.kubernetes.io/version: "2021.10.2"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: authentik-authentik
+subjects:
+  - kind: ServiceAccount
+    name: authentik
+    namespace: authentik
+---
+# Source: authentik/charts/serviceAccount/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
   name: authentik
+  namespace: authentik
+  labels:
+    helm.sh/chart: serviceAccount-1.1.0
+    app.kubernetes.io/name: serviceAccount
+    app.kubernetes.io/instance: authentik
+    app.kubernetes.io/version: "2021.10.2"
+    app.kubernetes.io/managed-by: Helm
 rules:
   - apiGroups:
       - ""
@@ -253,14 +305,21 @@ rules:
     verbs:
       - list
 ---
-# Source: authentik/templates/rbac.yaml
+# Source: authentik/charts/serviceAccount/templates/role-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: authentik
+  namespace: authentik
+  labels:
+    helm.sh/chart: serviceAccount-1.1.0
+    app.kubernetes.io/name: serviceAccount
+    app.kubernetes.io/instance: authentik
+    app.kubernetes.io/version: "2021.10.2"
+    app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: authentik
 subjects:
   - kind: ServiceAccount
@@ -326,7 +385,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: authentik-redis-headless
-  namespace: authentik
+  namespace: "authentik"
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-15.7.6
@@ -348,7 +407,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: authentik-redis-master
-  namespace: authentik
+  namespace: "authentik"
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-15.7.6
@@ -374,10 +433,10 @@ kind: Service
 metadata:
   name: authentik
   labels:
-    helm.sh/chart: authentik-2023.3.1
+    helm.sh/chart: authentik-2023.4.1
     app.kubernetes.io/name: authentik
     app.kubernetes.io/instance: authentik
-    app.kubernetes.io/version: "2023.3.1"
+    app.kubernetes.io/version: "2023.4.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -401,10 +460,10 @@ kind: Deployment
 metadata:
   name: authentik-server
   labels:
-    helm.sh/chart: authentik-2023.3.1
+    helm.sh/chart: authentik-2023.4.1
     app.kubernetes.io/name: authentik
     app.kubernetes.io/instance: authentik
-    app.kubernetes.io/version: "2023.3.1"
+    app.kubernetes.io/version: "2023.4.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "server"
 spec:
@@ -420,7 +479,7 @@ spec:
         app.kubernetes.io/name: authentik
         app.kubernetes.io/instance: authentik
         app.kubernetes.io/component: "server"
-        app.kubernetes.io/version: "2023.3.1"
+        app.kubernetes.io/version: "2023.4.1"
     spec:
       serviceAccountName: authentik
       enableServiceLinks: true
@@ -429,7 +488,7 @@ spec:
         {}
       containers:
         - name: authentik
-          image: "ghcr.io/goauthentik/server:2023.3.1"
+          image: "ghcr.io/goauthentik/server:2023.4.1"
           imagePullPolicy: "IfNotPresent"
           args: ["server"]
           env:            
@@ -501,10 +560,10 @@ kind: Deployment
 metadata:
   name: authentik-worker
   labels:
-    helm.sh/chart: authentik-2023.3.1
+    helm.sh/chart: authentik-2023.4.1
     app.kubernetes.io/name: authentik
     app.kubernetes.io/instance: authentik
-    app.kubernetes.io/version: "2023.3.1"
+    app.kubernetes.io/version: "2023.4.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "worker"
 spec:
@@ -520,7 +579,7 @@ spec:
         app.kubernetes.io/name: authentik
         app.kubernetes.io/instance: authentik
         app.kubernetes.io/component: "worker"
-        app.kubernetes.io/version: "2023.3.1"
+        app.kubernetes.io/version: "2023.4.1"
     spec:
       serviceAccountName: authentik
       enableServiceLinks: true
@@ -529,7 +588,7 @@ spec:
         {}
       containers:
         - name: authentik
-          image: "ghcr.io/goauthentik/server:2023.3.1"
+          image: "ghcr.io/goauthentik/server:2023.4.1"
           imagePullPolicy: "IfNotPresent"
           args: ["worker"]
           env:            
@@ -732,7 +791,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: authentik-redis-master
-  namespace: authentik
+  namespace: "authentik"
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-15.7.6
@@ -759,9 +818,9 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: master
       annotations:
-        checksum/configmap: 8ae7f0c64f2f5c968b9c2f408ee6dd81a12e8ec0dec9e41777fce82693196e48
-        checksum/health: d08cb19474295a178507db2a66fb49be376190cb670939c24e26942e02cd5ca9
-        checksum/scripts: 5ab2f10e2acbdc771eeb4b2447307b5fac5cca289b408e960f3c11ae86a58045
+        checksum/configmap: 27644827c04a13bace860bf20465b6f922d49f69b7fc857ec4af175779bdc9f1
+        checksum/health: c9fa10bf90885035fbbb0f3db9ec0a7a819eac5fd6d24bb8bfb6964afcc25d60
+        checksum/scripts: a7577573d6e451c289421a42bbc486c47c3b0aff44ebaedd10a381e63c9a310e
         checksum/secret: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     spec:
       
@@ -889,10 +948,10 @@ metadata:
   name: authentik
   namespace: authentik
   labels:
-    helm.sh/chart: authentik-2023.3.1
+    helm.sh/chart: authentik-2023.4.1
     app.kubernetes.io/name: authentik
     app.kubernetes.io/instance: authentik
-    app.kubernetes.io/version: "2023.3.1"
+    app.kubernetes.io/version: "2023.4.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   tls:
@@ -900,7 +959,7 @@ spec:
     - auth.internal.com
     secretName: internal-com-tls
   rules:
-    - host: "auth.internal.com"
+    - host: auth.internal.com
       http:
         paths:
           - path: "/"

@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: freeradius
-        image: mthorley/freeradius:ed087a7b15f288e73f8e6cabec90fa11d1da5b7e
+        image: mthorley/freeradius:fce68ebd9d147e146b07a2fcb83492cb8510d318
         imagePullPolicy: Always
         ports:
         - containerPort: 1812
@@ -32,10 +32,6 @@ spec:
         - name: clients-conf
           mountPath: /etc/freeradius/3.0/clients.conf
           subPath: clients.conf
-#        - name: eap-conf
-#          mountPath: /etc/freeradius/3.0/mods-enabled
-#          subPath: eap
-#          readOnly: true
         env:
         - name: AUTH_SHARED_SECRET
           valueFrom:
@@ -48,6 +44,3 @@ spec:
       - name: clients-conf
         configMap:
           name: clients-config
-#      - name: eap-conf
-#        configMap:
-#          name: eap-config

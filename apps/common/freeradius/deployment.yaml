@@ -32,10 +32,10 @@ spec:
         - name: clients-conf
           mountPath: /etc/freeradius/3.0/clients.conf
           subPath: clients.conf
-        - name: eap-conf
-          mountPath: /etc/freeradius/3.0/mods-enabled
-          subPath: eap
-          readOnly: true
+#        - name: eap-conf
+#          mountPath: /etc/freeradius/3.0/mods-enabled
+#          subPath: eap
+#          readOnly: true
         env:
         - name: AUTH_SHARED_SECRET
           valueFrom:
@@ -48,6 +48,6 @@ spec:
       - name: clients-conf
         configMap:
           name: clients-config
-      - name: eap-conf
-        configMap:
-          name: eap-config
+#      - name: eap-conf
+#        configMap:
+#          name: eap-config

@@ -43,4 +43,4 @@ spec:
       volumes:
       - name: clients-conf
         configMap:
-          name: client-config
+          name: clients-config

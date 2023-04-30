@@ -30,8 +30,8 @@ spec:
           name: freeradius-acc
         volumeMounts:
         - name: radius-conf
-          mountPath: /etc/freeradius/radiusd2.conf
-          subPath: radiusd2.conf
+          mountPath: /etc/freeradius/radiusd.conf
+          subPath: radiusd.conf
         env:
         - name: AUTH_SHARED_SECRET
           valueFrom:

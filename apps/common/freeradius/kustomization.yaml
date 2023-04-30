@@ -16,9 +16,3 @@ configMapGenerator:
   options:
     labels:
       kustomize.toolkit.fluxcd.io/substitute: disabled
-- name: eap-config
-  files:
-    - eap.conf
-  options:
-    labels:
-      kustomize.toolkit.fluxcd.io/substitute: disabled

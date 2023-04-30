@@ -10,9 +10,9 @@ resources:
   - external-secrets.yaml
   - vault-secret-store.yaml
 configMapGenerator:
-- name: radius-config
+- name: clients-config
   files:
-    - radiusd.conf
+    - clients.conf
   options:
     labels:
       kustomize.toolkit.fluxcd.io/substitute: disabled

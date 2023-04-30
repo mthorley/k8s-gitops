@@ -28,10 +28,10 @@ spec:
           name: freeradius-auth
         - containerPort: 1813
           name: freeradius-acc
-#        volumeMounts:
-#        - name: radius-conf
-#          mountPath: /etc/freeradius/3.0/radiusd.conf
-#          subPath: radiusd.conf
+        volumeMounts:
+        - name: clients-conf
+          mountPath: /etc/freeradius/3.0/clients.conf
+          subPath: clients.conf
         env:
         - name: AUTH_SHARED_SECRET
           valueFrom:
@@ -40,7 +40,7 @@ spec:
               key: auth-shared-secret
         - name: APS_CIDR
           value: 192.168.1.1/24
- #     volumes:
- #       - name: radius-conf
- #         configMap:
- #           name: radius-config
+      volumes:
+      - name: clients-conf
+        configMap:
+          name: client-config

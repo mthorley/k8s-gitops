@@ -35,6 +35,7 @@ spec:
         - name: eap-conf
           mountPath: /etc/freeradius/3.0/mods-enabled
           subPath: eap
+          readOnly: true
         env:
         - name: AUTH_SHARED_SECRET
           valueFrom:

@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: freeradius
-        image: mthorley/freeradius:fce68ebd9d147e146b07a2fcb83492cb8510d318
+        image: mthorley/freeradius:7ab87f3df08fcde85e09634043677df1ebc5e64d
         imagePullPolicy: Always
         ports:
         - containerPort: 1812

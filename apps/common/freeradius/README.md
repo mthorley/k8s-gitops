@@ -30,3 +30,6 @@ should return
 	Message-Authenticator = 0x00
 	Cleartext-Password = "bob"
     Received Access-Accept Id 225 from 192.168.3.25:1812 to 172.16.115.137:54456 length 20
+
+
+https://chewonice.com/2022/10/06/ubiquiti-802-1x-with-freeradius/

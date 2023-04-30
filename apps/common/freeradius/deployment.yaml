@@ -34,7 +34,7 @@ spec:
           subPath: clients.conf
         - name: eap-conf
           mountPath: /etc/freeradius/3.0/mods-enabled/eap
-          subPath: eap
+#          subPath: eap
         env:
         - name: AUTH_SHARED_SECRET
           valueFrom:

@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: freeradius
-        image: mthorley/freeradius:f9dc9cc37ec2950c9324420bfa04ae330a3a958e
+        image: mthorley/freeradius:cca3c2b2f751e73a5b6315c2467c5ad4f5e0014b
         imagePullPolicy: Always
         ports:
         - containerPort: 1812
@@ -30,8 +30,8 @@ spec:
           name: freeradius-acc
         volumeMounts:
         - name: radius-conf
-          mountPath: /etc/freeradius/radiusd.conf
-          subPath: radiusd.conf
+          mountPath: /etc/freeradius/radiusd2.conf
+          subPath: radiusd2.conf
         env:
         - name: AUTH_SHARED_SECRET
           valueFrom:

@@ -33,3 +33,7 @@ should return
 
 
 https://chewonice.com/2022/10/06/ubiquiti-802-1x-with-freeradius/
+
+clients.conf - configmap
+eap - burnt into image
+authorize - burnt into image for testing

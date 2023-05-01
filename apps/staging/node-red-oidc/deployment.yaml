@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-red
+  namespace: node-red-oidc
+  labels:
+    app: node-red
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-red
+  template:
+    metadata:
+      labels:
+        app: node-red
+    spec:
+      serviceAccountName: nodered
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: node-red
+        image: mthorley/node-red:70c3567104b5fd73cde156249157f4f848bbe0ab
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 1880
+          name: node-red-ui
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: node-red-data
+          mountPath: /data
+        env:
+#        - name: HUE_TOKEN
+#          valueFrom:
+#            secretKeyRef:
+#              name: secret-nodered
+#              key: hue-token
+        - name: TZ
+          value: "${cluster_tz}"
+      volumes:
+      - name: node-red-data
+        persistentVolumeClaim:
+          claimName: node-red-claim

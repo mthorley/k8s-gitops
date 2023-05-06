@@ -32,7 +32,7 @@ spec:
         - name: node-red-data
           mountPath: /data
         - name: settings
-          mountPath: /data
+          mountPath: /data/settings.js
           subPath: settings.js
           readOnly: true
         env:
@@ -48,5 +48,7 @@ spec:
         persistentVolumeClaim:
           claimName: node-red-claim
       - name: settings
-        secret:
-          secretName: secret-nodered
+        projected:
+          sources:
+          - secret:
+            name: secret-nodered

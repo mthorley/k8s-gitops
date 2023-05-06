@@ -32,11 +32,11 @@ spec:
         - name: node-red-data
           mountPath: /data
         env:
-#        - name: HUE_TOKEN
-#          valueFrom:
-#            secretKeyRef:
-#              name: secret-nodered
-#              key: hue-token
+        - name: HUE_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: hue-token
         - name: TZ
           value: "${cluster_tz}"
       volumes:

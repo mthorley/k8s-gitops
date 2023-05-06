@@ -2,7 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: node-red-claim
-  namespace: node-red-oidc
+  namespace: node-red-dev
   annotations:
     volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:

@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: vault-issuer
-  namespace: node-red-oidc
+  namespace: node-red-dev
 spec:
   vault:
     path: pki_int/sign/internal-dot-com

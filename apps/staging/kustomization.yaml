@@ -13,4 +13,4 @@ resources:
   - ../common/homeassistant
   - ../common/zigbee2mqtt
   - ../common/freeradius
-#  - ./node-red-oidc
+  - ./node-red-dev

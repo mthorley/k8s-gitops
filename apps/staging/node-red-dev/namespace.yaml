@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  namespace: node-red-oidc
+  namespace: node-red-dev

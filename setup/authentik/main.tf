@@ -24,7 +24,7 @@ resource "authentik_provider_oauth2" "grafana-oidc-provider" {
   redirect_uris = [ 
     "https://grafana.${var.INTERNAL_DOMAIN}/login/generic_oauth" 
   ]
-  access_token_validity = "minutes=5"
+  access_token_validity = "minutes=60"
   property_mappings     = data.authentik_scope_mapping.default_scopes.ids
   signing_key           = data.authentik_certificate_key_pair.generated.id
 }

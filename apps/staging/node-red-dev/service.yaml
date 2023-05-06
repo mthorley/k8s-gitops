@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nodered-internal
-  namespace: node-red-oidc
+  namespace: node-red-dev
 spec:
   selector:
     app: node-red

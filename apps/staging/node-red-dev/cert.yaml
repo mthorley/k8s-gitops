@@ -2,10 +2,10 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: internal-com
-  namespace: node-red-oidc
+  namespace: node-red-dev
 spec:
   dnsNames:
-    - noderedoidc.internal.com
+    - nodereddev.internal.com
   secretName: internal-com-tls
   issuerRef:
     name: vault-issuer

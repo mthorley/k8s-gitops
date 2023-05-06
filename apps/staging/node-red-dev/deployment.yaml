@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: node-red
-  namespace: node-red-oidc
+  namespace: node-red-dev
   labels:
     app: node-red
 spec:

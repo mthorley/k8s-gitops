@@ -32,7 +32,7 @@ spec:
         - name: node-red-data
           mountPath: /data
         - name: settings
-          mountPath: /data/settings.js
+          mountPath: /data
           subPath: settings.js
           readOnly: true
         env:

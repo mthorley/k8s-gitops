@@ -39,6 +39,10 @@ spec:
               key: hue-token
         - name: TZ
           value: "${cluster_tz}"
+        - name: CLIENT_ID
+          value: kpp2enCF4RCOc2DhUZJOMrXHwTDrVQCb5pwYr72Y
+        - name: CLIENT_SECRET
+          value: l4FZrQmtMoIPJ6pthi9gQgr3mC5azJYsEFDZ48nvrwypRwFAy1ncIBxmJHOnwN1C1n6OOHVtvELiry4tq13hCb8fhxvCSx6JCUwcYiP4Nsw7XaAGFyg5ZscHOyjmHKEZ
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: node-red
-        image: mthorley/node-red:70c3567104b5fd73cde156249157f4f848bbe0ab
+        image: mthorley/node-red:0102c2408426bf519803f2842889f093c8c21772
         imagePullPolicy: Always
         ports:
         - containerPort: 1880

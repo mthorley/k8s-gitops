@@ -31,10 +31,6 @@ spec:
         volumeMounts:
         - name: node-red-data
           mountPath: /data
-        - name: settings
-          mountPath: /data/settings.js
-          subPath: settings.js
-          readOnly: true
         env:
         - name: HUE_TOKEN
           valueFrom:
@@ -47,8 +43,3 @@ spec:
       - name: node-red-data
         persistentVolumeClaim:
           claimName: node-red-claim
-      - name: settings
-        projected:
-          sources:
-          - secret:
-            name: secret-nodered

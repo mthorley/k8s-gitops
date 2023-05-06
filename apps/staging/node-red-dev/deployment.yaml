@@ -48,4 +48,4 @@ spec:
           claimName: node-red-claim
       - name: settings
         secret:
-          secretName: setting_js
+          secretName: secret-nodered

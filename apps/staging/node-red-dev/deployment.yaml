@@ -26,8 +26,8 @@ spec:
         ports:
         - containerPort: 1880
           name: node-red-ui
-        securityContext:
-          privileged: true
+#        securityContext:
+#          privileged: true
         volumeMounts:
         - name: node-red-data
           mountPath: /data
@@ -43,6 +43,8 @@ spec:
           value: kpp2enCF4RCOc2DhUZJOMrXHwTDrVQCb5pwYr72Y
         - name: CLIENT_SECRET
           value: l4FZrQmtMoIPJ6pthi9gQgr3mC5azJYsEFDZ48nvrwypRwFAy1ncIBxmJHOnwN1C1n6OOHVtvELiry4tq13hCb8fhxvCSx6JCUwcYiP4Nsw7XaAGFyg5ZscHOyjmHKEZ
+        - name: NODE_EXTRA_CA_CERTS
+          value: /data/ca.pem
       volumes:
       - name: node-red-data
         persistentVolumeClaim:

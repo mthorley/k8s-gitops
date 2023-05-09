@@ -226,6 +226,16 @@ resource "vault_kubernetes_auth_backend_role" "nodered" {
   token_policies                   = ["nodered-secrets-policy"]
 }
 
+# development
+resource "vault_kubernetes_auth_backend_role" "nodered-dev" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "nodered-secrets-role-dev"
+  bound_service_account_names      = ["nodered"]
+  bound_service_account_namespaces = ["node-red-dev"]
+  token_ttl                        = 86400
+  token_policies                   = ["nodered-secrets-policy"]
+}
+
 # -----------------------------------------------------------------------------
 # cryptoauth
 

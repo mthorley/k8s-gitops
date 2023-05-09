@@ -123,6 +123,16 @@ resource "vault_kubernetes_auth_backend_role" "nodered-issuer" {
   token_policies                   = ["issuer-cert-policy"]
 }
 
+# development
+resource "vault_kubernetes_auth_backend_role" "nodered-issuer-dev" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "nodered-issuer-cert-role-dev"
+  bound_service_account_names      = ["nodered"]
+  bound_service_account_namespaces = ["node-red-dev"]
+  token_ttl                        = 86400
+  token_policies                   = ["issuer-cert-policy"]
+}
+
 resource "vault_kubernetes_auth_backend_role" "unifi-issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "unifi-issuer-cert-role"

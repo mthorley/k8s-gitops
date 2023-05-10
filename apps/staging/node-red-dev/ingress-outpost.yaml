@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: authentik-outpost-nodereddev
+  name: authentik-outpost
   namespace: node-red-dev
 spec:
   rules:

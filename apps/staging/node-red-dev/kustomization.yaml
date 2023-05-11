@@ -12,4 +12,4 @@ resources:
   - cert.yaml
   - service.yaml
   - ingress.yaml
-  - ingress-outpost.yaml
+#  - ingress-outpost.yaml

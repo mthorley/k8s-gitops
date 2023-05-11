@@ -7,4 +7,4 @@ resources:
   - cert-issuer.yaml
   - cert.yaml
 #  - ingress-outpost.yaml
-  - ingress-outpost-nodered.yaml
+#  - ingress-outpost-nodered.yaml

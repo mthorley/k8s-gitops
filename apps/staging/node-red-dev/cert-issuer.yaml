@@ -16,5 +16,5 @@ spec:
 #        serviceAccountRef:
 #          name: nodered
         secretRef:
-          name: nodered-token-d95js # nodered service account
+          name: nodered-token-xwr2j # nodered service account
           key: token

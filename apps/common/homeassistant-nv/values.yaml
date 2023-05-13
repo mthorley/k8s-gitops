@@ -1,5 +1,0 @@
-persistence:
-  config:
-    enabled: true
-
-hostNetwork: false

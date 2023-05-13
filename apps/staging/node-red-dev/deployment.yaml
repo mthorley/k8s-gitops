@@ -31,6 +31,10 @@ spec:
         volumeMounts:
         - name: node-red-data
           mountPath: /data
+        - name: internal-ca
+          mountPath: /etc/ssl/certs/internal-ca-cert.pem
+          subPath: internal-ca-cert.pem
+          readOnly: false
         env:
         - name: HUE_TOKEN
           valueFrom:
@@ -49,3 +53,6 @@ spec:
       - name: node-red-data
         persistentVolumeClaim:
           claimName: node-red-claim
+      - name: internal-ca
+        secret:
+            secretName: internal-ca-secret

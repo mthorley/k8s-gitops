@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: home-assistant
     app.kubernetes.io/version: 2022.5.4
     helm.sh/chart: home-assistant-13.4.2
-  annotations:
+  annotations: # nfs storage
     volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:
   accessModes:

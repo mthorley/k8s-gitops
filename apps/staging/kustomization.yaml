@@ -11,6 +11,7 @@ resources:
   - ../common/crypto-automation
   - ../common/unifi-controller
   - ../common/homeassistant
+  - ../common/homeassistant-nv
   - ../common/zigbee2mqtt
   - ../common/freeradius
-  - ./node-red-dev
+#  - ./node-red-dev

@@ -40,9 +40,9 @@ spec:
         - name: TZ
           value: "${cluster_tz}"
         - name: CLIENT_ID
-          value: kpp2enCF4RCOc2DhUZJOMrXHwTDrVQCb5pwYr72Y
+          value: XrkVOruoMZVENASZ8M2gdlFTJ8aNkYtW8hVP9UFb
         - name: CLIENT_SECRET
-          value: l4FZrQmtMoIPJ6pthi9gQgr3mC5azJYsEFDZ48nvrwypRwFAy1ncIBxmJHOnwN1C1n6OOHVtvELiry4tq13hCb8fhxvCSx6JCUwcYiP4Nsw7XaAGFyg5ZscHOyjmHKEZ
+          value: a2tFAkEjqrltBT1fvxxxGFYhwhD9VEF3qVh6glUxamevBwrz3Q3zu09nU3sn3DLIwyccOvYBB1boeUQKQsuyq7DnPKgapzm3pCWh3Pzg0jfjPUgmE1mVMzZypW4qQ1Fc
         - name: NODE_EXTRA_CA_CERTS
           value: /data/ca.pem
       volumes:

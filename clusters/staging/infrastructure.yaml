@@ -21,3 +21,4 @@ spec:
       nginx_ip: 192.168.3.29
       # external
       qnap_ip: 192.168.1.147
+      pki_path: pki_int/sign/internal-dot-com

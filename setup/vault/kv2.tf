@@ -41,7 +41,7 @@ variable "UNIFI_USER" {
 
 variable "UNIFI_PASSWORD" {
   type = string
-  description = "unifi admin"
+  description = "unifi admin password"
 }
 
 variable "MONGODB_INIT_DB_USER" {
@@ -51,7 +51,7 @@ variable "MONGODB_INIT_DB_USER" {
 
 variable "MONGODB_INIT_DB_PASSWORD" {
   type = string
-  description = "mongo admin"
+  description = "mongo admin password"
 }
 
 variable "COINSPOT_SECRET_RO" {
@@ -76,6 +76,7 @@ variable "TELEGRAM_CHAT_ID" {
 
 variable "AUTH_SHARED_SECRET" {
   type = string
+  description = "Freeradius authentication secret"
 }
 
 variable "NODERED_MQTT_USER" {

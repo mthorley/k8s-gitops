@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: escape
+  labels:
+    app.kubernetes.io/name: escape
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: escape
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: escape
+    spec:
+      containers:
+        - name: escape
+          image: "ubuntu:latest"
+          imagePullPolicy: IfNotPresent
+# Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.
+# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#securitycontext-v1-core
+          securityContext:
+            privileged: true

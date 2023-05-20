@@ -87,6 +87,9 @@ Prod A
 Maintain
  - [ ] Renovate
 
+Config
+ - [ ] Flux ${pki_path} substitution for all cert_issuer.yaml
+
 -------------------------
 Loki queries
 {job="ubnt-kern"} |~ "LAN_LOCAL" |~ "eth0.30"

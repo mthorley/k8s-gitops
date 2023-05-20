@@ -20,3 +20,4 @@ resources:
   - ../common/cilium
 #  - ../common/tetragon
   - ../common/authentik
+  - ../common/containerescapes

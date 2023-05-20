@@ -4,3 +4,4 @@ infrastructure/**/unseal.sh
 .unseal.sh
 **/.terraform*
 **/terraform.tfstate*
+**/*.pem

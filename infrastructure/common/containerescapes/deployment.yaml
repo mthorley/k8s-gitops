@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: escape
-          image: arm64v8/ubuntu
+          image: mthorley/jnb:1.0
           imagePullPolicy: IfNotPresent
 # Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.
 # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#securitycontext-v1-core

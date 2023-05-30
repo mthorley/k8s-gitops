@@ -41,3 +41,43 @@ controller-manager   Healthy   ok
 scheduler            Healthy   ok                  
 etcd-0               Healthy   {"health":"true"}
 ```
+
+## Master k8s cert expired
+
+```
+[authentication.go:64] Unable to authenticate the request due to an error: 
+[x509: certificate has expired or is not yet valid, x509: certificate has expired or is not yet valid
+```
+
+### Renew master certs
+
+1. ssh into master
+2. $<code>master></code> sudo kubeadm certs renew all
+
+```
+[renew] Reading configuration from the cluster...
+[renew] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[renew] Error reading configuration from the Cluster. Falling back to default configuration
+
+certificate embedded in the kubeconfig file for the admin to use and for kubeadm itself renewed
+certificate for serving the Kubernetes API renewed
+certificate the apiserver uses to access etcd renewed
+certificate for the API server to connect to kubelet renewed
+certificate embedded in the kubeconfig file for the controller manager to use renewed
+certificate for liveness probes to healthcheck etcd renewed
+certificate for etcd nodes to communicate with each other renewed
+certificate for serving etcd renewed
+certificate for the front proxy client renewed
+certificate embedded in the kubeconfig file for the scheduler manager to use renewed
+
+Done renewing certificates. You must restart the kube-apiserver, kube-controller-manager, kube-scheduler and etcd, so that they can use the new certificates.
+```
+
+### Copy over config for kubectl
+
+Copy the new configuration file created using kubeadm from master to local machine
+```
+master$ cp /etc/kubernetes/admin.conf master_config
+local$ cp master_config ~/.kube/config
+local$ kubectl get pods -A 
+```

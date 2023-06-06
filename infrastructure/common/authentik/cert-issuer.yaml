@@ -13,5 +13,5 @@ spec:
         role: auth-issuer-cert-role
         mountPath: /v1/auth/kubernetes
         secretRef:
-          name: authentik-token-j26tx
+          name: authentik-token-95n98
           key: token

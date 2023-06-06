@@ -19,5 +19,5 @@ resources:
 #  - ../common/trivy-system
   - ../common/cilium
 #  - ../common/tetragon
-  - ../common/authentik
+#  - ../common/authentik
 #  - ../common/containerescapes

@@ -54,7 +54,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: unifi
-          image: "jacobalberty/unifi:v7.2.95"
+          image: "jacobalberty/unifi:v7.3.83"
           imagePullPolicy: IfNotPresent
           env:
             - name: JVM_INIT_HEAP_SIZE

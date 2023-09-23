@@ -18,6 +18,6 @@ resources:
 #  - ../common/flux-system
 #  - ../common/trivy-system
   - ../common/cilium
-  - ../common/tetragon
+#  - ../common/tetragon   # supports ARM but needs min kernel 5.19
   - ../common/authentik
 #  - ../common/containerescapes

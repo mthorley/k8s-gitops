@@ -6,10 +6,25 @@ metadata:
   name: tetragon
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-0.9.0
+    helm.sh/chart: tetragon-0.11.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
+---
+# Source: tetragon/templates/operator_configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tetragon-operator-config
+  namespace: kube-system
+  labels:
+    helm.sh/chart: tetragon-0.11.0
+    app.kubernetes.io/name: "tetragon-operator"
+    app.kubernetes.io/instance: tetragon
+    app.kubernetes.io/managed-by: Helm
+data:
+  skip-crd-creation: "false"
+  skip-tetragon-pod-crd: "true"
 ---
 # Source: tetragon/templates/tetragon_configmap.yaml
 apiVersion: v1
@@ -18,7 +33,7 @@ metadata:
   name: tetragon-config
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-0.9.0
+    helm.sh/chart: tetragon-0.11.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -50,7 +65,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon
   labels:
-    helm.sh/chart: tetragon-0.9.0
+    helm.sh/chart: tetragon-0.11.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -59,6 +74,7 @@ rules:
       - ""
     resources:
       - pods
+      - services
     verbs:
       - get
       - list
@@ -93,6 +109,7 @@ rules:
     resourceNames:
       - tracingpolicies.cilium.io
       - tracingpoliciesnamespaced.cilium.io
+      - podinfo.cilium.io
     verbs:
       - update
       - get
@@ -104,7 +121,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon
   labels:
-    helm.sh/chart: tetragon-0.9.0
+    helm.sh/chart: tetragon-0.11.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -117,12 +134,31 @@ subjects:
     namespace: kube-system
     name: tetragon
 ---
+# Source: tetragon/templates/operator_clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tetragon-operator-rolebinding
+  labels:
+    helm.sh/chart: tetragon-0.11.0
+    app.kubernetes.io/name: "tetragon-operator"
+    app.kubernetes.io/instance: tetragon
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tetragon-operator-role
+subjects:
+  - kind: ServiceAccount
+    namespace: kube-system
+    name: tetragon-operator-service-account
+---
 # Source: tetragon/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    helm.sh/chart: tetragon-0.9.0
+    helm.sh/chart: tetragon-0.11.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -135,7 +171,7 @@ spec:
       protocol: TCP
       targetPort: 2112
   selector:
-    helm.sh/chart: tetragon-0.9.0
+    helm.sh/chart: tetragon-0.11.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -146,7 +182,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    helm.sh/chart: tetragon-0.9.0
+    helm.sh/chart: tetragon-0.11.0
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
     app.kubernetes.io/managed-by: Helm
@@ -159,8 +195,10 @@ spec:
       app.kubernetes.io/instance: tetragon
   template:
     metadata:
+      annotations:
+        checksum/configmap: 0046c533361aa2a1a40416c77311419f804f04f4c9d88cbe2bbe948e3b9b49be
       labels:
-        helm.sh/chart: tetragon-0.9.0
+        helm.sh/chart: tetragon-0.11.0
         app.kubernetes.io/name: tetragon
         app.kubernetes.io/instance: tetragon
         app.kubernetes.io/managed-by: Helm
@@ -168,10 +206,14 @@ spec:
       serviceAccountName: tetragon
       initContainers:
       - name: tetragon-operator
-        command:
-        - tetragon-operator
-        image: "quay.io/cilium/tetragon-operator:v0.9.0"
+        image: "quay.io/cilium/tetragon-operator:v0.11.0"
         imagePullPolicy: IfNotPresent
+        args:
+          - --config-dir=/etc/tetragon/operator.conf.d/
+        volumeMounts:
+          - mountPath: /etc/tetragon/operator.conf.d/
+            name: tetragon-operator-config
+            readOnly: true
       containers:
       - name: export-stdout
         image: "quay.io/cilium/hubble-export-stdout:v1.0.3"
@@ -192,10 +234,8 @@ spec:
       - name: tetragon
         securityContext:
           privileged: true
-        image: "quay.io/cilium/tetragon:v0.9.0"
+        image: "quay.io/cilium/tetragon:v0.11.0"
         imagePullPolicy: IfNotPresent
-        command:
-          - /usr/bin/tetragon
         args:
           - --config-dir=/etc/tetragon/tetragon.conf.d/
         volumeMounts:
@@ -252,3 +292,6 @@ spec:
           type: Directory
       - emptyDir: {}
         name: metadata-files
+      - name: tetragon-operator-config
+        configMap:
+          name: tetragon-operator-config

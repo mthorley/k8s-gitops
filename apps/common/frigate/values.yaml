@@ -1,5 +1,10 @@
 # values.yaml
 config: |
+ mqtt:
+    host: "192.168.3.14"
+    port: 1883
+    user: test
+    password: test
   cameras:
     # Define at least one camera
     front:

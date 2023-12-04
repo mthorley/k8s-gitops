@@ -12,18 +12,23 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 data:
   config.yml: |
-    cameras:
-      # Define at least one camera
-      front:
-        ffmpeg:
-          inputs:
-            - path: rtsp://viewer:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
-              roles:
-                - detect
-                - rtmp
-        detect:
-          width: 1280
-          height: 720
+    mqtt:
+       host: "192.168.3.14"
+       port: 1883
+       user: test
+       password: test
+     cameras:
+       # Define at least one camera
+       front:
+         ffmpeg:
+           inputs:
+             - path: rtsp://viewer:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+               roles:
+                 - detect
+                 - rtmp
+         detect:
+           width: 1280
+           height: 720
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1
@@ -85,7 +90,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: e4d4ee0af77bf4249636c6c91258756ef368e3ecdb581685613799cea1e3d558
+        checksum/configmap: fa7f8a29b100225c12ddedf67cb9f6b34d77da21e034ac031a5c7182621c52f8
     spec:
       containers:
         - name: frigate

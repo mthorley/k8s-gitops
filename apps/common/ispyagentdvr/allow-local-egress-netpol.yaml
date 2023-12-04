@@ -1,0 +1,15 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-local-egress"  
+spec:
+  endpointSelector:
+    matchLabels:
+      app: agentdvr
+  egress:
+  - toCIDR:
+    - 192.168.3.0/25
+    toPorts:
+      - ports:
+          - port: "3478"
+            protocol: UDP

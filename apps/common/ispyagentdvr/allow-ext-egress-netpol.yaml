@@ -1,0 +1,11 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-ext-egress"  
+spec:
+  endpointSelector:
+    matchLabels:
+      app: agentdvr
+  egress:
+  - toCIDR:
+    - 224.0.0.251/32   # mDNS

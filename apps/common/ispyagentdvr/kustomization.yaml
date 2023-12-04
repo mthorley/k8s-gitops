@@ -7,6 +7,8 @@ resources:
   - deployment.yaml
   - loadbalancer.yaml
   - deny-all-egress-netpol.yaml
+  - allow-ext-egress-netpol.yaml
+  - allow-local-egress-dns-netpol.yaml
 #  - service.yaml
 #  - ingress.yaml
 #  - cert-issuer.yaml

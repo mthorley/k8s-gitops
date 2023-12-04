@@ -9,3 +9,10 @@ spec:
   egress:
   - toCIDR:
     - 224.0.0.251/32   # mDNS
+    toPorts:
+      - ports:
+          - port: "5353"
+            protocol: ANY
+        rules:
+          dns:
+            - matchPattern: "*"

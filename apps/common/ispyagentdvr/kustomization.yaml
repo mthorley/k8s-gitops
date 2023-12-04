@@ -6,6 +6,7 @@ resources:
   - pvc.yaml
   - deployment.yaml
   - loadbalancer.yaml
+  - deny-all-egress-netpol.yaml
 #  - service.yaml
 #  - ingress.yaml
 #  - cert-issuer.yaml

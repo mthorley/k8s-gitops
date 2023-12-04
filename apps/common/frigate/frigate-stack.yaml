@@ -1,0 +1,141 @@
+---
+# Source: frigate/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frigate
+  namespace: frigate
+  labels:
+    app.kubernetes.io/name: frigate
+    helm.sh/chart: frigate-7.1.0
+    app.kubernetes.io/instance: frigate
+    app.kubernetes.io/managed-by: Helm
+data:
+  config.yml: |
+    cameras:
+      # Define at least one camera
+      front:
+        ffmpeg:
+          inputs:
+            - path: rtsp://viewer:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+              roles:
+                - detect
+                - rtmp
+        detect:
+          width: 1280
+          height: 720
+---
+# Source: frigate/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frigate
+  labels:
+    app.kubernetes.io/name: frigate
+    helm.sh/chart: frigate-7.1.0
+    app.kubernetes.io/instance: frigate
+    app.kubernetes.io/version: "0.12.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.3.31
+  ports:
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: http
+
+    - name: rtmp
+      port: 1935
+      protocol: TCP
+      targetPort: rtmp
+
+    - name: rtsp
+      port: 8554
+      protocol: TCP
+      targetPort: rtsp
+      
+  selector:
+    app.kubernetes.io/name: frigate
+    app.kubernetes.io/instance: frigate
+---
+# Source: frigate/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frigate
+  labels:
+    app.kubernetes.io/name: frigate
+    helm.sh/chart: frigate-7.1.0
+    app.kubernetes.io/instance: frigate
+    app.kubernetes.io/version: "0.12.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frigate
+      app.kubernetes.io/instance: frigate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frigate
+        app.kubernetes.io/instance: frigate
+      annotations:
+        checksum/configmap: e4d4ee0af77bf4249636c6c91258756ef368e3ecdb581685613799cea1e3d558
+    spec:
+      containers:
+        - name: frigate
+          image: "ghcr.io/blakeblackshear/frigate:0.12.0"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            {}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+            - name: rtmp
+              containerPort: 1935
+              protocol: TCP
+            - name: rtsp
+              containerPort: 8554
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            timeoutSeconds: 10
+          env:
+          envFrom:
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /data
+              name: data
+            - name: dshm
+              mountPath: /dev/shm
+          resources:
+      volumes:
+        - name: config
+          configMap:
+            name: frigate
+        - name: data
+          emptyDir: {}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi

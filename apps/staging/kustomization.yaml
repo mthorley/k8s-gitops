@@ -14,3 +14,4 @@ resources:
   - ../common/zigbee2mqtt
   - ../common/freeradius
 #  - ./node-red-dev
+  - ../common/frigate

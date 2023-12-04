@@ -13,22 +13,22 @@ metadata:
 data:
   config.yml: |
     mqtt:
-       host: "192.168.3.14"
-       port: 1883
-       user: test
-       password: test
-     cameras:
-       # Define at least one camera
-       front:
-         ffmpeg:
-           inputs:
-             - path: rtsp://viewer:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
-               roles:
-                 - detect
-                 - rtmp
-         detect:
-           width: 1280
-           height: 720
+      host: "192.168.3.14"
+      port: 1883
+      user: test
+      password: test
+    cameras:
+      # Define at least one camera
+      front:
+        ffmpeg:
+          inputs:
+            - path: rtsp://viewer:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+              roles:
+                - detect
+                - rtmp
+        detect:
+          width: 1280
+          height: 720
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1
@@ -90,7 +90,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: fa7f8a29b100225c12ddedf67cb9f6b34d77da21e034ac031a5c7182621c52f8
+        checksum/configmap: 4cb4a8b2babf2b9fdf5085815a3e2d98f3f9b110c0e314627433e7ba69f97d1f
     spec:
       containers:
         - name: frigate

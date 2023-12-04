@@ -1,6 +1,6 @@
 # values.yaml
 config: |
- mqtt:
+  mqtt:
     host: "192.168.3.14"
     port: 1883
     user: test

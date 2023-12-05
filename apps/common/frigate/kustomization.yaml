@@ -4,3 +4,6 @@ namespace: frigate
 resources:
   - namespace.yaml
   - frigate-stack.yaml
+  - serviceaccount.yaml
+  - external-secrets.yaml
+  - vault-secret-store.yaml

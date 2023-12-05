@@ -10,7 +10,7 @@ config: |
     front:
       ffmpeg:
         inputs:
-          - path: rtsp://viewer:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+          - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
             roles:
               - detect
               - rtmp

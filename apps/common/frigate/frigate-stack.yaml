@@ -26,6 +26,9 @@ data:
               roles:
                 - detect
                 - rtmp
+            - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+              roles:
+                - record
         detect:
           width: 1280
           height: 720

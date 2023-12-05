@@ -126,6 +126,11 @@ variable "AUTHENTIK_POSTGRESQL_PASSWORD" {
   description = "Authentik PostgreSQL password"
 }
 
+variable "FRIGATE_RTSP_PASSWORD" {
+  type = string
+  description = "FRIGATE_RTSP_PASSWORD"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -357,6 +362,28 @@ resource "vault_kubernetes_auth_backend_role" "authentik" {
 }
 
 # -----------------------------------------------------------------------------
+# frigate
+
+resource "vault_policy" "frigate-secrets-policy" {
+  name = "frigate-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/frigate" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "frigate" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "frigate-secrets-role"
+  bound_service_account_names      = ["frigate"]
+  bound_service_account_namespaces = ["frigate"]
+  token_ttl                        = 86400
+  token_policies                   = ["frigate-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
 resource "vault_kv_secret_v2" "nodered" {
   mount     = vault_mount.kvv2.path
@@ -447,6 +474,16 @@ resource "vault_kv_secret_v2" "authentik" {
   data_json = jsonencode(
     {
       postgresql-password = var.AUTHENTIK_POSTGRESQL_PASSWORD
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "frigate" {
+  mount     = vault_mount.kvv2.path
+  name      = "frigate"
+  data_json = jsonencode(
+    {
+      rtsp-password = var.FRIGATE_RTSP_PASSWORD
     }
   )
 }

@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../common/metallb
+  - metallb-configmap.yaml
+  - ../common/nfs-storage
+  - ../common/vault
+  - ../common/monitoring/setup
+  - ../common/monitoring
+  - ../common/mongodb
+  - ../common/loki
+  - ../common/external-secrets
+  - ../common/certmanager
+  - ../common/ingress
+  - ../common/cilium
+  - ../common/authentik

@@ -1,4 +1,24 @@
 
+## Installation
+
+### Install Ubuntu OS
+1. Download server ubuntu ARM64 from https://ubuntu.com/download/server/arm. Currently targetting 22.04.2 LTS.
+2. Flash iso to SD card using balenaEtcher
+3. Insert SD card into RPi and boot up
+
+### Set password, update
+1. ```ssh ubuntu@<ip-address>``` will force change of password
+2. reauthenticate
+3. sudo apt update
+4. sudo apt upgrade
+
+### Set hostname
+1. ```sudo hostnamectl set-hostname <rpi-kube-master01>```
+2. add 127.0.0.1 <rpi-kube-master01> to /etc/hosts
+3. sudo reboot
+
+
+
 ## Pods not scheduling or replicaset not created
 
 If a deployment has successfully been deployed but the replicaset has not started any pods, it may be due to the controller manager and/or scheduler being unhealthy. 

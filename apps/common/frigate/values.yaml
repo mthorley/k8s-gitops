@@ -10,14 +10,16 @@ config: |
     front:
       ffmpeg:
         inputs:
-          - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
             roles:
               - detect
               - rtmp
+          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+            roles:
+              - record
       detect:
         width: 1280
         height: 720
-
 service:
   type: LoadBalancer
   loadBalancerIP: 192.168.3.31

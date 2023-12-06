@@ -126,6 +126,11 @@ variable "AUTHENTIK_POSTGRESQL_PASSWORD" {
   description = "Authentik PostgreSQL password"
 }
 
+variable "FRIGATE_RTSP_USERNAME" {
+  type = string
+  description = "FRIGATE_RTSP_USERNAME"
+}
+
 variable "FRIGATE_RTSP_PASSWORD" {
   type = string
   description = "FRIGATE_RTSP_PASSWORD"
@@ -484,6 +489,7 @@ resource "vault_kv_secret_v2" "frigate" {
   data_json = jsonencode(
     {
       rtsp-password = var.FRIGATE_RTSP_PASSWORD
+      rtsp-username = var.FRIGATE_RTSP_USERNAME
     }
   )
 }

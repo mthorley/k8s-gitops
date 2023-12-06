@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crypto-agent
+  namespace: crypto-automate
+  labels:
+    app: crypto-agent
+spec:
+  selector:
+    matchLabels:
+      app: crypto-agent
+  template:
+    metadata:
+      labels:
+        app: crypto-agent
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: crypto-agent
+        image: mthorley/crypto-automate:latest
+        env:
+        - name: SECRET_RO
+          valueFrom:
+            secretKeyRef:
+              name: secret-cryptoautomation
+              key: secret-ro
+        - name: KEY_RO
+          valueFrom:
+            secretKeyRef:
+              name: secret-cryptoautomation
+              key: key-ro
+        - name: BOT_NAME
+          valueFrom:
+            secretKeyRef:
+              name: secret-cryptoautomation
+              key: bot-name
+        - name: BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: secret-cryptoautomation
+              key: bot-token
+        - name: CHAT_ID
+          valueFrom:
+            secretKeyRef:
+              name: secret-cryptoautomation
+              key: chat-id
+        ports:
+        - containerPort: 8080

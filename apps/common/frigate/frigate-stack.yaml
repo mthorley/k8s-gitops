@@ -12,6 +12,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 data:
   config.yml: |
+    ffmpeg:
+      hwaccel_args: preset-rpi-64-h264
     mqtt:
       host: "192.168.3.14"
       port: 1883
@@ -46,7 +48,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.3.31
+  loadBalancerIP: ${mqtt_ip}
   ports:
     - name: http
       port: 5000
@@ -93,7 +95,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: f1b6886e2407a69c3574a74c502a6f639066704fddd9b5b2151bf81cddb3e8cc
+        checksum/configmap: faf69704f4e12e9e64d1f7c21472b9b1ab18e535fba635ba7d2192a7210e327f
     spec:
       containers:
         - name: frigate

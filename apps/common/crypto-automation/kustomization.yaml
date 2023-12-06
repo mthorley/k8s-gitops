@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: crypto-automation
 resources:
   - namespace.yaml
-  - daemonset.yaml
+  - deployment.yaml
   - service.yaml
   - vault-secret-store.yaml
   - external-secrets.yaml

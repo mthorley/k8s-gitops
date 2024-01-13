@@ -1,0 +1,11 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-external-egress-zen"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: node-red
+  egress:
+  - toFQDNs:
+    - matchPattern: "wifi.zenhq.com"

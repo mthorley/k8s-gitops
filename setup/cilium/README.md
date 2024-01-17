@@ -1,4 +1,8 @@
 
+# Ensure modules added before installing cilium
+
+sudo apt install linux-modules-extra-raspi
+
 # Install CNI
 
 Install CLI

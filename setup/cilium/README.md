@@ -1,6 +1,8 @@
 
 # Ensure modules added before installing cilium
 
+As per https://docs.cilium.io/en/stable/operations/system_requirements/#ubuntu-22-04-on-raspberry-pi
+
 sudo apt install linux-modules-extra-raspi
 
 # Install CNI

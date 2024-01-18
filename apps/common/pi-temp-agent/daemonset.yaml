@@ -14,6 +14,9 @@ spec:
       labels:
         app: pi-temp-agent
     spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
       containers:
       - name: pi-temp-agent
         image: mthorley/pi-temp-agent:v0.0.2

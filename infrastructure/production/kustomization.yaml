@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ../common/metallb-13
   - metallb-configmap.yaml
-#  - ../common/nfs-storage
+  - ../common/nfs-storage
 #  - ../common/vault
 #  - ../common/monitoring/setup
 #  - ../common/monitoring

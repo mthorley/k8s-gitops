@@ -13,6 +13,7 @@ spec:
   validation: client
   postBuild:
     substitute:
+      nfs_server_ip: 192.168.2.113
       # FIXME: Ingress this up
       hubble_ui_ip: 192.168.2.31
       influxdb_ip: 192.168.2.20

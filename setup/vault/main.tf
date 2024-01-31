@@ -25,6 +25,7 @@ resource "vault_auth_backend" "kubernetes" {
   type = "kubernetes"
 }
 
+/* #if def __K8S_VERSION_LESSTHAN_1.22
 data "kubernetes_service_account" "vault" {
   metadata {
     name = "vault"
@@ -34,7 +35,16 @@ data "kubernetes_service_account" "vault" {
 
 data "kubernetes_secret" "vault" {
   metadata {
-    name = data.kubernetes_service_account.vault.default_secret_name
+    name = data.kubernetes_service_account.vault.default_secret_name             # k8s v <= 1.22
+    namespace = "vault"
+  }
+}
+#endif
+*/
+
+data "kubernetes_secret_v1" "vault" {
+  metadata {
+    name = "long-lived-vault-secret"             # k8s v > 1.22
     namespace = "vault"
   }
 }
@@ -62,6 +72,7 @@ resource "vault_kubernetes_auth_backend_config" "config" {
   backend                = vault_auth_backend.kubernetes.path
   kubernetes_host        = (var.env == "prod" ? var.master_host_port_prod : var.master_host_port_staging)
   kubernetes_ca_cert     = data.kubernetes_config_map.cacert.data["ca.crt"]
-  token_reviewer_jwt     = data.kubernetes_secret.vault.data.token
+# token_reviewer_jwt     = data.kubernetes_secret.vault.data.token # __K8S_VERSION_LESSTHAN_1.22
+  token_reviewer_jwt     = data.kubernetes_secret_v1.vault.data["token"]
   disable_iss_validation = "true"
 }

@@ -31,3 +31,8 @@ variable "INTERNAL_DOMAIN" {
   type = string
   description = "domain e.g. example.com"
 }
+
+variable "INTERNAL_DOMAIN_PROD" {
+  type = string
+  description = "domain e.g. example.com"
+}

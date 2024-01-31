@@ -17,7 +17,7 @@ resource "vault_mount" "root" {
 resource "vault_pki_secret_backend_root_cert" "root-2023" {
   backend               = vault_mount.root.path
   type                  = "internal"
-  common_name           = format("%s", var.INTERNAL_DOMAIN)
+  common_name           = (var.env == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))
   ttl                   = "315360000"
   format                = "pem"
   private_key_format    = "der"

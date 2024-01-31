@@ -10,10 +10,10 @@ resources:
   - ../common/external-secrets
   - ../common/certmanager-1.12
   - ../common/ingress
-#  - ../common/authentik
+  - ../common/authentik
 #  - ../common/monitoring/setup
 #  - ../common/monitoring
 #  - ../common/mongodb
 #  - ../common/loki
 #patchesStrategicMerge:
-#  - cert-issuer-authentik.yaml
+  - cert-issuer-authentik.yaml

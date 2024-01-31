@@ -15,5 +15,5 @@ resources:
 #  - ../common/monitoring
 #  - ../common/mongodb
 #  - ../common/loki
-patchesStrategicMerge:
-  - cert-issuer-authentik.yaml
+#patchesStrategicMerge:
+#  - cert-issuer-authentik.yaml

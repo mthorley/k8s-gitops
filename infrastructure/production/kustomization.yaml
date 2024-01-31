@@ -8,7 +8,7 @@ resources:
   - ../common/vault
   - vault-sa-secret.yaml
   - ../common/external-secrets
-  - ../common/certmanager
+  - ../common/certmanager-1.12
   - ../common/ingress
   - ../common/authentik
 #  - ../common/monitoring/setup

@@ -15,5 +15,12 @@ resources:
 #  - ../common/monitoring
 #  - ../common/mongodb
 #  - ../common/loki
-patchesStrategicMerge:
-  - cert-issuer-authentik.yaml
+patches:
+  - target:
+      group: cert-manager.io
+      version: v1
+      kind: Issuer
+      name: vault-issuer
+      namespace: authentik
+    path: cert-issuer-authentik.yaml
+

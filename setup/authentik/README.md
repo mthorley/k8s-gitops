@@ -1,4 +1,14 @@
 
+# Setup Authentik
+
+## Initial Setup
+
+Admin: https://auth.internal.com/if/flow/initial-setup/
+
+Terraform token: Navigate to admin user | Settings | Token and App Passwords, create a token
+
+Add token to tf env
+
 # Grafana SSO
 
 Uses Authentik to support OIDC federation between Grafana and Authentik.

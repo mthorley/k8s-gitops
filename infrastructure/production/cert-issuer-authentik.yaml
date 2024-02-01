@@ -14,4 +14,4 @@ spec:
         mountPath: /v1/auth/kubernetes
         # https://release-next--cert-manager-website.netlify.app/docs/configuration/vault/#secretless-authentication-with-a-service-account only works with v1.12.0 cert-manager, but this requires min k8s 1.22.
         serviceAccountRef:
-          name: authentik
+          name: vault-issuer

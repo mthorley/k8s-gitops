@@ -33,3 +33,4 @@ spec:
       frigate_ip: 192.168.3.31
       # external
       qnap_ip: 192.168.1.147
+      domain: internal.com # FIXME: cluster1.net

@@ -956,7 +956,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    - auth.internal.com
+    - "auth.${domain}"
     secretName: internal-com-tls
   rules:
     - host: auth.internal.com

@@ -5,7 +5,7 @@ metadata:
   namespace: authentik
 spec:
   dnsNames:
-    - auth.internal.com
+    - "auth.${domain}"
   secretName: internal-com-tls
   issuerRef:
     name: vault-issuer

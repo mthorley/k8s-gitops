@@ -959,7 +959,7 @@ spec:
     - "auth.${domain}"
     secretName: internal-com-tls
   rules:
-    - host: auth.internal.com
+    - host: "auth.${domain}"
       http:
         paths:
           - path: "/"

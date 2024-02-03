@@ -4,6 +4,7 @@ resources:
   - ../common/pi-temp-agent
 #  - ../common/rsyslog
   - ../common/mqtt
+  - mqtt-vault-secret.yaml
 #  - ../common/node-red
 #  - ../common/adguard
 #  - ../common/jupyternb

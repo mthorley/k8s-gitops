@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ../common/pi-temp-agent
 #  - ../common/rsyslog
-#  - ../common/mqtt
+  - ../common/mqtt
 #  - ../common/node-red
 #  - ../common/adguard
 #  - ../common/jupyternb

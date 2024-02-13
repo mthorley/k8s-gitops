@@ -13,5 +13,5 @@ spec:
         role: unifi-issuer-cert-role
         mountPath: /v1/auth/kubernetes
         secretRef:
-          name: default-token-7pm7l
+          name: default-token-w6jhs
           key: token

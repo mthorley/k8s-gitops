@@ -1,3 +1,3 @@
 
-env = "staging"
-#env = "prod"
+#env = "staging"
+env = "prod"

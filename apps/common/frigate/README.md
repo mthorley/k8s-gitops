@@ -14,4 +14,9 @@ helm template \
 
 As per [Frigate guidance](https://docs.frigate.video/configuration/hardware_acceleration), increase allocated RAM for GPU to at least 128:
 
-Modify `/boot/firmware/usercfg.txt` and add `gpu_mem=128`.
+```sudo raspi-config```
+
+and reboot
+
+## Attach Coral TPU
+

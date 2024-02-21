@@ -4,7 +4,6 @@ resources:
   - ../common/pi-temp-agent
 #  - ../common/rsyslog
   - ../common/mqtt
-  - vault-secret-store.yaml
   - mqtt-vault-secret.yaml
 #  - ../common/node-red
 #  - ../common/adguard
@@ -13,3 +12,5 @@ resources:
 #  - ../common/unifi-controller
 #  - ../common/homeassistant
 #  - ../common/zigbee2mqtt
+patchesStrategicMerge:
+  - mqtt-vault-secret-store.yaml

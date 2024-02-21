@@ -9,5 +9,5 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - external-secrets.yaml
-#  - vault-secret-store.yaml
+  - vault-secret-store.yaml
   - loadbalancer.yaml

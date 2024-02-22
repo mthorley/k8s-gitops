@@ -1,10 +1,7 @@
 
-```
-helm repo add aqua https://aquasecurity.github.io/helm-charts/
-helm repo update
+Using 
 
-helm template starboard-operator aqua/starboard-operator \
-  --namespace starboard-system \
-  --set="trivy.ignoreUnfixed=true" \
-  --version 0.10.12 -f values.yaml > starboard-stack.yaml
-```
+https://raw.githubusercontent.com/aquasecurity/starboard/v0.15.12/deploy/static/starboard.yaml
+
+as the helm chart doesn't seem to gen or include CRDs.
+

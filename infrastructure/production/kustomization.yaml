@@ -19,7 +19,7 @@ resources:
   - monitoring-vault-secret.yaml
 #  - ../common/mongodb
 #  - ../common/loki
-  - ../common/starboard
+#  - ../common/starboard
 patchesStrategicMerge:
   - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

@@ -74,7 +74,7 @@ resources:
   - prometheus-serviceMonitorKubelet.yaml
   - cert.yaml
   - cert-issuer.yaml
-  - vault-secret-store.yaml
+#  - vault-secret-store.yaml
   - external-secrets.yaml
 #  - vault-prometheus-serviceaccount.yaml
 #  - vault-servicemonitor.yaml

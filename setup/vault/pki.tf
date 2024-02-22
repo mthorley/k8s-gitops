@@ -154,7 +154,7 @@ resource "vault_kubernetes_auth_backend_role" "auth-issuer" {
 resource "vault_kubernetes_auth_backend_role" "grafana-issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "grafana-issuer-cert-role"
-  bound_service_account_names      = ["grafana"]
+  bound_service_account_names      = (var.env == "prod" ? ["vault-issuer"] : ["grafana"])  // FIXME: Remove grafana once cluster1 upgraded
   bound_service_account_namespaces = ["monitoring"]
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]

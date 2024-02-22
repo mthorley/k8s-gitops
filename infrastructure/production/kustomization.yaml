@@ -17,3 +17,4 @@ resources:
 #  - ../common/monitoring
 #  - ../common/mongodb
 #  - ../common/loki
+  - ../common/starboard

@@ -11,5 +11,5 @@ resources:
   - allow-local-egress-dns-netpol.yaml
   - deny-all-egress-netpol.yaml
 
-patches:
-  - patch-deployment-certs.yaml
+#patches:
+#  - patch-deployment-certs.yaml

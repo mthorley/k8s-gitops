@@ -20,5 +20,6 @@ resources:
   - ../common/cilium
 #  - ../common/tetragon   # supports ARM but needs min kernel 5.19
   - ../common/authentik
-  - cert-issuer-authentik.yaml
 #  - ../common/containerescapes
+patchesStrategicMerge:
+  - cert-issuer-authentik.yaml

@@ -5,13 +5,8 @@ metadata:
   namespace: authentik
 spec:
   vault:
-    path: "${pki_path}"
-    server: "http://vault.vault:8200"
-    #caBundle: <base64 encoded caBundle PEM file>
     auth:
       kubernetes:
-        role: auth-issuer-cert-role
-        mountPath: /v1/auth/kubernetes
         secretRef:
           name: authentik-token-2d4r9
           key: token

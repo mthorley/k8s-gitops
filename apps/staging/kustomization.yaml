@@ -4,6 +4,7 @@ resources:
   - ../common/pi-temp-agent
   - ../common/rsyslog
   - ../common/mqtt
+  - mqtt-vault-secret-store.yaml
   - ../common/node-red
   - ../common/adguard
   - ../common/jupyternb
@@ -15,5 +16,3 @@ resources:
   - ../common/freeradius
 #  - ./node-red-dev
 #  - ../common/frigate
-patchesStrategicMerge:
-  - mqtt-vault-secret-store.yaml

@@ -5,6 +5,7 @@ resources:
 #  - ../common/rsyslog
   - ../common/mqtt
   - mqtt-vault-secret.yaml
+  - mqtt-vault-secret-store.yaml
 #  - ../common/node-red
 #  - ../common/adguard
 #  - ../common/jupyternb
@@ -12,5 +13,3 @@ resources:
 #  - ../common/unifi-controller
 #  - ../common/homeassistant
 #  - ../common/zigbee2mqtt
-patchesStrategicMerge:
-  - mqtt-vault-secret-store.yaml

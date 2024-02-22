@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
 spec:
   dnsNames:
-    - grafana.internal.com
+    - "grafana.${domain}"
   secretName: internal-com-tls
   issuerRef:
     name: vault-issuer

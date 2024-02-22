@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-  - host: alertmanager.internal.com
+  - host: "alertmanager.${domain}"
     http:
       paths:
       - backend:

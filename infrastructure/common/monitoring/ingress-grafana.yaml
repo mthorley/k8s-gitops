@@ -6,10 +6,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - grafana.internal.com
+    - "grafana.${domain}"
     secretName: internal-com-tls
   rules:
-  - host: grafana.internal.com
+  - host: "grafana.${domain}"
     http:
       paths:
       - backend:

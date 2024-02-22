@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: monitoring
+spec:
+  vault:
+    auth:
+      kubernetes:
+        secretRef:
+          name: grafana-token-b9gqg # grafana service account
+          key: token

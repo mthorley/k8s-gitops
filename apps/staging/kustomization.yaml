@@ -16,3 +16,4 @@ resources:
   - ../common/freeradius
 #  - ./node-red-dev
 #  - ../common/frigate
+#  - frigate-vault-secret-store.yaml

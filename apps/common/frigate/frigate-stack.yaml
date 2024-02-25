@@ -7,7 +7,7 @@ metadata:
   namespace: frigate
   labels:
     app.kubernetes.io/name: frigate
-    helm.sh/chart: frigate-7.1.0
+    helm.sh/chart: frigate-7.3.0
     app.kubernetes.io/instance: frigate
     app.kubernetes.io/managed-by: Helm
 data:
@@ -15,10 +15,14 @@ data:
     ffmpeg:
       hwaccel_args: preset-rpi-64-h264
     mqtt:
-      host: "192.168.3.14"
+      host: "mqtt-mosquitto.mqtt"
       port: 1883
       user: test
       password: test
+    detectors:
+      coral:
+        type: edgetpu
+        device: usb
     cameras:
       # Define at least one camera
       front:
@@ -32,6 +36,7 @@ data:
               roles:
                 - record
         detect:
+          enabled: True
           width: 1280
           height: 720
 ---
@@ -42,13 +47,14 @@ metadata:
   name: frigate
   labels:
     app.kubernetes.io/name: frigate
-    helm.sh/chart: frigate-7.1.0
+    helm.sh/chart: frigate-7.3.0
     app.kubernetes.io/instance: frigate
-    app.kubernetes.io/version: "0.12.0"
+    app.kubernetes.io/version: "0.13.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: LoadBalancer
-  loadBalancerIP: ${mqtt_ip}
+  loadBalancerIP: ${frigate_ip}
+  ipFamilyPolicy: SingleStack
   ports:
     - name: http
       port: 5000
@@ -76,9 +82,9 @@ metadata:
   name: frigate
   labels:
     app.kubernetes.io/name: frigate
-    helm.sh/chart: frigate-7.1.0
+    helm.sh/chart: frigate-7.3.0
     app.kubernetes.io/instance: frigate
-    app.kubernetes.io/version: "0.12.0"
+    app.kubernetes.io/version: "0.13.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -95,7 +101,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: faf69704f4e12e9e64d1f7c21472b9b1ab18e535fba635ba7d2192a7210e327f
+        checksum/configmap: 72f688ecf156e87b625caaf6a6c68d2fae2ecb60d04d834d4abeda44f7c45fdf
     spec:
       containers:
         - name: frigate
@@ -130,32 +136,40 @@ spec:
             failureThreshold: 5
             timeoutSeconds: 10
           env:
-            - name: FRIGATE_RTSP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: rtsp-password
-            - name: FRIGATE_RTSP_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: rtsp-username
           envFrom:
           volumeMounts:
+            - mountPath: /config/config.yml
+              subPath: config.yml
+              name: configmap
             - mountPath: /config
               name: config
             - mountPath: /data
               name: data
+            - mountPath: /media
+              name: media
             - name: dshm
               mountPath: /dev/shm
           resources:
       volumes:
-        - name: config
+        - name: configmap
           configMap:
             name: frigate
+        - name: config
+          emptyDir: {}
         - name: data
+          emptyDir: {}
+        - name: media
           emptyDir: {}
         - name: dshm
           emptyDir:
             medium: Memory
             sizeLimit: 1Gi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - frigate

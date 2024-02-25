@@ -13,6 +13,6 @@ resources:
 #  - ../common/unifi-controller
 #  - ../common/homeassistant
 #  - ../common/zigbee2mqtt
-  - ../common/frigate
-  - frigate-vault-secret.yaml
-  - frigate-vault-secret-store.yaml
+#  - ../common/frigate
+#  - frigate-vault-secret.yaml
+#  - frigate-vault-secret-store.yaml

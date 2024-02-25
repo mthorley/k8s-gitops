@@ -24,15 +24,14 @@ data:
       front:
         ffmpeg:
           inputs:
-            - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+            - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
               roles:
                 - detect
                 - rtmp
-            - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+            - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
               roles:
                 - record
         detect:
-          enabled: True
           width: 1280
           height: 720
 ---
@@ -97,7 +96,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: f9ac902d149a9461b67cca45ce8753e3edd30793a2f4b9c5765f77796801381c
+        checksum/configmap: 2badbdbb499b8af6fe412d11ac88058980337dc4f4ee8eae7d17dc8458cb0fe8
     spec:
       containers:
         - name: frigate

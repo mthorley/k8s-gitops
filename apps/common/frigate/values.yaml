@@ -7,24 +7,19 @@ config: |
     port: 1883
     user: test
     password: test
-  detectors:
-    coral:
-      type: edgetpu
-      device: usb
   cameras:
     # Define at least one camera
     front:
       ffmpeg:
         inputs:
-          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
             roles:
               - detect
               - rtmp
-          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.1.71:554
+          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
             roles:
               - record
       detect:
-        enabled: True
         width: 1280
         height: 720
 service:

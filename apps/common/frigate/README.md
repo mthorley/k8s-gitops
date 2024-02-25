@@ -10,6 +10,10 @@ helm template \
   -f values.yaml > frigate-stack.yaml
 </pre>
 
+## Install ffmpeg 
+
+> sudo apt install ffmpeg
+
 ## Configure GPU on RPi4
 
 As per [Frigate guidance](https://docs.frigate.video/configuration/hardware_acceleration), increase allocated RAM for GPU to at least 128:
@@ -42,3 +46,12 @@ sudo apt-get update
 
 Install Edge TPU runtime
 > sudo apt-get install libedgetpu1-std
+
+## Add coral to Frigate config
+
+```
+  detectors:
+    coral:
+      type: edgetpu
+      device: usb
+```

@@ -5,13 +5,13 @@ config: |
   cameras:
     front: # <------ Name the camera
       enabled: True
-        ffmpeg:
-          inputs:
-          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-              roles:
-                - detect
-        detect:
-          enabled: False # <---- disable detection until you have a working camera feed
+      ffmpeg:
+        inputs:
+        - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
+            roles:
+              - detect
+      detect:
+        enabled: False # <---- disable detection until you have a working camera feed
 
 service:
   type: LoadBalancer

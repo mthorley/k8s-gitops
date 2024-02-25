@@ -17,13 +17,13 @@ data:
     cameras:
       front: # <------ Name the camera
         enabled: True
-          ffmpeg:
-            inputs:
-            - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-                roles:
-                  - detect
-          detect:
-            enabled: False # <---- disable detection until you have a working camera feed
+        ffmpeg:
+          inputs:
+          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
+              roles:
+                - detect
+        detect:
+          enabled: False # <---- disable detection until you have a working camera feed
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1
@@ -86,7 +86,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: ff58f1b77a1fd2ff2eeef7c5770d6fc0e8309aa398180eb29c9ce8aa648730d6
+        checksum/configmap: 18208804484f79f1809b714eb954a5b8c80823497f91a123f0a27da2f5e84c12
     spec:
       containers:
         - name: frigate

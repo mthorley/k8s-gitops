@@ -34,6 +34,10 @@ data:
         detect:
           width: 1280
           height: 720
+    go2rtc:
+      streams:
+        front:
+          - rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1
@@ -96,7 +100,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: 2badbdbb499b8af6fe412d11ac88058980337dc4f4ee8eae7d17dc8458cb0fe8
+        checksum/configmap: a335e9d42a2140f2f779c9ff2218c5969f0c9b7e993fbd052ee97655411cbed5
     spec:
       containers:
         - name: frigate

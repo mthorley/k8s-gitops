@@ -20,8 +20,8 @@ data:
         ffmpeg:
           inputs:
           - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-              roles:
-                - detect
+            roles:
+              - detect
         detect:
           enabled: False # <---- disable detection until you have a working camera feed
 ---

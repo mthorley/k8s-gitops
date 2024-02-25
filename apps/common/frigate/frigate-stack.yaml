@@ -13,7 +13,7 @@ metadata:
 data:
   config.yml: |
     ffmpeg:
-      hwaccel_args: preset-rpi-64-h264
+      hwaccel_args: preset-rpi-64-h265
     mqtt:
       enabled: False
     cameras:

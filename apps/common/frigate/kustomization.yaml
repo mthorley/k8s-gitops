@@ -6,4 +6,4 @@ resources:
   - frigate-stack.yaml
   - serviceaccount.yaml
   - external-secrets.yaml
-  - vault-secret-store.yaml
+#  - vault-secret-store.yaml

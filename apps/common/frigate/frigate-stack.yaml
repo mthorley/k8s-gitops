@@ -19,10 +19,6 @@ data:
       port: 1883
       user: test
       password: test
-    detectors:
-      coral:
-        type: edgetpu
-        device: usb
     cameras:
       # Define at least one camera
       front:
@@ -101,7 +97,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: 72f688ecf156e87b625caaf6a6c68d2fae2ecb60d04d834d4abeda44f7c45fdf
+        checksum/configmap: f9ac902d149a9461b67cca45ce8753e3edd30793a2f4b9c5765f77796801381c
     spec:
       containers:
         - name: frigate

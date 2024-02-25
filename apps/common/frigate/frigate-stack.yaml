@@ -12,32 +12,18 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 data:
   config.yml: |
-    ffmpeg:
-      hwaccel_args: preset-rpi-64-h264
     mqtt:
-      host: "mqtt-mosquitto.mqtt"
-      port: 1883
-      user: test
-      password: test
+      enabled: False
     cameras:
-      # Define at least one camera
-      front:
-        ffmpeg:
-          inputs:
+      front: # <------ Name the camera
+        enabled: True
+          ffmpeg:
+            inputs:
             - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-              roles:
-                - detect
-                - rtmp
-            - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-              roles:
-                - record
-        detect:
-          width: 1280
-          height: 720
-    go2rtc:
-      streams:
-        front:
-          - rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
+                roles:
+                  - detect
+          detect:
+            enabled: False # <---- disable detection until you have a working camera feed
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1
@@ -100,7 +86,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: a335e9d42a2140f2f779c9ff2218c5969f0c9b7e993fbd052ee97655411cbed5
+        checksum/configmap: ff58f1b77a1fd2ff2eeef7c5770d6fc0e8309aa398180eb29c9ce8aa648730d6
     spec:
       containers:
         - name: frigate

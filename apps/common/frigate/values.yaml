@@ -1,31 +1,17 @@
 # values.yaml
 config: |
-  ffmpeg:
-    hwaccel_args: preset-rpi-64-h264
   mqtt:
-    host: "mqtt-mosquitto.mqtt"
-    port: 1883
-    user: test
-    password: test
+    enabled: False
   cameras:
-    # Define at least one camera
-    front:
-      ffmpeg:
-        inputs:
+    front: # <------ Name the camera
+      enabled: True
+        ffmpeg:
+          inputs:
           - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-            roles:
-              - detect
-              - rtmp
-          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-            roles:
-              - record
-      detect:
-        width: 1280
-        height: 720
-  go2rtc:
-    streams:
-      front:
-        - rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
+              roles:
+                - detect
+        detect:
+          enabled: False # <---- disable detection until you have a working camera feed
 
 service:
   type: LoadBalancer

@@ -75,3 +75,9 @@ Install Edge TPU runtime
           enabled: False
 ```
 
+## To verify ffmpeg operates correctly
+
+Exec into container
+
+> root@frigate-587bfd9f67-8kd5g:/opt/frigate# ffmpeg -i rtsp://viewer:<pwd>@192.168.2.71:554//h264Preview_01_main -vcodec copy -acodec copy -map 0 -f segment -segment_time 300 -segment_format mp4 "ffmpeg_capture-%03d.mp4"
+

@@ -90,11 +90,11 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: 18208804484f79f1809b714eb954a5b8c80823497f91a123f0a27da2f5e84c12
+        checksum/configmap: 31cb7fa9593a46268f89fde54ed7eb19dbaa20e7f4163800e6f92995a659df37
     spec:
       containers:
         - name: frigate
-          image: "ghcr.io/blakeblackshear/frigate:0.12.0"
+          image: "ghcr.io/blakeblackshear/frigate:0.13.2"
           imagePullPolicy: IfNotPresent
           securityContext:
             {}

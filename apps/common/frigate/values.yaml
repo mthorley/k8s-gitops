@@ -1,17 +1,21 @@
 # values.yaml
 config: |
+  ffmpeg:
+    hwaccel_args: preset-rpi-64-h264
   mqtt:
     enabled: False
   cameras:
-    front: # <------ Name the camera
+    front:
       enabled: True
       ffmpeg:
         inputs:
-        - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554
-            roles:
-              - detect
+        - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554/h264Preview_01_main
+          roles:
+            - detect
       detect:
-        enabled: False # <---- disable detection until you have a working camera feed
+        enabled: False
+      rtmp: 
+        enabled: false
 
 service:
   type: LoadBalancer

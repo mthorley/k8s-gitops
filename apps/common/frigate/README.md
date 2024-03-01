@@ -55,3 +55,23 @@ Install Edge TPU runtime
       type: edgetpu
       device: usb
 ```
+
+# Diagnostics
+
+```
+    ffmpeg:
+      hwaccel_args: preset-rpi-64-h265
+    mqtt:
+      enabled: False
+    cameras:
+      front:
+        enabled: True
+        ffmpeg:
+          inputs:
+          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554/h265Preview_01_main
+            roles:
+              - detect
+        detect:
+          enabled: False
+```
+

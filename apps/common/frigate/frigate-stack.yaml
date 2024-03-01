@@ -25,9 +25,13 @@ data:
             roles:
               - detect
         detect:
-          enabled: False
+          enabled: True
         rtmp: 
-          enabled: false
+          enabled: False
+    detectors:
+      coral:
+        type: edgetpu
+        device: usb
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1

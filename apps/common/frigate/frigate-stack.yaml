@@ -94,14 +94,14 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: 31cb7fa9593a46268f89fde54ed7eb19dbaa20e7f4163800e6f92995a659df37
+        checksum/configmap: 7458cc55ef5dba27f43ecc44aeadd50249918481954f43a49212957d2c9747aa
     spec:
       containers:
         - name: frigate
           image: "ghcr.io/blakeblackshear/frigate:0.13.2"
           imagePullPolicy: IfNotPresent
           securityContext:
-            {}
+            privileged: true
           ports:
             - name: http
               containerPort: 5000
@@ -129,18 +129,10 @@ spec:
             failureThreshold: 5
             timeoutSeconds: 10
           env:
-            - name: FRIGATE_RTSP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: rtsp-password
-            - name: FRIGATE_RTSP_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: rtsp-username
           envFrom:
           volumeMounts:
+            - mountPath: /dev/bus/usb
+              name: coral-dev
             - mountPath: /config/config.yml
               subPath: config.yml
               name: configmap
@@ -157,6 +149,9 @@ spec:
         - name: configmap
           configMap:
             name: frigate
+        - name: coral-dev
+          hostPath:
+            path: /dev/bus/usb
         - name: config
           emptyDir: {}
         - name: data

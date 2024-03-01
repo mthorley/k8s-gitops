@@ -34,3 +34,6 @@ affinity:
           operator: In
           values:
           - frigate
+
+coral:
+  enabled: True

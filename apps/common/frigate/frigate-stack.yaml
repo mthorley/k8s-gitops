@@ -26,6 +26,8 @@ data:
               - detect
         detect:
           enabled: False
+        rtmp: 
+          enabled: false
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1

@@ -6,10 +6,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - nodered.internal.com
+    - "nodered.${domain}"
     secretName: internal-com-tls
   rules:
-  - host: nodered.internal.com
+  - host: "nodered.${domain}"
     http:
       paths:
       - path: /

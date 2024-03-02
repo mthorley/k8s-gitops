@@ -6,10 +6,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - jupyter.internal.com
+    - "jupyter.${domain}"
     secretName: internal-com-tls
   rules:
-  - host: jupyter.internal.com
+  - host: "jupyter.${domain}"
     http:
       paths:
       - path: /

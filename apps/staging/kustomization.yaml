@@ -6,6 +6,7 @@ resources:
   - ../common/mqtt
   - mqtt-vault-secret-store.yaml
   - ../common/node-red
+  - nodered-vault-secret-store.yaml
   - ../common/adguard
   - ../common/jupyternb
 #  - ../common/minecraft
@@ -17,3 +18,5 @@ resources:
 #  - ./node-red-dev
 #  - ../common/frigate
 #  - frigate-vault-secret-store.yaml
+patchesStrategicMerge:
+  - cert-issuer-nodered.yaml

@@ -136,6 +136,11 @@ variable "FRIGATE_RTSP_PASSWORD" {
   description = "FRIGATE_RTSP_PASSWORD"
 }
 
+variable "CLOUDFLARE_CREDS" {
+  type = string
+  description = "Json creds for Cloudflared tunnel"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -389,6 +394,28 @@ resource "vault_kubernetes_auth_backend_role" "frigate" {
 }
 
 # -----------------------------------------------------------------------------
+# cloudflared
+
+resource "vault_policy" "cloudflare-secrets-policy" {
+  name = "cloudflare-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/cloudflare" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "cloudflare" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "cloudflare-secrets-role"
+  bound_service_account_names      = ["cloudflare"]
+  bound_service_account_namespaces = ["cloudflare"]
+  token_ttl                        = 86400
+  token_policies                   = ["cloudflare-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
 resource "vault_kv_secret_v2" "nodered" {
   mount     = vault_mount.kvv2.path
@@ -492,6 +519,12 @@ resource "vault_kv_secret_v2" "frigate" {
       rtsp-username = var.FRIGATE_RTSP_USERNAME
     }
   )
+}
+
+resource "vault_kv_secret_v2" "cloudflare" {
+  mount     = vault_mount.kvv2.path
+  name      = "cloudflare"
+  data_json = var.CLOUDFLARE_CREDS
 }
 
 #module "sandbox_secrets" {

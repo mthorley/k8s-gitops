@@ -5,7 +5,7 @@ metadata:
   namespace: jupyter
 spec:
   dnsNames:
-    - jupyter.internal.com
+    - "jupyter.${domain}"
   secretName: internal-com-tls
   issuerRef:
     name: vault-issuer

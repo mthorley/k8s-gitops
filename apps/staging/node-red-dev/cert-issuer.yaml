@@ -5,7 +5,7 @@ metadata:
   namespace: node-red-dev
 spec:
   vault:
-    path: pki_int/sign/internal-dot-com
+    path: "${pki_path}"
     server: "http://vault.vault:8200"
     #caBundle: <base64 encoded caBundle PEM file>
     auth:

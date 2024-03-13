@@ -35,7 +35,7 @@ Ensure
  
  Ensure unifi dns is configured to route the host to nginx controller external LB
 
- 1. /host/.internal.com needs to be added to github.com/mthorley/network-management/unifi
+ 1. /host/${domain} needs to be added to github.com/mthorley/network-management/unifi
  2. terraform apply to generate gateway.json
  3. ssh into 192.168.3.111 
  4. update gateway.json under ```/mnt/ssd/unifi-controller-unifi-data-pvc-8235653e-4eaf-4fb8-b5dd-99ea39dd826d/data/sites/default```

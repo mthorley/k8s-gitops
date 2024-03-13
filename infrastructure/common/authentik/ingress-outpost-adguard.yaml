@@ -5,7 +5,7 @@ metadata:
   namespace: authentik
 spec:
   rules:
-  - host: auth.internal.com
+  - host: "auth.${domain}"
     http:
       paths: 
       - path: /outpost.goauthentik.io

@@ -5,4 +5,4 @@ resources:
   - namespace.yaml
 #  - neuvector-crd-stack.yaml
   - neuvector-core-stack.yaml
-  - neuvector-monitor-stack.yaml
+#  - neuvector-monitor-stack.yaml

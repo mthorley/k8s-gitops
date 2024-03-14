@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: nuevector
+resources:
+  - namespace.yaml
+  - neuvector-crd-stack.yaml
+  - neuvector-core-stack.yaml
+  - neuvector-monitor-stack.yaml

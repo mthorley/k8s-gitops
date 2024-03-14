@@ -1,0 +1,1768 @@
+---
+# Source: core/templates/controller-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: neuvector-controller-secret
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+type: Opaque
+data:
+  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBM0F5eWMybVVuZXg0RFpZbCtuVkJVSDZWenBzWi84MjZwT0RSYkEyVUlpMlNyaGZECkRoUnljSmwrQkNzNXlaclViUUhzZFBMMTNQQ3RxV1lJU3AzeXJubjZFSTcxUXAzOCsrYlFNQ0JSL0Fyak1iamIKY1VQTTZualh4VTVUMFBNRkpFaFJ1b3FCdWhSRFUxN2VzR3ZOUlRza2lUeERVa2R6SnQ2M1VvOGs5NVVIM0twTApsUmxDdlhPZjBZQzJJeXd5YmVxMUpCUHNhclg1TVlwNjluZ1drN2RJRFpzbWZ6Uk1PTkhmWWZWYW8xaW5zSnNnCi9xdjQvZWhNTFlLeFdOTHoxeUpNMDlSdVR4djFhSWdsd1ZWZWY1UUdGSlJBRCszUE5lTVZQS1FFOTJKbU9zQkYKRXhBcGFVRitPM25ObE9MWlhIcm5pNnhvQTBtL0dmUlpBZDRCVFFJREFRQUJBb0lCQUV1Z29ZUkErUzc5b3BVbwowWXl1MSsvT1ViWmNZQ2Nta2NzdzZVajFzYis5WWZncmVvSlFUTFNlVEUwcWZnWG9ETElhUXlZK2lubVF6bDYyCkRvdDJsWDJadG5RU2JnQ2pROXRmakpXOXhlK1YzbGVzYk44VXFreTdrNHpnU3JZNWo3N1VqQ0pNa0NGZjdYT3QKMjJOTzZaR3RyZlRzblVhZC85bVFHZmxwOFE2VnFqOUpCQ1BVNEFUVjk2bGRsUmdpQ0Q2RUlqak45dzIzUGlVVwpUcVp5bkJBVGdMUWN1WUcxOEdPSWdaVHRMWmxWTkFSclhOS2kxR1oxcGJHMGlHUHBlNmJmOEhLemhOanlOeFJOCkpTRlBaL2g1SUYvYytpaCtzYTliTUl4TUk4elNHQllxTVlDemxoZXJwQ0lnWGRKYUVQRlJJTkNoSzhTYmpJcDQKTEZNZng0RUNnWUVBL25tNXByS0x5ajNvU0N5THE2LzJSOG5aU01Rc1hKenhERnk0MklSR3Jibkdmd3NGV2xVOApjdUJtaEM4SDBnbm5DMjgwWXlrMlhHZ1MrcTNRcEpzWU55SzIzTzVIRDBqTVNYRjhDbnlLdGR1QUR2OTVHTGVrCnhCRWZUR2lvRU05MjZlSjlkcTZWWENoYzlIUDUybE1yTmtyK2pTL2dpTE1IT1lxY1E1c1MxTWtDZ1lFQTNWNHMKd0kvajJmTmNTR3dHRzFlM05UMGk2d1hYU2FpWnBYT0dGQ08xMEVzeFlQTld4SmJuSSs3TXJkVnM1Q0h2cWJHbgoxSE9WRlM3V1VSalZjUHNzY2EvNEQ0Z0pOMnZpcHU5L2VYQjVvVHRkZC9VdEN3RkNtOGhJckR6bmN2QzA2NWEvCkE0MEZITjN5UlNmM1BxWDJzNStyVmtyY21SbFpTUkpiOWkwOG5tVUNnWUJ4OE03UGRPSmlpNVdWdTF4T1kxdEMKaVg1Z3RuV21naDdzQ2hnNTJnQkxpUUwzbjFlbU9zUDJLOE83SzlPMGwvcDdoQzlRdHdOQUhObGlwTERuQXdxMApwVFo3ZGJVYmd0ejFoWHFrdDE3a1RvUG9NenRsZGRTd2RYb3VIQzRrV01CRnVNTzBnRGNnTEhKeWdmczlaai9TCjc0Rktka1Z5NzdZc2JZUEtRWVVOQVFLQmdRREVlRzhUd1NHak1TRDRqaGVsY09hRDgrem4xdGxLNEw3dFgyamkKdXdjRkJaZWZ5cGw2QmN6RDBaQUx3TjdTWTJSSW9ncW92cVRVbGl0VThzdU5hUC83THdqbEVBSE9GSXluU08xRQpwUlR1aXJmY1hkaEthaVhxQ1lxbWc2K1FEaDhrOFRnN09KQVBITldIbDM4VE5VMk9BdXFZdmZ5b1RSMDNnM25uCk5pTVZHUUtCZ0FzQTZub1Zla0FHcW9MSFoxbTRPRTdHWkJ1VFArUHhCYnRQWHhKVURRbXJIOW81dVFCN1FpSEoKYW9BWFhzaDREVTR2akdlMjc1RWQ5OHc5aUhNOGgzL2lKTWlXeEJvQ1VIQ2VhZnVPU1kyZjVoMmN4dTZoSnhhUAptOWRDbElZMHdnQmFvNHd1clpXbmZucDAvdHFaelVrMGE3VUNseC8wZ2UrLy9VbkhnZlRnCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURDRENDQWZDZ0F3SUJBZ0lSQUswWnF1MGpidUZzNGNxYjlEUGt3REl3RFFZSktvWklodmNOQVFFTEJRQXcKRkRFU01CQUdBMVVFQXhNSmJtVjFkbVZqZEc5eU1CNFhEVEkwTURNeE5EQTROVE13T0ZvWERUSTFNRE14TkRBNApOVE13T0Zvd0ZERVNNQkFHQTFVRUF4TUpibVYxZG1WamRHOXlNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DCkFROEFNSUlCQ2dLQ0FRRUEzQXl5YzJtVW5leDREWllsK25WQlVINlZ6cHNaLzgyNnBPRFJiQTJVSWkyU3JoZkQKRGhSeWNKbCtCQ3M1eVpyVWJRSHNkUEwxM1BDdHFXWUlTcDN5cm5uNkVJNzFRcDM4KytiUU1DQlIvQXJqTWJqYgpjVVBNNm5qWHhVNVQwUE1GSkVoUnVvcUJ1aFJEVTE3ZXNHdk5SVHNraVR4RFVrZHpKdDYzVW84azk1VUgzS3BMCmxSbEN2WE9mMFlDMkl5d3liZXExSkJQc2FyWDVNWXA2OW5nV2s3ZElEWnNtZnpSTU9OSGZZZlZhbzFpbnNKc2cKL3F2NC9laE1MWUt4V05MejF5Sk0wOVJ1VHh2MWFJZ2x3VlZlZjVRR0ZKUkFEKzNQTmVNVlBLUUU5MkptT3NCRgpFeEFwYVVGK08zbk5sT0xaWEhybmk2eG9BMG0vR2ZSWkFkNEJUUUlEQVFBQm8xVXdVekFPQmdOVkhROEJBZjhFCkJBTUNCYUF3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01Bd0dBMVVkRXdFQi93UUMKTUFBd0ZBWURWUjBSQkEwd0M0SUpibVYxZG1WamRHOXlNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNWeHphKwo4emRUM3Ura3VxOUwxc1FkRGdpY1JsMGg3c3RESW4xZmZqY1JpcVNxQ1o1SUkrQ1c2TVdrL3V4dTJldmEvbkJOCmdZeFVmTWpkRFFXaTJ6YzVRWmRvR2JXNlNxdmdGR0NSN0lhWENLT0hDeHp1RGRXZWhmZDNCeE4zWGN4dStwY0IKRHl0aDBuVUQyQk5ISUNTVWo0UzJxeTRGUjJHVWF5cjQrdGpWdjM4Y2xqa3FQNUlyMGlkM24wNWJMS2RuVWdXNAp1Yi9SWUNmNHk4bTAzUHlpNW8vVUFVUWtBSGM3MHhVUzZ6d0VLUWFXOEM0dXRyK1JyVEkwc0FQeE83dzdQZG5aCmlFWTJ0aERhQkttcTB0SkJ2c1ZLdDluT243dHM1N0k3YURLTjJtb1NSSG1EcDR1cFpBb3VoekQxWHVyNVBBK2QKWHZEOGRmNmgrbGRFRnBtdwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+---
+# Source: core/templates/manager-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: neuvector-manager-secret
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+type: Opaque
+data:
+  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBMGpVM1J4N1piOW1pTlVCbnZxYWtsS3c3am9ZakNmbzA0R1VZT254WnhNUExVT1gwCjNLQ3IvOWVIeWRQVFo4VHZmM0sxWTFDOG1FQTdqdDBDUDFvMlJwUFZNSFdWOXVBdU5NWWJvbm5YR0xTK3QwVWUKZEQzVTJZajJnZU9uZHpISC9HaXNIZWhvQUhFeWd6L21RaU54UituNTRiM0lBUGdDakNraE5XUzlFTWszYXlXcwovQTdsWkRKbHFJak04NnU3VHVzaHFwdjNCRy9PdUJkbjdYaGJlTmtyeGxEYlR2SUY0b1B1b3c4cDMrOXBKQWd4ClNwclVsQW5mOWVEeGxsRkdTZEtZNUhoaE5MYVZQZHhXVGdsdkFNOVBsR1NUbVdqN3ByZEZTVkY2M01GVDFRVSsKamNqaTVsbmhmc0lObGRHNWZ2OEwvUEpwSm1nRVFrckRscWtFbXdJREFRQUJBb0lCQURzSWtPYWJSa3RBSG1yQQpGS0taSUIxVXBVRW9jSXlyeE0vRDlHTHdhekYwSHhRd0VHMHBma1JTWGlNVEp3cThadG91OTd2VmY3RnVVSXVWCmk3MEk4N2NzYXpHNXhBelo5b0FCcHQ4aFFvUUF0cEszaVk3eGttWXBMYmxhbXJ4QnNiMDBGQ291QzQ4Y095aGEKK0twWVU4YnpjYWF3Nm90REcwd0xmUFVHdm9ZSXlkT2ZDU2pQbyt5bWhwR1JCcC91Si93UnRhOXVhYWNZeDVzMApZZmFiV2dzR1NtRFB1anAyOCtXMExGK0NBSEE2UlJBenNDaGt0c3dMNG02VzRRa3BjQlNKWjV2cFg3REIwWDQ5CkZyK3c5WDdIcEV5cUtFMWlyWnMwK3pONFVMWnRrenpPaHpsbDhuUU9VK0NTbVFDRE9TaS9haWc4cjVWTWNkRlMKS3BHRWREa0NnWUVBOVhMVUp2VTZKbUtJZkZXck5ZZS82U3pHL3ZPdkZTSDdoRnA3KzNvSGk0V0tqcFRxdXgwegpwaEJWTWxORTV4L3lIQWt1RkExRVFKZlpTQ1pvT2l5S28vMkUwYlF4ekN2L3Q3dWlPNG5UOU0zeEZtSzB3MUZhCk1DRG1lVjhkTlhRSUZ2dmt2eEF2MzNWdHhjQXo1MWZRa0F5WGlERjFhMGhWSG5YQ1RkYmNIUThDZ1lFQTJ6NlAKNk40NEFaMHB2QWlxVWJ5Y292YkRMWE5XdnA0Vmp3SVNCbzFFQ3hMT2t0dGg4RUtrRVJ6LzM4eDBIeFZheTVORQptVG5ENm9ncHhWUXdmYWxPalV1aElsK1JSRHU1OXF0MXVFY3JMcEJTanpSb0dRK2tZQmJUVHZZdjBVL2dyTk9KCjV1Z3lLQkJzUVY3TUcyN2tlTDUzVkxzVDF4TWpKRjIzMmJFUjk3VUNnWUIxQ251VjFDd1ZiN2pycVNKS0ZXQnkKL1RJckV1SnpMbEEwYmIxZlRuSlltcVpXbFRaVllYaG1nTFZQbVJ0ckp2V1pYdHRGSG9wa1RzU0N2aVhIVDhRUQpyT3h2M3dBNy91TWlwdXVXZm9PKzRaRkwvbWQ2RjhuczExTnZudVpidmVlNXBnWVBBZFlDTlluUjJYUW1wZDVEClFtM2p1TW5vRFliaFRvQUlCQ1BVQ3dLQmdCaWFDcGY4NTVmMnhNb2V4czNwTmtKcklqZWxhNlIwSk1NcFhsQngKNWFMQWQ0R3ZNR3cvYmgybGZXamxqbG8ya1R1cXlOWFF6NVV2dGxBNFJFQzFrT1QyQ1p6TDBJY3hsSXFEYnZCQQp2QzI3Y0NnMW4wREFxcGRGdUd4eDM2ZkRLTmo3Mjh1WFhwbDBUbEYvaTdQQVc4N1l3SmMzYnVDQmV6NEhiaXYxClhLakpBb0dCQU16aUdJcnNnbm5CQVJLNi96RzE4ekE0MlBUNURPZXhxcy9Jc0RnTENDYzFQVTdvOWhCSldLbEcKbFA0eXVncC9wVlFnK3FzQlJYRFJuam1tdXNuc3c5L25aZDZQeVlYVUxVWDZSYmFMdjdYU1ZXNE96Kyt2RmRKMwpNZVpoNFlUTGVQM21MUzRLN3FlcW5BZm9LT1ptSFhaY1BaaElQVjdNSUszUWsrc2c0VnZyCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lRVXZ1bXloZVBXVEZzRzlEUlpzRTFxREFOQmdrcWhraUc5dzBCQVFzRkFEQVUKTVJJd0VBWURWUVFERXdsdVpYVjJaV04wYjNJd0hoY05NalF3TXpFME1EZzFNekE0V2hjTk1qVXdNekUwTURnMQpNekE0V2pBVU1SSXdFQVlEVlFRREV3bHVaWFYyWldOMGIzSXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCCkR3QXdnZ0VLQW9JQkFRRFNOVGRISHRsdjJhSTFRR2UrcHFTVXJEdU9oaU1KK2pUZ1pSZzZmRm5Fdzh0UTVmVGMKb0t2LzE0ZkowOU5ueE85L2NyVmpVTHlZUUR1TzNRSS9XalpHazlVd2RaWDI0QzQweGh1aWVkY1l0TDYzUlI1MApQZFRaaVBhQjQ2ZDNNY2Y4YUt3ZDZHZ0FjVEtEUCtaQ0kzRkg2Zm5odmNnQStBS01LU0UxWkwwUXlUZHJKYXo4CkR1VmtNbVdvaU16enE3dE82eUdxbS9jRWI4NjRGMmZ0ZUZ0NDJTdkdVTnRPOGdYaWcrNmpEeW5mNzJra0NERksKbXRTVUNkLzE0UEdXVVVaSjBwamtlR0UwdHBVOTNGWk9DVzhBejArVVpKT1phUHVtdDBWSlVYcmN3VlBWQlQ2Tgp5T0xtV2VGK3dnMlYwYmwrL3d2ODhta21hQVJDU3NPV3FRU2JBZ01CQUFHalZUQlRNQTRHQTFVZER3RUIvd1FFCkF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0RBWURWUjBUQVFIL0JBSXcKQURBVUJnTlZIUkVFRFRBTGdnbHVaWFYyWldOMGIzSXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBTSs0cHNaNAphOFovL0J1TlRDbGtjK05lY21sUkFSM3BZdlZoNTJwYnZFZ0t0bWxQZHlGVkh0S2llSEhJOFFycVZvTXBFa0ZsCmxqVTl6KzB0ZThENExHUWs1RFJ4ek9Xb0ppUmJUVzRxSDVaazZvd2lTRU43aHRRSmNYZWxYZ3VPd2E3Rm5wSWUKcWxSYUtnWVdLSXlNelNZemxkbGdKQ0ErWFQvSmZueXlKbGFrSG9OeVBQWjY0bGFWa3RWa2dSQUhsZFlzUWJaNwp3dVZEc2VoVGpYS3FKSmRmRnZYLzNUYkRSR2hJMTZtYzZ4Ujd3WlhOS3dJWUEvOFZoa21BL01ILzJaQTdiUFl2ClhxcncwZmRQUjBVTGdIZ3pDUVY0SG1PYUZjUnVtbW5KQTkra3Fla0JHZnpITW4xK1ZaUmw3U25EOXk1em1vNjQKclNHRXlYa1oyMUZlenlBPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvsecurityrules.neuvector.com
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvSecurityRule
+    listKind: NvSecurityRuleList
+    plural: nvsecurityrules
+    singular: nvsecurityrule
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              egress:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - allow
+                      - deny
+                      type: string
+                    applications:
+                      items:
+                        type: string
+                      type: array
+                    name:
+                      type: string
+                    ports:
+                      type: string
+                    priority:
+                      type: integer
+                    selector:
+                      properties:
+                        comment:
+                          type: string
+                        criteria:
+                          items:
+                            properties:
+                              key:
+                                type: string
+                              op:
+                                type: string
+                              value:
+                                type: string
+                            required:
+                            - key
+                            - op
+                            - value
+                            type: object
+                          type: array
+                        name:
+                          type: string
+                        original_name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                  required:
+                  - action
+                  - name
+                  - selector
+                  type: object
+                type: array
+              file:
+                items:
+                  properties:
+                    app:
+                      items:
+                        type: string
+                      type: array
+                    behavior:
+                      enum:
+                      - monitor_change
+                      - block_access
+                      type: string
+                    filter:
+                      type: string
+                    recursive:
+                      type: boolean
+                  required:
+                  - behavior
+                  - filter
+                  type: object
+                type: array
+              ingress:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - allow
+                      - deny
+                      type: string
+                    applications:
+                      items:
+                        type: string
+                      type: array
+                    name:
+                      type: string
+                    ports:
+                      type: string
+                    priority:
+                      type: integer
+                    selector:
+                      properties:
+                        comment:
+                          type: string
+                        criteria:
+                          items:
+                            properties:
+                              key:
+                                type: string
+                              op:
+                                type: string
+                              value:
+                                type: string
+                            required:
+                            - key
+                            - op
+                            - value
+                            type: object
+                          type: array
+                        name:
+                          type: string
+                        original_name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                  required:
+                  - action
+                  - name
+                  - selector
+                  type: object
+                type: array
+              process:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - allow
+                      - deny
+                      type: string
+                    allow_update:
+                      type: boolean
+                    name:
+                      type: string
+                    path:
+                      type: string
+                  required:
+                  - action
+                  type: object
+                type: array
+              process_profile:
+                properties:
+                  baseline:
+                    enum:
+                    - default
+                    - shield
+                    - basic
+                    - zero-drift
+                    type: string
+                type: object
+              target:
+                properties:
+                  policymode:
+                    enum:
+                    - Discover
+                    - Monitor
+                    - Protect
+                    - N/A
+                    type: string
+                  selector:
+                    properties:
+                      comment:
+                        type: string
+                      criteria:
+                        items:
+                          properties:
+                            key:
+                              type: string
+                            op:
+                              type: string
+                            value:
+                              type: string
+                          required:
+                          - key
+                          - op
+                          - value
+                          type: object
+                        type: array
+                      name:
+                        type: string
+                      original_name:
+                        type: string
+                    required:
+                    - name
+                    type: object
+                required:
+                - selector
+                type: object
+              dlp:
+                properties:
+                  settings:
+                    items:
+                      properties:
+                        action:
+                          enum:
+                          - allow
+                          - deny
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      - action
+                      type: object
+                    type: array
+                  status:
+                    type: boolean
+                type: object
+              waf:
+                properties:
+                  settings:
+                    items:
+                      properties:
+                        action:
+                          enum:
+                          - allow
+                          - deny
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      - action
+                      type: object
+                    type: array
+                  status:
+                    type: boolean
+                type: object
+            required:
+            - target
+            type: object
+        type: object
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvclustersecurityrules.neuvector.com
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvClusterSecurityRule
+    listKind: NvClusterSecurityRuleList
+    plural: nvclustersecurityrules
+    singular: nvclustersecurityrule
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              egress:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - allow
+                      - deny
+                      type: string
+                    applications:
+                      items:
+                        type: string
+                      type: array
+                    name:
+                      type: string
+                    ports:
+                      type: string
+                    priority:
+                      type: integer
+                    selector:
+                      properties:
+                        comment:
+                          type: string
+                        criteria:
+                          items:
+                            properties:
+                              key:
+                                type: string
+                              op:
+                                type: string
+                              value:
+                                type: string
+                            required:
+                            - key
+                            - op
+                            - value
+                            type: object
+                          type: array
+                        name:
+                          type: string
+                        original_name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                  required:
+                  - action
+                  - name
+                  - selector
+                  type: object
+                type: array
+              file:
+                items:
+                  properties:
+                    app:
+                      items:
+                        type: string
+                      type: array
+                    behavior:
+                      enum:
+                      - monitor_change
+                      - block_access
+                      type: string
+                    filter:
+                      type: string
+                    recursive:
+                      type: boolean
+                  required:
+                  - behavior
+                  - filter
+                  type: object
+                type: array
+              ingress:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - allow
+                      - deny
+                      type: string
+                    applications:
+                      items:
+                        type: string
+                      type: array
+                    name:
+                      type: string
+                    ports:
+                      type: string
+                    priority:
+                      type: integer
+                    selector:
+                      properties:
+                        comment:
+                          type: string
+                        criteria:
+                          items:
+                            properties:
+                              key:
+                                type: string
+                              op:
+                                type: string
+                              value:
+                                type: string
+                            required:
+                            - key
+                            - op
+                            - value
+                            type: object
+                          type: array
+                        name:
+                          type: string
+                        original_name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                  required:
+                  - action
+                  - name
+                  - selector
+                  type: object
+                type: array
+              process:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - allow
+                      - deny
+                      type: string
+                    allow_update:
+                      type: boolean
+                    name:
+                      type: string
+                    path:
+                      type: string
+                  required:
+                  - action
+                  type: object
+                type: array
+              process_profile:
+                properties:
+                  baseline:
+                    enum:
+                    - default
+                    - shield
+                    - basic
+                    - zero-drift
+                    type: string
+                type: object
+              target:
+                properties:
+                  policymode:
+                    enum:
+                    - Discover
+                    - Monitor
+                    - Protect
+                    - N/A
+                    type: string
+                  selector:
+                    properties:
+                      comment:
+                        type: string
+                      criteria:
+                        items:
+                          properties:
+                            key:
+                              type: string
+                            op:
+                              type: string
+                            value:
+                              type: string
+                          required:
+                          - key
+                          - op
+                          - value
+                          type: object
+                        type: array
+                      name:
+                        type: string
+                      original_name:
+                        type: string
+                    required:
+                    - name
+                    type: object
+                required:
+                - selector
+                type: object
+              dlp:
+                properties:
+                  settings:
+                    items:
+                      properties:
+                        action:
+                          enum:
+                          - allow
+                          - deny
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      - action
+                      type: object
+                    type: array
+                  status:
+                    type: boolean
+                type: object
+              waf:
+                properties:
+                  settings:
+                    items:
+                      properties:
+                        action:
+                          enum:
+                          - allow
+                          - deny
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - name
+                      - action
+                      type: object
+                    type: array
+                  status:
+                    type: boolean
+                type: object
+            required:
+            - target
+            type: object
+        type: object
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvdlpsecurityrules.neuvector.com
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvDlpSecurityRule
+    listKind: NvDlpSecurityRuleList
+    plural: nvdlpsecurityrules
+    singular: nvdlpsecurityrule
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              sensor:
+                properties:
+                  comment:
+                    type: string
+                  name:
+                    type: string
+                  rules:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        patterns:
+                          items:
+                            properties:
+                              context:
+                                enum:
+                                - url
+                                - header
+                                - body
+                                - packet
+                                type: string
+                              key:
+                                enum:
+                                - pattern
+                                type: string
+                              op:
+                                enum:
+                                - regex
+                                - '!regex'
+                                type: string
+                              value:
+                                type: string
+                            required:
+                            - key
+                            - op
+                            - value
+                            - context
+                            type: object
+                          type: array
+                      required:
+                      - name
+                      - patterns
+                      type: object
+                    type: array
+                required:
+                - name
+                type: object
+            required:
+            - sensor
+            type: object
+        type: object
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvadmissioncontrolsecurityrules.neuvector.com
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvAdmissionControlSecurityRule
+    listKind: NvAdmissionControlSecurityRuleList
+    plural: nvadmissioncontrolsecurityrules
+    singular: nvadmissioncontrolsecurityrule
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              config:
+                properties:
+                  client_mode:
+                    enum:
+                    - service
+                    - url
+                    type: string
+                  enable:
+                    type: boolean
+                  mode:
+                    enum:
+                    - monitor
+                    - protect
+                    type: string
+                required:
+                - enable
+                - mode
+                - client_mode
+                type: object
+              rules:
+                items:
+                  properties:
+                    action:
+                      enum:
+                      - allow
+                      - deny
+                      type: string
+                    comment:
+                      type: string
+                    criteria:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          op:
+                            type: string
+                          path:
+                            type: string
+                          sub_criteria:
+                            items:
+                              properties:
+                                name:
+                                  type: string
+                                op:
+                                  type: string
+                                value:
+                                  type: string
+                              required:
+                              - name
+                              - op
+                              - value
+                              type: object
+                            type: array
+                          template_kind:
+                            type: string
+                          type:
+                            type: string
+                          value:
+                            type: string
+                          value_type:
+                            type: string
+                        required:
+                        - name
+                        - op
+                        - value
+                        type: object
+                      type: array
+                    disabled:
+                      type: boolean
+                    id:
+                      type: integer
+                    rule_mode:
+                      enum:
+                      - ""
+                      - monitor
+                      - protect
+                      type: string
+                    containers:
+                      items:
+                        enum:
+                        - containers
+                        - init_containers
+                        - ephemeral_containers
+                        type: string
+                      type: array
+                  required:
+                  - action
+                  - criteria
+                  type: object
+                type: array
+            type: object
+        type: object
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvwafsecurityrules.neuvector.com
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvWafSecurityRule
+    listKind: NvWafSecurityRuleList
+    plural: nvwafsecurityrules
+    singular: nvwafsecurityrule
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              sensor:
+                properties:
+                  comment:
+                    type: string
+                  name:
+                    type: string
+                  rules:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        patterns:
+                          items:
+                            properties:
+                              context:
+                                enum:
+                                - url
+                                - header
+                                - body
+                                - packet
+                                type: string
+                              key:
+                                enum:
+                                - pattern
+                                type: string
+                              op:
+                                enum:
+                                - regex
+                                - '!regex'
+                                type: string
+                              value:
+                                type: string
+                            required:
+                            - key
+                            - op
+                            - value
+                            - context
+                            type: object
+                          type: array
+                      required:
+                      - name
+                      - patterns
+                      type: object
+                    type: array
+                required:
+                - name
+                type: object
+            required:
+            - sensor
+            type: object
+        type: object
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvcomplianceprofiles.neuvector.com
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvComplianceProfile
+    listKind: NvComplianceProfileList
+    plural: nvcomplianceprofiles
+    singular: nvcomplianceprofile
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              templates:
+                properties:
+                  disable_system:
+                    type: boolean
+                  entries:
+                    items:
+                      properties:
+                        tags:
+                          items:
+                            type: string
+                          type: array
+                        test_number:
+                          type: string
+                      required:
+                      - test_number
+                      type: object
+                    type: array
+                required:
+                - entries
+                type: object
+            type: object
+        type: object
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvvulnerabilityprofiles.neuvector.com
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvVulnerabilityProfile
+    listKind: NvVulnerabilityProfileList
+    plural: nvvulnerabilityprofiles
+    singular: nvvulnerabilityprofile
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              profile:
+                properties:
+                  entries:
+                    items:
+                      properties:
+                        comment:
+                          type: string
+                        days:
+                          type: integer
+                        domains:
+                          items:
+                            type: string
+                          type: array
+                        images:
+                          items:
+                            type: string
+                          type: array
+                        name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                required:
+                - entries
+                type: object
+            required:
+            - profile
+            type: object
+        type: object
+---
+# Source: core/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-app
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  - pods
+  - services
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+---
+# Source: core/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-rbac
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - rolebindings
+  - roles
+  - clusterrolebindings
+  - clusterroles
+  verbs:
+  - get
+  - list
+  - watch
+---
+# Source: core/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-admission
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - validatingwebhookconfigurations
+  - mutatingwebhookconfigurations
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - delete
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to operate CRD
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-customresourcedefinition
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - update
+  - watch
+  - create
+  - get
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to manage network/process CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvsecurityrules
+  - nvclustersecurityrules
+  verbs:
+  - get
+  - list
+  - delete
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to manage dlp CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvdlpsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvdlpsecurityrules
+  verbs:
+  - get
+  - list
+  - delete
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to manage admission control CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvadmissioncontrolsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvadmissioncontrolsecurityrules
+  verbs:
+  - get
+  - list
+  - delete
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to manage waf CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvwafsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvwafsecurityrules
+  verbs:
+  - get
+  - list
+  - delete
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to manage compliance CRD profiles
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvcomplianceprofiles
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvcomplianceprofiles
+  verbs:
+  - get
+  - list
+  - delete
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to manage vulnerability CRD profiles
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvvulnerabilityprofiles
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvvulnerabilityprofiles
+  verbs:
+  - get
+  - list
+  - delete
+---
+# Source: core/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-app
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-app
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-rbac
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-rbac
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-admission
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-admission
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-view
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to operate CRD
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-customresourcedefinition
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-customresourcedefinition
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to manage network/process CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvsecurityrules
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to manage admission control CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvdlpsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvdlpsecurityrules
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to manage admission control CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvadmissioncontrolsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvadmissioncontrolsecurityrules
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to manage waf CRD rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvwafsecurityrules
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvwafsecurityrules
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to manage compliance CRD profiles
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvcomplianceprofiles
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvcomplianceprofiles
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to manage vulnerability CRD profiles
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvvulnerabilityprofiles
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvvulnerabilityprofiles
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: neuvector-binding-secret
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+---
+# Source: core/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: neuvector-admin
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: neuvector-binding-secret
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: neuvector-binding-secret
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/admission-webhook-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-svc-admission-webhook
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  ports:
+    - port: 443
+      targetPort: 20443
+      protocol: TCP
+      name: admission-webhook
+  type: ClusterIP
+  selector:
+    app: neuvector-controller-pod
+---
+# Source: core/templates/controller-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-svc-controller
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  clusterIP: None
+  ports:
+    - port: 18300
+      protocol: "TCP"
+      name: "cluster-tcp-18300"
+    - port: 18301
+      protocol: "TCP"
+      name: "cluster-tcp-18301"
+    - port: 18301
+      protocol: "UDP"
+      name: "cluster-udp-18301"
+  selector:
+    app: neuvector-controller-pod
+---
+# Source: core/templates/crd.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-svc-crd-webhook
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  ports:
+    - port: 443
+      targetPort: 30443
+      protocol: TCP
+      name: crd-webhook
+  type: ClusterIP
+  selector:
+    app: neuvector-controller-pod
+---
+# Source: core/templates/manager-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-service-webui
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  type: NodePort
+  ports:
+    - port: 8443
+      name: manager
+      protocol: TCP
+  selector:
+    app: neuvector-manager-pod
+---
+# Source: core/templates/enforcer-daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: neuvector-enforcer-pod
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    heritage: Helm
+    release: neuvector
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: neuvector-enforcer-pod
+  template:
+    metadata:
+      labels:
+        app: neuvector-enforcer-pod
+        release: neuvector
+    spec:
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+      hostPID: true
+      serviceAccountName: default
+      serviceAccount: default
+      containers:
+        - name: neuvector-enforcer-pod
+          image: "docker.io/neuvector/enforcer:5.3.0"
+          securityContext:
+            privileged: true
+          resources:
+            {}
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.neuvector
+            - name: CLUSTER_ADVERTISED_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_BIND_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - mountPath: /lib/modules
+              name: modules-vol
+              readOnly: true
+            - mountPath: /var/nv_debug
+              name: nv-debug
+              readOnly: false
+      terminationGracePeriodSeconds: 1200
+      restartPolicy: Always
+      volumes:
+        - name: modules-vol
+          hostPath:
+            path: /lib/modules
+        - name: nv-debug
+          hostPath:
+            path: /var/nv_debug
+---
+# Source: core/templates/controller-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-controller-pod
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  replicas: 3
+  minReadySeconds: 60
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: neuvector-controller-pod
+  template:
+    metadata:
+      labels:
+        app: neuvector-controller-pod
+        release: neuvector
+      annotations:
+        checksum/controller-secret: d6968c621f6434f33867d1c6c0406a1920715a30e7a1714f6b9ae43b6d4194f3
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - neuvector-controller-pod
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      serviceAccountName: default
+      serviceAccount: default
+      containers:
+        - name: neuvector-controller-pod
+          image: "docker.io/neuvector/controller:5.3.0"
+          securityContext:
+            runAsUser: 0
+          resources:
+            {}
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp/ready
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.neuvector
+            - name: CLUSTER_ADVERTISED_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_BIND_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - mountPath: /etc/config
+              name: config-volume
+              readOnly: true
+            - mountPath: /etc/neuvector/certs/ssl-cert.key
+              subPath: ssl-cert.key
+              name: cert
+              readOnly: true
+            - mountPath: /etc/neuvector/certs/ssl-cert.pem
+              subPath: ssl-cert.pem
+              name: cert
+              readOnly: true
+      terminationGracePeriodSeconds: 300
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          projected:
+            sources:
+              - configMap:
+                  name: neuvector-init
+                  optional: true
+              - secret:
+                  name: neuvector-init
+                  optional: true
+              - secret:
+                  name: neuvector-secret
+                  optional: true
+        - name: cert
+          secret:
+            secretName: neuvector-controller-secret
+---
+# Source: core/templates/manager-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-manager-pod
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neuvector-manager-pod
+  template:
+    metadata:
+      labels:
+        app: neuvector-manager-pod
+        release: neuvector
+      annotations:
+        checksum/manager-secret: 72f9d8a5b41daebf58f542def07bff70ac0440a19f90046e1e03d61aadcb7e02
+    spec:
+      serviceAccountName: default
+      serviceAccount: default
+      containers:
+        - name: neuvector-manager-pod
+          image: "docker.io/neuvector/manager:5.3.0"
+          ports:
+            - name: http
+              containerPort: 8443
+              protocol: TCP
+          env:
+            - name: CTRL_SERVER_IP
+              value: neuvector-svc-controller.neuvector
+          volumeMounts:
+            - mountPath: /etc/neuvector/certs/ssl-cert.key
+              subPath: ssl-cert.key
+              name: cert
+              readOnly: true
+            - mountPath: /etc/neuvector/certs/ssl-cert.pem
+              subPath: ssl-cert.pem
+              name: cert
+              readOnly: true
+          resources:
+            {}
+      restartPolicy: Always
+      volumes:
+        - name: cert
+          secret:
+            secretName: neuvector-manager-secret
+---
+# Source: core/templates/scanner-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-scanner-pod
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    heritage: Helm
+    release: neuvector
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: neuvector-scanner-pod
+  template:
+    metadata:
+      labels:
+        app: neuvector-scanner-pod
+    spec:
+      serviceAccountName: default
+      serviceAccount: default
+      containers:
+        - name: neuvector-scanner-pod
+          image: "docker.io/neuvector/scanner:latest"
+          imagePullPolicy: Always
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.neuvector
+          resources:
+            {}
+      restartPolicy: Always
+---
+# Source: core/templates/updater-cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: neuvector-updater-pod
+  namespace: neuvector
+  labels:
+    chart: core-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: neuvector-updater-pod
+            release: neuvector
+        spec:
+          serviceAccountName: default
+          serviceAccount: default
+          containers:
+            - name: neuvector-updater-pod
+              image: "docker.io/neuvector/updater:latest"
+              imagePullPolicy: Always
+              command:
+              - /bin/sh
+              - -c
+              - /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
+          restartPolicy: Never

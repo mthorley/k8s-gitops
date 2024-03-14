@@ -1,0 +1,77 @@
+---
+# Source: monitor/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: neuvector-prometheus-exporter-pod-secret
+  namespace: neuvector
+  labels:
+    chart: monitor-2.7.3
+    release: neuvector
+    heritage: Helm
+type: Opaque
+data:
+  CTRL_USERNAME: "YWRtaW4="
+  CTRL_PASSWORD: "YWRtaW4="
+---
+# Source: monitor/templates/exporter-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-prometheus-exporter
+  namespace: neuvector
+  labels:
+    chart: monitor-2.7.3
+    release: neuvector
+    heritage: Helm
+    app: neuvector-prometheus-exporter
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8068
+      name: metrics
+      targetPort: 8068
+      protocol: TCP
+  selector:
+    app: neuvector-prometheus-exporter-pod
+---
+# Source: monitor/templates/exporter-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-prometheus-exporter-pod
+  namespace: neuvector
+  labels:
+    chart: monitor-2.7.3
+    release: neuvector
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neuvector-prometheus-exporter-pod
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8068"
+        prometheus.io/scrape: "true"
+        checksum/secret: d741f5bd3dd8c97b2dfc18d8faec9514b43f020b80a56d1e61fb844c198e6301
+      labels:
+        app: neuvector-prometheus-exporter-pod
+        release: neuvector
+    spec:
+      containers:
+        - name: neuvector-prometheus-exporter-pod
+          
+          image: "docker.io/neuvector/prometheus-exporter:latest"
+          imagePullPolicy: Always
+          env:
+            - name: CTRL_API_SERVICE
+              value: neuvector-svc-controller-api:10443
+            - name: EXPORTER_PORT
+              value: "8068"
+          envFrom:
+            - secretRef:
+                name: neuvector-prometheus-exporter-pod-secret
+      restartPolicy: Always

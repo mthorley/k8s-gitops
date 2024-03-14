@@ -21,7 +21,7 @@ resources:
   - ../common/loki
 #  - ../common/starboard
 #  - ../common/tetragon
-  - ../common/neuvector
+#  - ../common/neuvector
 patchesStrategicMerge:
   - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

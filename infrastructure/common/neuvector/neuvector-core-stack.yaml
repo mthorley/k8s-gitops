@@ -1653,7 +1653,8 @@ spec:
       serviceAccount: default
       containers:
         - name: neuvector-manager-pod
-          image: "docker.io/neuvector/manager:5.3.0"
+#          image: "docker.io/neuvector/manager:5.3.0"
+          image: "docker.io/neuvector/manager:arm64.5.3.0"
           ports:
             - name: http
               containerPort: 8443

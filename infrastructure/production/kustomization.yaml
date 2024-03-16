@@ -22,6 +22,7 @@ resources:
 #  - ../common/starboard
 #  - ../common/tetragon
 #  - ../common/neuvector
+  - ../common/falco
 patchesStrategicMerge:
   - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

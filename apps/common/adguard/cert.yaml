@@ -5,7 +5,7 @@ metadata:
   namespace: adguard-home
 spec:
   dnsNames:
-    - adguard.internal.com
+    - "adguard.${domain}"
   secretName: internal-com-tls
   issuerRef:
     name: vault-issuer

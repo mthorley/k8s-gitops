@@ -1,14 +1,15 @@
 
 image:
-#  repository: jacobalberty/unifi
+  repository: jacobalberty/unifi
 #  tag: v7.1.66
 #  tag: v7.2.95
 #  tag: v7.3.83
 #  tag: v7.4.156
+  tag: v8.0.28
 
 # Migration to new repo and image version
-  repository: nexusforge/unifi-docker
-  tag: v8.0.24
+#  repository: nexusforge/unifi-docker
+#  tag: v8.0.24
 #    > v7.5.187   # target for psk's
 
 #service:

@@ -163,7 +163,7 @@ resource "vault_kubernetes_auth_backend_role" "grafana-issuer" {
 resource "vault_kubernetes_auth_backend_role" "adguard-issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "adguard-issuer-cert-role"
-  bound_service_account_names      = ["default"]
+  bound_service_account_names      = (var.env == "prod" ? ["vault-issuer"] : ["default"])  // FIXME: Remove grafana once cluster1 upgraded
   bound_service_account_namespaces = ["adguard-home"]
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]

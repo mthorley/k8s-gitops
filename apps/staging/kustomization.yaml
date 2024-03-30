@@ -20,3 +20,4 @@ resources:
 #  - frigate-vault-secret-store.yaml
 patchesStrategicMerge:
   - cert-issuer-nodered.yaml
+  - cert-issuer-adguard.yaml

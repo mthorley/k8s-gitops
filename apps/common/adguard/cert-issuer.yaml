@@ -12,6 +12,3 @@ spec:
       kubernetes:
         role: adguard-issuer-cert-role
         mountPath: /v1/auth/kubernetes
-        secretRef:
-          name: default-token-hcmrw
-          key: token

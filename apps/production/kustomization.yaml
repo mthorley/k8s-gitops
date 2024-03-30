@@ -11,6 +11,7 @@ resources:
   - nodered-vault-secret.yaml
   - nodered-vaultissuer-role.yaml
   - ../common/adguard
+  - adguard-vaultissuer-role.yaml
 #  - ../common/jupyternb
 #  - ../common/crypto-automation
 #  - ../common/unifi-controller

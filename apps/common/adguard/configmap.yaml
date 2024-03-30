@@ -150,7 +150,7 @@ data:
         ra_allow_slaac: false
     clients:
     - name: Master Bedroom TV
-      tags:x
+      tags:
       - device_tv
       ids:
       - 10.10.11.10

@@ -18,8 +18,8 @@ resources:
 #  - ../common/homeassistant
 #  - ../common/zigbee2mqtt
   - ../common/frigate
-#  - frigate-vault-secret.yaml
-#  - frigate-vault-secret-store.yaml
+  - frigate-vault-secret.yaml
+  - frigate-vault-secret-store.yaml
 patchesStrategicMerge:
   - cert-issuer-nodered.yaml
   - cert-issuer-adguard.yaml

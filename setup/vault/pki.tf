@@ -32,10 +32,9 @@ resource "vault_mount" "intermediate" {
   path                      = "pki_int"
   type                      = vault_mount.root.type
   description               = "intermediate"
-  default_lease_ttl_seconds = 31536000 // 1 year
-  max_lease_ttl_seconds     = 31536000
+  default_lease_ttl_seconds = 63072000 // 2 years
+  max_lease_ttl_seconds     = 63072000
 }
-
 
 // generate intermediate CA
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {

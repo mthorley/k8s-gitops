@@ -17,7 +17,7 @@ resources:
 #  - ../common/unifi-controller
 #  - ../common/homeassistant
 #  - ../common/zigbee2mqtt
-#  - ../common/frigate
+  - ../common/frigate
 #  - frigate-vault-secret.yaml
 #  - frigate-vault-secret-store.yaml
 patchesStrategicMerge:

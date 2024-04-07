@@ -25,4 +25,4 @@ spec:
             - name: nfs-volume
               nfs:
                 server: "${qnap_ip}"
-                path: "/k8s/backup/cluster${cluster_id}/influxdb"
+                path: "/k8s/backup/${cluster_id}/influxdb"

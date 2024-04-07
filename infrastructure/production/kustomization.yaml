@@ -18,6 +18,7 @@ resources:
   - monitoring-vault-secret-store.yaml
   - monitoring-vault-secret.yaml
 #  - ../common/mongodb
+  - ../common/influxdb
   - ../common/loki
 #  - ../common/starboard
 #  - ../common/tetragon

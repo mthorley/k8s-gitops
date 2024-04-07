@@ -15,7 +15,7 @@ resources:
 #  - ../common/jupyternb
 #  - ../common/crypto-automation
 #  - ../common/unifi-controller
-#  - ../common/homeassistant
+  - ../common/homeassistant
 #  - ../common/zigbee2mqtt
 #  - ../common/frigate
 #  - frigate-vault-secret.yaml

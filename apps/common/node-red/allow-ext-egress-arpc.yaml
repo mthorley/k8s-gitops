@@ -1,7 +1,7 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "allow-ext-egress-geolocator"
+  name: "allow-ext-egress-arpc"
 spec:
   endpointSelector:
     matchLabels:

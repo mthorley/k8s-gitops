@@ -22,3 +22,4 @@ resources:
   - allow-ext-egress-geoplugin-netpol.yaml
   - allow-ext-egress-nidscheck-netpol.yaml
   - allow-ext-egress-zen-netpol.yaml
+  - allow-ext-egress-arpc.yaml

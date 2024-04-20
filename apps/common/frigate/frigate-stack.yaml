@@ -31,6 +31,10 @@ data:
           enabled: True
         rtmp: 
           enabled: False
+    detectors:
+      coral:
+        type: edgetpu
+        device: usb
     record:
       enabled: True
       retain:
@@ -40,10 +44,6 @@ data:
         retain:
           default: 30
           mode: motion
-    detectors:
-      coral:
-        type: edgetpu
-        device: usb
 ---
 # Source: frigate/templates/service.yaml
 apiVersion: v1

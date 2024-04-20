@@ -16,8 +16,8 @@ resources:
   - ../common/zigbee2mqtt
   - ../common/freeradius
 #  - ./node-red-dev
-#  - ../common/frigate
-#  - frigate-vault-secret-store.yaml
+  - ../common/frigate
+  - frigate-vault-secret-store.yaml
 patchesStrategicMerge:
   - cert-issuer-nodered.yaml
   - cert-issuer-adguard.yaml

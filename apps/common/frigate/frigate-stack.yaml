@@ -31,6 +31,15 @@ data:
           enabled: True
         rtmp: 
           enabled: False
+    record:
+      enabled: True
+      retain:
+        days: 3
+        mode: motion
+      events:
+        retain:
+          default: 30
+          mode: motion
     detectors:
       coral:
         type: edgetpu

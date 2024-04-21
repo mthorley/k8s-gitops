@@ -64,6 +64,24 @@ spec:
     requests:
       storage: "10Gi"
 ---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: frigate-data
+  labels:
+    app.kubernetes.io/name: frigate
+    helm.sh/chart: frigate-7.4.0
+    app.kubernetes.io/instance: frigate
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "2Gi"
+---
 # Source: frigate/templates/service.yaml
 apiVersion: v1
 kind: Service
@@ -206,7 +224,8 @@ spec:
         - name: config
           emptyDir: {}
         - name: data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: frigate-data
         - name: media
           persistentVolumeClaim:
             claimName: frigate-media

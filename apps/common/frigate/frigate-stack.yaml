@@ -45,25 +45,6 @@ data:
           default: 30
           mode: motion
 ---
-# Source: frigate/templates/config-pvc.yaml
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: frigate-config
-  labels:
-    app.kubernetes.io/name: frigate
-    helm.sh/chart: frigate-7.4.0
-    app.kubernetes.io/instance: frigate
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
-spec:
-  accessModes:
-    - "ReadWriteOnce"
-  resources:
-    requests:
-      storage: "10Gi"
----
 # Source: frigate/templates/media-pvc.yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -203,8 +184,7 @@ spec:
           hostPath:
             path: /dev/bus/usb
         - name: config
-          persistentVolumeClaim:
-            claimName: frigate-config
+          emptyDir: {}
         - name: data
           emptyDir: {}
         - name: media

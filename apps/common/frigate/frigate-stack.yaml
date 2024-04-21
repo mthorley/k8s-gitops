@@ -144,7 +144,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: 293f879a17f8ce0b2dd12095d5ac744066ee376a09ed0672a80f6cc727db3323
+        checksum/configmap: 0b2041ac3d3ff73cd2b2545684e7558f4a982945ca52a866b15135e369bdafe6
     spec:
       containers:
         - name: frigate
@@ -188,6 +188,8 @@ spec:
               name: configmap
             - mountPath: /config
               name: config
+            - mountPath: /data
+              name: data
             - mountPath: /media
               name: media
             - name: dshm
@@ -203,6 +205,8 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: frigate-config
+        - name: data
+          emptyDir: {}
         - name: media
           persistentVolumeClaim:
             claimName: frigate-media

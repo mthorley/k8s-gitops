@@ -212,7 +212,8 @@ spec:
         - name: config
           emptyDir: {}
         - name: data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: frigate-media
         - name: media
           persistentVolumeClaim:
             claimName: frigate-media

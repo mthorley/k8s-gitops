@@ -51,6 +51,25 @@ data:
           default: 30
           mode: motion
 ---
+# Source: frigate/templates/config-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: frigate-config
+  labels:
+    app.kubernetes.io/name: frigate
+    helm.sh/chart: frigate-7.4.0
+    app.kubernetes.io/instance: frigate
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"
+---
 # Source: frigate/templates/media-pvc.yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -131,7 +150,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: 0b2041ac3d3ff73cd2b2545684e7558f4a982945ca52a866b15135e369bdafe6
+        checksum/configmap: 293f879a17f8ce0b2dd12095d5ac744066ee376a09ed0672a80f6cc727db3323
     spec:
       containers:
         - name: frigate
@@ -166,26 +185,6 @@ spec:
             failureThreshold: 5
             timeoutSeconds: 10
           env:
-            - name: FRIGATE_RTSP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: rtsp-password
-            - name: FRIGATE_RTSP_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: rtsp-username
-            - name: FRIGATE_MQTT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: mqtt-user
-            - name: FRIGATE_MQTT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: secret-frigate
-                  key: mqtt-password
           envFrom:
           volumeMounts:
             - mountPath: /dev/bus/usb
@@ -195,8 +194,6 @@ spec:
               name: configmap
             - mountPath: /config
               name: config
-            - mountPath: /data
-              name: data
             - mountPath: /media
               name: media
             - name: dshm
@@ -210,10 +207,8 @@ spec:
           hostPath:
             path: /dev/bus/usb
         - name: config
-          emptyDir: {}
-        - name: data
           persistentVolumeClaim:
-            claimName: frigate-media
+            claimName: frigate-config
         - name: media
           persistentVolumeClaim:
             claimName: frigate-media

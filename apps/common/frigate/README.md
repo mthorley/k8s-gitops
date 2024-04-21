@@ -58,23 +58,6 @@ Install Edge TPU runtime
 
 # Diagnostics
 
-```
-    ffmpeg:
-      hwaccel_args: preset-rpi-64-h264
-    mqtt:
-      enabled: False
-    cameras:
-      front:
-        enabled: True
-        ffmpeg:
-          inputs:
-          - path: rtsp://{FRIGATE_RTSP_USERNAME}:{FRIGATE_RTSP_PASSWORD}@192.168.2.71:554/h264Preview_01_main
-            roles:
-              - detect
-        detect:
-          enabled: False
-```
-
 ## To verify ffmpeg operates correctly
 
 Exec into container

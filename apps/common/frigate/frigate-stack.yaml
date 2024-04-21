@@ -7,7 +7,7 @@ metadata:
   namespace: frigate
   labels:
     app.kubernetes.io/name: frigate
-    helm.sh/chart: frigate-7.3.0
+    helm.sh/chart: frigate-7.4.0
     app.kubernetes.io/instance: frigate
     app.kubernetes.io/managed-by: Helm
 data:
@@ -45,6 +45,25 @@ data:
           default: 30
           mode: motion
 ---
+# Source: frigate/templates/media-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: frigate-media
+  labels:
+    app.kubernetes.io/name: frigate
+    helm.sh/chart: frigate-7.4.0
+    app.kubernetes.io/instance: frigate
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"
+---
 # Source: frigate/templates/service.yaml
 apiVersion: v1
 kind: Service
@@ -52,7 +71,7 @@ metadata:
   name: frigate
   labels:
     app.kubernetes.io/name: frigate
-    helm.sh/chart: frigate-7.3.0
+    helm.sh/chart: frigate-7.4.0
     app.kubernetes.io/instance: frigate
     app.kubernetes.io/version: "0.13.1"
     app.kubernetes.io/managed-by: Helm
@@ -87,7 +106,7 @@ metadata:
   name: frigate
   labels:
     app.kubernetes.io/name: frigate
-    helm.sh/chart: frigate-7.3.0
+    helm.sh/chart: frigate-7.4.0
     app.kubernetes.io/instance: frigate
     app.kubernetes.io/version: "0.13.1"
     app.kubernetes.io/managed-by: Helm
@@ -106,7 +125,7 @@ spec:
         app.kubernetes.io/name: frigate
         app.kubernetes.io/instance: frigate
       annotations:
-        checksum/configmap: 7458cc55ef5dba27f43ecc44aeadd50249918481954f43a49212957d2c9747aa
+        checksum/configmap: 0b2041ac3d3ff73cd2b2545684e7558f4a982945ca52a866b15135e369bdafe6
     spec:
       containers:
         - name: frigate
@@ -179,7 +198,8 @@ spec:
         - name: data
           emptyDir: {}
         - name: media
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: frigate-media
         - name: dshm
           emptyDir:
             medium: Memory

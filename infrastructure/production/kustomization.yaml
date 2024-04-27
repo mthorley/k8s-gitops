@@ -5,8 +5,8 @@ resources:
   - ../common/metallb-13
   - metallb-configmap.yaml
   - ../common/nfs-storage
-#1  - ../common/vault
-#1  - vault-sa-secret.yaml
+  - ../common/vault
+  - vault-sa-secret.yaml
   - ../common/external-secrets
   - ../common/certmanager-1.12
   - ../common/ingress

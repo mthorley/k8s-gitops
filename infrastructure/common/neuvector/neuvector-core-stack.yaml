@@ -1747,3 +1747,17 @@ spec:
               - -c
               - /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
           restartPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-cluster-webui
+  namespace: neuvector
+spec:
+  ports:
+  - port: 443
+    targetPort: 8443
+    protocol: TCP
+  type: ClusterIP
+  selector:
+    app: neuvector-manager-pod

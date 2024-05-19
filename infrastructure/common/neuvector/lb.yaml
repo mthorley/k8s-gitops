@@ -10,6 +10,6 @@ spec:
     app: neuvector-manager-pod
   ports:
     - protocol: TCP
-      port: 8443
+      port: 443
       name: manager
   type: LoadBalancer

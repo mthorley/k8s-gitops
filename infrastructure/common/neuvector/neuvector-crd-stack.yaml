@@ -5,7 +5,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -263,7 +263,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvclustersecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -521,7 +521,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvdlpsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -599,7 +599,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvadmissioncontrolsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -718,7 +718,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvwafsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -796,7 +796,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvcomplianceprofiles.neuvector.com
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -845,7 +845,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvvulnerabilityprofiles.neuvector.com
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -902,7 +902,7 @@ kind: CustomResourceDefinition
 metadata:
   name: cspadapterusagerecords.susecloud.net
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -941,7 +941,7 @@ metadata:
   name: neuvector-svc-crd-webhook
   namespace: neuvector
   labels:
-    chart: crd-2.7.3
+    chart: crd-2.7.6
     release: neuvector
     heritage: Helm
 spec:

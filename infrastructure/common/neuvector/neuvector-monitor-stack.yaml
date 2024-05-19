@@ -6,7 +6,7 @@ metadata:
   name: neuvector-prometheus-exporter-pod-secret
   namespace: neuvector
   labels:
-    chart: monitor-2.7.3
+    chart: monitor-2.7.6
     release: neuvector
     heritage: Helm
 type: Opaque
@@ -21,7 +21,7 @@ metadata:
   name: neuvector-prometheus-exporter
   namespace: neuvector
   labels:
-    chart: monitor-2.7.3
+    chart: monitor-2.7.6
     release: neuvector
     heritage: Helm
     app: neuvector-prometheus-exporter
@@ -42,7 +42,7 @@ metadata:
   name: neuvector-prometheus-exporter-pod
   namespace: neuvector
   labels:
-    chart: monitor-2.7.3
+    chart: monitor-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -56,7 +56,7 @@ spec:
         prometheus.io/path: /metrics
         prometheus.io/port: "8068"
         prometheus.io/scrape: "true"
-        checksum/secret: d741f5bd3dd8c97b2dfc18d8faec9514b43f020b80a56d1e61fb844c198e6301
+        checksum/secret: 5b7f7eedfb2faf506e6df4d77afc45e707ee09a5edc479b95e7dac47cbada995
       labels:
         app: neuvector-prometheus-exporter-pod
         release: neuvector

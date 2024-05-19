@@ -6,13 +6,13 @@ metadata:
   name: neuvector-controller-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 type: Opaque
 data:
-  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBM0F5eWMybVVuZXg0RFpZbCtuVkJVSDZWenBzWi84MjZwT0RSYkEyVUlpMlNyaGZECkRoUnljSmwrQkNzNXlaclViUUhzZFBMMTNQQ3RxV1lJU3AzeXJubjZFSTcxUXAzOCsrYlFNQ0JSL0Fyak1iamIKY1VQTTZualh4VTVUMFBNRkpFaFJ1b3FCdWhSRFUxN2VzR3ZOUlRza2lUeERVa2R6SnQ2M1VvOGs5NVVIM0twTApsUmxDdlhPZjBZQzJJeXd5YmVxMUpCUHNhclg1TVlwNjluZ1drN2RJRFpzbWZ6Uk1PTkhmWWZWYW8xaW5zSnNnCi9xdjQvZWhNTFlLeFdOTHoxeUpNMDlSdVR4djFhSWdsd1ZWZWY1UUdGSlJBRCszUE5lTVZQS1FFOTJKbU9zQkYKRXhBcGFVRitPM25ObE9MWlhIcm5pNnhvQTBtL0dmUlpBZDRCVFFJREFRQUJBb0lCQUV1Z29ZUkErUzc5b3BVbwowWXl1MSsvT1ViWmNZQ2Nta2NzdzZVajFzYis5WWZncmVvSlFUTFNlVEUwcWZnWG9ETElhUXlZK2lubVF6bDYyCkRvdDJsWDJadG5RU2JnQ2pROXRmakpXOXhlK1YzbGVzYk44VXFreTdrNHpnU3JZNWo3N1VqQ0pNa0NGZjdYT3QKMjJOTzZaR3RyZlRzblVhZC85bVFHZmxwOFE2VnFqOUpCQ1BVNEFUVjk2bGRsUmdpQ0Q2RUlqak45dzIzUGlVVwpUcVp5bkJBVGdMUWN1WUcxOEdPSWdaVHRMWmxWTkFSclhOS2kxR1oxcGJHMGlHUHBlNmJmOEhLemhOanlOeFJOCkpTRlBaL2g1SUYvYytpaCtzYTliTUl4TUk4elNHQllxTVlDemxoZXJwQ0lnWGRKYUVQRlJJTkNoSzhTYmpJcDQKTEZNZng0RUNnWUVBL25tNXByS0x5ajNvU0N5THE2LzJSOG5aU01Rc1hKenhERnk0MklSR3Jibkdmd3NGV2xVOApjdUJtaEM4SDBnbm5DMjgwWXlrMlhHZ1MrcTNRcEpzWU55SzIzTzVIRDBqTVNYRjhDbnlLdGR1QUR2OTVHTGVrCnhCRWZUR2lvRU05MjZlSjlkcTZWWENoYzlIUDUybE1yTmtyK2pTL2dpTE1IT1lxY1E1c1MxTWtDZ1lFQTNWNHMKd0kvajJmTmNTR3dHRzFlM05UMGk2d1hYU2FpWnBYT0dGQ08xMEVzeFlQTld4SmJuSSs3TXJkVnM1Q0h2cWJHbgoxSE9WRlM3V1VSalZjUHNzY2EvNEQ0Z0pOMnZpcHU5L2VYQjVvVHRkZC9VdEN3RkNtOGhJckR6bmN2QzA2NWEvCkE0MEZITjN5UlNmM1BxWDJzNStyVmtyY21SbFpTUkpiOWkwOG5tVUNnWUJ4OE03UGRPSmlpNVdWdTF4T1kxdEMKaVg1Z3RuV21naDdzQ2hnNTJnQkxpUUwzbjFlbU9zUDJLOE83SzlPMGwvcDdoQzlRdHdOQUhObGlwTERuQXdxMApwVFo3ZGJVYmd0ejFoWHFrdDE3a1RvUG9NenRsZGRTd2RYb3VIQzRrV01CRnVNTzBnRGNnTEhKeWdmczlaai9TCjc0Rktka1Z5NzdZc2JZUEtRWVVOQVFLQmdRREVlRzhUd1NHak1TRDRqaGVsY09hRDgrem4xdGxLNEw3dFgyamkKdXdjRkJaZWZ5cGw2QmN6RDBaQUx3TjdTWTJSSW9ncW92cVRVbGl0VThzdU5hUC83THdqbEVBSE9GSXluU08xRQpwUlR1aXJmY1hkaEthaVhxQ1lxbWc2K1FEaDhrOFRnN09KQVBITldIbDM4VE5VMk9BdXFZdmZ5b1RSMDNnM25uCk5pTVZHUUtCZ0FzQTZub1Zla0FHcW9MSFoxbTRPRTdHWkJ1VFArUHhCYnRQWHhKVURRbXJIOW81dVFCN1FpSEoKYW9BWFhzaDREVTR2akdlMjc1RWQ5OHc5aUhNOGgzL2lKTWlXeEJvQ1VIQ2VhZnVPU1kyZjVoMmN4dTZoSnhhUAptOWRDbElZMHdnQmFvNHd1clpXbmZucDAvdHFaelVrMGE3VUNseC8wZ2UrLy9VbkhnZlRnCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
-  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURDRENDQWZDZ0F3SUJBZ0lSQUswWnF1MGpidUZzNGNxYjlEUGt3REl3RFFZSktvWklodmNOQVFFTEJRQXcKRkRFU01CQUdBMVVFQXhNSmJtVjFkbVZqZEc5eU1CNFhEVEkwTURNeE5EQTROVE13T0ZvWERUSTFNRE14TkRBNApOVE13T0Zvd0ZERVNNQkFHQTFVRUF4TUpibVYxZG1WamRHOXlNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DCkFROEFNSUlCQ2dLQ0FRRUEzQXl5YzJtVW5leDREWllsK25WQlVINlZ6cHNaLzgyNnBPRFJiQTJVSWkyU3JoZkQKRGhSeWNKbCtCQ3M1eVpyVWJRSHNkUEwxM1BDdHFXWUlTcDN5cm5uNkVJNzFRcDM4KytiUU1DQlIvQXJqTWJqYgpjVVBNNm5qWHhVNVQwUE1GSkVoUnVvcUJ1aFJEVTE3ZXNHdk5SVHNraVR4RFVrZHpKdDYzVW84azk1VUgzS3BMCmxSbEN2WE9mMFlDMkl5d3liZXExSkJQc2FyWDVNWXA2OW5nV2s3ZElEWnNtZnpSTU9OSGZZZlZhbzFpbnNKc2cKL3F2NC9laE1MWUt4V05MejF5Sk0wOVJ1VHh2MWFJZ2x3VlZlZjVRR0ZKUkFEKzNQTmVNVlBLUUU5MkptT3NCRgpFeEFwYVVGK08zbk5sT0xaWEhybmk2eG9BMG0vR2ZSWkFkNEJUUUlEQVFBQm8xVXdVekFPQmdOVkhROEJBZjhFCkJBTUNCYUF3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01Bd0dBMVVkRXdFQi93UUMKTUFBd0ZBWURWUjBSQkEwd0M0SUpibVYxZG1WamRHOXlNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNWeHphKwo4emRUM3Ura3VxOUwxc1FkRGdpY1JsMGg3c3RESW4xZmZqY1JpcVNxQ1o1SUkrQ1c2TVdrL3V4dTJldmEvbkJOCmdZeFVmTWpkRFFXaTJ6YzVRWmRvR2JXNlNxdmdGR0NSN0lhWENLT0hDeHp1RGRXZWhmZDNCeE4zWGN4dStwY0IKRHl0aDBuVUQyQk5ISUNTVWo0UzJxeTRGUjJHVWF5cjQrdGpWdjM4Y2xqa3FQNUlyMGlkM24wNWJMS2RuVWdXNAp1Yi9SWUNmNHk4bTAzUHlpNW8vVUFVUWtBSGM3MHhVUzZ6d0VLUWFXOEM0dXRyK1JyVEkwc0FQeE83dzdQZG5aCmlFWTJ0aERhQkttcTB0SkJ2c1ZLdDluT243dHM1N0k3YURLTjJtb1NSSG1EcDR1cFpBb3VoekQxWHVyNVBBK2QKWHZEOGRmNmgrbGRFRnBtdwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBNFRaQTdUUWxaYlJhcnFtWW84SVBJN2N3SW56WnF3WC8rNGh6TmxnTlVRaDg4VDhCCmJxTVk3N3hWbHZUTURaa3cvbStrWEFJU3JPeFBTaU9PWHhuQUQyb1hjNVM3UUhyN010bEwxRUpnQ0pPOGp3OXcKOUh5SENuS29iQlExeE53TUxPY3l6bTZ5TTBCMzkxcWZwL1ppQjlCeG9QcjE0L3FjRExmeUxGZXBObjlEMmZGSgpER2ZEcW1OczlvRHErZVRJRk1kT2JBNnhMTExENFQ2ZWw2R0VSWGdWaTcyeGlrTzYycktaQTEwNUNvOUNDdlM1Ck1OKyt5LzdDT0VWQnZYKzh3cXRzeVZTc1d6NXZEV3JheWFIdjAxb2hEcEhqa3diVXFYWGl1WThwbTFiVFBVZkQKYkY1MDI5MVl1U1BlUUd3R3hieWtPSm1sY0VsY2gwaGY5c3FFcXdJREFRQUJBb0lCQVFEVWVTRU1LVFJYSGE2bwpObTFCb2lZeVpmUE50Y2lPSjV6NExDVzJVYUJPb1JsdmFTZnF2NGtaTksvek9ZVUNGMU0zMlJCUmxjc1V4ZVdRClpyYzlWY2Z6UXY1WkZ5c0tqSHhOM3VCQm8xV0RBZzdWVVpZWnN4cWNhc3duRzNJWEJodWVpWWxQWlBST2tqWWMKY2ExTEE1STlHUlQ2OFlubXlsdExUSWYzK2NRMUdsc2pZZTlEWlVMaW1XbGVIczdVWTM5S3kyeGxibXVvTzlJcQpvdW03N2hCMVRCL1VCK04xblhRbFRmNU0wTUtkaENPdGx1SmJDMWRlcVVKaFQzVGFuL0xPYzU2UmVXQndJNHNtCm9wMXFJSVhlaEJXeWZObXFYNktRdVVKQVkyWXcrQndtOTNpRGxmZzcrRjFidzNVc1lTcWNlT2o2bXhYalNtTU4KYnR1ZFk3dlJBb0dCQVBiNjVWWWIyZ1oxTGdLUTFzTlRWT1F1RE5tSFVLT2o1NjVUZ0hSdHg4dTkvVUtQL0I3VQpZcTlVM2ZkckFBdk9vNXY0VDM0azN2azcxVVphbm9qTmgzWDhiMEZ1eE1LK2lsb0x4Skw1UHRUWXpraitkYjdrCkc3YnQvOVRlZFlZTHRmN1ZYRDJIVER1REhNdytkQktyU0hhQ0lPMVRxcHRFOGpLY0w0KzlNUnlQQW9HQkFPbHYKMXZ1RmROQVVqbXo5cnF3WXVrb0NuNUJqOHIwb2txcG9LeU5hYXdON0tmTVNIWXFiQzZ6blQ2MUVpSW1EaWFwcgozazlxK2ZhVjFPN1JMbHhaaWIwalZYNzZDcThBdWhqS1BtNWgvUGhyTXJOY05UdS9tVW83VE9jbkt6TTB2dHdDCjhpUTZIdmdIT2JsYUtpeEF3YWZvUFgrRHRYNmV4ZldDbGZDVHNsd2xBb0dBVU9WWkhOMCtpb0x6TVEvejZFSngKT2RRRGpYU082eXFTaGp6L2hDTTVIL2o0N1Vad0ZFRUltZGs0WXdQL0hkN3ZJL1V2UkdnYlNKTmFoaExFZnBhagpXZmYzRVAyUklTQjcvSWFDT29tOUZNWjJ1dDN0L3pxRUFXVHZPUEFzbWwxWG5VS1JWZTN0QUVrdnM0NTVRbXdyCjdmVXRoODZ4d08zU1R0VnRscTBuV3UwQ2dZRUFzN1NaZDcvaGtWNkIxbjNrdmkrN0djYXpOK0Q1dVkxR2UxRCsKQkpWUzFMYzRNQnUrQ2pvWjN0MmpoT3ZCZ0x0MmUyL1hFS1IyRWRKK3ZlcmpHYzBFTUVySFFwMFRKRzRXMVlhOApVUlcyUFRlcExGTEwyRmREbHRYWCtnczVRbzVVYitNRXJjYmdtR2hYazgxSnNnK1lCYjdQdVI2WDFnWTh0eWYwCmJlUUY1dEVDZ1lFQXI0TU1IN1Mrc1NDK1Z6VitHQ2J2N1RZdHdlekxwb3BhMEh5RFZZU0VDdnhqaDlobXY4dUEKZVlSaTVVZjM4RWcwa3QraUV5Y3ZoeSt0cXBnN3RpQjc2V294NGRxbzRFeUc3QjAwRkZMMWt6NTJPVlROcjdQNgpJS3lETXE2eDJDVWQwaDNCK1gwYy9EKzcxcGp6MzREejUrdHhFYVlGdWovUnp6YVJqejVUSFJBPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURDRENDQWZDZ0F3SUJBZ0lSQUp0SHBjS3BTS1FReXNaTlNxNFNJNk13RFFZSktvWklodmNOQVFFTEJRQXcKRkRFU01CQUdBMVVFQXhNSmJtVjFkbVZqZEc5eU1CNFhEVEkwTURVeE9URTBNRFkxTjFvWERUSTFNRFV4T1RFMApNRFkxTjFvd0ZERVNNQkFHQTFVRUF4TUpibVYxZG1WamRHOXlNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DCkFROEFNSUlCQ2dLQ0FRRUE0VFpBN1RRbFpiUmFycW1ZbzhJUEk3Y3dJbnpacXdYLys0aHpObGdOVVFoODhUOEIKYnFNWTc3eFZsdlRNRFprdy9tK2tYQUlTck94UFNpT09YeG5BRDJvWGM1UzdRSHI3TXRsTDFFSmdDSk84anc5dwo5SHlIQ25Lb2JCUTF4TndNTE9jeXptNnlNMEIzOTFxZnAvWmlCOUJ4b1ByMTQvcWNETGZ5TEZlcE5uOUQyZkZKCkRHZkRxbU5zOW9EcStlVElGTWRPYkE2eExMTEQ0VDZlbDZHRVJYZ1ZpNzJ4aWtPNjJyS1pBMTA1Q285Q0N2UzUKTU4rK3kvN0NPRVZCdlgrOHdxdHN5VlNzV3o1dkRXcmF5YUh2MDFvaERwSGprd2JVcVhYaXVZOHBtMWJUUFVmRApiRjUwMjkxWXVTUGVRR3dHeGJ5a09KbWxjRWxjaDBoZjlzcUVxd0lEQVFBQm8xVXdVekFPQmdOVkhROEJBZjhFCkJBTUNCYUF3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01Bd0dBMVVkRXdFQi93UUMKTUFBd0ZBWURWUjBSQkEwd0M0SUpibVYxZG1WamRHOXlNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUJlRkRURQpjTWx5UFEycDFsUjgvMmVvR2l2NzVlekczYVdYOTNhQ2I3RzFBSW0vUG9FOFhuNWpTT2Z5R1ZHMnBTazhtN3NZClNnVDNxSjBRNlo4ZllrVTNSbmg1TkVrNkxpOUtGVVBDWWdOU3ppSlpydmlTZ0VuTzg2WEtCczdEYzZCU29GQWMKQjg4dnYvOUpZVVNOTUdzaXE3cVpkUDJjR0pERlNNSmN3cVJzUldtU29zWjZCVkUxekdpc3FQWXhrSUJHMkJPbApkM0EyLzJCVXRYbGhpTS9xVzNpanhJblJCZnFGM3BvbFhoL2R1cUVWOWhVMGtEY2xGU092b3IzdFowN1NCR2ZKCk5STEpUeG5pK0ltVHZjbG5WemtjYnhLMDdIRmZWMVR1TWxQMjBqcTV1WHhNdlhnS1pzb05tcVlXdlZVQ3BJMDcKVDZIQkM3L3h4UEFOL25UcQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
 ---
 # Source: core/templates/manager-secret.yaml
 apiVersion: v1
@@ -21,13 +21,13 @@ metadata:
   name: neuvector-manager-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 type: Opaque
 data:
-  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBMGpVM1J4N1piOW1pTlVCbnZxYWtsS3c3am9ZakNmbzA0R1VZT254WnhNUExVT1gwCjNLQ3IvOWVIeWRQVFo4VHZmM0sxWTFDOG1FQTdqdDBDUDFvMlJwUFZNSFdWOXVBdU5NWWJvbm5YR0xTK3QwVWUKZEQzVTJZajJnZU9uZHpISC9HaXNIZWhvQUhFeWd6L21RaU54UituNTRiM0lBUGdDakNraE5XUzlFTWszYXlXcwovQTdsWkRKbHFJak04NnU3VHVzaHFwdjNCRy9PdUJkbjdYaGJlTmtyeGxEYlR2SUY0b1B1b3c4cDMrOXBKQWd4ClNwclVsQW5mOWVEeGxsRkdTZEtZNUhoaE5MYVZQZHhXVGdsdkFNOVBsR1NUbVdqN3ByZEZTVkY2M01GVDFRVSsKamNqaTVsbmhmc0lObGRHNWZ2OEwvUEpwSm1nRVFrckRscWtFbXdJREFRQUJBb0lCQURzSWtPYWJSa3RBSG1yQQpGS0taSUIxVXBVRW9jSXlyeE0vRDlHTHdhekYwSHhRd0VHMHBma1JTWGlNVEp3cThadG91OTd2VmY3RnVVSXVWCmk3MEk4N2NzYXpHNXhBelo5b0FCcHQ4aFFvUUF0cEszaVk3eGttWXBMYmxhbXJ4QnNiMDBGQ291QzQ4Y095aGEKK0twWVU4YnpjYWF3Nm90REcwd0xmUFVHdm9ZSXlkT2ZDU2pQbyt5bWhwR1JCcC91Si93UnRhOXVhYWNZeDVzMApZZmFiV2dzR1NtRFB1anAyOCtXMExGK0NBSEE2UlJBenNDaGt0c3dMNG02VzRRa3BjQlNKWjV2cFg3REIwWDQ5CkZyK3c5WDdIcEV5cUtFMWlyWnMwK3pONFVMWnRrenpPaHpsbDhuUU9VK0NTbVFDRE9TaS9haWc4cjVWTWNkRlMKS3BHRWREa0NnWUVBOVhMVUp2VTZKbUtJZkZXck5ZZS82U3pHL3ZPdkZTSDdoRnA3KzNvSGk0V0tqcFRxdXgwegpwaEJWTWxORTV4L3lIQWt1RkExRVFKZlpTQ1pvT2l5S28vMkUwYlF4ekN2L3Q3dWlPNG5UOU0zeEZtSzB3MUZhCk1DRG1lVjhkTlhRSUZ2dmt2eEF2MzNWdHhjQXo1MWZRa0F5WGlERjFhMGhWSG5YQ1RkYmNIUThDZ1lFQTJ6NlAKNk40NEFaMHB2QWlxVWJ5Y292YkRMWE5XdnA0Vmp3SVNCbzFFQ3hMT2t0dGg4RUtrRVJ6LzM4eDBIeFZheTVORQptVG5ENm9ncHhWUXdmYWxPalV1aElsK1JSRHU1OXF0MXVFY3JMcEJTanpSb0dRK2tZQmJUVHZZdjBVL2dyTk9KCjV1Z3lLQkJzUVY3TUcyN2tlTDUzVkxzVDF4TWpKRjIzMmJFUjk3VUNnWUIxQ251VjFDd1ZiN2pycVNKS0ZXQnkKL1RJckV1SnpMbEEwYmIxZlRuSlltcVpXbFRaVllYaG1nTFZQbVJ0ckp2V1pYdHRGSG9wa1RzU0N2aVhIVDhRUQpyT3h2M3dBNy91TWlwdXVXZm9PKzRaRkwvbWQ2RjhuczExTnZudVpidmVlNXBnWVBBZFlDTlluUjJYUW1wZDVEClFtM2p1TW5vRFliaFRvQUlCQ1BVQ3dLQmdCaWFDcGY4NTVmMnhNb2V4czNwTmtKcklqZWxhNlIwSk1NcFhsQngKNWFMQWQ0R3ZNR3cvYmgybGZXamxqbG8ya1R1cXlOWFF6NVV2dGxBNFJFQzFrT1QyQ1p6TDBJY3hsSXFEYnZCQQp2QzI3Y0NnMW4wREFxcGRGdUd4eDM2ZkRLTmo3Mjh1WFhwbDBUbEYvaTdQQVc4N1l3SmMzYnVDQmV6NEhiaXYxClhLakpBb0dCQU16aUdJcnNnbm5CQVJLNi96RzE4ekE0MlBUNURPZXhxcy9Jc0RnTENDYzFQVTdvOWhCSldLbEcKbFA0eXVncC9wVlFnK3FzQlJYRFJuam1tdXNuc3c5L25aZDZQeVlYVUxVWDZSYmFMdjdYU1ZXNE96Kyt2RmRKMwpNZVpoNFlUTGVQM21MUzRLN3FlcW5BZm9LT1ptSFhaY1BaaElQVjdNSUszUWsrc2c0VnZyCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
-  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lRVXZ1bXloZVBXVEZzRzlEUlpzRTFxREFOQmdrcWhraUc5dzBCQVFzRkFEQVUKTVJJd0VBWURWUVFERXdsdVpYVjJaV04wYjNJd0hoY05NalF3TXpFME1EZzFNekE0V2hjTk1qVXdNekUwTURnMQpNekE0V2pBVU1SSXdFQVlEVlFRREV3bHVaWFYyWldOMGIzSXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCCkR3QXdnZ0VLQW9JQkFRRFNOVGRISHRsdjJhSTFRR2UrcHFTVXJEdU9oaU1KK2pUZ1pSZzZmRm5Fdzh0UTVmVGMKb0t2LzE0ZkowOU5ueE85L2NyVmpVTHlZUUR1TzNRSS9XalpHazlVd2RaWDI0QzQweGh1aWVkY1l0TDYzUlI1MApQZFRaaVBhQjQ2ZDNNY2Y4YUt3ZDZHZ0FjVEtEUCtaQ0kzRkg2Zm5odmNnQStBS01LU0UxWkwwUXlUZHJKYXo4CkR1VmtNbVdvaU16enE3dE82eUdxbS9jRWI4NjRGMmZ0ZUZ0NDJTdkdVTnRPOGdYaWcrNmpEeW5mNzJra0NERksKbXRTVUNkLzE0UEdXVVVaSjBwamtlR0UwdHBVOTNGWk9DVzhBejArVVpKT1phUHVtdDBWSlVYcmN3VlBWQlQ2Tgp5T0xtV2VGK3dnMlYwYmwrL3d2ODhta21hQVJDU3NPV3FRU2JBZ01CQUFHalZUQlRNQTRHQTFVZER3RUIvd1FFCkF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0RBWURWUjBUQVFIL0JBSXcKQURBVUJnTlZIUkVFRFRBTGdnbHVaWFYyWldOMGIzSXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBTSs0cHNaNAphOFovL0J1TlRDbGtjK05lY21sUkFSM3BZdlZoNTJwYnZFZ0t0bWxQZHlGVkh0S2llSEhJOFFycVZvTXBFa0ZsCmxqVTl6KzB0ZThENExHUWs1RFJ4ek9Xb0ppUmJUVzRxSDVaazZvd2lTRU43aHRRSmNYZWxYZ3VPd2E3Rm5wSWUKcWxSYUtnWVdLSXlNelNZemxkbGdKQ0ErWFQvSmZueXlKbGFrSG9OeVBQWjY0bGFWa3RWa2dSQUhsZFlzUWJaNwp3dVZEc2VoVGpYS3FKSmRmRnZYLzNUYkRSR2hJMTZtYzZ4Ujd3WlhOS3dJWUEvOFZoa21BL01ILzJaQTdiUFl2ClhxcncwZmRQUjBVTGdIZ3pDUVY0SG1PYUZjUnVtbW5KQTkra3Fla0JHZnpITW4xK1ZaUmw3U25EOXk1em1vNjQKclNHRXlYa1oyMUZlenlBPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb2dJQkFBS0NBUUVBM2EzRngyVmdjVURJVmh6RnltUmhjSmx4cVdROG83S0JDRlBKakFkS1pVakZSaXRsCmY1N0tTcDRuemVOdWI4ZHp1dkdYc2JOWkY5VkhCNVBGdHhsODd3S1pNdFh5V1ZOWWlpbnIxQXhyNVRod1NSNXcKNWgxWXhxMjdaVWJsSGtVZklmaFdQOWdQcjZicHVoNzVSUzJPWnFvNEpnVjUxRHY4dlR0bEY4TzBJa3VncnZkSwpiamVZY083SkRTVG9NRXZHU2dGWFdJbk50WXM2SXY0ZUlyNmkxcmV3RXJSZmdiVGdLQzk1enZUWFRWVEY2dkJsCjltNkVGMzh3YVVHSzBpSWhWUFNzSnEyQmlnU1BkRDZQZ0ZuRHRldXlKTitsR3BzTzlDUWFCZVIvVG9wQnhnbkUKSXQ3K3Vmd0pNQTMrZi9FaUg1YVpKb0tuOEovNnpWM3VNRnFqM1FJREFRQUJBb0lCQUFFQkxabEd1MVlvRGdCZAo1d09ReXVSQXZjUWZ3U3FZdjM3ektrR3BNc3djdFZBcEdDK28zNC9SQWFzc01hN3QvM2RFYXdTU0pJQTRKamRCCmt5N09QY096aGxBMXFnQi9vVElYR0l1QWR1aTJCY1EvRUJIcTVpRVlYbllLQ1RYRzZHbzEvdVlSSzVrSEw1MzUKVC9YaFMvanBJcElCaWxqTTRNdFd2cEdLQUlIN1JaaG1WUWMrRFBEK3BrTjVPTjNmdEVwdmFKWE1WU2RQM1A2bgowUlJmU2NtSjUzQXhmUG1jQ0ZlK3NaaWJDLzJkMklLbCtKTU40SmRrOEZsM3kzRWNWaXVUeU5HQ3dLNWYvMWZsCnVwQVJzdkZ3Zm1KUGZCRm15ZU00YVh6bHBYRHZWdmx3SFY5THRFZjJpZmNmMTFFZDdIZ1oxQXZkZ1h6VzNGT3MKaDE2OS9YMENnWUVBNEZjTDRTd29sR3BRL1BidTFuTVdpVWJzSzVObmJZYkpWRVhTa3VsME85K21YVWZ2eEU3aAowQ2xCVC92dXZFSitlNnhUTElqcmVyTkNiK0o2TTUxRjhXSXQ0d1EyZHowMnpKVzZlQ3F0N01UMzJoUzBtVmdwCkptYTU4bW1WZjFjSU9KOFF3ck9YRlliQUNmZFRmNDRWQnJhQTNwd3dFdHVlN3YzbjhHSUtYVGNDZ1lFQS9QYVUKMk5FVEtzWlNsYTEvQ3NLLzN2QmhBVnN2V0xzOXdUYjV4MlhManNPZDEzTHBobTF1UVZHbGR5UmE3TWw0T2syMgo1QktlRUEyVndRbXIxZjYvZ0M4bSs3eERLRnU3NXlseGwvQ1kzYmV2NXVLWkRMZzVvZDFSYU5wQTZzZHRiVlNVClVocStYUDBXSWYxcnJZYkZNUEFucytpcFZkeXRTeUpWTXdOeHNZc0NnWUJzS091Y1UzcjVHMDBTdVVjcmMyOWgKSGlXTldOTWIxa2xJN1NUNkdiNGxnODJrMmFMNnhZRlBxQ1JLR00vZ1NqckxDNmxLSm5WSndoVjg5ZmN1M1Z1MApaajV6WGp1WVA1WWxDdWROT2w2Q2NmQ0JYMHczUm04SWlheUsrR2JRYnppU2UvWkx1T1JWeDVMYyt6WnhvQ0g1CkM1S1VRVDlZU0RTWFN5bEJGek9oL3dLQmdHNXpIOFNYYlQ0RS8vUVluOXJMODhqY3ZnNUFpU2krQUpYSGNrSXMKNFRkQmxENkpEd3ZCNWgwaEVCVTRTM2NOOUsvSVZPMjZiMGRsRnhrRkp3RTF6Tm1rUE9vM1pqOU41bnBsTHhMLwpXMCticjNNcFIxZzFhL3lQek1ieVhOdm1IWkphRnJUT3RvV1ZmNzl4amoxakZlQnJTM3FUUUxTYnVSS1FPQkVoCkZOaEhBb0dBR0pYVERQOUZZVXlNNkpWVExRVjFES2RxSHBWUGFGWlNOU2VaVXZoVHJzZUlFd21BMzFoaXNNczUKM1F2a3BRNGduTXlQNi9BWlU2dGZ3Vkk4bWp4SFJNN1ZYT2xIRzVTcitnT2IwRUt4azZuaU5mSkFqT3BSOE42SAo3ZEtRenU1NHJCZUdRUFQvOENJcmlaSGhuQ3lPQ2QyNXpBV0NjWUhXL3FPMEhKL29PMjA9Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lRYm9Kd1EwYUlUQ3cwNHdWWkhvQzZsakFOQmdrcWhraUc5dzBCQVFzRkFEQVUKTVJJd0VBWURWUVFERXdsdVpYVjJaV04wYjNJd0hoY05NalF3TlRFNU1UUXdOalUzV2hjTk1qVXdOVEU1TVRRdwpOalUzV2pBVU1SSXdFQVlEVlFRREV3bHVaWFYyWldOMGIzSXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCCkR3QXdnZ0VLQW9JQkFRRGRyY1hIWldCeFFNaFdITVhLWkdGd21YR3BaRHlqc29FSVU4bU1CMHBsU01WR0syVi8KbnNwS25pZk40MjV2eDNPNjhaZXhzMWtYMVVjSGs4VzNHWHp2QXBreTFmSlpVMWlLS2V2VURHdmxPSEJKSG5EbQpIVmpHcmJ0bFJ1VWVSUjhoK0ZZLzJBK3ZwdW02SHZsRkxZNW1xamdtQlhuVU8veTlPMlVYdzdRaVM2Q3U5MHB1Ck41aHc3c2tOSk9nd1M4WktBVmRZaWMyMWl6b2kvaDRpdnFMV3Q3QVN0RitCdE9Bb0wzbk85TmROVk1YcThHWDIKYm9RWGZ6QnBRWXJTSWlGVTlLd21yWUdLQkk5MFBvK0FXY08xNjdJazM2VWFtdzcwSkJvRjVIOU9pa0hHQ2NRaQozdjY1L0Frd0RmNS84U0lmbHBrbWdxZnduL3JOWGU0d1dxUGRBZ01CQUFHalZUQlRNQTRHQTFVZER3RUIvd1FFCkF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0RBWURWUjBUQVFIL0JBSXcKQURBVUJnTlZIUkVFRFRBTGdnbHVaWFYyWldOMGIzSXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBTGRwRFkraQpWZlUrVExxTm02dktLV3h3MVVZdnVraGpSSnVmV1hCVWUrbXJEdi9xbmVLT1YvcC83TWN4Z2ZMM2YrZjFEVlpxCjVjcEczR2c2U3Vwd3prNmRqaVJyQjQzaWpUcm9PVklpVjZFQWFUbjZyYzRzRjJnKzBWSzAyM0xnQkFUak15YnQKWHZXSE44ZFptYUdsWTRxVG1HSmRxbmdOVGM5THZDQk8vOUNrbUlxN2d5eGRCbm5MZUNFQlpmVWptaDRKUGFaNAo1VUFKSmNsWCtpQlE0YTdZRGUvRHJPNDNVK1hsZGlxb01PTTVST2YzdzVkSm9zbGFBdnBjZVB4WDdFcHE2SFNWCkZmQU9tbzN0NTVXWms3ODF1dlJyWittSXVpUFNBdWtXendIeWF3ZXRiTUJLY2h5dnR4NS9QbFdmL0J3WmNDT3gKd3FJdWVoMjdFUEtjajFRPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
 ---
 # Source: core/templates/crd.yaml
 apiVersion: apiextensions.k8s.io/v1
@@ -35,7 +35,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -293,7 +293,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvclustersecurityrules.neuvector.com
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -551,7 +551,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvdlpsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -629,7 +629,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvadmissioncontrolsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -748,7 +748,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvwafsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -826,7 +826,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvcomplianceprofiles.neuvector.com
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -875,7 +875,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvvulnerabilityprofiles.neuvector.com
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -932,7 +932,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-app
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -955,7 +955,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-rbac
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -977,7 +977,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-admission
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1001,7 +1001,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-customresourcedefinition
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1022,7 +1022,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1043,7 +1043,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvdlpsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1063,7 +1063,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvadmissioncontrolsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1083,7 +1083,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvwafsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1103,7 +1103,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvcomplianceprofiles
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1123,7 +1123,7 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvvulnerabilityprofiles
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1142,7 +1142,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-app
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1160,7 +1160,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-rbac
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1178,7 +1178,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-admission
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1196,7 +1196,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-view
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1215,7 +1215,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-customresourcedefinition
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1234,7 +1234,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1253,7 +1253,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvdlpsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1272,7 +1272,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvadmissioncontrolsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1291,7 +1291,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvwafsecurityrules
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1310,7 +1310,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvcomplianceprofiles
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1329,7 +1329,7 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvvulnerabilityprofiles
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1348,7 +1348,7 @@ metadata:
   name: neuvector-binding-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 rules:
@@ -1366,7 +1366,7 @@ metadata:
   name: neuvector-admin
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1385,7 +1385,7 @@ metadata:
   name: neuvector-binding-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 roleRef:
@@ -1404,7 +1404,7 @@ metadata:
   name: neuvector-svc-admission-webhook
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -1424,7 +1424,7 @@ metadata:
   name: neuvector-svc-controller
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -1449,7 +1449,7 @@ metadata:
   name: neuvector-svc-crd-webhook
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -1469,7 +1469,7 @@ metadata:
   name: neuvector-enforcer-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     heritage: Helm
     release: neuvector
 spec:
@@ -1494,7 +1494,7 @@ spec:
       serviceAccount: default
       containers:
         - name: neuvector-enforcer-pod
-          image: "docker.io/neuvector/enforcer:5.3.0"
+          image: "docker.io/neuvector/enforcer:5.3.2"
           securityContext:
             privileged: true
           resources:
@@ -1534,7 +1534,7 @@ metadata:
   name: neuvector-controller-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -1554,7 +1554,7 @@ spec:
         app: neuvector-controller-pod
         release: neuvector
       annotations:
-        checksum/controller-secret: d6968c621f6434f33867d1c6c0406a1920715a30e7a1714f6b9ae43b6d4194f3
+        checksum/controller-secret: 767303de77d1750dbeeaf96508368900e5a245b6853e7efae1ebf8f9850579ba
     spec:
       affinity:
         podAntiAffinity:
@@ -1572,7 +1572,7 @@ spec:
       serviceAccount: default
       containers:
         - name: neuvector-controller-pod
-          image: "docker.io/neuvector/controller:5.3.0"
+          image: "docker.io/neuvector/controller:5.3.2"
           securityContext:
             runAsUser: 0
           resources:
@@ -1633,7 +1633,7 @@ metadata:
   name: neuvector-manager-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:
@@ -1647,15 +1647,13 @@ spec:
         app: neuvector-manager-pod
         release: neuvector
       annotations:
-        checksum/manager-secret: 72f9d8a5b41daebf58f542def07bff70ac0440a19f90046e1e03d61aadcb7e02
+        checksum/manager-secret: 7670d412e4cd445ac991f9171a20cefd99311236dec0d11ebbae8083a3c89277
     spec:
       serviceAccountName: default
       serviceAccount: default
       containers:
         - name: neuvector-manager-pod
-          image: "docker.io/neuvector/manager:latest"
-#          image: "docker.io/neuvector/manager:5.3.0"
-#          image: "docker.io/neuvector/manager:arm64.5.3.0"
+          image: "docker.io/neuvector/manager:5.3.2"
           ports:
             - name: http
               containerPort: 8443
@@ -1687,7 +1685,7 @@ metadata:
   name: neuvector-scanner-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     heritage: Helm
     release: neuvector
 spec:
@@ -1725,7 +1723,7 @@ metadata:
   name: neuvector-updater-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.3
+    chart: core-2.7.6
     release: neuvector
     heritage: Helm
 spec:

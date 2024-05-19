@@ -3,11 +3,13 @@ kind: Service
 metadata:
   name: neuvector-lb-webui
   namespace: neuvector
+  labels:
+    release: neuvector
 spec:
   selector:
     app: neuvector-manager-pod
   ports:
     - protocol: TCP
       port: 8443
-      targetPort: 8443
+      name: manager
   type: LoadBalancer

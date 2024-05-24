@@ -1,3 +1,4 @@
+variable "ENV" {}
 
 data "authentik_flow" "default-authorization-flow" {
   slug = "default-provider-authorization-implicit-consent"
@@ -21,9 +22,10 @@ resource "authentik_provider_oauth2" "grafana-oidc-provider" {
   client_id          = var.AUTHENTIK_GRAFANA_CLIENTID
   client_secret      = var.AUTHENTIK_GRAFANA_SECRET
   authorization_flow = data.authentik_flow.default-authorization-flow.id
-  redirect_uris = [ 
-    "https://grafana.${var.INTERNAL_DOMAIN}/login/generic_oauth" 
-  ]
+  redirect_uris = (var.ENV == "prod" ?
+      [ "https://grafana.${var.INTERNAL_DOMAIN_PROD}/login/generic_oauth" ] :
+      [ "https://grafana.${var.INTERNAL_DOMAIN}/login/generic_oauth" ]
+    )
   access_token_validity = "minutes=60"
   property_mappings     = data.authentik_scope_mapping.default_scopes.ids
   signing_key           = data.authentik_certificate_key_pair.generated.id

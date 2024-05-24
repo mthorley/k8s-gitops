@@ -13,6 +13,11 @@ variable "INTERNAL_DOMAIN" {
   description = "domain e.g. example.com"
 }
 
+variable "INTERNAL_DOMAIN_PROD" {
+  type = string
+  description = "domain e.g. example.com"
+}
+
 variable "EMAIL" {
     type = string
     description = "default user email"

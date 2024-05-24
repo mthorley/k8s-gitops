@@ -8,5 +8,5 @@ terraform {
 }
 
 provider "authentik" {
-  url   = "https://auth.${var.INTERNAL_DOMAIN}"
+  url = (var.ENV=="prod") ? "https://auth.${var.INTERNAL_DOMAIN_PROD}" : "https://auth.${var.INTERNAL_DOMAIN}"
 }

@@ -1,3 +1,0 @@
-
-#env = "staging"
-env = "prod"

@@ -1,11 +1,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: internal-com
+  name: domain-com
   namespace: authentik
 spec:
   dnsNames:
     - "auth.${domain}"
-  secretName: internal-com-tls
+  secretName: domain-tls
   issuerRef:
     name: vault-issuer

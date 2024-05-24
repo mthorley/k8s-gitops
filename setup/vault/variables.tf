@@ -1,10 +1,11 @@
 
-variable "env" { 
+# defined by TF_VAR_ENV environment variable
+variable "ENV" {
    description = "Environment name, either prod or staging"
    type = string
-   default = "staging"
+#   default = "staging"
    validation {
-      condition     = can(regex("^staging$|^prod$", var.env))
+      condition     = can(regex("^staging$|^prod$", var.ENV))
       error_message = "Allowed values for env are \"staging\" or \"prod\"."
    }
 }
@@ -35,4 +36,14 @@ variable "INTERNAL_DOMAIN" {
 variable "INTERNAL_DOMAIN_PROD" {
   type = string
   description = "domain e.g. example.com"
+}
+
+variable "VAULT_ROOT_TOKEN_STG" {
+  type = string
+  description = "vault staging token"
+}
+
+variable "VAULT_ROOT_TOKEN_PROD" {
+  type = string
+  description = "vault prod token"
 }

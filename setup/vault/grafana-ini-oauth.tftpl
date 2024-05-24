@@ -1,7 +1,7 @@
 
 [server]
 # required since grafana is proxied behind an ingress controller
-root_url = https://grafana.internal.com
+root_url = https://${ROOT_URL}
 
 [session]
 provider = memory

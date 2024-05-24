@@ -111,6 +111,14 @@ variable "ZIG2MQTT_MQTT_PASSWORD" {
   type = string
 }
 
+variable "FRIGATE_MQTT_USER" {
+  type = string
+}
+
+variable "FRIGATE_MQTT_PASSWORD" {
+  type = string
+}
+
 variable "AUTHENTIK_GRAFANA_CLIENTID" {
   type = string
   description = "Grafana client id for OAuth"
@@ -485,6 +493,8 @@ resource "vault_kv_secret_v2" "mqtt" {
       tempcontroller_mqtt_password = var.TEMPCONTROLLER_MQTT_PASSWORD
       zig2mqtt_mqtt_user           = var.ZIG2MQTT_MQTT_USER
       zig2mqtt_mqtt_password       = var.ZIG2MQTT_MQTT_PASSWORD
+      frigate_mqtt_user            = var.FRIGATE_MQTT_USER
+      frigate_mqtt_password        = var.FRIGATE_MQTT_PASSWORD
     }
   )
 }
@@ -517,6 +527,8 @@ resource "vault_kv_secret_v2" "frigate" {
     {
       rtsp-password = var.FRIGATE_RTSP_PASSWORD
       rtsp-username = var.FRIGATE_RTSP_USERNAME
+      mqtt-user     = var.FRIGATE_MQTT_USER
+      mqtt-password = var.FRIGATE_MQTT_PASSWORD
     }
   )
 }

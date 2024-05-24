@@ -14,7 +14,8 @@ terraform {
 
 provider "vault" {
   # This will default to using $VAULT_ADDR unless set
-  address = (var.env == "prod" ? var.vault_address_prod : var.vault_address_staging)
+  address = (var.ENV == "prod" ? var.vault_address_prod : var.vault_address_staging)
+  token = (var.ENV == "prod" ? var.VAULT_ROOT_TOKEN_PROD : var.VAULT_ROOT_TOKEN_STG)
 }
 
 provider "kubernetes" {

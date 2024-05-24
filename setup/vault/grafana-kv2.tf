@@ -36,7 +36,8 @@ resource "vault_kv_secret_v2" "grafana" {
       "grafana.ini" = templatefile("${path.module}/grafana-ini-oauth.tftpl", {
          OAUTH_CLIENT_ID = var.AUTHENTIK_GRAFANA_CLIENTID,
          OAUTH_SECRET = var.AUTHENTIK_GRAFANA_SECRET,
-         DOMAIN = "auth.${var.INTERNAL_DOMAIN}",
+         DOMAIN   = (var.ENV == "prod" ? "auth.${var.INTERNAL_DOMAIN_PROD}" : "auth.${var.INTERNAL_DOMAIN}")
+         ROOT_URL = (var.ENV == "prod" ? "grafana.${var.INTERNAL_DOMAIN_PROD}" : "grafana.${var.INTERNAL_DOMAIN}")
          APP_SLUG = "grafana"
       })
     }

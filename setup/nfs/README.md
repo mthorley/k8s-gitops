@@ -81,3 +81,25 @@ Jan 18 09:56:28 rpi-kube-worker-03 systemd[1]: Finished NFS server and services.
 ```
 $ sudo apt install nfs-common -y
 ```
+
+# Gotchas
+
+## fsnotify Too Many Open Files Error
+
+If the error occurs for the pod appname:
+
+"`appname` failed to create fsnotify watcher: too many open files"
+
+Change the values to
+
+```
+fs.inotify.max_user_instances = 8192
+fs.inotify.max_user_watches = 524288
+```
+
+via sysctl
+
+```
+sudo sysctl -w fs.inotify.max_user_instances=8192
+sudo sysctl -w fs.inotify.max_user_watches=524288
+```

@@ -6,13 +6,7 @@ config: |
   ffmpeg:
     hwaccel_args: preset-rpi-64-h264
   mqtt:
-    enabled: True
-    host: k8smqtt
-    port: 1883
-    topic_prefix: frigate
-    client_id: frigate
-    user: {FRIGATE_MQTT_USER}
-    password: {FRIGATE_MQTT_PASSWORD}
+    enabled: False
   cameras:
     front:
       enabled: True

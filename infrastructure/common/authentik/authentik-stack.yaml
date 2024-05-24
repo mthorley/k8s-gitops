@@ -957,7 +957,7 @@ spec:
   tls:
   - hosts:
     - "auth.${domain}"
-    secretName: internal-com-tls
+    secretName: domain-tls
   rules:
     - host: "auth.${domain}"
       http:

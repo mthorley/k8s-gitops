@@ -8,5 +8,5 @@ spec:
     auth:
       kubernetes:
         secretRef:
-          name: authentik-token-2d4r9
+          name: authentik-token-hf7nd
           key: token

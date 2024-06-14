@@ -34,3 +34,7 @@ resource "influxdb_database" "power" {
 resource "influxdb_database" "airquality" {
   name = "airquality"
 }
+
+resource "influxdb_database" "isp" {
+  name = "isp"
+}

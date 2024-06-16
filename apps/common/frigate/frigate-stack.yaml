@@ -15,7 +15,9 @@ data:
     ffmpeg:
       hwaccel_args: preset-rpi-64-h264
     mqtt:
-      enabled: False
+      host: k8smqtt
+      user: "{FRIGATE_MQTT_USER}"
+      password: "{FRIGATE_MQTT_PASSWORD}"
     cameras:
       front:
         enabled: True

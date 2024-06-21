@@ -19,6 +19,7 @@ resources:
   - allow-local-egress-influxdb-netpol.yaml
   - allow-local-egress-unifi-netpol.yaml
   - allow-local-egress-loki-netpol.yaml
+  - allow-local-egress-mqtt.yaml
   - allow-ext-egress-geoplugin-netpol.yaml
   - allow-ext-egress-nidscheck-netpol.yaml
   - allow-ext-egress-zen-netpol.yaml

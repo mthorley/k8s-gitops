@@ -1,0 +1,13 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-local-egress-mqtt"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: node-red
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        "k8s:io.kubernetes.pod.namespace": mqtt
+        "app.kubernetes.io/name": mosquitto

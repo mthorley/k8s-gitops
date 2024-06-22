@@ -13,13 +13,14 @@ resources:
   - cert.yaml
   - service.yaml
   - ingress.yaml
-#  - deny-all-egress-netpol.yaml
+  - deny-all-egress-netpol.yaml
   - allow-ext-egress-netpol.yaml
   - allow-local-egress-dns-netpol.yaml
   - allow-local-egress-influxdb-netpol.yaml
   - allow-local-egress-unifi-netpol.yaml
   - allow-local-egress-loki-netpol.yaml
   - allow-local-egress-mqtt.yaml
+  - allow-local-egress-adguard.yaml
   - allow-ext-egress-geoplugin-netpol.yaml
   - allow-ext-egress-nidscheck-netpol.yaml
   - allow-ext-egress-zen-netpol.yaml

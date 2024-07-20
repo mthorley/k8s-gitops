@@ -14,7 +14,7 @@ resources:
   - adguard-vaultissuer-role.yaml
 #  - ../common/jupyternb
 #  - ../common/crypto-automation
-#  - ../common/unifi-controller
+  - ../common/unifi-controller
   - ../common/homeassistant
 #  - ../common/zigbee2mqtt
 #  - ../common/frigate

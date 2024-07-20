@@ -11,7 +11,7 @@ resources:
   - ../common/jupyternb
 #  - ../common/minecraft
   - ../common/crypto-automation
-  - ../common/unifi-controller
+#  - ../common/unifi-controller
   - ../common/homeassistant
   - ../common/zigbee2mqtt
   - ../common/freeradius

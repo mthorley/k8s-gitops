@@ -1,0 +1,11 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-external-egress-npm"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: node-red
+  egress:
+  - toFQDNs:
+    - matchPattern: "registry.npmjs.org"

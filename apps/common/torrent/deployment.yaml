@@ -21,11 +21,11 @@ spec:
               memory: "2Gi"
             requests:
               memory: "512Mi"
-#          env:
-#           - name: PUID
-#             value: "1057"
-#           - name: PGID
-#             value: "1056"
+          env:
+           - name: PUID
+             value: "65534"
+           - name: PGID
+             value: "65534"
           volumeMounts:
             - name: config
               mountPath: /config

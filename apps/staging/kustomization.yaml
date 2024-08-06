@@ -18,6 +18,7 @@ resources:
 #  - ./node-red-dev
 #  - ../common/frigate
 #  - frigate-vault-secret-store.yaml
+  - ../common/torrent
 patchesStrategicMerge:
   - cert-issuer-nodered.yaml
   - cert-issuer-adguard.yaml

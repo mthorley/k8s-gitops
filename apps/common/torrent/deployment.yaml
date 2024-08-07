@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qbittorrent
+  name: deluge
   namespace: torrent
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: qbittorrent
+      app: deluge
   template:
     metadata:
       labels:
-        app: qbittorrent
+        app: deluge
     spec:
       containers:
-        - name: qbittorrent
-          image: linuxserver/qbittorrent
+        - name: deluge
+          image: linuxserver/deluge
           resources:
             limits:
               memory: "2Gi"
@@ -32,11 +32,11 @@ spec:
             - name: downloads
               mountPath: /downloads
           ports:
-            - containerPort: 8080
+            - containerPort: 8112
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: qbit-config-claim
+            claimName: torrent-config-claim
         - name: downloads
           persistentVolumeClaim:
-            claimName: qbit-download-claim
+            claimName: torrent-download-claim

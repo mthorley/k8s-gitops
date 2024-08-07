@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: qbit-config-claim
+  name: torrent-config-claim
   namespace: torrent
   annotations:
     volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
@@ -15,7 +15,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: qbit-download-claim
+  name: torrent-download-claim
   namespace: torrent
   annotations:
     volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"

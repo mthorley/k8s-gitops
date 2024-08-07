@@ -149,6 +149,16 @@ variable "CLOUDFLARE_CREDS" {
   description = "Json creds for Cloudflared tunnel"
 }
 
+variable "VPN_USERNAME" {
+  type = string
+  description = "VPN username"
+}
+
+variable "VPN_PASSWORD" {
+  type = string
+  description = "VPN password"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -402,6 +412,28 @@ resource "vault_kubernetes_auth_backend_role" "frigate" {
 }
 
 # -----------------------------------------------------------------------------
+# vpn
+
+resource "vault_policy" "vpn-secrets-policy" {
+  name = "vpn-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/vpn" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "vpn" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "vpn-secrets-role"
+  bound_service_account_names      = ["torrent"]
+  bound_service_account_namespaces = ["default"]
+  token_ttl                        = 86400
+  token_policies                   = ["vpn-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # cloudflared
 
 resource "vault_policy" "cloudflare-secrets-policy" {
@@ -537,6 +569,17 @@ resource "vault_kv_secret_v2" "cloudflare" {
   mount     = vault_mount.kvv2.path
   name      = "cloudflare"
   data_json = var.CLOUDFLARE_CREDS
+}
+
+resource "vault_kv_secret_v2" "vpn" {
+  mount     = vault_mount.kvv2.path
+  name      = "vpn"
+  data_json = jsonencode(
+    {
+      username = var.VPN_USERNAME
+      password = var.VPN_PASSWORD
+    }
+  )
 }
 
 #module "sandbox_secrets" {

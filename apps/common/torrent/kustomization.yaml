@@ -5,3 +5,5 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - deployment.yaml
+  - external-secrets.yaml
+  - vault-secret-store.yaml

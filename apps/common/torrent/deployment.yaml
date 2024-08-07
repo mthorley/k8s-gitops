@@ -45,14 +45,14 @@ spec:
              value: "expressvpn"
            - name: OPENVPN_USER
              valueFrom:
-             secretKeyRef:
-               name: secret-vpn
-               key: username
+               secretKeyRef:
+                 name: secret-vpn
+                 key: username
            - name: OPENVPN_PASSWORD
              valueFrom:
-             secretKeyRef:
-               name: secret-vpn
-               key: password
+               secretKeyRef:
+                 name: secret-vpn
+                 key: password
            - name: SERVER_COUNTRIES
              value: "Netherlands"
            - name: TZ

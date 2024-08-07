@@ -427,8 +427,8 @@ EOT
 resource "vault_kubernetes_auth_backend_role" "vpn" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "vpn-secrets-role"
-  bound_service_account_names      = ["torrent"]
-  bound_service_account_namespaces = ["default"]
+  bound_service_account_names      = ["default"]
+  bound_service_account_namespaces = ["torrent"]
   token_ttl                        = 86400
   token_policies                   = ["vpn-secrets-policy"]
 }

@@ -34,10 +34,10 @@ spec:
           ports:
             - containerPort: 8112
         - name: gluetun
-          image: linuxserver/gluetun
+          image: qmcgaw/gluetun
           resources:
             limits:
-              memory: "2Gi"
+              memory: "1Gi"
             requests:
               memory: "512Mi"
           env:

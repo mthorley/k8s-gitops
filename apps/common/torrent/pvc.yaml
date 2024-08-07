@@ -25,3 +25,17 @@ spec:
   resources:
     requests:
       storage: 30Gi
+--- 
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: vpn-config-claim
+  namespace: torrent
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

@@ -33,7 +33,34 @@ spec:
               mountPath: /downloads
           ports:
             - containerPort: 8112
+        - name: gluetun
+          image: linuxserver/gluetun
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "512Mi"
+          env:
+           - name: VPN_SERVICE_PROVIDER
+             value: "expressvpn"
+           - name: OPENVPN_USER
+             value: "changeme"
+           - name: OPENVPN_PASSWORD
+             value: "changeme"
+           - name: SERVER_COUNTRIES
+             value: "Netherlands"
+           - name: TZ
+             value: "${cluster_tz}"
+          securityContext:
+              capabilities:
+                add: ["NET_ADMIN"]
+          volumeMounts:
+            - name: vpn-config
+              mountPath: /config
       volumes:
+        - name: vpn-config
+          persistentVolumeClaim:
+            claimName: vpn-config-claim
         - name: config
           persistentVolumeClaim:
             claimName: torrent-config-claim

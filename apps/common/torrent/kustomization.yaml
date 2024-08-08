@@ -7,3 +7,4 @@ resources:
   - deployment.yaml
   - external-secrets.yaml
   - vault-secret-store.yaml
+  - loadbalancer.yaml

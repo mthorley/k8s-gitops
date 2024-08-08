@@ -41,22 +41,22 @@ spec:
             requests:
               memory: "512Mi"
           env:
-           - name: VPN_SERVICE_PROVIDER
-             value: "expressvpn"
-           - name: OPENVPN_USER
-             valueFrom:
-               secretKeyRef:
-                 name: secret-vpn
-                 key: username
-           - name: OPENVPN_PASSWORD
-             valueFrom:
-               secretKeyRef:
-                 name: secret-vpn
-                 key: password
-           - name: SERVER_COUNTRIES
-             value: "Netherlands"
-           - name: TZ
-             value: "${cluster_tz}"
+            - name: VPN_SERVICE_PROVIDER
+              value: "expressvpn"
+            - name: OPENVPN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-vpn
+                  key: username
+            - name: OPENVPN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-vpn
+                  key: password
+            - name: SERVER_COUNTRIES
+              value: "Netherlands"
+            - name: TZ
+              value: "${cluster_tz}"
           securityContext:
               capabilities:
                 add: ["NET_ADMIN"]

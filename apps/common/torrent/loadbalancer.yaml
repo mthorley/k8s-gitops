@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: torrent-ui
   namespace: torrent
+  labels:
+    app: deluge
 spec:
   selector:
     app: deluge

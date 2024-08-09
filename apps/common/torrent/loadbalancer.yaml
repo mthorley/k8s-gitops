@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: torrent-ui
   namespace: torrent
-  labels:
-    app: deluge
 spec:
+  selector:
+    app: deluge
   type: LoadBalancer
   loadBalancerIP: "${torrent_ip}"
   ports:
@@ -13,5 +13,3 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 8112
-  selector:
-    app: deluge

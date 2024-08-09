@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: deluge
   namespace: torrent
+  labels:
+    app: deluge
 spec:
   replicas: 1
   selector:

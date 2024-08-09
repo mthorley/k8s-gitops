@@ -12,6 +12,6 @@ spec:
   loadBalancerIP: "${torrent_ip}"
   ports:
     - name: http
-      port: 8112
+      port: 80
       protocol: TCP
-      targetPort: 8112
+      targetPort: http

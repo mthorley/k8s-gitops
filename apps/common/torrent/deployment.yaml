@@ -37,7 +37,10 @@ spec:
               mountPath: /nas
           ports:
             - name: torrent-ui
-              containerPort: 8112
+              containerPort: 8112         # Deluge Web UI
+              protocol: TCP
+            - name: torrent-daemon
+            - containerPort: 58846        # Daemon port
               protocol: TCP
           # Set Deluge to use Gluetun's DNS to ensure all traffic is routed via VPN
           dnsPolicy: None

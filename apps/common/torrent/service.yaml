@@ -10,5 +10,9 @@ spec:
   ports:
     - name: http
       port: 80
-      protocol: TCP
       targetPort: torrent-ui
+      protocol: TCP
+    - name: daemon 
+      port: 58846
+      targetPort: torrent-daemon         # Deluge Daemon
+      protocol: TCP

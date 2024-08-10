@@ -19,4 +19,11 @@ spec:
             name: torrent-internal
             port:
               number: 80
+      - path: /daemon
+        pathType: Prefix
+        backend:
+          service:
+            name: torrent-internal
+            port:
+              number: 58846
   ingressClassName: nginx

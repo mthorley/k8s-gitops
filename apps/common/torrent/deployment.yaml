@@ -34,7 +34,7 @@ spec:
             - name: downloads
               mountPath: /downloads
           ports:
-            - name: torrent-ui
+            - name: 
               containerPort: 8112
               protocol: TCP
         - name: gluetun
@@ -61,9 +61,9 @@ spec:
               value: "Netherlands"
             - name: TZ
               value: "${cluster_tz}"
-#          securityContext:
-#              capabilities:
-#                add: ["NET_ADMIN"]
+          securityContext:
+              capabilities:
+                add: ["NET_ADMIN"]
           volumeMounts:
             - name: vpn-config
               mountPath: /config

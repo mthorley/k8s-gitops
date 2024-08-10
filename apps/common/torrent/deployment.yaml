@@ -34,7 +34,7 @@ spec:
             - name: downloads
               mountPath: /downloads
           ports:
-            - name: http
+            - name: torrent-ui
               containerPort: 8112
               protocol: TCP
         - name: gluetun

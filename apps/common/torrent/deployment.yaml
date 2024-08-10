@@ -37,6 +37,11 @@ spec:
             - name: 
               containerPort: 8112
               protocol: TCP
+          # Set Deluge to use Gluetun's DNS to ensure all traffic is routed via VPN
+          dnsPolicy: None
+          dnsConfig:
+            nameservers:
+            - 127.0.0.1  # Gluetun's DNS resolver inside the Pod
         - name: gluetun
           image: qmcgaw/gluetun
           resources:

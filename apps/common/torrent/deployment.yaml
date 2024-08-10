@@ -67,7 +67,7 @@ spec:
             - name: TZ
               value: "${cluster_tz}"
             - name: FIREWALL_INPUT_PORTS
-              value: 8112
+              value: "8112"
           securityContext:
               capabilities:
                 add: ["NET_ADMIN"]

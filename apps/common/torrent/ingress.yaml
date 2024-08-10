@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-torrent
+  namespace: torrent
+spec:
+  tls:
+  - hosts:
+    - "torrent.${domain}"
+    secretName: internal-com-tls
+  rules:
+  - host: "torrent.${domain}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: torrent-internal
+            port:
+              number: 80
+  ingressClassName: nginx

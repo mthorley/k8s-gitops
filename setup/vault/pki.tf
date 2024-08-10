@@ -167,3 +167,12 @@ resource "vault_kubernetes_auth_backend_role" "adguard-issuer" {
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]
 }
+
+resource "vault_kubernetes_auth_backend_role" "torrent-issuer" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "torrent-issuer-cert-role"
+  bound_service_account_names      = (var.ENV == "prod" ? ["vault-issuer"] : ["default"])  // FIXME: Remove default once cluster1 upgraded
+  bound_service_account_namespaces = ["torrent"]
+  token_ttl                        = 86400
+  token_policies                   = ["issuer-cert-policy"]
+}

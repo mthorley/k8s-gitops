@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: torrent
+spec:
+  vault:
+    path: "${pki_path}"
+    server: "http://vault.vault:8200"
+    #caBundle: <base64 encoded caBundle PEM file>
+    auth:
+      kubernetes:
+        role: torrent-issuer-cert-role
+        mountPath: /v1/auth/kubernetes
+        secretRef:
+          name: default-token-c84k6 # torrent service account
+          key: token

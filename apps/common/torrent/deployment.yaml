@@ -33,6 +33,8 @@ spec:
               mountPath: /config
             - name: downloads
               mountPath: /downloads
+            - name: nfs-volume
+              mountPath: /nas
           ports:
             - name: torrent-ui
               containerPort: 8112
@@ -41,7 +43,7 @@ spec:
           dnsPolicy: None
           dnsConfig:
             nameservers:
-            - 127.0.0.1  # Gluetun's DNS resolver inside the Pod
+            - 127.0.0.1                   # Gluetun's DNS resolver inside the Pod
         - name: gluetun
           image: qmcgaw/gluetun
           resources:
@@ -63,11 +65,11 @@ spec:
                   name: secret-vpn
                   key: password
             - name: SERVER_COUNTRIES
-              value: "Netherlands"
+              value: "Singapore"
             - name: TZ
               value: "${cluster_tz}"
             - name: FIREWALL_INPUT_PORTS
-              value: "8112"
+              value: "8112"                 # deluge UI
           securityContext:
               capabilities:
                 add: ["NET_ADMIN"]
@@ -84,3 +86,7 @@ spec:
         - name: downloads
           persistentVolumeClaim:
             claimName: torrent-download-claim
+        - name: nfs-volume
+          nfs:
+            server: "${qnap_ip}"
+            path: "/k8s/torrents"

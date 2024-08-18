@@ -23,6 +23,7 @@ resources:
 #  - ../common/tetragon   # supports ARM but needs min kernel 5.19
   - ../common/authentik
 #  - ../common/containerescapes
+  - ../common/mariadb-operator
 patchesStrategicMerge:
   - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

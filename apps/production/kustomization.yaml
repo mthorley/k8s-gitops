@@ -16,7 +16,7 @@ resources:
 #  - ../common/crypto-automation
   - ../common/unifi-controller
 #  - ../common/homeassistant
-  - ha-dev
+#  - ha-dev
 #  - ../common/zigbee2mqtt
 #  - ../common/frigate
 #  - frigate-vault-secret.yaml

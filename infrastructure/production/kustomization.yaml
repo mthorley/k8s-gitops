@@ -19,7 +19,7 @@ resources:
   - monitoring-vault-secret.yaml
 #  - ../common/mongodb
   - ../common/influxdb
-  - ../common/loki
+#  - ../common/loki
 #  - ../common/starboard
 #  - ../common/tetragon
 #  - ../common/neuvector

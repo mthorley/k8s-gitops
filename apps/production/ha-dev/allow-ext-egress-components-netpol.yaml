@@ -1,0 +1,20 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-ext-egress-components"  
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: home-assistant
+  egress:
+  - toFQDNs:
+    - matchPattern: "user-field.aylanetworks.com"   # Fujitsu AC HA component
+    - matchPattern: "ads-field.aylanetworks.com"    # Fujitsu AC HA component
+    - matchPattern: "plex.tv"
+    - matchPattern: "*.api.met.no"                  # Weather 
+    - matchPattern: "pypi.org"
+    - matchPattern: "files.pythonhosted.org"
+    - matchPattern: "wheels.home-assistant.io"
+  - toCIDR:
+    - 239.255.255.250/32   # multicast IP for UPnP: https://www.grc.com/port_1900.htm
+    - 255.255.255.255/32   # local broadcast IP 

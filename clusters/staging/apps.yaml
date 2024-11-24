@@ -12,7 +12,7 @@ spec:
     name: flux-system
   path: ./apps/staging
   prune: true
-  validation: client
+#  validation: client
   postBuild:
     substitute:
       cluster_tz: "Australia/Melbourne"

@@ -10,7 +10,7 @@ spec:
     name: flux-system
   path: ./infrastructure/staging
   prune: true
-  validation: client
+#  validation: client
   postBuild:
     substitute:
       nfs_server_ip: 192.168.3.111

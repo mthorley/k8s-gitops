@@ -25,4 +25,4 @@ resources:
   - allow-ext-egress-nidscheck-netpol.yaml
   - allow-ext-egress-zen-netpol.yaml
   - allow-ext-egress-arpc.yaml
-#  - allow-ext-egress-npm.yaml
+  - allow-ext-egress-npm.yaml

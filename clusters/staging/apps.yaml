@@ -29,6 +29,7 @@ spec:
       freeradius_auth_ip: 192.168.3.25
       nodered_syslog_ip: 192.168.3.26
       nodered_web_ip: 192.168.3.27
+      nodered_snmp_ip: 192.168.3.28
       zigbee2mqtt_ip: 192.168.3.30
       frigate_ip: 192.168.3.31
       # external

@@ -29,19 +29,3 @@ spec:
       port: 514
       protocol: UDP
       targetPort: 514
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: node-red-snmpv2
-  namespace: node-red
-spec:
-  selector:
-    app: node-red
-  type: LoadBalancer
-  loadBalancerIP: "${nodered_snmp_ip}"
-  ports:
-    - name: node-red-snmpv2
-      port: 1161
-      protocol: UDP
-      targetPort: 1161

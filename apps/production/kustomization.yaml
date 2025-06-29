@@ -10,11 +10,11 @@ resources:
   - nodered-vault-secret-store.yaml
   - nodered-vault-secret.yaml
   - nodered-vaultissuer-role.yaml
-  - ../common/adguard
-  - adguard-vaultissuer-role.yaml
+#  - ../common/adguard
+#  - adguard-vaultissuer-role.yaml
 #  - ../common/jupyternb
 #  - ../common/crypto-automation
-  - ../common/unifi-controller
+#  - ../common/unifi-controller
 #  - ../common/homeassistant
   - ha-dev
 #  - ../common/zigbee2mqtt
@@ -23,4 +23,4 @@ resources:
 #  - frigate-vault-secret-store.yaml
 patchesStrategicMerge:
   - cert-issuer-nodered.yaml
-  - cert-issuer-adguard.yaml
+#  - cert-issuer-adguard.yaml

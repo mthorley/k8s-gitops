@@ -6,7 +6,8 @@ image:
 #  tag: v7.3.83
 #  tag: v7.4.156
 #  tag: v8.0.28
-  tag: v8.2.93
+#  tag: v8.2.93
+  tag: v8.6.9
 
 # Migration to new repo and image version
 #  repository: nexusforge/unifi-docker

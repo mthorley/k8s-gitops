@@ -7,7 +7,8 @@ image:
 #  tag: v7.4.156
 #  tag: v8.0.28
 #  tag: v8.2.93
-  tag: v8.6.9
+#  tag: v8.6.9
+  tag: v9.0.114
 
 # Migration to new repo and image version
 #  repository: nexusforge/unifi-docker
@@ -29,8 +30,9 @@ env:
   RUNAS_UID0: "true"
   TZ: "${cluster_tz}"
 resources:
-    requests:
-      memory: 500Mi
-      cpu: 15m
     limits:
-      memory: 750Mi
+      cpu: 512m
+      memory: 2048Mi
+    requests:
+      cpu: 150m
+      memory: 1024Mi

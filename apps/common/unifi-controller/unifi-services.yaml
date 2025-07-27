@@ -28,6 +28,7 @@ spec:
     name: speedtest
   - port: 27017 # MongoDB default port
     targetPort: 27117
+    protocol: TCP
     name: mongodb
   selector:
     app.kubernetes.io/name: unifi

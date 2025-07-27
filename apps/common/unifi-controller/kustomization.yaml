@@ -7,9 +7,9 @@ resources:
   - unifi-services.yaml
  # - cert.yaml
  # - cert-issuer.yaml
-  - allow-ext-egress-netpol.yaml
-  - allow-local-egress-dns-netpol.yaml
-  - deny-all-egress-netpol.yaml
+#  - allow-ext-egress-netpol.yaml
+#  - allow-local-egress-dns-netpol.yaml
+#  - deny-all-egress-netpol.yaml
 
 #patches:
 #  - patch-deployment-certs.yaml

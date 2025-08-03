@@ -3,13 +3,7 @@ kind: Kustomization
 namespace: metallb-system
 resources:
   - namespace.yaml
-  - metallb.yaml
-
-secretGenerator:
-- name: memberlist
-  files:
-    - secretkey
-  type: Opaque
+  - metallb_stack.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

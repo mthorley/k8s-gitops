@@ -4,6 +4,7 @@ resources:
   - ../common/cilium
   - ../common/metallb-15
 #  - metallb-configmap.yaml
+  - metallb.yaml
   - ../common/nfs-storage
   - ../common/vault
   - vault-sa-secret.yaml

@@ -1,0 +1,30 @@
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: staging-cluster
+  namespace: metallb-system
+spec:
+  myASN: 64511
+  peerASN: 65023
+  peerAddress: 192.168.1.1
+  peerPort: 179
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: staging-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.3.10-192.168.3.40
+  autoAssign: true
+  avoidBuggyIPs: true
+---
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: services
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - staging-pool

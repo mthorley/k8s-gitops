@@ -235,13 +235,13 @@ spec:
                             items:
                               type: string
                             type: array
-                            x-kubernetes-list-type: atomic
+                            # x-kubernetes-list-type: atomic
                         required:
                         - key
                         - operator
                         type: object
                       type: array
-                      x-kubernetes-list-type: atomic
+                      # x-kubernetes-list-type: atomic
                     matchLabels:
                       additionalProperties:
                         type: string
@@ -251,7 +251,7 @@ spec:
                         operator is "In", and the values array contains only "value". The requirements are ANDed.
                       type: object
                   type: object
-                  x-kubernetes-map-type: atomic
+                  # x-kubernetes-map-type: atomic
                 type: array
               ipAddressPools:
                 description: The list of IPAddressPools to advertise via this advertisement,
@@ -301,13 +301,13 @@ spec:
                             items:
                               type: string
                             type: array
-                            x-kubernetes-list-type: atomic
+                            # x-kubernetes-list-type: atomic
                         required:
                         - key
                         - operator
                         type: object
                       type: array
-                      x-kubernetes-list-type: atomic
+                      # x-kubernetes-list-type: atomic
                     matchLabels:
                       additionalProperties:
                         type: string
@@ -317,7 +317,7 @@ spec:
                         operator is "In", and the values array contains only "value". The requirements are ANDed.
                       type: object
                   type: object
-                  x-kubernetes-map-type: atomic
+                  # x-kubernetes-map-type: atomic
                 type: array
               peers:
                 description: |-
@@ -634,13 +634,13 @@ spec:
                             items:
                               type: string
                             type: array
-                            x-kubernetes-list-type: atomic
+#                            x-kubernetes-list-type: atomic
                         required:
                         - key
                         - operator
                         type: object
                       type: array
-                      x-kubernetes-list-type: atomic
+#x                      x-kubernetes-list-type: atomic
                     matchLabels:
                       additionalProperties:
                         type: string
@@ -650,7 +650,7 @@ spec:
                         operator is "In", and the values array contains only "value". The requirements are ANDed.
                       type: object
                   type: object
-                  x-kubernetes-map-type: atomic
+#                  x-kubernetes-map-type: atomic
                 type: array
               password:
                 description: Authentication password for routers enforcing TCP MD5
@@ -672,7 +672,7 @@ spec:
                       name must be unique.
                     type: string
                 type: object
-                x-kubernetes-map-type: atomic
+#                x-kubernetes-map-type: atomic
               peerASN:
                 description: |-
                   AS number to expect from the remote end of the session.
@@ -897,13 +897,13 @@ spec:
                                 items:
                                   type: string
                                 type: array
-                                x-kubernetes-list-type: atomic
+                                # x-kubernetes-list-type: atomic
                             required:
                             - key
                             - operator
                             type: object
                           type: array
-                          x-kubernetes-list-type: atomic
+                          # x-kubernetes-list-type: atomic
                         matchLabels:
                           additionalProperties:
                             type: string
@@ -913,7 +913,7 @@ spec:
                             operator is "In", and the values array contains only "value". The requirements are ANDed.
                           type: object
                       type: object
-                      x-kubernetes-map-type: atomic
+                      # x-kubernetes-map-type: atomic
                     type: array
                   namespaces:
                     description: Namespaces list of namespace(s) on which ip pool
@@ -961,13 +961,13 @@ spec:
                                 items:
                                   type: string
                                 type: array
-                                x-kubernetes-list-type: atomic
+                                # x-kubernetes-list-type: atomic
                             required:
                             - key
                             - operator
                             type: object
                           type: array
-                          x-kubernetes-list-type: atomic
+                          # x-kubernetes-list-type: atomic
                         matchLabels:
                           additionalProperties:
                             type: string
@@ -977,7 +977,7 @@ spec:
                             operator is "In", and the values array contains only "value". The requirements are ANDed.
                           type: object
                       type: object
-                      x-kubernetes-map-type: atomic
+                      # x-kubernetes-map-type: atomic
                     type: array
                 type: object
             required:
@@ -1115,13 +1115,13 @@ spec:
                             items:
                               type: string
                             type: array
-                            x-kubernetes-list-type: atomic
+                            # x-kubernetes-list-type: atomic
                         required:
                         - key
                         - operator
                         type: object
                       type: array
-                      x-kubernetes-list-type: atomic
+                      # x-kubernetes-list-type: atomic
                     matchLabels:
                       additionalProperties:
                         type: string
@@ -1131,7 +1131,7 @@ spec:
                         operator is "In", and the values array contains only "value". The requirements are ANDed.
                       type: object
                   type: object
-                  x-kubernetes-map-type: atomic
+                  # x-kubernetes-map-type: atomic
                 type: array
               ipAddressPools:
                 description: The list of IPAddressPools to advertise via this advertisement,
@@ -1175,13 +1175,13 @@ spec:
                             items:
                               type: string
                             type: array
-                            x-kubernetes-list-type: atomic
+                            # x-kubernetes-list-type: atomic
                         required:
                         - key
                         - operator
                         type: object
                       type: array
-                      x-kubernetes-list-type: atomic
+                      # x-kubernetes-list-type: atomic
                     matchLabels:
                       additionalProperties:
                         type: string
@@ -1191,7 +1191,7 @@ spec:
                         operator is "In", and the values array contains only "value". The requirements are ANDed.
                       type: object
                   type: object
-                  x-kubernetes-map-type: atomic
+                  # x-kubernetes-map-type: atomic
                 type: array
             type: object
           status:
@@ -1260,9 +1260,9 @@ spec:
               node:
                 description: Node indicates the node announcing the service.
                 type: string
-                x-kubernetes-validations:
-                - message: Value is immutable
-                  rule: self == oldSelf
+#                x-kubernetes-validations:
+#                - message: Value is immutable
+#                  rule: self == oldSelf
               peers:
                 description: |-
                   Peers indicate the BGP peers for which the service is configured to be advertised to.
@@ -1273,15 +1273,15 @@ spec:
               serviceName:
                 description: ServiceName indicates the service this status represents.
                 type: string
-                x-kubernetes-validations:
-                - message: Value is immutable
-                  rule: self == oldSelf
+#                x-kubernetes-validations:
+#                - message: Value is immutable
+#                  rule: self == oldSelf
               serviceNamespace:
                 description: ServiceNamespace indicates the namespace of the service.
                 type: string
-                x-kubernetes-validations:
-                - message: Value is immutable
-                  rule: self == oldSelf
+#                x-kubernetes-validations:
+#                - message: Value is immutable
+#                  rule: self == oldSelf
             type: object
         type: object
     served: true
@@ -1357,21 +1357,21 @@ spec:
               node:
                 description: Node indicates the node that receives the directed traffic
                 type: string
-                x-kubernetes-validations:
-                - message: Value is immutable
-                  rule: self == oldSelf
+#                x-kubernetes-validations:
+#                - message: Value is immutable
+#                  rule: self == oldSelf
               serviceName:
                 description: ServiceName indicates the service this status represents
                 type: string
-                x-kubernetes-validations:
-                - message: Value is immutable
-                  rule: self == oldSelf
+#                x-kubernetes-validations:
+#                - message: Value is immutable
+#                  rule: self == oldSelf
               serviceNamespace:
                 description: ServiceNamespace indicates the namespace of the service
                 type: string
-                x-kubernetes-validations:
-                - message: Value is immutable
-                  rule: self == oldSelf
+#                x-kubernetes-validations:
+#                - message: Value is immutable
+#                  rule: self == oldSelf
             type: object
         type: object
     served: true

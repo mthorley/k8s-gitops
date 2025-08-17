@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - grafana-mcp-stack.yaml
   - external-secrets.yaml
+  - vault-secret-store.yaml

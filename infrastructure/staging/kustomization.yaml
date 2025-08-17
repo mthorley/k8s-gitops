@@ -24,6 +24,7 @@ resources:
   - ../common/authentik
 #  - ../common/containerescapes
   - ../common/mariadb-operator
+  - ../common/grafana-mcp
 patchesStrategicMerge:
   - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

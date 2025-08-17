@@ -82,7 +82,7 @@ spec:
               protocol: TCP
           env:
             - name: GRAFANA_URL
-              value: "http://grafana:3000"
+              value: http://grafana.monitoring.svc:3000
             - name: GRAFANA_API_KEY
               valueFrom:
                 secretKeyRef:

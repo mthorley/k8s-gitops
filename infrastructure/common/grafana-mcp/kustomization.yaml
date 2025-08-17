@@ -6,3 +6,4 @@ resources:
   - grafana-mcp-stack.yaml
   - external-secrets.yaml
   - vault-secret-store.yaml
+  - loadbalancer.yaml

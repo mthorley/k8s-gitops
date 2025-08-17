@@ -1,0 +1,8 @@
+persistence:
+  enabled: true
+  accessModes:
+  - ReadWriteOnce
+  size: 2Gi
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+  storageClassName: managed-nfs-storage

@@ -159,6 +159,11 @@ variable "VPN_PASSWORD" {
   description = "VPN password"
 }
 
+variable "MCP_GRAFANA_APIKEY" {
+  type = string
+  description = "Service account token for Grafana used by grafana-mcp server"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -456,6 +461,28 @@ resource "vault_kubernetes_auth_backend_role" "cloudflare" {
 }
 
 # -----------------------------------------------------------------------------
+# grafana-mcp
+
+resource "vault_policy" "grafana-mcp-secrets-policy" {
+  name = "grafana-mcp-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/grafana-mcp" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "grafana-mcp" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "grafana-mcp-secrets-role"
+  bound_service_account_names      = ["default"]
+  bound_service_account_namespaces = ["grafana-mcp"]
+  token_ttl                        = 86400
+  token_policies                   = ["grafana-mcp-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
 resource "vault_kv_secret_v2" "nodered" {
   mount     = vault_mount.kvv2.path
@@ -578,6 +605,16 @@ resource "vault_kv_secret_v2" "vpn" {
     {
       username = var.VPN_USERNAME
       password = var.VPN_PASSWORD
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "grafana-mcp" {
+  mount     = vault_mount.kvv2.path
+  name      = "grafana-mcp"
+  data_json = jsonencode(
+    { 
+      apikey = var.MCP_GRAFANA_APIKEY
     }
   )
 }

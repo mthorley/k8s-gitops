@@ -66,7 +66,7 @@ spec:
       containers:
         - name: mcp-grafana
           image: "docker.io/mcp/grafana:latest"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

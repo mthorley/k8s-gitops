@@ -67,6 +67,7 @@ spec:
         - name: mcp-grafana
           image: "docker.io/mcp/grafana:latest"
           imagePullPolicy: Always
+          args: ["-t", "streamable-http"]
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

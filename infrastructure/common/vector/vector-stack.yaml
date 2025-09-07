@@ -37,7 +37,7 @@ data:
         compression: none
         encoding:
           codec: json
-        endpoint: ${LOKI_ENDPOINT-http://loki.loki:3100}
+        endpoint: $${LOKI_ENDPOINT-http://loki.loki:3100}
         inputs:
         - parse_and_shape
         labels:

@@ -33,14 +33,6 @@ data:
   vector.yaml: |
     data_dir: /vector-data
     sinks:
-      to_azure_log_analytics:
-        customer_id: ${AZURE_CUSTOMER_ID}
-        inputs:
-        - parse_and_shape
-        log_type: ${AZURE_LOG_TYPE-UnifiSyslog}
-        shared_key: ${AZURE_SHARED_KEY}
-        time_generated_key: time_generated
-        type: azure_monitor_logs
       to_loki:
         compression: none
         encoding:

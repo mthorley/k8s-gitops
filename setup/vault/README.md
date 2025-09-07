@@ -9,6 +9,10 @@ Refer to kv2.tf
 
 ## pki
 
+### Script
+Run `update-keychain.sh`
+
+### Manually
 pki.tf uses vault to generate an intermediate CA that can be used to manage TLS connections from clients as long as the intermediate CA is trusted. 
 
 To trust the intermediateCA, the cert needs to be added as a trusted cert in chrome as follows:

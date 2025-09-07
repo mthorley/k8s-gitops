@@ -11,7 +11,7 @@ resources:
   - ../common/mongodb
   - ../common/influxdb
 #  - ../common/apparmor
-#  - ../common/vector
+  - ../common/vector
   - ../common/loki
   - loki-psp.yaml # remove once upgraded 
   - ../common/external-secrets

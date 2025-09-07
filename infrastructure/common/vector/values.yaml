@@ -1,29 +1,83 @@
+# --- chart basics ---
+role: "Agent"                 # daemonized log agent (DaemonSet)
+replicaCount: 1
+
+image:
+  repository: timberio/vector
+  tag: latest
+
+# Expose UDP/514 so UniFi can send syslog to the Service IP
+service:
+  enabled: true
+  type: LoadBalancer
+  ports:
+    - name: syslog
+      port: 514
+      protocol: UDP
+      targetPort: 514
+  labels: {}
+
+# Container port (match service.targetPort)
+pod:
+  ports:
+    - name: syslog
+      containerPort: 514
+      protocol: UDP
+
+# Inject secrets as environment variables
+#envFrom:
+#  - secretRef:
+#      name: vector-secrets
+
+# Optional extra env (non-secret)
+env:
+  - name: AZURE_LOG_TYPE
+    value: "UnifiSyslog"
+
+# Vector config INLINE via Helm (no separate ConfigMap needed)
 customConfig:
-  data_dir: /vector-data-dir
-  api:
-    enabled: true
-    address: 127.0.0.1:8686
-    playground: false
+  data_dir: /vector-data
+
   sources:
-    syslog_source_id:
+    unifi_syslog:
       type: syslog
       address: 0.0.0.0:514
-      max_length: 102400
       mode: udp
+
+  transforms:
+    parse_and_shape:
+      type: remap
+      inputs: [ "unifi_syslog" ]
+      source: |
+        .message = to_string!(.message)
+        .cef, err = parse_cef(.message, translate_custom_fields: true)
+        if err == null { .cef_ext = .cef.extensions } else { .cef_parse_error = string!(err) }
+        .time_generated = exists(.timestamp) ? .timestamp : now()
+
   sinks:
-#   blackhole_id:
-#     type: blackhole
-#     inputs:
-#       - syslog_source_id
-    loki_sink:
+    to_azure_log_analytics:
+      type: azure_monitor_logs
+      inputs: [ "parse_and_shape" ]
+      customer_id: "${AZURE_CUSTOMER_ID}"
+      shared_key:  "${AZURE_SHARED_KEY}"
+      log_type:    "${AZURE_LOG_TYPE-UnifiSyslog}"
+      time_generated_key: "time_generated"
+
+    to_loki:
       type: loki
-      inputs: 
-        - syslog_source_id
-      endpoint: http://loki.loki.svc.cluster.local:3100
-      labels:
-        forwarder: "vector"
+      inputs: [ "parse_and_shape" ]
+      endpoint: "${LOKI_ENDPOINT-http://loki.loki:3100}"
+      path: "/loki/api/v1/push"
       compression: none
+      out_of_order_action: accept
+      labels:
+        job: "unifi"
+        source: "vector"
+#        host: "{{ host}}"
+#        app: "{{ appname }}"
       encoding:
         codec: json
-      out_of_order_action: rewrite_timestamp
-      healthcheck: true
+
+resources:
+  requests: { cpu: "50m", memory: "128Mi" }
+  limits:   { cpu: "500m", memory: "512Mi" }

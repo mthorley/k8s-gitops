@@ -4,12 +4,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vector
+  namespace: "default"
   labels:
-    helm.sh/chart: vector-0.10.1
+    helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
-    app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.21.1-distroless-libc"
+    app.kubernetes.io/component: Agent
+    app.kubernetes.io/version: "latest"
     app.kubernetes.io/managed-by: Helm
     
 automountServiceAccountToken: true
@@ -19,70 +20,130 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: vector
+  namespace: "default"
   labels:
-    helm.sh/chart: vector-0.10.1
+    helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
-    app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.21.1-distroless-libc"
+    app.kubernetes.io/component: Agent
+    app.kubernetes.io/version: "latest"
     app.kubernetes.io/managed-by: Helm
     
 data:
   vector.yaml: |
-    api:
-      address: 127.0.0.1:8686
-      enabled: true
-      playground: false
-    data_dir: /vector-data-dir
+    data_dir: /vector-data
     sinks:
-      loki_sink:
+      to_azure_log_analytics:
+        customer_id: ${AZURE_CUSTOMER_ID}
+        inputs:
+        - parse_and_shape
+        log_type: ${AZURE_LOG_TYPE-UnifiSyslog}
+        shared_key: ${AZURE_SHARED_KEY}
+        time_generated_key: time_generated
+        type: azure_monitor_logs
+      to_loki:
         compression: none
         encoding:
           codec: json
-        endpoint: http://loki.loki.svc.cluster.local:3100
-        healthcheck: true
+        endpoint: ${LOKI_ENDPOINT-http://loki.loki:3100}
         inputs:
-        - syslog_source_id
+        - parse_and_shape
         labels:
-          forwarder: vector
-        out_of_order_action: rewrite_timestamp
+          job: unifi
+          source: vector
+        out_of_order_action: accept
+        path: /loki/api/v1/push
         type: loki
     sources:
-      syslog_source_id:
+      unifi_syslog:
         address: 0.0.0.0:514
-        max_length: 102400
         mode: udp
         type: syslog
+    transforms:
+      parse_and_shape:
+        inputs:
+        - unifi_syslog
+        source: |
+          .message = to_string!(.message)
+          .cef, err = parse_cef(.message, translate_custom_fields: true)
+          if err == null { .cef_ext = .cef.extensions } else { .cef_parse_error = string!(err) }
+          .time_generated = exists(.timestamp) ? .timestamp : now()
+        type: remap
+---
+# Source: vector/templates/rbac.yaml
+# Permissions to use Kubernetes API.
+# Requires that RBAC authorization is enabled.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vector
+  labels:
+    helm.sh/chart: vector-0.45.0
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Agent
+    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/managed-by: Helm
+    
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - nodes
+      - pods
+    verbs:
+      - list
+      - watch
+---
+# Source: vector/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vector
+  labels:
+    helm.sh/chart: vector-0.45.0
+    app.kubernetes.io/name: vector
+    app.kubernetes.io/instance: vector
+    app.kubernetes.io/component: Agent
+    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/managed-by: Helm
+    
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vector
+subjects:
+  - kind: ServiceAccount
+    name: vector
+    namespace: "default"
 ---
 # Source: vector/templates/service-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: vector-headless
+  namespace: "default"
   labels:
-    helm.sh/chart: vector-0.10.1
+    helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
-    app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.21.1-distroless-libc"
+    app.kubernetes.io/component: Agent
+    app.kubernetes.io/version: "latest"
     app.kubernetes.io/managed-by: Helm
     
   annotations:
 spec:
   clusterIP: None
-  ports:    
-    - name: api
-      port: 8686
-      protocol: TCP
-      targetPort: 8686
-    - name: syslog-source-id
+  ports:
+    - name: syslog
       port: 514
       protocol: UDP
       targetPort: 514
   selector:
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
-    app.kubernetes.io/component: Aggregator
+    app.kubernetes.io/component: Agent
   type: ClusterIP
 ---
 # Source: vector/templates/service.yaml
@@ -90,92 +151,137 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vector
+  namespace: "default"
   labels:
-    helm.sh/chart: vector-0.10.1
+    helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
-    app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.21.1-distroless-libc"
+    app.kubernetes.io/component: Agent
+    app.kubernetes.io/version: "latest"
     app.kubernetes.io/managed-by: Helm
     
   annotations:
 spec:
-  ports:    
-    - name: api
-      port: 8686
-      protocol: TCP
-      targetPort: 8686
-    - name: syslog-source-id
+  ports:
+    - name: syslog
       port: 514
       protocol: UDP
       targetPort: 514
   selector:
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
-    app.kubernetes.io/component: Aggregator
-  type: ClusterIP
+    app.kubernetes.io/component: Agent
+  type: LoadBalancer
 ---
-# Source: vector/templates/statefulset.yaml
+# Source: vector/templates/daemonset.yaml
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   name: vector
+  namespace: "default"
   labels:
-    helm.sh/chart: vector-0.10.1
+    helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
     app.kubernetes.io/instance: vector
-    app.kubernetes.io/component: Aggregator
-    app.kubernetes.io/version: "0.21.1-distroless-libc"
+    app.kubernetes.io/component: Agent
+    app.kubernetes.io/version: "latest"
     app.kubernetes.io/managed-by: Helm
     
 spec:
-  replicas: 1
-  podManagementPolicy: OrderedReady
   selector:
     matchLabels:
       app.kubernetes.io/name: vector
       app.kubernetes.io/instance: vector
-      app.kubernetes.io/component: Aggregator
-  serviceName: vector-headless
+      app.kubernetes.io/component: Agent
+  minReadySeconds: 0
   template:
     metadata:
       annotations:
-        checksum/config: fb87dcdea645fcdaec1ef163bbb655568cc0a80eea732403ee13d2d8c27dbb8e
+        checksum/config: 82371d655a469632aca3a2ed84e1e6a832ea08104c77647a67049840a7d6f6ff
       labels:
         app.kubernetes.io/name: vector
         app.kubernetes.io/instance: vector
-        app.kubernetes.io/component: Aggregator
+        app.kubernetes.io/component: Agent
+        vector.dev/exclude: "true"
     spec:
       serviceAccountName: vector
       dnsPolicy: ClusterFirst
       containers:
         - name: vector
-          image: "timberio/vector:0.21.1-distroless-libc"
+          image: "timberio/vector:latest"
           imagePullPolicy: IfNotPresent
           args:
             - --config-dir
             - /etc/vector/
           env:
+            - name: VECTOR_LOG
+              value: "info"
+            - name: AZURE_LOG_TYPE
+              value: UnifiSyslog
+            - name: VECTOR_SELF_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: VECTOR_SELF_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: VECTOR_SELF_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: PROCFS_ROOT
+              value: "/host/proc"
+            - name: SYSFS_ROOT
+              value: "/host/sys"
           ports:      
-            - name: api
-              containerPort: 8686
-              protocol: TCP
-            - name: syslog-source-i
+            - name: unifi-syslog
               containerPort: 514
               protocol: UDP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
           volumeMounts:
             - name: data
-              mountPath: "/vector-data-dir"
+              mountPath: "/vector-data"
             - name: config
               mountPath: "/etc/vector/"
               readOnly: true
+            - mountPath: /var/log/
+              name: var-log
+              readOnly: true
+            - mountPath: /var/lib
+              name: var-lib
+              readOnly: true
+            - mountPath: /host/proc
+              name: procfs
+              readOnly: true
+            - mountPath: /host/sys
+              name: sysfs
+              readOnly: true
       terminationGracePeriodSeconds: 60
       volumes:
-        - name: data
-          emptyDir: {}
         - name: config
           projected:
             sources:
               - configMap:
                   name: vector
-  volumeClaimTemplates:
+        - name: data
+          hostPath:
+            path: "/var/lib/vector"
+        - hostPath:
+            path: /var/log/
+          name: var-log
+        - hostPath:
+            path: /var/lib/
+          name: var-lib
+        - hostPath:
+            path: /proc
+          name: procfs
+        - hostPath:
+            path: /sys
+          name: sysfs

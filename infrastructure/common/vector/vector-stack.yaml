@@ -4,7 +4,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vector
-  namespace: "default"
+  namespace: "vector"
   labels:
     helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
@@ -20,7 +20,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: vector
-  namespace: "default"
+  namespace: "vector"
   labels:
     helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
@@ -116,14 +116,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: vector
-    namespace: "default"
+    namespace: "vector"
 ---
 # Source: vector/templates/service-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: vector-headless
-  namespace: "default"
+  namespace: "vector"
   labels:
     helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
@@ -151,7 +151,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vector
-  namespace: "default"
+  namespace: "vector"
   labels:
     helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector
@@ -178,7 +178,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: vector
-  namespace: "default"
+  namespace: "vector"
   labels:
     helm.sh/chart: vector-0.45.0
     app.kubernetes.io/name: vector

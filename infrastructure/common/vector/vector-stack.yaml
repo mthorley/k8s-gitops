@@ -200,7 +200,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: vector
-          image: "timberio/vector:latest"
+          image: "timberio/vector:latest-debian"
           imagePullPolicy: IfNotPresent
           args:
             - --config-dir

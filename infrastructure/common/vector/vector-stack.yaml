@@ -53,14 +53,14 @@ data:
         type: syslog
     transforms:
       parse_and_shape:
+        type: remap
         inputs:
         - unifi_syslog
         source: |
           .message = to_string!(.message)
           .cef, err = parse_cef(.message, translate_custom_fields: true)
           if err == null { .cef_ext = .cef.extensions } else { .cef_parse_error = string!(err) }
-          .time_generated = exists(.timestamp) ? .timestamp : now()
-        type: remap
+          if exists(.timestamp) { .time_generated = .timestamp } else { .time_generated = now() }
 ---
 # Source: vector/templates/rbac.yaml
 # Permissions to use Kubernetes API.

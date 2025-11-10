@@ -52,16 +52,9 @@ customConfig:
         .message = to_string!(.message)
         .cef, err = parse_cef(.message, translate_custom_fields: true)
         if err == null { .cef_ext = .cef.extensions } else { .cef_parse_error = string!(err) }
-        .time_generated = exists(.timestamp) ? .timestamp : now()
+        if exists(.timestamp) { .time_generated = .timestamp } else { .time_generated = now() }
 
   sinks:
-    to_azure_log_analytics:
-      type: azure_monitor_logs
-      inputs: [ "parse_and_shape" ]
-      customer_id: "${AZURE_CUSTOMER_ID}"
-      shared_key:  "${AZURE_SHARED_KEY}"
-      log_type:    "${AZURE_LOG_TYPE-UnifiSyslog}"
-      time_generated_key: "time_generated"
 
     to_loki:
       type: loki

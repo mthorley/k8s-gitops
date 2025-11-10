@@ -28,6 +28,7 @@ resource "grafana_data_source" "influxdb_tasmota" {
 resource "grafana_data_source" "influxdb_unifitemps" {
   type                = "influxdb"
   name                = "InfluxDB-unifitemps"
+  uid                 = "MmT8wId4y"
   url                 = local.influxdb_url
   database_name       = "unifitemps" # FIXME: use local vars from influxdb
   json_data_encoded   = jsonencode({})

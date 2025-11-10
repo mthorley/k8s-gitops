@@ -42,8 +42,8 @@ LABEL=system-boot       /boot/firmware  vfat    defaults        0       1
 ```sudo vi /etc/exports```
 
 ```
-/mnt     192.168.2.0/24(rw,sync,no_subtree_check)
-/mnt/ssd 192.168.2.0/24(rw,sync,no_subtree_check)
+/mnt     192.168.3.0/24(rw,sync,no_subtree_check)
+/mnt/ssd 192.168.3.0/24(rw,sync,no_subtree_check)
 /mnt     192.168.1.0/24(rw,sync,no_subtree_check)
 /mnt/ssd 192.168.1.0/24(rw,sync,no_subtree_check)
 ```

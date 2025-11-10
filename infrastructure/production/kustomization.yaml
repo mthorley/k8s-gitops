@@ -24,9 +24,9 @@ resources:
 #  - ../common/tetragon
 #  - ../common/neuvector
   - ../common/falco
-  - ../common/grafana-mcp
-  - grafana-mcp-vault-secret-store.yaml
-  - grafana-mcp-vault-secret.yaml
+#  - ../common/grafana-mcp
+#  - grafana-mcp-vault-secret-store.yaml
+#  - grafana-mcp-vault-secret.yaml
 patchesStrategicMerge:
   - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

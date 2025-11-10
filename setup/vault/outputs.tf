@@ -1,4 +1,4 @@
-output "intermediate_ca" {
+/*output "intermediate_ca" {
   value = vault_pki_secret_backend_intermediate_set_signed.intermediate
 }
 
@@ -59,3 +59,4 @@ resource "local_sensitive_file" "int_chain" {
   filename = "${path.module}/intermediate-ca-chain.pem"
   content  = local.intermediate_chain_pem
 }
+*/

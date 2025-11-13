@@ -29,4 +29,4 @@ resources:
 #  - grafana-mcp-vault-secret.yaml
 patchesStrategicMerge:
   - cert-issuer-authentik.yaml
-#  - cert-issuer-monitoring.yaml
+  - cert-issuer-monitoring.yaml

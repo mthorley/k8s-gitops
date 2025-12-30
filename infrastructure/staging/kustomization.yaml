@@ -13,7 +13,6 @@ resources:
 #  - ../common/apparmor
   - ../common/vector
   - ../common/loki
-  - loki-psp.yaml # remove once upgraded 
   - ../common/external-secrets
   - ../common/certmanager
   - ../common/ingress

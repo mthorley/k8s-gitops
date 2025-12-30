@@ -14,7 +14,7 @@ resources:
 #  - ../common/unifi-controller
   - ../common/homeassistant
 #  - ../common/zigbee2mqtt
-  - ../common/freeradius
+#  - ../common/freeradius
 #  - ./node-red-dev
 #  - ../common/frigate
 #  - frigate-vault-secret-store.yaml

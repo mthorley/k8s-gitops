@@ -54,12 +54,32 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
   country              = "AU"
   locality             = "Melbourne"
   province             = "VIC"
-  revoke               = true
+  revoke               = false
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate" {
   backend     = vault_mount.intermediate.path
   certificate = vault_pki_secret_backend_root_sign_intermediate.intermediate.certificate
+}
+
+# List issuers on the pki_int backend (created when we generate + set_signed)
+data "vault_pki_secret_backend_issuers" "pki_int" {
+  backend    = vault_mount.intermediate.path
+  # Make sure the intermediate has been generated and signed first
+  depends_on = [vault_pki_secret_backend_intermediate_set_signed.intermediate]
+}
+
+# Configure the default issuer for pki_int
+resource "vault_pki_secret_backend_config_issuers" "pki_int" {
+  backend = vault_mount.intermediate.path
+
+  # Use the first issuer returned (for a fresh mount this will be your
+  # intermediate CA that you just created and set_signed)
+  default = data.vault_pki_secret_backend_issuers.pki_int.keys[0]
+
+  # Optional but nice for future rotations:
+  # when you rotate/introduce new issuers, this keeps default in sync
+  default_follows_latest_issuer = true
 }
 
 resource "vault_policy" "issuer-cert-policy" {
@@ -85,6 +105,10 @@ resource "vault_pki_secret_backend_role" "internal-dot-com" {
   key_type         = "rsa"
 #  key_bits         = 4096
 
+  # Use the backend's default issuer (set above)
+  # Valid values: "default", an issuer name, or an issuer ID
+  issuer_ref = "default"
+
   allowed_domains    = [(var.ENV == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))]
   allow_subdomains   = true
   allow_any_name     = true
@@ -95,6 +119,8 @@ resource "vault_pki_secret_backend_role" "internal-dot-com" {
   require_cn       = false # https://github.com/cert-manager/cert-manager/issues/4965
 }
 
+# -----------------------------------------------------------------------------
+# Issuers
 resource "vault_kubernetes_auth_backend_role" "issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "issuer-cert-role"

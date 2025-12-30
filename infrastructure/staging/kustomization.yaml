@@ -8,7 +8,7 @@ resources:
   - ../common/monitoring/setup
   - ../common/monitoring
   - monitoring-vault-secret-store.yaml
-  - ../common/mongodb
+#  - ../common/mongodb
   - ../common/influxdb
 #  - ../common/apparmor
   - ../common/vector
@@ -22,8 +22,8 @@ resources:
 #  - ../common/tetragon   # supports ARM but needs min kernel 5.19
 #  - ../common/authentik
 #  - ../common/containerescapes
-  - ../common/mariadb-operator
-  - ../common/grafana-mcp
+#  - ../common/mariadb-operator
+#  - ../common/grafana-mcp
 patchesStrategicMerge:
 #  - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

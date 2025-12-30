@@ -9,6 +9,7 @@ resources:
   - ../common/monitoring/setup
   - ../common/monitoring
   - monitoring-vault-secret-store.yaml
+  - monitoring-vault-secret.yaml
 #  - ../common/mongodb
   - ../common/influxdb
 #  - ../common/apparmor

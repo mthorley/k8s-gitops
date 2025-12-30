@@ -20,10 +20,10 @@ resources:
 #  - ../common/trivy-system
   - ../common/cilium
 #  - ../common/tetragon   # supports ARM but needs min kernel 5.19
-  - ../common/authentik
+#  - ../common/authentik
 #  - ../common/containerescapes
   - ../common/mariadb-operator
   - ../common/grafana-mcp
 patchesStrategicMerge:
-  - cert-issuer-authentik.yaml
+#  - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

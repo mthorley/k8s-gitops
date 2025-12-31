@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: internal-com
+  namespace: node-red
+spec:
+  secretName: nodered-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: Issuer
+  dnsNames:
+    - "nodered.cluster1.cyonomy.net"

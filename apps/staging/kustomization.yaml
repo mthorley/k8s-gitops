@@ -13,6 +13,7 @@ resources:
 
   - nodered-cf-external-secrets.yaml
   - nodered-le-stg-issuer.yaml
+  - nodered-cert-le.yaml
 
 #  - ../common/adguard
   - ../common/jupyternb

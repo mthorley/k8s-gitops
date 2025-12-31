@@ -133,7 +133,7 @@ resource "vault_kubernetes_auth_backend_role" "issuer" {
 resource "vault_kubernetes_auth_backend_role" "jupyter-issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "jupyter-issuer-cert-role"
-  bound_service_account_names      = ["default"]
+  bound_service_account_names      = ["vault-issuer"]
   bound_service_account_namespaces = ["jupyter"]
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]

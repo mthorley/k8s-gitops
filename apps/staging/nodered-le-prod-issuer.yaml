@@ -14,7 +14,7 @@ spec:
         cloudflare:
           apiTokenSecretRef:
             name: cloudflare-api-token-secret
-            key: api-token
+            key: dns-api-token
       selector:
         dnsZones:
         - cyonomy.net

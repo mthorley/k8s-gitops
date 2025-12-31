@@ -4,7 +4,7 @@ metadata:
   name: nodered-tls
   namespace: node-red
 spec:
-  secretName: nodered-tls
+  secretName: nodered-tls-prod
   issuerRef:
     name: letsencrypt-prod
     kind: Issuer

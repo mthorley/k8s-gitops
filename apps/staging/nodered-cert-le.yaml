@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: internal-com
+  name: nodered-tls
   namespace: node-red
 spec:
   secretName: nodered-tls

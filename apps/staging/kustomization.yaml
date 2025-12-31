@@ -9,6 +9,7 @@ resources:
   - ../common/node-red
   - nodered-vault-secret-store.yaml
   - nodered-vault-secret.yaml
+  - nodered-vaultissuer-role.yaml
   - ../common/adguard
   - ../common/jupyternb
 #  - ../common/minecraft

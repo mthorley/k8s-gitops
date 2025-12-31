@@ -7,6 +7,5 @@ spec:
   vault:
     auth:
       kubernetes:
-        secretRef:
-          name: nodered-token-brjkw # nodered service account
-          key: token
+        serviceAccountRef:
+          name: vault-issuer

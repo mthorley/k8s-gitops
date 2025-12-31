@@ -5,6 +5,7 @@ resources:
   - ../common/rsyslog
   - ../common/mqtt
   - mqtt-vault-secret-store.yaml
+  - mqtt-vault-secret.yaml
   - ../common/node-red
   - nodered-vault-secret-store.yaml
   - nodered-vault-secret.yaml

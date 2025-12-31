@@ -253,6 +253,9 @@ resource "vault_policy" "nodered-secrets-policy" {
 path "secret/data/nodered" {
   capabilities = ["read", "list"]
 }
+path "secret/data/nodered-cf-api-token" {
+  capabilities = ["read", "list"]
+}
 EOT
 }
 

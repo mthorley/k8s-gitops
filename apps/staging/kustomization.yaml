@@ -12,6 +12,7 @@ resources:
   - nodered-vaultissuer-role.yaml
 
   - nodered-cf-external-secrets.yaml
+  - nodered-le-stg-issuer.yaml
 
 #  - ../common/adguard
   - ../common/jupyternb

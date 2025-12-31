@@ -17,7 +17,7 @@ resources:
   - ../common/vector
   - ../common/loki
   - ../common/external-secrets
-  - ../common/certmanager
+  - ../common/certmanager-1.12
   - ../common/ingress
 #  - ../common/flux-system
 #  - ../common/trivy-system

@@ -7,5 +7,5 @@ spec:
   vault:
     auth:
       kubernetes:
-        serviceAccountRef:
+        secretRef:
           name: vault-issuer

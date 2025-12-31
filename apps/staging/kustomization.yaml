@@ -10,6 +10,9 @@ resources:
   - nodered-vault-secret-store.yaml
   - nodered-vault-secret.yaml
   - nodered-vaultissuer-role.yaml
+
+  - nodered-cf-external-secrets.yaml
+
 #  - ../common/adguard
   - ../common/jupyternb
   - jupyternb-vaultissuer-role.yaml

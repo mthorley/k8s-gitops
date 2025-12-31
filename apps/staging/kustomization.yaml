@@ -10,7 +10,7 @@ resources:
   - nodered-vault-secret-store.yaml
   - nodered-vault-secret.yaml
   - nodered-vaultissuer-role.yaml
-  - ../common/adguard
+#  - ../common/adguard
   - ../common/jupyternb
 #  - ../common/minecraft
 #  - ../common/crypto-automation
@@ -24,4 +24,4 @@ resources:
 #  - ../common/torrent
 patchesStrategicMerge:
   - cert-issuer-nodered.yaml
-  - cert-issuer-adguard.yaml
+#  - cert-issuer-adguard.yaml

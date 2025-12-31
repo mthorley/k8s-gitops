@@ -149,6 +149,11 @@ variable "CLOUDFLARE_CREDS" {
   description = "Json creds for Cloudflared tunnel"
 }
 
+variable "CLOUDFLARE_DNS_API_TOKEN" {
+  type = string
+  description = "Cloudflare DNS API token used by cert manager for ACME DNS-01 challenge"
+}
+
 variable "VPN_USERNAME" {
   type = string
   description = "VPN username"
@@ -504,6 +509,16 @@ resource "vault_kv_secret_v2" "nodered" {
   )
 }
 
+resource "vault_kv_secret_v2" "nodered-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "nodered-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}
+
 resource "vault_kv_secret_v2" "mongodb" {
   mount     = vault_mount.kvv2.path
   name      = "mongodb"
@@ -595,7 +610,11 @@ resource "vault_kv_secret_v2" "frigate" {
 resource "vault_kv_secret_v2" "cloudflare" {
   mount     = vault_mount.kvv2.path
   name      = "cloudflare"
-  data_json = var.CLOUDFLARE_CREDS
+  data_json = jsonencode(
+    {
+      creds = var.CLOUDFLARE_CREDS
+    }
+  )
 }
 
 resource "vault_kv_secret_v2" "vpn" {

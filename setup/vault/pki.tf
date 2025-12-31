@@ -142,7 +142,7 @@ resource "vault_kubernetes_auth_backend_role" "jupyter-issuer" {
 resource "vault_kubernetes_auth_backend_role" "nodered-issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "nodered-issuer-cert-role"
-  bound_service_account_names      = (var.ENV == "prod" ? ["vault-issuer"] : ["nodered"])  // FIXME: Remove nodered once cluster1 upgraded
+  bound_service_account_names      = ["vault-issuer"]
   bound_service_account_namespaces = ["node-red"]
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]

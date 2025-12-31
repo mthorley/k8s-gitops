@@ -12,6 +12,7 @@ resources:
   - nodered-vaultissuer-role.yaml
 #  - ../common/adguard
   - ../common/jupyternb
+  - jupyternb-vaultissuer-role.yaml
 #  - ../common/minecraft
 #  - ../common/crypto-automation
 #  - ../common/unifi-controller
@@ -25,3 +26,4 @@ resources:
 patchesStrategicMerge:
   - cert-issuer-nodered.yaml
 #  - cert-issuer-adguard.yaml
+  - cert-issuer-jupyternb.yaml

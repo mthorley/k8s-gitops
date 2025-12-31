@@ -12,6 +12,3 @@ spec:
       kubernetes:
         role: jupyter-issuer-cert-role
         mountPath: /v1/auth/kubernetes
-        secretRef:
-          name: default-token-db88m
-          key: token

@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: nodered-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-prod
     kind: Issuer
   dnsNames:
     - "nodered.cluster1.cyonomy.net"

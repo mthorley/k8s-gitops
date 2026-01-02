@@ -5,7 +5,7 @@ metadata:
   namespace: node-red
 spec:
   acme:
-    email: you@cyonomy.net
+    email: matt.thorley@gmail.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: le-prod-account-key

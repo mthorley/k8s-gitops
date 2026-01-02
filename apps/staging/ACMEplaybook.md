@@ -10,9 +10,7 @@
 
 # 1) Cloudflare - API token for cert-manager
 
-1. Navigate to Account API tokens
-
-2. Create API token with the following settings:
+Navigate to Account API tokens and create API token with the following settings:
 
 Permissions
  - Zone - DNS - Edit

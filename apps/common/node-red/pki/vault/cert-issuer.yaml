@@ -12,3 +12,5 @@ spec:
       kubernetes:
         role: nodered-issuer-cert-role
         mountPath: /v1/auth/kubernetes
+        serviceAccountRef:
+          name: vault-issuer

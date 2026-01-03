@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - allow-ext-egress-arpc.yaml
+  - allow-ext-egress-geoplugin-netpol.yaml
+  - allow-ext-egress-netpol.yaml
+  - allow-ext-egress-nidscheck-netpol.yaml
+#  - allow-ext-egress-npm.yaml
+  - allow-ext-egress-zen-netpol.yaml
+  - allow-local-egress-adguard.yaml
+  - allow-local-egress-dns-netpol.yaml
+  - allow-local-egress-influxdb-netpol.yaml
+  - allow-local-egress-loki-netpol.yaml
+  - allow-local-egress-mqtt.yaml
+  - allow-local-egress-unifi-netpol.yaml
+  - deny-all-egress-netpol.yaml

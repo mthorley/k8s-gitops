@@ -7,13 +7,6 @@ resources:
   - mqtt-vault-secret-store.yaml
   - mqtt-vault-secret.yaml
   - ../common/node-red
-##  - nodered-vaultissuer-role.yaml
-
-##  - nodered-cf-external-secrets.yaml
-##  - nodered-le-stg-issuer.yaml
-##  - nodered-le-prod-issuer.yaml
-##  - nodered-cert-le.yaml
-
 #  - ../common/adguard
   - ../common/jupyternb
   - jupyternb-vaultissuer-role.yaml
@@ -28,7 +21,5 @@ resources:
 #  - frigate-vault-secret-store.yaml
 #  - ../common/torrent
 patchesStrategicMerge:
-##  - cert-issuer-nodered.yaml
 #  - cert-issuer-adguard.yaml
   - cert-issuer-jupyternb.yaml
-#  - patch-nodered-ingress.yaml

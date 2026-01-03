@@ -69,11 +69,21 @@ data "kubernetes_config_map" "cacert" {
 #     kubernetes_ca_cert="${k8s_cacert}" \
 #     disable_issuer_verification=true \
 #     disable_iss_validation=true
-resource "vault_kubernetes_auth_backend_config" "config" {
+/*resource "vault_kubernetes_auth_backend_config" "config" {
   backend                = vault_auth_backend.kubernetes.path
   kubernetes_host        = (var.ENV == "prod" ? var.master_host_port_prod : var.master_host_port_staging)
   kubernetes_ca_cert     = data.kubernetes_config_map.cacert.data["ca.crt"]
 #  token_reviewer_jwt     = data.kubernetes_secret.vault.data.token # __K8S_VERSION_LESSTHAN_1.22 (staging)
   token_reviewer_jwt     = data.kubernetes_secret_v1.vault.data["token"] # >1.22 (prod)
+  disable_iss_validation = "true"
+}*/
+
+# Vault fix for stale token reviewer jwt
+resource "vault_kubernetes_auth_backend_config" "config" {
+  backend                = vault_auth_backend.kubernetes.path
+  kubernetes_host        = (var.ENV == "prod" ? var.master_host_port_prod : var.master_host_port_staging)
+  kubernetes_ca_cert     = data.kubernetes_config_map.cacert.data["ca.crt"]
+
+  disable_local_ca_jwt   = "false"
   disable_iss_validation = "true"
 }

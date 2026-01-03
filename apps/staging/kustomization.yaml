@@ -31,4 +31,4 @@ patchesStrategicMerge:
 ##  - cert-issuer-nodered.yaml
 #  - cert-issuer-adguard.yaml
   - cert-issuer-jupyternb.yaml
-  - patch-nodered-ingress.yaml
+#  - patch-nodered-ingress.yaml

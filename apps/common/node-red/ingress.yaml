@@ -7,7 +7,8 @@ spec:
   tls:
   - hosts:
     - "nodered.${domain}"
-    secretName: internal-com-tls
+#   secretName: internal-com-tls    # Vault issued
+    secretName: nodered-tls-prod    # LetEncrypt issued rather than Vault
   rules:
   - host: "nodered.${domain}"
     http:

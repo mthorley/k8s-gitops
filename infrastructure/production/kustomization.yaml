@@ -8,7 +8,7 @@ resources:
   - ../common/vault
   - vault-sa-secret.yaml
   - ../common/external-secrets
-  - ../common/certmanager-1.12
+  - ../common/certmanager-1.19
   - ../common/ingress
   - ../common/authentik
   - authentik-vaultissuer-role.yaml

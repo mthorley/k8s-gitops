@@ -9,10 +9,10 @@ resources:
   - ../common/node-red
 ##  - nodered-vaultissuer-role.yaml
 
-  - nodered-cf-external-secrets.yaml
-  - nodered-le-stg-issuer.yaml
-  - nodered-le-prod-issuer.yaml
-  - nodered-cert-le.yaml
+##  - nodered-cf-external-secrets.yaml
+##  - nodered-le-stg-issuer.yaml
+##  - nodered-le-prod-issuer.yaml
+##  - nodered-cert-le.yaml
 
 #  - ../common/adguard
   - ../common/jupyternb

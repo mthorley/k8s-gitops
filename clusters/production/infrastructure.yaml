@@ -23,5 +23,5 @@ spec:
       # external
       qnap_ip: 192.168.1.147
       pki_path: pki_int/sign/internal-dot-com
-      domain: cluster0.net
+      domain: cluster0.cyonomy.net
       cluster_id: cluster0

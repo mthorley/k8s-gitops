@@ -7,8 +7,8 @@ resources:
   - mqtt-vault-secret.yaml
   - mqtt-vault-secret-store.yaml
   - ../common/node-red
-  - nodered-vault-secret-store.yaml
-  - nodered-vault-secret.yaml
+##  - nodered-vault-secret-store.yaml
+##  - nodered-vault-secret.yaml
   - nodered-vaultissuer-role.yaml
   - ../common/adguard
   - adguard-vaultissuer-role.yaml

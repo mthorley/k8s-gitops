@@ -7,8 +7,6 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - loadbalancer.yaml
-##  - cert-issuer.yaml
-##  - cert.yaml
   - service.yaml
   - ingress.yaml
   - netpol

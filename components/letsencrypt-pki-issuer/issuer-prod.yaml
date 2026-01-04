@@ -7,12 +7,12 @@ spec:
     email: $(ACME_EMAIL)
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: $(APP)-le-prod-account-key
+      name: "$(APP)-le-prod-account-key"
     solvers:
     - dns01:
         cloudflare:
           apiTokenSecretRef:
-            name: $(APP)-cloudflare-api-token-secret
+            name: "$(APP)-cloudflare-api-token-secret"
             key: dns-api-token
       selector:
         dnsZones:

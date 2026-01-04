@@ -12,7 +12,6 @@ resources:
   - ingress.yaml
 
 components:
-  - ../../../components/app-vars
   - ../../../components/vault-secrets
 #  - ../../../components/vault-pki-issuer
   - ../../../components/letsencrypt-pki-issuer
@@ -22,3 +21,19 @@ configMapGenerator:
     literals:
       - APP=nodereddev
       - ACME_EMAIL=matt.thorley@gmail.com
+
+vars:
+  - name: APP
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: app-config
+    fieldref:
+      fieldpath: data.APP
+  - name: ACME_EMAIL
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: app-config
+    fieldref:
+      fieldpath: data.ACME_EMAIL

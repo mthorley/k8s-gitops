@@ -1,0 +1,18 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: nodereddev
+  namespace: flux-system
+spec:
+  interval: 30m0s
+  dependsOn:
+    - name: infrastructure
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./apps/staging/node-red-dev
+  prune: true
+  postBuild:
+    substitute:
+      APP: "nodereddev"
+      ACME_EMAIL: "matt.thorley@gmail.com"

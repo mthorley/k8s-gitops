@@ -1,11 +1,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "$(APP)-tls-prod"
+  name: "${APP}-tls-prod"
 spec:
-  secretName: "$(APP)-tls-prod"
+  secretName: "${APP}-tls-prod"
   issuerRef:
     name: letsencrypt-prod
     kind: Issuer
   dnsNames:
-    - "$(APP).${domain}"
+    - "${APP}.${domain}"

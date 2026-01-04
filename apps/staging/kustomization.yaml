@@ -16,7 +16,6 @@ resources:
   - ../common/homeassistant
 #  - ../common/zigbee2mqtt
 #  - ../common/freeradius
-  - ./node-red-dev
 #  - ../common/frigate
 #  - frigate-vault-secret-store.yaml
 #  - ../common/torrent

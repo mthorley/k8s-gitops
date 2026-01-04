@@ -37,7 +37,7 @@ spec:
         - name: HUE_TOKEN
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: hue-token
         - name: NODE_RED_ENABLE_PROJECTS
           value: "true"
@@ -46,51 +46,51 @@ spec:
         - name: MQTT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: mqtt-password
         - name: SONOS_DININGROOM_R_IP
           value: 192.168.1.31
         - name: SONOS_DININGROOM_R
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: sonos-diningroom-r
         - name: SONOS_DININGROOM_L_IP
           value: 192.168.1.26
         - name: SONOS_DININGROOM_L
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: sonos-diningroom-l
         - name: SONOS_WHISKYROOM_L
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: sonos-whiskyroom-l
         - name: SONOS_WHISKYROOM_R
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: sonos-whiskyroom-r
         - name: UNIFI_USER
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: unifi-user
         - name: UNIFI_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: unifi-password
         - name: ZEN_WIFI_USER
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: zen-wifi-user
         - name: ZEN_WIFI_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: secret-nodered
+              name: secret-nodereddev
               key: zen-wifi-password
         - name: TZ
           value: "${cluster_tz}"

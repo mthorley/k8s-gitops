@@ -16,3 +16,4 @@ spec:
     substitute:
       APP: "nodereddev"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      domain: cluster1.cyonomy.net

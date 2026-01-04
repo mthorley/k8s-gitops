@@ -273,16 +273,6 @@ resource "vault_kubernetes_auth_backend_role" "nodered" {
   token_policies                   = ["nodered-secrets-policy"]
 }
 
-# development
-resource "vault_kubernetes_auth_backend_role" "nodered-dev" {
-  backend                          = vault_auth_backend.kubernetes.path
-  role_name                        = "nodered-secrets-role-dev"
-  bound_service_account_names      = ["nodered"]
-  bound_service_account_namespaces = ["node-red-dev"]
-  token_ttl                        = 86400
-  token_policies                   = ["nodered-secrets-policy"]
-}
-
 # -----------------------------------------------------------------------------
 # cryptoauth
 
@@ -515,6 +505,62 @@ resource "vault_kv_secret_v2" "nodered" {
 resource "vault_kv_secret_v2" "nodered-cf-api-token" {
   mount     = vault_mount.kvv2.path
   name      = "nodered-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}
+
+# -----------------------------------------------------------------------------
+# vault kv patch secret/nodered hue-token="$HUE_TOKEN"
+
+# development
+resource "vault_policy" "nodereddev-secrets-policy" {
+  name = "nodereddev-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/nodereddev" {
+  capabilities = ["read", "list"]
+}
+path "secret/data/nodereddev-cf-api-token" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "nodereddev" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "nodereddev-secrets-role"
+  bound_service_account_names      = ["nodereddev"]
+  bound_service_account_namespaces = ["node-red-dev"]
+  token_ttl                        = 86400
+  token_policies                   = ["nodereddev-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "nodereddev" {
+  mount     = vault_mount.kvv2.path
+  name      = "nodereddev"
+  data_json = jsonencode(
+    {
+      mqtt-user          = var.NODERED_MQTT_USER
+      mqtt-password      = var.NODERED_MQTT_PASSWORD
+      hue-token          = var.HUE_TOKEN
+      sonos-diningroom-r = var.SONOS_DININGROOM_R
+      sonos-diningroom-l = var.SONOS_DININGROOM_L
+      sonos-whiskyroom-r = var.SONOS_WHISKYROOM_R
+      sonos-whiskyroom-l = var.SONOS_WHISKYROOM_L
+      zen-wifi-user      = var.ZEN_WIFI_USER
+      zen-wifi-password  = var.ZEN_WIFI_PASSWORD
+      unifi-user         = var.UNIFI_USER
+      unifi-password     = var.UNIFI_PASSWORD
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "nodereddev-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "nodereddev-cf-api-token"
   data_json = jsonencode(
     {
       dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN

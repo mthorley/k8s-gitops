@@ -5,11 +5,3 @@ resources:
   - cf-external-secret.yaml
   - issuer-prod.yaml
 #  - issuer-staging.yaml
-vars:
-  - name: ACME_EMAIL
-    objref:
-      apiVersion: v1
-      kind: ConfigMap
-      name: app-config
-    fieldref:
-      fieldpath: data.ACME_EMAIL

@@ -17,7 +17,7 @@ spec:
   tls:
   - hosts:
     - "nodereddev.${domain}"
-    secretName: nodered-tls-prod    # LetEncrypt issued rather than Vault
+    secretName: nodereddev-tls-prod    # LetEncrypt issued rather than Vault
   rules:
   - host: "nodereddev.${domain}"
     http:

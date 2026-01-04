@@ -15,7 +15,7 @@ spec:
       labels:
         app: node-red
     spec:
-      serviceAccountName: nodered
+      serviceAccountName: nodereddev
       securityContext:
         seccompProfile:
           type: RuntimeDefault

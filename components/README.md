@@ -40,3 +40,25 @@ Provides certificate mangement using cert-manager and Letencrypt for ingress.
 | -------- | ----------- | ------- |
 | APP | Name of the application | nodered |
 | ACME_EMAIL | email used for notification on cert expiry | email |
+
+# Example
+
+```
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: node-red
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+  - namespace.yaml
+  - pvc.yaml
+  - serviceaccount.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+components:
+  - ../../../components/secrets-eso-vault
+  - ../../../components/pki-certman-letsencrypt
+
+```

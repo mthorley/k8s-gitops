@@ -16,4 +16,4 @@ spec:
             key: dns-api-token
       selector:
         dnsZones:
-        - ${domain}
+        - "${domain}"

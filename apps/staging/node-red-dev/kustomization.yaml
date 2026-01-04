@@ -12,6 +12,6 @@ resources:
   - ingress.yaml
 
 components:
-  - ../../../components/vault-secrets
-#  - ../../../components/vault-pki-issuer
-  - ../../../components/letsencrypt-pki-issuer
+  - ../../../components/secrets-eso-vault
+#  - ../../../components/pki-certman-vault
+  - ../../../components/pki-certman-letsencrypt

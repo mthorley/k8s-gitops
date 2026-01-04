@@ -16,10 +16,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - nodereddev.internal.com
-    secretName: internal-com-tls
+    - "nodereddev.${domain}"
+    secretName: nodered-tls-prod    # LetEncrypt issued rather than Vault
   rules:
-  - host: nodereddev.internal.com
+  - host: "nodereddev.${domain}"
     http:
       paths:
       - path: /
@@ -29,4 +29,4 @@ spec:
             name: nodered-internal
             port:
               number: 80
-  ingressClassName: nginx 
+  ingressClassName: nginx

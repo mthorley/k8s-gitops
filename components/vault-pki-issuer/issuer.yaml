@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+spec:
+  vault:
+    path: "${pki_path}"
+    server: "http://vault.vault:8200"
+    auth:
+      kubernetes:
+        role: "$(APP)-issuer-cert-role"
+        mountPath: /v1/auth/kubernetes
+        serviceAccountRef:
+          name: vault-issuer

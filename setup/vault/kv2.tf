@@ -641,10 +641,3 @@ resource "vault_kv_secret_v2" "grafana-mcp" {
   )
 }
 
-#module "sandbox_secrets" {
-#  source = "./modules/vault_kv2_ksa"
-#
-#  name     = "sandbox"
-#  ksa_name = "default"
-#  kns      = "sandbox"
-#}

@@ -31,28 +31,70 @@ spec:
         volumeMounts:
         - name: node-red-data
           mountPath: /data
-        - name: internal-ca
-          mountPath: /etc/ssl/certs/internal-ca-cert.pem
-          subPath: internal-ca-cert.pem
-          readOnly: false
         env:
+        - name: HUE_BRIDGE_IP
+          value: 192.168.1.191
         - name: HUE_TOKEN
           valueFrom:
             secretKeyRef:
               name: secret-nodered
               key: hue-token
+        - name: NODE_RED_ENABLE_PROJECTS
+          value: "true"
+        - name: MQTT_IP
+          value: "${mqtt_ip}"
+        - name: MQTT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: mqtt-password
+        - name: SONOS_DININGROOM_R_IP
+          value: 192.168.1.31
+        - name: SONOS_DININGROOM_R
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: sonos-diningroom-r
+        - name: SONOS_DININGROOM_L_IP
+          value: 192.168.1.26
+        - name: SONOS_DININGROOM_L
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: sonos-diningroom-l
+        - name: SONOS_WHISKYROOM_L
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: sonos-whiskyroom-l
+        - name: SONOS_WHISKYROOM_R
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: sonos-whiskyroom-r
+        - name: UNIFI_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: unifi-user
+        - name: UNIFI_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: unifi-password
+        - name: ZEN_WIFI_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: zen-wifi-user
+        - name: ZEN_WIFI_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodered
+              key: zen-wifi-password
         - name: TZ
           value: "${cluster_tz}"
-        - name: CLIENT_ID
-          value: XrkVOruoMZVENASZ8M2gdlFTJ8aNkYtW8hVP9UFb
-        - name: CLIENT_SECRET
-          value: a2tFAkEjqrltBT1fvxxxGFYhwhD9VEF3qVh6glUxamevBwrz3Q3zu09nU3sn3DLIwyccOvYBB1boeUQKQsuyq7DnPKgapzm3pCWh3Pzg0jfjPUgmE1mVMzZypW4qQ1Fc
-        - name: NODE_EXTRA_CA_CERTS
-          value: /data/ca.pem
       volumes:
       - name: node-red-data
         persistentVolumeClaim:
           claimName: node-red-claim
-      - name: internal-ca
-        secret:
-            secretName: internal-ca-secret

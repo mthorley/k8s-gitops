@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+resources:
+  - cert.yaml
+  - cf-external-secret.yaml
+  - issuer-prod.yaml
+#  - issuer-staging.yaml
+vars:
+  - name: ACME_EMAIL
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: app-config
+    fieldref:
+      fieldpath: data.ACME_EMAIL

@@ -9,7 +9,7 @@ spec:
     spec:
       chart: nginx-gateway-fabric
       sourceRef:
-        kind: HelmRepository
+        kind: OCIRepository
         name: nginx-gateway-fabric
         namespace: nginx-gateway
   values:

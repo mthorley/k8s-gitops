@@ -1,17 +1,14 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: nginx-gateway-fabric
   namespace: nginx-gateway
 spec:
-  interval: 1h0m0s
-  chart:
-    spec:
-      chart: nginx-gateway-fabric
-      sourceRef:
-        kind: OCIRepository
-        name: nginx-gateway-fabric
-        namespace: nginx-gateway
+  chartRef:
+    kind: OCIRepository
+    name: nginx-gateway-fabric
+  interval: 1h
   values:
     gatewayClass:
       name: nginx

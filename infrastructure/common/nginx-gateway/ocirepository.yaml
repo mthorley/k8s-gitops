@@ -5,10 +5,10 @@ metadata:
   name: nginx-gateway-fabric
   namespace: nginx-gateway
 spec:
-  interval: 15m
-#  layerSelector:
-#    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-#    operation: copy
-#  ref:
-#    tag: v1.6.1
-  url: oci://ghcr.io/nginx/charts/nginx-gateway-fabric
+  interval: 1h
+  url: oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  ref:
+    tag: "2.3.0"

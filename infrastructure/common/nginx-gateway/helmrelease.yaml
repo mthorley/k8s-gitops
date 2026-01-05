@@ -5,10 +5,10 @@ metadata:
   name: nginx-gateway-fabric
   namespace: nginx-gateway
 spec:
+  interval: 10m
   chartRef:
     kind: OCIRepository
     name: nginx-gateway-fabric
-  interval: 1h
   values:
     gatewayClass:
       name: nginx

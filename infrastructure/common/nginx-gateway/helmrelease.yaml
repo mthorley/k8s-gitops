@@ -5,6 +5,10 @@ metadata:
   namespace: nginx-gateway
 spec:
   interval: 10m
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
   chartRef:
     kind: OCIRepository
     name: nginx-gateway-fabric

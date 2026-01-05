@@ -8,5 +8,7 @@ customRules:
           values:
             - [kube-rbac-proxy, monitoring, kube-state-metrics-]
             - [kube-rbac-proxy, monitoring, arm-exporter-]
+            - [kube-rbac-proxy, monitoring, node-exporter-]
+
       override:
         exceptions: append

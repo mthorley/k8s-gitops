@@ -230,6 +230,7 @@ data:
             - [kube-rbac-proxy, monitoring, kube-state-metrics-]
             - [kube-rbac-proxy, monitoring, arm-exporter-]
             - [kube-rbac-proxy, monitoring, node-exporter-]
+    
       override:
         exceptions: append
 ---
@@ -299,7 +300,7 @@ spec:
         app.kubernetes.io/instance: falco
       annotations:
         checksum/config: 3ee30a232a543e55f8b831880e77f3c8a417ffe9df393be484b7c6cc8ca64c89
-        checksum/rules: 60aeb7d4e8014af38b30934bb94be8a29c9397f9d5c6e0d38896f4db8d5a6759
+        checksum/rules: 54315acd7acd62a78e048545740baf3d39dc9c70020233eb2159d9de81269097
         checksum/certs: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     spec:
       serviceAccountName: falco

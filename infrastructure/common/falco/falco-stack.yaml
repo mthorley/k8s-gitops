@@ -223,10 +223,11 @@ data:
   custom-rules.yaml: |-
     - rule: Contact K8S API Server From Container
       exceptions:
-        - name: allow_kube_rbac_proxy_in_monitoring
+        - name: allow_kube_rbac_proxy_in_monitoring_for_metrics
           fields: [proc.name, k8s.ns.name, k8s.pod.name]
           comps: [=, =, startswith]
           values:
+            - [kube-rbac-proxy, monitoring, kube-state-metrics-]
             - [kube-rbac-proxy, monitoring, arm-exporter-]
       override:
         exceptions: append
@@ -297,7 +298,7 @@ spec:
         app.kubernetes.io/instance: falco
       annotations:
         checksum/config: 3ee30a232a543e55f8b831880e77f3c8a417ffe9df393be484b7c6cc8ca64c89
-        checksum/rules: 1b3758f4b7ec177f414131d7c529b5fbb7c852f18ca35374c4135ee262d1e8ea
+        checksum/rules: 60aeb7d4e8014af38b30934bb94be8a29c9397f9d5c6e0d38896f4db8d5a6759
         checksum/certs: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     spec:
       serviceAccountName: falco

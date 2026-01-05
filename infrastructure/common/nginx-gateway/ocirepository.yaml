@@ -5,7 +5,7 @@ metadata:
   namespace: nginx-gateway
 spec:
   interval: 1h
-  url: oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric
+  url: oci://ghcr.io/nginx/charts/nginx-gateway-fabric
   layerSelector:
     mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
     operation: copy

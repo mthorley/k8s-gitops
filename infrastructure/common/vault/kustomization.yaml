@@ -6,3 +6,4 @@ resources:
   - namespace.yaml
   - vault-stack.yaml
   - service.yaml
+  - vault-sa-secret.yaml

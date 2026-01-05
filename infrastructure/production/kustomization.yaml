@@ -7,7 +7,6 @@ resources:
   - metallb.yaml
   - ../common/nfs-storage
   - ../common/vault
-  - vault-sa-secret.yaml
   - ../common/external-secrets
   - ../common/certmanager-1.12
   - ../common/ingress

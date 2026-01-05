@@ -1,9 +1,8 @@
-# NGINX Gateway Fabric
 
-Installs NGINX Gateway Fabric via Flux HelmRelease.
+helm template ngf oci://ghcr.io/nginx/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway > nginx-gateway-fabric-stack.yaml
 
-## Settings
+curl https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.3.0/deploy/crds.yaml > crds.yaml
 
-- Namespace: nginx-gateway
-- GatewayClass: nginx
-- Helm chart: oci://ghcr.io/nginx/charts/nginx-gateway-fabric
+Current target: v2.30
+
+ocirepository and helmrelease to hard to coordinate with CRDs.

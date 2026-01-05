@@ -1,0 +1,17 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: nginx-gateway
+  namespace: flux-system
+spec:
+  interval: 30m0s
+  dependsOn:
+    - name: infrastructure
+    - name: gateway-api-crds
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./apps/common/nginx-gateway
+  prune: true
+  postBuild:
+      domain: cluster1.cyonomy.net

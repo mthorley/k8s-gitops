@@ -11,7 +11,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps/common/nginx-gateway
+  path: ./infrastructure/common/nginx-gateway
   prune: true
   postBuild:
     substitute:

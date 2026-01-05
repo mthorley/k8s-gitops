@@ -1,32 +1,36 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
 metadata:
-  name: ingress-nodered
+  name: nodereddev-gateway
   namespace: node-red-dev
-#  annotations:
-#    nginx.ingress.kubernetes.io/auth-url: |-
-#        http://ak-outpost-nodered.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
-#    # If you're using domain-level auth, use the authentication URL instead of the application URL
-#    nginx.ingress.kubernetes.io/auth-signin: |-
-#        https://nodereddev.internal.com/outpost.goauthentik.io/start?rd=$escaped_request_uri
-#    nginx.ingress.kubernetes.io/auth-response-headers: |-
-#        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-#    nginx.ingress.kubernetes.io/auth-snippet: |
-#        proxy_set_header X-Forwarded-Host $http_host;
 spec:
-  tls:
-  - hosts:
+  gatewayClassName: nginx
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "nodereddev.${domain}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: nodereddev-tls-prod
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: nodereddev
+  namespace: node-red-dev
+spec:
+  parentRefs:
+    - name: nodereddev-gateway
+  hostnames:
     - "nodereddev.${domain}"
-    secretName: nodereddev-tls-prod    # LetEncrypt issued rather than Vault
   rules:
-  - host: "nodereddev.${domain}"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: nodered-internal
-            port:
-              number: 80
-  ingressClassName: nginx
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: nodered-internal
+          port: 80

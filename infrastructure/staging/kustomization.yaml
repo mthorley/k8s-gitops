@@ -19,6 +19,7 @@ resources:
   - ../common/external-secrets
   - ../common/certmanager-1.19
   - ../common/ingress
+  - ../common/nginx-gateway
 #  - ../common/flux-system
 #  - ../common/trivy-system
   - ../common/cilium

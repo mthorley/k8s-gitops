@@ -44,7 +44,7 @@ Provides certificate mangement using cert-manager and Letencrypt for ingress.
 # Example
 
 ```
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.config.k8s.io/v1
 kind: Kustomization
 namespace: node-red
 generatorOptions:

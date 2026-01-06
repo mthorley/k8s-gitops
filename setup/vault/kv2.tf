@@ -541,7 +541,7 @@ resource "vault_kubernetes_auth_backend_role" "unifi-dns" {
 
 resource "vault_kv_secret_v2" "unifi-dns-api-token" {
   mount     = vault_mount.kvv2.path
-  name      = "externaldns-unifi-api-token"
+  name      = "unifi-dns"
   data_json = jsonencode(
     {
       unifi-dns-api-token = var.UNIFI_DNS_API_KEY

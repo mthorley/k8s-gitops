@@ -4,8 +4,8 @@ kind: Kustomization
 namespace: unifi-dns
 resources:
   - namespace.yaml
-  - helmrelease.yaml
-  - ocirepository.yaml
+#  - helmrelease.yaml
+#  - ocirepository.yaml
 
-components:
-  - ../../../components/secrets-eso-vault
+#components:
+#  - ../../../components/secrets-eso-vault

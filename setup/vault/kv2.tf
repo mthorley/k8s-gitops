@@ -169,6 +169,11 @@ variable "MCP_GRAFANA_APIKEY" {
   description = "Service account token for Grafana used by grafana-mcp server"
 }
 
+variable "UNIFI_DNS_API_KEY" {
+  type = string
+  description = "Unifi DNS API key"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -508,6 +513,38 @@ resource "vault_kv_secret_v2" "nodered-cf-api-token" {
   data_json = jsonencode(
     {
       dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}
+
+# -----------------------------------------------------------------------------
+# unifi-dns
+
+resource "vault_policy" "unifi-dns-secrets-policy" {
+  name = "unifi-dns-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/unifi-dns" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "unifi-dns" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "unifi-dns-secrets-role"
+  bound_service_account_names      = ["unifi-dns"]
+  bound_service_account_namespaces = ["unifi-dns"]
+  token_ttl                        = 86400
+  token_policies                   = ["unifi-dns-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "unifi-dns-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "externaldns-unifi-api-token"
+  data_json = jsonencode(
+    {
+      unifi-dns-api-token = var.UNIFI_DNS_API_KEY
     }
   )
 }

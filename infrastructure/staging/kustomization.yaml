@@ -27,6 +27,7 @@ resources:
 #  - ../common/containerescapes
 #  - ../common/mariadb-operator
 #  - ../common/grafana-mcp
+  - ../common/neuvector
 patchesStrategicMerge:
 #  - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

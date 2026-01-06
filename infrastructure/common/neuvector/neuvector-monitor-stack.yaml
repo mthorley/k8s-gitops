@@ -6,7 +6,7 @@ metadata:
   name: neuvector-prometheus-exporter-pod-secret
   namespace: neuvector
   labels:
-    chart: monitor-2.7.6
+    chart: monitor-2.8.10
     release: neuvector
     heritage: Helm
 type: Opaque
@@ -21,7 +21,7 @@ metadata:
   name: neuvector-prometheus-exporter
   namespace: neuvector
   labels:
-    chart: monitor-2.7.6
+    chart: monitor-2.8.10
     release: neuvector
     heritage: Helm
     app: neuvector-prometheus-exporter
@@ -32,6 +32,7 @@ spec:
       name: metrics
       targetPort: 8068
       protocol: TCP
+      appProtocol: http
   selector:
     app: neuvector-prometheus-exporter-pod
 ---
@@ -42,7 +43,7 @@ metadata:
   name: neuvector-prometheus-exporter-pod
   namespace: neuvector
   labels:
-    chart: monitor-2.7.6
+    chart: monitor-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -56,7 +57,7 @@ spec:
         prometheus.io/path: /metrics
         prometheus.io/port: "8068"
         prometheus.io/scrape: "true"
-        checksum/secret: 5b7f7eedfb2faf506e6df4d77afc45e707ee09a5edc479b95e7dac47cbada995
+        checksum/secret: 93d5ce397b362c4330883b758aae425b2ec34b4a5739901d610b85c114fa81e7
       labels:
         app: neuvector-prometheus-exporter-pod
         release: neuvector
@@ -64,8 +65,8 @@ spec:
       containers:
         - name: neuvector-prometheus-exporter-pod
           
-          image: "docker.io/neuvector/prometheus-exporter:latest"
-          imagePullPolicy: Always
+          image: "docker.io/neuvector/prometheus-exporter:1.0.9"
+          imagePullPolicy: IfNotPresent
           env:
             - name: CTRL_API_SERVICE
               value: neuvector-svc-controller-api:10443
@@ -74,4 +75,8 @@ spec:
           envFrom:
             - secretRef:
                 name: neuvector-prometheus-exporter-pod-secret
+          ports:
+           - name: metrics
+             containerPort: 8068
+             protocol: TCP
       restartPolicy: Always

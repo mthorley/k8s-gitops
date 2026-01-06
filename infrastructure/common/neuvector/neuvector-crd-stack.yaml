@@ -5,7 +5,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -64,6 +64,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -135,6 +137,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -173,7 +177,62 @@ spec:
                     - basic
                     - zero-drift
                     type: string
+                  mode:
+                    enum:
+                    - Discover
+                    - Monitor
+                    - Protect
+                    type: string
                 type: object
+              response:
+                items:
+                  properties:
+                    policy_name:
+                      enum:
+                      - default
+                      type: string
+                    event:
+                      enum:
+                      - event
+                      - security-event
+                      - cve-report
+                      - compliance
+                      type: string
+                    comment:
+                      type: string
+                    conditions:
+                      items:
+                        properties:
+                          type:
+                            type: string
+                          value:
+                            type: string
+                        required:
+                        - type
+                        - value
+                        type: object
+                      type: array
+                    actions:
+                      items:
+                        enum:
+                        - quarantine
+                        - suppress-log
+                        - webhook
+                        type: string
+                      minItems: 1
+                      type: array
+                    webhooks:
+                      items:
+                        type: string
+                      type: array
+                    disable:
+                      type: boolean
+                  required:
+                  - policy_name
+                  - event
+                  - actions
+                  type: object
+                type: array
               target:
                 properties:
                   policymode:
@@ -204,8 +263,18 @@ spec:
                         type: array
                       name:
                         type: string
+                      name_referral:
+                        type: boolean
                       original_name:
                         type: string
+                      mon_metric:
+                        type: boolean
+                      grp_sess_cur:
+                        type: integer
+                      grp_sess_rate:
+                        type: integer
+                      grp_band_width:
+                        type: integer
                     required:
                     - name
                     type: object
@@ -263,7 +332,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvclustersecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -322,6 +391,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -393,6 +464,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -431,7 +504,62 @@ spec:
                     - basic
                     - zero-drift
                     type: string
+                  mode:
+                    enum:
+                    - Discover
+                    - Monitor
+                    - Protect
+                    type: string
                 type: object
+              response:
+                items:
+                  properties:
+                    policy_name:
+                      enum:
+                      - default
+                      type: string
+                    event:
+                      enum:
+                      - event
+                      - security-event
+                      - cve-report
+                      - compliance
+                      type: string
+                    comment:
+                      type: string
+                    conditions:
+                      items:
+                        properties:
+                          type:
+                            type: string
+                          value:
+                            type: string
+                        required:
+                        - type
+                        - value
+                        type: object
+                      type: array
+                    actions:
+                      items:
+                        enum:
+                        - quarantine
+                        - suppress-log
+                        - webhook
+                        type: string
+                      minItems: 1
+                      type: array
+                    webhooks:
+                      items:
+                        type: string
+                      type: array
+                    disable:
+                      type: boolean
+                  required:
+                  - policy_name
+                  - event
+                  - actions
+                  type: object
+                type: array
               target:
                 properties:
                   policymode:
@@ -462,8 +590,18 @@ spec:
                         type: array
                       name:
                         type: string
+                      name_referral:
+                        type: boolean
                       original_name:
                         type: string
+                      mon_metric:
+                        type: boolean
+                      grp_sess_cur:
+                        type: integer
+                      grp_sess_rate:
+                        type: integer
+                      grp_band_width:
+                        type: integer
                     required:
                     - name
                     type: object
@@ -521,7 +659,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvdlpsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -599,7 +737,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvadmissioncontrolsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -648,6 +786,8 @@ spec:
                       type: string
                     comment:
                       type: string
+                    conversion_id_ref:
+                      type: integer
                     criteria:
                       items:
                         properties:
@@ -718,7 +858,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvwafsecurityrules.neuvector.com
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -796,7 +936,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvcomplianceprofiles.neuvector.com
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -845,7 +985,7 @@ kind: CustomResourceDefinition
 metadata:
   name: nvvulnerabilityprofiles.neuvector.com
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -896,13 +1036,147 @@ spec:
             type: object
         type: object
 ---
+# Source: crd/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvgroupdefinitions.neuvector.com
+  labels:
+    chart: crd-2.8.10
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvGroupDefinition
+    listKind: NvGroupDefinitionList
+    plural: nvgroupdefinitions
+    singular: nvgroupdefinition
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              selector:
+                properties:
+                  comment:
+                    type: string
+                  criteria:
+                    items:
+                      properties:
+                        key:
+                          type: string
+                        op:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - key
+                      - op
+                      - value
+                      type: object
+                    type: array
+                  name:
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - selector
+            type: object
+        type: object
+---
+# Source: crd/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvresponserulesecurityrules.neuvector.com
+  labels:
+    chart: crd-2.8.10
+    release: neuvector
+    heritage: Helm
+spec:
+  group: neuvector.com
+  names:
+    kind: NvResponseRuleSecurityRule
+    listKind: NvResponseRuleSecurityRuleList
+    plural: nvresponserulesecurityrules
+    singular: nvresponserulesecurityrule
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              rule:
+                properties:
+                  policy_name:
+                    enum:
+                    - default
+                    type: string
+                  event:
+                    enum:
+                    - event
+                    - security-event
+                    - cve-report
+                    - compliance
+                    - admission-control
+                    type: string
+                  comment:
+                    type: string
+                  conditions:
+                    items:
+                      properties:
+                        type:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - type
+                      - value
+                      type: object
+                    type: array
+                  actions:
+                    items:
+                      enum:
+                      - quarantine
+                      - suppress-log
+                      - webhook
+                      type: string
+                    minItems: 1
+                    type: array
+                  webhooks:
+                    items:
+                      type: string
+                    type: array
+                  disable:
+                    type: boolean
+                required:
+                - policy_name
+                - event
+                - actions
+                type: object
+            required:
+            - rule
+            type: object
+        type: object
+---
 # Source: crd/templates/csp-crd.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: cspadapterusagerecords.susecloud.net
   labels:
-    chart: crd-2.7.6
+    chart: crd-2.8.10
     release: neuvector
     heritage: Helm
 spec:
@@ -933,23 +1207,3 @@ spec:
         type: object
     served: true
     storage: true
----
-# Source: crd/templates/crd.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: neuvector-svc-crd-webhook
-  namespace: neuvector
-  labels:
-    chart: crd-2.7.6
-    release: neuvector
-    heritage: Helm
-spec:
-  ports:
-    - port: 443
-      targetPort: 30443
-      protocol: TCP
-      name: crd-webhook
-  type: ClusterIP
-  selector:
-    app: neuvector-controller-pod

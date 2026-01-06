@@ -6,13 +6,19 @@ metadata:
   name: neuvector-controller-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 type: Opaque
 data:
-  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBNFRaQTdUUWxaYlJhcnFtWW84SVBJN2N3SW56WnF3WC8rNGh6TmxnTlVRaDg4VDhCCmJxTVk3N3hWbHZUTURaa3cvbStrWEFJU3JPeFBTaU9PWHhuQUQyb1hjNVM3UUhyN010bEwxRUpnQ0pPOGp3OXcKOUh5SENuS29iQlExeE53TUxPY3l6bTZ5TTBCMzkxcWZwL1ppQjlCeG9QcjE0L3FjRExmeUxGZXBObjlEMmZGSgpER2ZEcW1OczlvRHErZVRJRk1kT2JBNnhMTExENFQ2ZWw2R0VSWGdWaTcyeGlrTzYycktaQTEwNUNvOUNDdlM1Ck1OKyt5LzdDT0VWQnZYKzh3cXRzeVZTc1d6NXZEV3JheWFIdjAxb2hEcEhqa3diVXFYWGl1WThwbTFiVFBVZkQKYkY1MDI5MVl1U1BlUUd3R3hieWtPSm1sY0VsY2gwaGY5c3FFcXdJREFRQUJBb0lCQVFEVWVTRU1LVFJYSGE2bwpObTFCb2lZeVpmUE50Y2lPSjV6NExDVzJVYUJPb1JsdmFTZnF2NGtaTksvek9ZVUNGMU0zMlJCUmxjc1V4ZVdRClpyYzlWY2Z6UXY1WkZ5c0tqSHhOM3VCQm8xV0RBZzdWVVpZWnN4cWNhc3duRzNJWEJodWVpWWxQWlBST2tqWWMKY2ExTEE1STlHUlQ2OFlubXlsdExUSWYzK2NRMUdsc2pZZTlEWlVMaW1XbGVIczdVWTM5S3kyeGxibXVvTzlJcQpvdW03N2hCMVRCL1VCK04xblhRbFRmNU0wTUtkaENPdGx1SmJDMWRlcVVKaFQzVGFuL0xPYzU2UmVXQndJNHNtCm9wMXFJSVhlaEJXeWZObXFYNktRdVVKQVkyWXcrQndtOTNpRGxmZzcrRjFidzNVc1lTcWNlT2o2bXhYalNtTU4KYnR1ZFk3dlJBb0dCQVBiNjVWWWIyZ1oxTGdLUTFzTlRWT1F1RE5tSFVLT2o1NjVUZ0hSdHg4dTkvVUtQL0I3VQpZcTlVM2ZkckFBdk9vNXY0VDM0azN2azcxVVphbm9qTmgzWDhiMEZ1eE1LK2lsb0x4Skw1UHRUWXpraitkYjdrCkc3YnQvOVRlZFlZTHRmN1ZYRDJIVER1REhNdytkQktyU0hhQ0lPMVRxcHRFOGpLY0w0KzlNUnlQQW9HQkFPbHYKMXZ1RmROQVVqbXo5cnF3WXVrb0NuNUJqOHIwb2txcG9LeU5hYXdON0tmTVNIWXFiQzZ6blQ2MUVpSW1EaWFwcgozazlxK2ZhVjFPN1JMbHhaaWIwalZYNzZDcThBdWhqS1BtNWgvUGhyTXJOY05UdS9tVW83VE9jbkt6TTB2dHdDCjhpUTZIdmdIT2JsYUtpeEF3YWZvUFgrRHRYNmV4ZldDbGZDVHNsd2xBb0dBVU9WWkhOMCtpb0x6TVEvejZFSngKT2RRRGpYU082eXFTaGp6L2hDTTVIL2o0N1Vad0ZFRUltZGs0WXdQL0hkN3ZJL1V2UkdnYlNKTmFoaExFZnBhagpXZmYzRVAyUklTQjcvSWFDT29tOUZNWjJ1dDN0L3pxRUFXVHZPUEFzbWwxWG5VS1JWZTN0QUVrdnM0NTVRbXdyCjdmVXRoODZ4d08zU1R0VnRscTBuV3UwQ2dZRUFzN1NaZDcvaGtWNkIxbjNrdmkrN0djYXpOK0Q1dVkxR2UxRCsKQkpWUzFMYzRNQnUrQ2pvWjN0MmpoT3ZCZ0x0MmUyL1hFS1IyRWRKK3ZlcmpHYzBFTUVySFFwMFRKRzRXMVlhOApVUlcyUFRlcExGTEwyRmREbHRYWCtnczVRbzVVYitNRXJjYmdtR2hYazgxSnNnK1lCYjdQdVI2WDFnWTh0eWYwCmJlUUY1dEVDZ1lFQXI0TU1IN1Mrc1NDK1Z6VitHQ2J2N1RZdHdlekxwb3BhMEh5RFZZU0VDdnhqaDlobXY4dUEKZVlSaTVVZjM4RWcwa3QraUV5Y3ZoeSt0cXBnN3RpQjc2V294NGRxbzRFeUc3QjAwRkZMMWt6NTJPVlROcjdQNgpJS3lETXE2eDJDVWQwaDNCK1gwYy9EKzcxcGp6MzREejUrdHhFYVlGdWovUnp6YVJqejVUSFJBPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
-  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURDRENDQWZDZ0F3SUJBZ0lSQUp0SHBjS3BTS1FReXNaTlNxNFNJNk13RFFZSktvWklodmNOQVFFTEJRQXcKRkRFU01CQUdBMVVFQXhNSmJtVjFkbVZqZEc5eU1CNFhEVEkwTURVeE9URTBNRFkxTjFvWERUSTFNRFV4T1RFMApNRFkxTjFvd0ZERVNNQkFHQTFVRUF4TUpibVYxZG1WamRHOXlNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DCkFROEFNSUlCQ2dLQ0FRRUE0VFpBN1RRbFpiUmFycW1ZbzhJUEk3Y3dJbnpacXdYLys0aHpObGdOVVFoODhUOEIKYnFNWTc3eFZsdlRNRFprdy9tK2tYQUlTck94UFNpT09YeG5BRDJvWGM1UzdRSHI3TXRsTDFFSmdDSk84anc5dwo5SHlIQ25Lb2JCUTF4TndNTE9jeXptNnlNMEIzOTFxZnAvWmlCOUJ4b1ByMTQvcWNETGZ5TEZlcE5uOUQyZkZKCkRHZkRxbU5zOW9EcStlVElGTWRPYkE2eExMTEQ0VDZlbDZHRVJYZ1ZpNzJ4aWtPNjJyS1pBMTA1Q285Q0N2UzUKTU4rK3kvN0NPRVZCdlgrOHdxdHN5VlNzV3o1dkRXcmF5YUh2MDFvaERwSGprd2JVcVhYaXVZOHBtMWJUUFVmRApiRjUwMjkxWXVTUGVRR3dHeGJ5a09KbWxjRWxjaDBoZjlzcUVxd0lEQVFBQm8xVXdVekFPQmdOVkhROEJBZjhFCkJBTUNCYUF3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01Bd0dBMVVkRXdFQi93UUMKTUFBd0ZBWURWUjBSQkEwd0M0SUpibVYxZG1WamRHOXlNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUJlRkRURQpjTWx5UFEycDFsUjgvMmVvR2l2NzVlekczYVdYOTNhQ2I3RzFBSW0vUG9FOFhuNWpTT2Z5R1ZHMnBTazhtN3NZClNnVDNxSjBRNlo4ZllrVTNSbmg1TkVrNkxpOUtGVVBDWWdOU3ppSlpydmlTZ0VuTzg2WEtCczdEYzZCU29GQWMKQjg4dnYvOUpZVVNOTUdzaXE3cVpkUDJjR0pERlNNSmN3cVJzUldtU29zWjZCVkUxekdpc3FQWXhrSUJHMkJPbApkM0EyLzJCVXRYbGhpTS9xVzNpanhJblJCZnFGM3BvbFhoL2R1cUVWOWhVMGtEY2xGU092b3IzdFowN1NCR2ZKCk5STEpUeG5pK0ltVHZjbG5WemtjYnhLMDdIRmZWMVR1TWxQMjBqcTV1WHhNdlhnS1pzb05tcVlXdlZVQ3BJMDcKVDZIQkM3L3h4UEFOL25UcQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBeStjVXVvV3hKNVV2MHVYaGpVckZWM1NXaHRYdDUzZEZodk9xbytpVGhxRWpWc0NSCkxpdDRYeXFUV1B5R0VYSlh4M1IrZTNzWjZMVEQ3YVZrMVJtTE9wbnJKSjBJRUJTd1RPbzlpMnROZkdBR0xoRVUKMGRVUVp2eXo1R2dFMDRlMkhYdzYzYk9WMjVWQXFjclgvcWZOOXpGek0yVXRJeDFWYi9XVVlQaTZNbnp5bE5EaApyU0pyK2ZxeGdpWVQvRGZoYnBMRSs3YkNNbkJIK0YvNVFVbjIzOEdWUWhhUzR0TzlhSE02Vmo4VXVsS3pQZmdTCkNqWjhXOWFqcElRbTlOZ3dUU0lnQzJjY09BWmEwUGk4aFo5ZURiTW9DejlwYkJzRytjMitwdmJ3N1ZlcXh2Q0sKNlBVTG82T29rWlNTYS9ubU9Ma0x4d09ySExSWnNXQnBJZzI4b1FJREFRQUJBb0lCQUE3M0ZOUmp2NDdTS2tKbQpVTm1YNVVmMzdKeFUwek1yMDlTRnliNWg4WUh1RGJQdVNqbURRMEJvMVl1d2JQNld6ODU1eEZhM3dEME9GMXMzCnltREJrVEJwMzVJK1hEc2g2WmFia296TEFWTGhrVktNT21UMEtGSUd0Z1ZMaFI4cFZMcHhSYmpEMTNuWVNIaXQKeEpDU0xGRzZOV1JPUnJQUEVWZzRRLzJpQTdoMHhZeWFZNmErUW9yTlFCV2NwY1hDS0Q2ZFJCUi9oRWhHZG1BbQp0NGZGQkpqSTZqbzVFbGRWNXhObFdCOFdBTFBHMWF2bFdQWjJwTjRvc1FyT25XNUtxSzI5dTNDNE5IWUJobHk0CnB2S3VyN2oyQkgyaEt4TEFpVjMzZGF4SzAvWmtCS3VTVlAyY3hWVUpkOGdmWkFveDhOZjd1N05uNmhUWXBndEsKVmtpdVhlRUNnWUVBMHcvQ0liZEdXblBwWFZNTG01di9RT1dpQUJETUJoTG91ZmdZOEtYYnF0UmtEYUFQZ2l2SgpoQzNyUUJUY2k1SE04NHM1MmdodG5BKy96VER6UEZ4KzNoaEg0RVkwYUxCZjFkV3FTZktqUEc2aDFSRzVHaDFGCjl4ZUgyWlhaU1pETGVPQ1JkNkFKQUdZbEpEQ1g5ODViR1ZNSFlGaWRDNFdCV3FrSEdpVWNzajBDZ1lFQTkxRWQKbzNxMUpjeFZGa3NxZUQ5d25mQnVWbFY5WDlpME9oYi9vRVBuYVc4R0ZhMGltc0NiWkh1TDhSUUlZMkhRZ0tUWgoyVWZ6Nmwzamt1SzJlcEViR3d2MHNPV3V3Tk1EbzUvc04yMGNKbExkOEw2dHczR04yQlI0bE8xUzNOYWtGcXY4CmVqaFVUMFRMMitYNi82ZHFEZ3VxQmI0S3llcExOK0NmNTNncmpqVUNnWUJYVUdXWFhTS1Z1TzRKMVprdnZ0RlMKSDYxdEtZVzkzWVM1cXBGbXZMYXJiVUlYQU9ocGlZUE1VdExIcDltMVE1UHVET0xaK0RLZ0pVUEx0enhvOURybgoxbE9sekdWU0NlVWJxVkRSVnJlQkFLT2lhYnFSdXhwK3BoVmxSa0NsMW1qV2tOQ2RGRytrNHB6cTQ4OTZqTHZUCk5pNFBCWm15Y29DWTZPUXZSTHNpWVFLQmdRRFpNZmlZZ0lRajNNNEExU1JJRkZhL3JjNElyZTE4UmlFSlB2ZGgKOVNCKzNJejRibU9NaW9ndGQ3N1BpbXRQZERDYk9hdEVBY2U1VkprdWYwSUlZL1R0RE5Qb290MlU0L3czTDVSUQpuTmJ5NVNXYWJxckZrSzBrVGQ0VDFGUklNNHhKaU9Nakp1TUw5bndkODF3Nk52bVJ1amFuOGwwaE5FeTRsdUYzCmMzYTAzUUtCZ0h2RUc5TnI4VEo0Z3NPbys4NVphUnVTRmR3anJiODAwTVhGUjlJZmlwbzNoTnBuUWVUSHhEbnMKK2xoaGo2VVlJVnlULzdGanJpNmp4a2JsMThYWTlqaDJoTmQ3YUE2b2tMRTdHY3VXR0tZNFN0L0xmeklqcTdybQp0TlE1anNHenEvTHZCcjNEcjF4MW41VUhSWXAzMHArMk1GdXNycXk4NEtvMTdiSUVVSVZ4Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lRUVB0WWpTRWVhL3dkMzlBRFJ2S2pKekFOQmdrcWhraUc5dzBCQVFzRkFEQVUKTVJJd0VBWURWUVFERXdsdVpYVjJaV04wYjNJd0hoY05Nall3TVRBMk1qQXpPVFUwV2hjTk1qY3dNVEEyTWpBegpPVFUwV2pBVU1SSXdFQVlEVlFRREV3bHVaWFYyWldOMGIzSXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCCkR3QXdnZ0VLQW9JQkFRREw1eFM2aGJFbmxTL1M1ZUdOU3NWWGRKYUcxZTNuZDBXRzg2cWo2Sk9Hb1NOV3dKRXUKSzNoZktwTlkvSVlSY2xmSGRINTdleG5vdE1QdHBXVFZHWXM2bWVza25RZ1FGTEJNNmoyTGEwMThZQVl1RVJUUgoxUkJtL0xQa2FBVFRoN1lkZkRyZHM1WGJsVUNweXRmK3A4MzNNWE16WlMwakhWVnY5WlJnK0xveWZQS1UwT0d0CkltdjUrckdDSmhQOE4rRnVrc1Q3dHNJeWNFZjRYL2xCU2ZiZndaVkNGcExpMDcxb2N6cFdQeFM2VXJNOStCSUsKTm54YjFxT2toQ2IwMkRCTklpQUxaeHc0QmxyUStMeUZuMTROc3lnTFAybHNHd2I1emI2bTl2RHRWNnJHOElybwo5UXVqbzZpUmxKSnIrZVk0dVF2SEE2c2N0Rm14WUdraURieWhBZ01CQUFHalZUQlRNQTRHQTFVZER3RUIvd1FFCkF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0RBWURWUjBUQVFIL0JBSXcKQURBVUJnTlZIUkVFRFRBTGdnbHVaWFYyWldOMGIzSXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBS1UxY1ZtRQo2M2VJa0YrbXBxVkdSWFdqRjhvKzlwbHJJZ24zS2xCV2VDQ01IRzZiS3dza215VW1GZmh6UHJ3YnUzRldwVytyCktmTGRRWkQxa2VIVHhKMDRlSmZ0NkFQNHoyRGI3UzRDUzJoV1YvemlhY1F0NWJFZU5RY2pnSXpRT2hMb2JZdWcKU1lsS0JpWGFSbStJTjZVaVhvSTJkWnphQVVSUlMvNlhnY1RkN20xdnJicDVyckFQL3d2dDN1dUpzMDJRR2hyNgoyQlFjZEVRenQzREo5N0pkSzF4NXZFOEtqR0ljQ1lxVG9vR285VkJtTkJ0ZCtqWU5LZjlxUDllZlNwSFRrWG5kCmZnU3ZKa0hDYXdMOVFpcTFnaW15YnRpWG5MM2JJLzJXTlhZaGEza0VmYVY5cE9DTXVZY2c0bTY5M0hmV3Q4ZkEKL3ZNYk1uR0phWGF0eWIwPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+---
+# Source: core/templates/controller-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: neuvector-internal-certs
+type: Opaque
 ---
 # Source: core/templates/manager-secret.yaml
 apiVersion: v1
@@ -21,13 +27,12 @@ metadata:
   name: neuvector-manager-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 type: Opaque
 data:
-  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb2dJQkFBS0NBUUVBM2EzRngyVmdjVURJVmh6RnltUmhjSmx4cVdROG83S0JDRlBKakFkS1pVakZSaXRsCmY1N0tTcDRuemVOdWI4ZHp1dkdYc2JOWkY5VkhCNVBGdHhsODd3S1pNdFh5V1ZOWWlpbnIxQXhyNVRod1NSNXcKNWgxWXhxMjdaVWJsSGtVZklmaFdQOWdQcjZicHVoNzVSUzJPWnFvNEpnVjUxRHY4dlR0bEY4TzBJa3VncnZkSwpiamVZY083SkRTVG9NRXZHU2dGWFdJbk50WXM2SXY0ZUlyNmkxcmV3RXJSZmdiVGdLQzk1enZUWFRWVEY2dkJsCjltNkVGMzh3YVVHSzBpSWhWUFNzSnEyQmlnU1BkRDZQZ0ZuRHRldXlKTitsR3BzTzlDUWFCZVIvVG9wQnhnbkUKSXQ3K3Vmd0pNQTMrZi9FaUg1YVpKb0tuOEovNnpWM3VNRnFqM1FJREFRQUJBb0lCQUFFQkxabEd1MVlvRGdCZAo1d09ReXVSQXZjUWZ3U3FZdjM3ektrR3BNc3djdFZBcEdDK28zNC9SQWFzc01hN3QvM2RFYXdTU0pJQTRKamRCCmt5N09QY096aGxBMXFnQi9vVElYR0l1QWR1aTJCY1EvRUJIcTVpRVlYbllLQ1RYRzZHbzEvdVlSSzVrSEw1MzUKVC9YaFMvanBJcElCaWxqTTRNdFd2cEdLQUlIN1JaaG1WUWMrRFBEK3BrTjVPTjNmdEVwdmFKWE1WU2RQM1A2bgowUlJmU2NtSjUzQXhmUG1jQ0ZlK3NaaWJDLzJkMklLbCtKTU40SmRrOEZsM3kzRWNWaXVUeU5HQ3dLNWYvMWZsCnVwQVJzdkZ3Zm1KUGZCRm15ZU00YVh6bHBYRHZWdmx3SFY5THRFZjJpZmNmMTFFZDdIZ1oxQXZkZ1h6VzNGT3MKaDE2OS9YMENnWUVBNEZjTDRTd29sR3BRL1BidTFuTVdpVWJzSzVObmJZYkpWRVhTa3VsME85K21YVWZ2eEU3aAowQ2xCVC92dXZFSitlNnhUTElqcmVyTkNiK0o2TTUxRjhXSXQ0d1EyZHowMnpKVzZlQ3F0N01UMzJoUzBtVmdwCkptYTU4bW1WZjFjSU9KOFF3ck9YRlliQUNmZFRmNDRWQnJhQTNwd3dFdHVlN3YzbjhHSUtYVGNDZ1lFQS9QYVUKMk5FVEtzWlNsYTEvQ3NLLzN2QmhBVnN2V0xzOXdUYjV4MlhManNPZDEzTHBobTF1UVZHbGR5UmE3TWw0T2syMgo1QktlRUEyVndRbXIxZjYvZ0M4bSs3eERLRnU3NXlseGwvQ1kzYmV2NXVLWkRMZzVvZDFSYU5wQTZzZHRiVlNVClVocStYUDBXSWYxcnJZYkZNUEFucytpcFZkeXRTeUpWTXdOeHNZc0NnWUJzS091Y1UzcjVHMDBTdVVjcmMyOWgKSGlXTldOTWIxa2xJN1NUNkdiNGxnODJrMmFMNnhZRlBxQ1JLR00vZ1NqckxDNmxLSm5WSndoVjg5ZmN1M1Z1MApaajV6WGp1WVA1WWxDdWROT2w2Q2NmQ0JYMHczUm04SWlheUsrR2JRYnppU2UvWkx1T1JWeDVMYyt6WnhvQ0g1CkM1S1VRVDlZU0RTWFN5bEJGek9oL3dLQmdHNXpIOFNYYlQ0RS8vUVluOXJMODhqY3ZnNUFpU2krQUpYSGNrSXMKNFRkQmxENkpEd3ZCNWgwaEVCVTRTM2NOOUsvSVZPMjZiMGRsRnhrRkp3RTF6Tm1rUE9vM1pqOU41bnBsTHhMLwpXMCticjNNcFIxZzFhL3lQek1ieVhOdm1IWkphRnJUT3RvV1ZmNzl4amoxakZlQnJTM3FUUUxTYnVSS1FPQkVoCkZOaEhBb0dBR0pYVERQOUZZVXlNNkpWVExRVjFES2RxSHBWUGFGWlNOU2VaVXZoVHJzZUlFd21BMzFoaXNNczUKM1F2a3BRNGduTXlQNi9BWlU2dGZ3Vkk4bWp4SFJNN1ZYT2xIRzVTcitnT2IwRUt4azZuaU5mSkFqT3BSOE42SAo3ZEtRenU1NHJCZUdRUFQvOENJcmlaSGhuQ3lPQ2QyNXpBV0NjWUhXL3FPMEhKL29PMjA9Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
-  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lRYm9Kd1EwYUlUQ3cwNHdWWkhvQzZsakFOQmdrcWhraUc5dzBCQVFzRkFEQVUKTVJJd0VBWURWUVFERXdsdVpYVjJaV04wYjNJd0hoY05NalF3TlRFNU1UUXdOalUzV2hjTk1qVXdOVEU1TVRRdwpOalUzV2pBVU1SSXdFQVlEVlFRREV3bHVaWFYyWldOMGIzSXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCCkR3QXdnZ0VLQW9JQkFRRGRyY1hIWldCeFFNaFdITVhLWkdGd21YR3BaRHlqc29FSVU4bU1CMHBsU01WR0syVi8KbnNwS25pZk40MjV2eDNPNjhaZXhzMWtYMVVjSGs4VzNHWHp2QXBreTFmSlpVMWlLS2V2VURHdmxPSEJKSG5EbQpIVmpHcmJ0bFJ1VWVSUjhoK0ZZLzJBK3ZwdW02SHZsRkxZNW1xamdtQlhuVU8veTlPMlVYdzdRaVM2Q3U5MHB1Ck41aHc3c2tOSk9nd1M4WktBVmRZaWMyMWl6b2kvaDRpdnFMV3Q3QVN0RitCdE9Bb0wzbk85TmROVk1YcThHWDIKYm9RWGZ6QnBRWXJTSWlGVTlLd21yWUdLQkk5MFBvK0FXY08xNjdJazM2VWFtdzcwSkJvRjVIOU9pa0hHQ2NRaQozdjY1L0Frd0RmNS84U0lmbHBrbWdxZnduL3JOWGU0d1dxUGRBZ01CQUFHalZUQlRNQTRHQTFVZER3RUIvd1FFCkF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0RBWURWUjBUQVFIL0JBSXcKQURBVUJnTlZIUkVFRFRBTGdnbHVaWFYyWldOMGIzSXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBTGRwRFkraQpWZlUrVExxTm02dktLV3h3MVVZdnVraGpSSnVmV1hCVWUrbXJEdi9xbmVLT1YvcC83TWN4Z2ZMM2YrZjFEVlpxCjVjcEczR2c2U3Vwd3prNmRqaVJyQjQzaWpUcm9PVklpVjZFQWFUbjZyYzRzRjJnKzBWSzAyM0xnQkFUak15YnQKWHZXSE44ZFptYUdsWTRxVG1HSmRxbmdOVGM5THZDQk8vOUNrbUlxN2d5eGRCbm5MZUNFQlpmVWptaDRKUGFaNAo1VUFKSmNsWCtpQlE0YTdZRGUvRHJPNDNVK1hsZGlxb01PTTVST2YzdzVkSm9zbGFBdnBjZVB4WDdFcHE2SFNWCkZmQU9tbzN0NTVXWms3ODF1dlJyWittSXVpUFNBdWtXendIeWF3ZXRiTUJLY2h5dnR4NS9QbFdmL0J3WmNDT3gKd3FJdWVoMjdFUEtjajFRPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  ssl-cert.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBcWlzZForVkl0ZW1pbDVrWWNXTzFsWjJRTVNYRjk0V1ZQY00xQlUrMW1sdzFmeW9VCnd5K2RjdjkwbEtVZ1RKNTdLQnZLZ2w3T2dPZ1RSeXJtTC9MazFWaStyaFQzMmhVeUhTRFRsakg4bGtRVitUakwKMkRUeEh0NERsWUw3TGtlMCtiSFRpK2lnUzl2MXIyanU2RWsyejlybzBndHd1d1VyMHo4cXJGcU0vUHl2ZU1Gdgp5NjJrTkJIdXNNemYxNzFjSVRRejNVS2tKNDRxUzZuVkpFWlRaVkh3bC9HSktmRGtKVjJ4RjBNRk02ajlsU24vCnFJYXYwek9vNmJneW5PK2UzUWhYZ0ZsTG9kbmgvQWdPYThRUHZSU0xjZUFRLzJKdk91bjVLZU9vcmo0NWkrbk8KK0M0ZEFZa1dzWVlNbnlyU2gvcElDa1MxSWs0WVYvaHdBdy9KeHdJREFRQUJBb0lCQURUbWVWcENrNU9Gd1pkNgpMdmlWQkM2eVVGQ1BDeGR6TGgySXNWTm8zNjVRYXdzUXRHcW5RejJzUDN3MFJ6RzZkTlBYcStGU2dzVGRJSjBYCnIzNkpkbTBDalNpRitUVVJNTWFRWFdhTVBKY2tMR2FSS3dHWUY3cytUb1BzdDVSQUUza3FPSGIraHRKK1cwYkEKQ3NFb2ZZTXBiUVpiS3h6Z3N5cVZNUGxxbnZqSVBPR0c4MzNUdWFYd2pVTHQ2d2trRjZMUTI5eTRWUEM4N2ZCawpFM2k0NVpZamduS2ZXYTQzT1FmYUJ6RXgwc0hQYlJVK1Vkb2JvUVdkMEpSeUx2V2VUblA2NDRmbnAzL2tHbFExCldSSWo1QUpvaXFUUVUwdUpnRFlJelVhL3IwTDQyVmN6Q09XWkpBS2hlMGxSTzM5eHF0N1h5RXVjbHV2bUt2VC8KajhQbmJPa0NnWUVBM3VXd3BJZHJNQk1yWXEzQ3dFNzB0cmY4cit6ME5GcG8wNnlGSjBXeWkvTzlaN25MVkFtcwo0emtOSktjVjZCUHZoQVp5YUFaK3NOWFBZWjNocTYzdHJVU2VnVHJ5L0dDVG9OTk94NGZjVlZyYnBDU2pwcThCCm93MmwzZkdHMTZESHZ5UThqdlNJZHJNU3IxUGVEUlNBdVVQVzlJYTVGYmI1d2F3cmc2V2pNSWtDZ1lFQXczQzcKb0RvU21VMFBGNzY0TXBVbkdrVVVPUys5ZGtwY2NwNlhHRG1ieVIxS2FyakxocUwzRzEydHJSTG81MFlDUVMvdQpoVUF4QWZpVE1GRTJjSVVBeGpXOVlrSUVhZ21WWTJicDVycFRzejRvdXpTWWd2Z0tRQ3JENzVsVWJkcUFydjJHCnZHOUJsWXdWUXh4dmcxWmFWSGUzZ0ZSWVd4QmVLUUd0bHB0ZWM4OENnWUVBMnA1Z05jOVljMnVwMXZ4a2txZ2UKWHdSd1E4RGQrR2RnZjVTcmVNeGtoZDRIdksrL1hPcXNkcVRqWGpxL1FzUWkzTlJSNi9QSzJQaXNrYXIveDVvdApEdy9KZ3lqbFlHSDlDZldYUkI3ZUhaMmk1Z2pGdGx2WitDb1BzSE1QZFhpTjBjemgxTGpGQzk4eGlXTngzRlJxCnVNdHdEcUFBOHVwblp1ek9OUzRGdERrQ2dZRUFoQzRtZDROUE9PZHBJY0lYaWY1ZVorSDRmNFRPT3Nhb0o4MGkKbTN1NjVSWXVVbWVSSHdudzNrMUpQUmpnOUNuaE5IMWFjRHl0Nkl0WjRQL01OZVYrVkkvYitpeDBGOU5MZWVNTQpwc08yQURBMkZBYktieW1hcFROSE9URVdiUVd1cXF0RkNRU2w4cUsvYnBnNHd6Y1ArTGpQSHJmczJnb0Q1UEFCCm15NlJmdmtDZ1lBb3BzVFFNeGJNVXdiWGZjR2FKY24wdWNuYzZ4T2FYVTBpcXgxVG40V1QzZGsyZHF0M0JwaDEKVHNxclozaEh2bnRUMmYrMzZ0U1haOUoxemtORWxFd2Irb1k2c3lITXNOWkpXZmxpQks2VlBmK0VOZENmOWs2dwpUeEFHcUUzV3V1M3NWUlZ4VWFXWVdRQWdQZms5R2dmY1JKZ1FmUmdxRzJlSXFzWXZuVWlxekE9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+  ssl-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lRVDV5TWlZeHE0VEMzT0xhS0ViMm5EVEFOQmdrcWhraUc5dzBCQVFzRkFEQVUKTVJJd0VBWURWUVFERXdsdVpYVjJaV04wYjNJd0hoY05Nall3TVRBMk1qQXpPVFUwV2hjTk1qY3dNVEEyTWpBegpPVFUwV2pBVU1SSXdFQVlEVlFRREV3bHVaWFYyWldOMGIzSXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCCkR3QXdnZ0VLQW9JQkFRQ3FLeDFuNVVpMTZhS1htUmh4WTdXVm5aQXhKY1gzaFpVOXd6VUZUN1dhWERWL0toVEQKTDUxeS8zU1VwU0JNbm5zb0c4cUNYczZBNkJOSEt1WXY4dVRWV0w2dUZQZmFGVElkSU5PV01meVdSQlg1T012WQpOUEVlM2dPVmd2c3VSN1Q1c2RPTDZLQkwyL1d2YU83b1NUYlAydWpTQzNDN0JTdlRQeXFzV296OC9LOTR3Vy9MCnJhUTBFZTZ3ek4vWHZWd2hORFBkUXFRbmppcExxZFVrUmxObFVmQ1g4WWtwOE9RbFhiRVhRd1V6cVAyVktmK28KaHEvVE02anB1REtjNzU3ZENGZUFXVXVoMmVIOENBNXJ4QSs5Rkl0eDRCRC9ZbTg2NmZrcDQ2aXVQam1MNmM3NApMaDBCaVJheGhneWZLdEtIK2tnS1JMVWlUaGhYK0hBREQ4bkhBZ01CQUFHalZUQlRNQTRHQTFVZER3RUIvd1FFCkF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0RBWURWUjBUQVFIL0JBSXcKQURBVUJnTlZIUkVFRFRBTGdnbHVaWFYyWldOMGIzSXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSmZiOHdBSwplaUYvcmRicnBhNUcvWkliQUJaYUhINjZwYmhjN1B6MUhyVHlHR1REZlMvei9va0d1VHR4MlVoa2JsZWo4VkVrCmdoZzNYTmVRVWx2RkFpL3hlbHVsSUVQSXd4RUVwUjBZZGhBaTM1SnpLRGpkNXRVc1piZVdXdy9CYzhYWmgzWnQKNjBiWHhKT0FSWjFHR3ZoQ1hjVDk5YnpPaHVRSDQ1WUxnbzc1N1NIMDlwQld5aGhwOTV6My9POGM5TjhUdFAweQpRUExTVHIzbkhhMnJteWtwTXZHY25sdWk1UTkyTlVZMkh3dnhqUWZhckl1SEFMVlczM0d4VU9kSWJwRDVOSkg0CjlUSUZXTHBsZzliWXJSeTZzdytFYlNqS212Tkp3OWRBdzNKRU9UazAycUIwMjg1YUpuNFdyRURMQWN1ZktoRnAKZzltM21yRTZWOGlCWndJPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
 ---
 # Source: core/templates/crd.yaml
 apiVersion: apiextensions.k8s.io/v1
@@ -35,9 +40,8 @@ kind: CustomResourceDefinition
 metadata:
   name: nvsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   group: neuvector.com
   names:
@@ -94,6 +98,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -165,6 +171,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -203,7 +211,62 @@ spec:
                     - basic
                     - zero-drift
                     type: string
+                  mode:
+                    enum:
+                    - Discover
+                    - Monitor
+                    - Protect
+                    type: string
                 type: object
+              response:
+                items:
+                  properties:
+                    policy_name:
+                      enum:
+                      - default
+                      type: string
+                    event:
+                      enum:
+                      - event
+                      - security-event
+                      - cve-report
+                      - compliance
+                      type: string
+                    comment:
+                      type: string
+                    conditions:
+                      items:
+                        properties:
+                          type:
+                            type: string
+                          value:
+                            type: string
+                        required:
+                        - type
+                        - value
+                        type: object
+                      type: array
+                    actions:
+                      items:
+                        enum:
+                        - quarantine
+                        - suppress-log
+                        - webhook
+                        type: string
+                      minItems: 1
+                      type: array
+                    webhooks:
+                      items:
+                        type: string
+                      type: array
+                    disable:
+                      type: boolean
+                  required:
+                  - policy_name
+                  - event
+                  - actions
+                  type: object
+                type: array
               target:
                 properties:
                   policymode:
@@ -234,8 +297,18 @@ spec:
                         type: array
                       name:
                         type: string
+                      name_referral:
+                        type: boolean
                       original_name:
                         type: string
+                      mon_metric:
+                        type: boolean
+                      grp_sess_cur:
+                        type: integer
+                      grp_sess_rate:
+                        type: integer
+                      grp_band_width:
+                        type: integer
                     required:
                     - name
                     type: object
@@ -293,9 +366,8 @@ kind: CustomResourceDefinition
 metadata:
   name: nvclustersecurityrules.neuvector.com
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   group: neuvector.com
   names:
@@ -352,6 +424,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -423,6 +497,8 @@ spec:
                           type: array
                         name:
                           type: string
+                        name_referral:
+                          type: boolean
                         original_name:
                           type: string
                       required:
@@ -461,7 +537,62 @@ spec:
                     - basic
                     - zero-drift
                     type: string
+                  mode:
+                    enum:
+                    - Discover
+                    - Monitor
+                    - Protect
+                    type: string
                 type: object
+              response:
+                items:
+                  properties:
+                    policy_name:
+                      enum:
+                      - default
+                      type: string
+                    event:
+                      enum:
+                      - event
+                      - security-event
+                      - cve-report
+                      - compliance
+                      type: string
+                    comment:
+                      type: string
+                    conditions:
+                      items:
+                        properties:
+                          type:
+                            type: string
+                          value:
+                            type: string
+                        required:
+                        - type
+                        - value
+                        type: object
+                      type: array
+                    actions:
+                      items:
+                        enum:
+                        - quarantine
+                        - suppress-log
+                        - webhook
+                        type: string
+                      minItems: 1
+                      type: array
+                    webhooks:
+                      items:
+                        type: string
+                      type: array
+                    disable:
+                      type: boolean
+                  required:
+                  - policy_name
+                  - event
+                  - actions
+                  type: object
+                type: array
               target:
                 properties:
                   policymode:
@@ -492,8 +623,18 @@ spec:
                         type: array
                       name:
                         type: string
+                      name_referral:
+                        type: boolean
                       original_name:
                         type: string
+                      mon_metric:
+                        type: boolean
+                      grp_sess_cur:
+                        type: integer
+                      grp_sess_rate:
+                        type: integer
+                      grp_band_width:
+                        type: integer
                     required:
                     - name
                     type: object
@@ -551,9 +692,8 @@ kind: CustomResourceDefinition
 metadata:
   name: nvdlpsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   group: neuvector.com
   names:
@@ -629,9 +769,8 @@ kind: CustomResourceDefinition
 metadata:
   name: nvadmissioncontrolsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   group: neuvector.com
   names:
@@ -678,6 +817,8 @@ spec:
                       type: string
                     comment:
                       type: string
+                    conversion_id_ref:
+                      type: integer
                     criteria:
                       items:
                         properties:
@@ -748,9 +889,8 @@ kind: CustomResourceDefinition
 metadata:
   name: nvwafsecurityrules.neuvector.com
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   group: neuvector.com
   names:
@@ -826,9 +966,8 @@ kind: CustomResourceDefinition
 metadata:
   name: nvcomplianceprofiles.neuvector.com
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   group: neuvector.com
   names:
@@ -875,9 +1014,8 @@ kind: CustomResourceDefinition
 metadata:
   name: nvvulnerabilityprofiles.neuvector.com
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   group: neuvector.com
   names:
@@ -926,15 +1064,146 @@ spec:
             type: object
         type: object
 ---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvgroupdefinitions.neuvector.com
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+spec:
+  group: neuvector.com
+  names:
+    kind: NvGroupDefinition
+    listKind: NvGroupDefinitionList
+    plural: nvgroupdefinitions
+    singular: nvgroupdefinition
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              selector:
+                properties:
+                  comment:
+                    type: string
+                  criteria:
+                    items:
+                      properties:
+                        key:
+                          type: string
+                        op:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - key
+                      - op
+                      - value
+                      type: object
+                    type: array
+                  name:
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - selector
+            type: object
+        type: object
+---
+# Source: core/templates/crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nvresponserulesecurityrules.neuvector.com
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+spec:
+  group: neuvector.com
+  names:
+    kind: NvResponseRuleSecurityRule
+    listKind: NvResponseRuleSecurityRuleList
+    plural: nvresponserulesecurityrules
+    singular: nvresponserulesecurityrule
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              rule:
+                properties:
+                  policy_name:
+                    enum:
+                    - default
+                    type: string
+                  event:
+                    enum:
+                    - event
+                    - security-event
+                    - cve-report
+                    - compliance
+                    - admission-control
+                    type: string
+                  comment:
+                    type: string
+                  conditions:
+                    items:
+                      properties:
+                        type:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - type
+                      - value
+                      type: object
+                    type: array
+                  actions:
+                    items:
+                      enum:
+                      - quarantine
+                      - suppress-log
+                      - webhook
+                      type: string
+                    minItems: 1
+                    type: array
+                  webhooks:
+                    items:
+                      type: string
+                    type: array
+                  disable:
+                    type: boolean
+                required:
+                - policy_name
+                - event
+                - actions
+                type: object
+            required:
+            - rule
+            type: object
+        type: object
+---
 # Source: core/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: neuvector-binding-app
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - ""
@@ -955,9 +1224,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-rbac
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - rbac.authorization.k8s.io
@@ -977,9 +1245,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-admission
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - admissionregistration.k8s.io
@@ -994,6 +1261,24 @@ rules:
   - update
   - delete
 ---
+# Source: core/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvgroupdefinitions
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvgroupdefinitions
+  verbs:
+  - get
+  - list
+  - delete
+---
 # Source: core/templates/crd-role.yaml
 # ClusterRole for NeuVector to operate CRD
 apiVersion: rbac.authorization.k8s.io/v1
@@ -1001,9 +1286,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-customresourcedefinition
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - apiextensions.k8s.io
@@ -1022,9 +1306,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - neuvector.com
@@ -1043,9 +1326,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvdlpsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - neuvector.com
@@ -1063,9 +1345,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvadmissioncontrolsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - neuvector.com
@@ -1083,9 +1364,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvwafsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - neuvector.com
@@ -1103,9 +1383,8 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvcomplianceprofiles
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - neuvector.com
@@ -1123,14 +1402,32 @@ kind: ClusterRole
 metadata:
   name: neuvector-binding-nvvulnerabilityprofiles
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - neuvector.com
   resources:
   - nvvulnerabilityprofiles
+  verbs:
+  - get
+  - list
+  - delete
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRole for NeuVector to manage response rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neuvector-binding-nvresponserulesecurityrules
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+rules:
+- apiGroups:
+  - neuvector.com
+  resources:
+  - nvresponserulesecurityrules
   verbs:
   - get
   - list
@@ -1142,9 +1439,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-app
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1160,9 +1456,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-rbac
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1178,9 +1473,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-admission
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1196,9 +1490,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-view
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1215,9 +1508,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-customresourcedefinition
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1234,9 +1526,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1253,9 +1544,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvdlpsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1272,9 +1562,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvadmissioncontrolsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1291,9 +1580,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvwafsecurityrules
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1310,9 +1598,8 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvcomplianceprofiles
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1329,13 +1616,48 @@ kind: ClusterRoleBinding
 metadata:
   name: neuvector-binding-nvvulnerabilityprofiles
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: neuvector-binding-nvvulnerabilityprofiles
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# ClusterRoleBinding for NeuVector to manage response rules
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvresponserulesecurityrules
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvresponserulesecurityrules
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/crd-role.yaml
+# Clusterrolebinding for Neuvector to manage name referral for common groups
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: neuvector-binding-nvgroupdefinitions
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: neuvector-binding-nvgroupdefinitions
 subjects:
 - kind: ServiceAccount
   name: default
@@ -1348,9 +1670,8 @@ metadata:
   name: neuvector-binding-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 rules:
 - apiGroups:
   - ""
@@ -1358,6 +1679,115 @@ rules:
   - secrets
   verbs:
   - get
+  - list
+  - watch
+---
+# Source: core/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: neuvector-binding-lease
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+rules:
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - get
+  - update
+---
+# Source: core/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: neuvector-binding-job-creation
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+rules:
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - get
+  - delete
+- apiGroups:
+  - batch
+  resources:
+  - cronjobs
+  - cronjobs/finalizers
+  verbs:
+  - update
+  - patch
+---
+# Source: core/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: neuvector-binding-cert-upgrader
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - update
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  - daemonsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - cronjobs
+  verbs:
+  - update
+---
+# Source: core/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: neuvector-binding-secret-controller
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - update
+  - patch
 ---
 # Source: core/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -1366,9 +1796,8 @@ metadata:
   name: neuvector-admin
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1385,13 +1814,85 @@ metadata:
   name: neuvector-binding-secret
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: neuvector-binding-secret
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/rolebinding.yaml
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: neuvector-binding-lease
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: neuvector-binding-lease
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: neuvector-binding-job-creation
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: neuvector-binding-job-creation
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: neuvector-binding-secret-controller
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: neuvector-binding-secret-controller
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: neuvector
+---
+# Source: core/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: neuvector-binding-cert-upgrader
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: neuvector-binding-cert-upgrader
 subjects:
 - kind: ServiceAccount
   name: default
@@ -1404,9 +1905,8 @@ metadata:
   name: neuvector-svc-admission-webhook
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   ports:
     - port: 443
@@ -1424,9 +1924,8 @@ metadata:
   name: neuvector-svc-controller
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   clusterIP: None
   ports:
@@ -1442,16 +1941,15 @@ spec:
   selector:
     app: neuvector-controller-pod
 ---
-# Source: core/templates/crd.yaml
+# Source: core/templates/crd-webhook-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: neuvector-svc-crd-webhook
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   ports:
     - port: 443
@@ -1462,6 +1960,24 @@ spec:
   selector:
     app: neuvector-controller-pod
 ---
+# Source: core/templates/manager-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-service-webui
+  namespace: neuvector
+  labels:
+    chart: core-2.8.10
+    release: neuvector
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8443
+      name: manager
+      protocol: TCP
+  selector:
+    app: neuvector-manager-pod
+---
 # Source: core/templates/enforcer-daemonset.yaml
 apiVersion: apps/v1
 kind: DaemonSet
@@ -1469,8 +1985,7 @@ metadata:
   name: neuvector-enforcer-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.6
-    heritage: Helm
+    chart: core-2.8.10
     release: neuvector
 spec:
   updateStrategy:
@@ -1489,12 +2004,15 @@ spec:
           key: node-role.kubernetes.io/master
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/etcd
       hostPID: true
       serviceAccountName: default
       serviceAccount: default
       containers:
         - name: neuvector-enforcer-pod
-          image: "docker.io/neuvector/enforcer:5.3.2"
+          image: "docker.io/neuvector/enforcer:5.4.8"
+          imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
           resources:
@@ -1510,6 +2028,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: AUTO_INTERNAL_CERT
+              value: "1"
           volumeMounts:
             - mountPath: /lib/modules
               name: modules-vol
@@ -1517,6 +2037,8 @@ spec:
             - mountPath: /var/nv_debug
               name: nv-debug
               readOnly: false
+            - mountPath: /etc/neuvector/certs/internal/
+              name: internal-cert-dir
       terminationGracePeriodSeconds: 1200
       restartPolicy: Always
       volumes:
@@ -1526,6 +2048,9 @@ spec:
         - name: nv-debug
           hostPath:
             path: /var/nv_debug
+        - name: internal-cert-dir
+          emptyDir:
+            sizeLimit: 50Mi
 ---
 # Source: core/templates/controller-deployment.yaml
 apiVersion: apps/v1
@@ -1534,9 +2059,8 @@ metadata:
   name: neuvector-controller-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   replicas: 3
   minReadySeconds: 60
@@ -1554,7 +2078,7 @@ spec:
         app: neuvector-controller-pod
         release: neuvector
       annotations:
-        checksum/controller-secret: 767303de77d1750dbeeaf96508368900e5a245b6853e7efae1ebf8f9850579ba
+        checksum/controller-secret: 877c44a71a2fba9a8ea586c33f3fe9e42df121292cbbb656e8d4da5079eefad1
     spec:
       affinity:
         podAntiAffinity:
@@ -1570,9 +2094,20 @@ spec:
             weight: 100
       serviceAccountName: default
       serviceAccount: default
+      initContainers:
+        - name: init
+          image: "docker.io/neuvector/controller:5.4.8"
+          command: ["/usr/local/bin/upgrader", "create-upgrader-job" ]
+          imagePullPolicy: IfNotPresent
+          resources:
+                {}
+          env:
+            - name: OVERRIDE_CHECKSUM
+              value: a2e958550b175529dd0913263e15f45c8072ec73c52ee635355311355a2b7e45
       containers:
         - name: neuvector-controller-pod
-          image: "docker.io/neuvector/controller:5.3.2"
+          image: "docker.io/neuvector/controller:5.4.8"
+          imagePullPolicy: IfNotPresent
           securityContext:
             runAsUser: 0
           resources:
@@ -1585,6 +2120,8 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           env:
+            - name: CTRL_SERVER_PORT
+              value: "10443"
             - name: CLUSTER_JOIN_ADDR
               value: neuvector-svc-controller.neuvector
             - name: CLUSTER_ADVERTISED_ADDR
@@ -1595,6 +2132,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: AUTO_INTERNAL_CERT
+              value: "1"
           volumeMounts:
             - mountPath: /etc/config
               name: config-volume
@@ -1607,6 +2146,8 @@ spec:
               subPath: ssl-cert.pem
               name: cert
               readOnly: true
+            - mountPath: /etc/neuvector/certs/internal/
+              name: internal-cert-dir
       terminationGracePeriodSeconds: 300
       restartPolicy: Always
       volumes:
@@ -1625,6 +2166,9 @@ spec:
         - name: cert
           secret:
             secretName: neuvector-controller-secret
+        - name: internal-cert-dir
+          emptyDir:
+            sizeLimit: 50Mi
 ---
 # Source: core/templates/manager-deployment.yaml
 apiVersion: apps/v1
@@ -1633,9 +2177,8 @@ metadata:
   name: neuvector-manager-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   replicas: 1
   selector:
@@ -1647,18 +2190,23 @@ spec:
         app: neuvector-manager-pod
         release: neuvector
       annotations:
-        checksum/manager-secret: 7670d412e4cd445ac991f9171a20cefd99311236dec0d11ebbae8083a3c89277
+        checksum/manager-secret: 921b555ecc4a8fb5e0df4c98ae74cec3889437e55c178ba4076167c5ebfede85
     spec:
       serviceAccountName: default
       serviceAccount: default
       containers:
         - name: neuvector-manager-pod
-          image: "docker.io/neuvector/manager:5.3.2"
+          image: "docker.io/neuvector/manager:5.4.8"
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8443
               protocol: TCP
           env:
+            - name: CTRL_SERVER_PORT
+              value: "10443"
+            - name: MANAGER_SERVER_PORT
+              value: "8443"
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
           volumeMounts:
@@ -1685,8 +2233,7 @@ metadata:
   name: neuvector-scanner-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.6
-    heritage: Helm
+    chart: core-2.8.10
     release: neuvector
 spec:
   strategy:
@@ -1707,14 +2254,23 @@ spec:
       serviceAccount: default
       containers:
         - name: neuvector-scanner-pod
-          image: "docker.io/neuvector/scanner:latest"
+          image: "docker.io/neuvector/scanner:6"
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
               value: neuvector-svc-controller.neuvector
+            - name: AUTO_INTERNAL_CERT
+              value: "1"
           resources:
             {}
+          volumeMounts:
+            - mountPath: /etc/neuvector/certs/internal/
+              name: internal-cert-dir
       restartPolicy: Always
+      volumes:
+        - name: internal-cert-dir
+          emptyDir:
+            sizeLimit: 50Mi
 ---
 # Source: core/templates/updater-cronjob.yaml
 apiVersion: batch/v1
@@ -1723,9 +2279,8 @@ metadata:
   name: neuvector-updater-pod
   namespace: neuvector
   labels:
-    chart: core-2.7.6
+    chart: core-2.8.10
     release: neuvector
-    heritage: Helm
 spec:
   schedule: "0 0 * * *"
   jobTemplate:
@@ -1740,24 +2295,72 @@ spec:
           serviceAccount: default
           containers:
             - name: neuvector-updater-pod
-              image: "docker.io/neuvector/updater:latest"
-              imagePullPolicy: Always
+              image: "docker.io/neuvector/updater:0.0.7"
+              imagePullPolicy: IfNotPresent
+              resources:
+                {}
               command:
               - /bin/sh
               - -c
-              - /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
+              - /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod' 2>&1 | grep -v Bearer
           restartPolicy: Never
 ---
-apiVersion: v1
-kind: Service
+# Source: core/templates/upgrader-cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
 metadata:
-  name: neuvector-cluster-webui
+  name: neuvector-cert-upgrader-pod
   namespace: neuvector
+  annotations:
+    cert-upgrader-uid: ""
+  labels:
+    chart: core-2.8.10
+    release: neuvector
 spec:
-  ports:
-  - port: 443
-    targetPort: 8443
-    protocol: TCP
-  type: ClusterIP
-  selector:
-    app: neuvector-manager-pod
+  schedule: "0 0 1 1 *"
+  suspend: true
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 3600
+      parallelism: 1
+      completions: 1
+      backoffLimit: 6
+      template:
+        metadata:
+          labels:
+            app: neuvector-cert-upgrader-pod
+            release: neuvector
+        spec:
+          serviceAccountName: default
+          serviceAccount: default
+          restartPolicy: Never
+          containers:
+            - name: neuvector-cert-upgrader-pod
+              image: "docker.io/neuvector/controller:5.4.8"
+              imagePullPolicy: IfNotPresent
+              resources:
+                {}                
+              command: 
+                - /usr/local/bin/upgrader
+                - upgrader-job
+                - --enable-rotation
+              env:
+---
+# Source: core/templates/controller-lease.yaml
+apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: neuvector-controller
+spec:
+  leaseTransitions: 0
+---
+# Source: core/templates/upgrader-lease.yaml
+apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: neuvector-cert-upgrader
+spec:
+  leaseTransitions: 0

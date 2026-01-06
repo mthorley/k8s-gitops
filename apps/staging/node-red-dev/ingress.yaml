@@ -9,7 +9,7 @@ spec:
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "nodereddev1.${domain}"
+      hostname: "nodereddev.${domain}"
       tls:
         mode: Terminate
         certificateRefs:
@@ -25,7 +25,7 @@ spec:
   parentRefs:
     - name: nodereddev-gateway
   hostnames:
-    - "nodereddev1.${domain}"
+    - "nodereddev.${domain}"
   rules:
     - matches:
         - path:

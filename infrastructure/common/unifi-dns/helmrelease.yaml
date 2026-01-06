@@ -24,7 +24,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: secret-unifi-dns
-                key: UNIFI_API_KEY
+                key: unifi-dns-api-token
         livenessProbe:
           httpGet:
             path: /healthz

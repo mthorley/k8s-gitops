@@ -6,8 +6,6 @@ helm template neuvector --namespace neuvector --create-namespace neuvector/core 
 helm template neuvector --namespace neuvector --create-namespace neuvector/crd > neuvector-crd-stack.yaml
 helm template neuvector --namespace neuvector --create-namespace neuvector/monitor > neuvector-monitor-stack.yaml
 
-## Diagnostics
+## Console Access≠
 
-### Unable to access manager - connection reset by peer
-
-No known solution.
+https://192.168.3.16/#/dashboard

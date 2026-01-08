@@ -2,7 +2,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: trivy-operator
-  namespace: flux-system
+  namespace: trivy-system
 spec:
   interval: 60m
   url: https://aquasecurity.github.io/helm-charts/
@@ -20,7 +20,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: trivy-operator
-        namespace: flux-system
+        namespace: trivy-system
       version: 0.10.1
   interval: 60m
   values:

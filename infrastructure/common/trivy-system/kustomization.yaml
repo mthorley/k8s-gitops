@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: trivy-system
 resources:
   - namespace.yaml
-  - trivy-system-stack.yaml
+  - trivy-operator.yaml

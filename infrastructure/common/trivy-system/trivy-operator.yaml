@@ -24,6 +24,8 @@ spec:
       version: 0.31.0
   interval: 60m
   values:
+    serviceMonitor:
+      enabled: true
     trivy:
       ignoreUnfixed: true
   install:

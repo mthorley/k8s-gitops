@@ -21,6 +21,7 @@ resources:
   - ../common/ingress
 #  - ../common/flux-system
   - ../common/trivy-system
+  - ../common/tracee-system
   - ../common/cilium
 #  - ../common/tetragon   # supports ARM but needs min kernel 5.19
 #  - ../common/authentik

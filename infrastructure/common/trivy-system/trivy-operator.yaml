@@ -21,7 +21,7 @@ spec:
         kind: HelmRepository
         name: trivy-operator
         namespace: trivy-system
-      version: 0.10.1
+      version: 0.31.0
   interval: 60m
   values:
     trivy:

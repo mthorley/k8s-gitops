@@ -32,3 +32,4 @@ resources:
 patchesStrategicMerge:
 #  - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml
+  - grafana-deployment-patch.yaml

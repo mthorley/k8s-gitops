@@ -23,7 +23,7 @@ resources:
   - ../common/trivy-system
 #  - ../common/tracee-system # Needs BTF support
   - ../common/cilium
-  - ../common/tetragon   # supports ARM but needs min kernel 5.19
+#  - ../common/tetragon   # Need BTF support
 #  - ../common/authentik
 #  - ../common/containerescapes
 #  - ../common/mariadb-operator

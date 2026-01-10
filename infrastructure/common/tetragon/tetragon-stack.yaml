@@ -6,10 +6,13 @@ metadata:
   name: tetragon-operator-service-account
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: "tetragon-operator"
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: operator
 ---
 # Source: tetragon/templates/serviceaccount.yaml
 apiVersion: v1
@@ -18,10 +21,13 @@ metadata:
   name: tetragon
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
 ---
 # Source: tetragon/templates/operator_configmap.yaml
 apiVersion: v1
@@ -30,13 +36,23 @@ metadata:
   name: tetragon-operator-config
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: "tetragon-operator"
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: operator
 data:
   skip-crd-creation: "false"
   skip-pod-info-crd: "true"
+  skip-tracing-policy-crd: "false"
+  force-update-crds: "false"
+  leader-election: "false"
+  leader-election-namespace: ""
+  leader-election-lease-duration: "15s"
+  leader-election-renew-deadline: "5s"
+  leader-election-retry-period: "2s"
 ---
 # Source: tetragon/templates/tetragon_configmap.yaml
 apiVersion: v1
@@ -45,14 +61,20 @@ metadata:
   name: tetragon-config
   namespace: kube-system
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
 data:
+  cluster-name: ""
   procfs: /procRoot
+  debug: "false"
   enable-process-cred: "false"
   enable-process-ns: "false"
+  enable-ancestors: ""
   process-cache-size: "65536"
   export-filename: /var/run/cilium/tetragon/tetragon.log
   export-file-perm: "600"
@@ -60,20 +82,33 @@ data:
   export-file-max-backups: "5"
   export-file-compress: "false"
   export-allowlist: |-
-    {"event_set":["PROCESS_EXEC", "PROCESS_EXIT", "PROCESS_KPROBE", "PROCESS_UPROBE", "PROCESS_TRACEPOINT"]}
+    {"event_set":["PROCESS_EXEC", "PROCESS_EXIT", "PROCESS_KPROBE", "PROCESS_UPROBE", "PROCESS_TRACEPOINT", "PROCESS_LSM"]}
   export-denylist: |-
     {"health_check":true}
     {"namespace":["", "cilium", "kube-system"]}
   field-filters: |-
-    {}
+    
+  redaction-filters: |-
+    
   export-rate-limit: "-1"
   enable-k8s-api: "true"
   metrics-server: :2112
   metrics-label-filter: namespace,workload,pod,binary
   server-address: localhost:54321
+  health-server-address: :6789
+  health-server-interval: "10"
   gops-address: localhost:8118
   enable-policy-filter: "true"
   enable-pod-info: "false"
+  enable-tracing-policy-crd: "true"
+  event-cache-retries: "15"
+  event-cache-retry-delay: "2"
+  
+  process-cache-gc-interval: "30s"
+  enable-cri: "false"
+  enable-cgidmap: "false"
+  enable-pod-annotations: "false"
+  use-perf-ring-buffer: "false"
 ---
 # Source: tetragon/templates/clusterrole.yaml
 kind: ClusterRole
@@ -81,14 +116,19 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
 rules:
   - apiGroups:
       - ""
     resources:
+      - namespaces
+      - nodes
       - pods
       - services
     verbs:
@@ -98,6 +138,7 @@ rules:
   - apiGroups:
       - cilium.io
     resources:
+      - podinfo
       - tracingpolicies
       - tracingpoliciesnamespaced
     verbs:
@@ -121,10 +162,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon-operator
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: "tetragon-operator"
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: operator
 rules:
   - apiGroups:
       - ""
@@ -172,10 +216,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -191,10 +238,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tetragon-operator-rolebinding
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: "tetragon-operator"
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -204,15 +254,82 @@ subjects:
     namespace: kube-system
     name: tetragon-operator-service-account
 ---
+# Source: tetragon/templates/role.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tetragon
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: tetragon
+    app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
+rules:
+---
+# Source: tetragon/templates/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tetragon
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: tetragon
+    app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: tetragon
+subjects:
+  - kind: ServiceAccount
+    namespace: kube-system
+    name: tetragon
+---
+# Source: tetragon/templates/operator_service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kube-system
+  name: tetragon-operator-metrics
+  labels:
+    app.kubernetes.io/name: "tetragon-operator"
+    app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: operator
+spec:
+  ports:
+    - name: metrics
+      port: 2113
+      targetPort: 2113
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: "tetragon-operator"
+    app.kubernetes.io/instance: tetragon
+  type: ClusterIP
+---
 # Source: tetragon/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
   name: tetragon
   namespace: kube-system
 spec:
@@ -222,10 +339,13 @@ spec:
       protocol: TCP
       targetPort: 2112
   selector:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
   type: ClusterIP
 ---
 # Source: tetragon/templates/daemonset.yaml
@@ -233,10 +353,13 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: tetragon
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: agent
   name: tetragon
   namespace: kube-system
 spec:
@@ -247,20 +370,24 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 14742c8a4978f86fa9404b80b14b3ffb94b2937f11632989a7c3c032cb2cad3c
+        checksum/configmap: 64c525d4d45e4a1017ec271725687f3470a4980dcfb792c71205e37a5a4fbc0f
       labels:
-        helm.sh/chart: tetragon-1.0.2
         app.kubernetes.io/name: tetragon
         app.kubernetes.io/instance: tetragon
+        helm.sh/chart: tetragon-1.6.0
+        app.kubernetes.io/version: "1.6.0"
         app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: tetragon
+        app.kubernetes.io/component: agent
     spec:
       serviceAccountName: tetragon
+      initContainers:
+      
       containers:
       - name: export-stdout
-        image: "quay.io/cilium/hubble-export-stdout:v1.0.3"
+        image: "quay.io/cilium/hubble-export-stdout:v1.1.0"
         imagePullPolicy: IfNotPresent
-        env:
-          []
+        terminationMessagePolicy: FallbackToLogsOnError
         securityContext:
           {}
         resources:
@@ -275,13 +402,12 @@ spec:
       - name: tetragon
         securityContext:
           privileged: true
-        image: "quay.io/cilium/tetragon:v1.0.1"
+        image: "quay.io/cilium/tetragon:v1.6.0"
         imagePullPolicy: IfNotPresent
+        terminationMessagePolicy: FallbackToLogsOnError
         args:
           - --config-dir=/etc/tetragon/tetragon.conf.d/
         volumeMounts:
-          - mountPath: /var/lib/tetragon/metadata
-            name: metadata-files
           - mountPath: /etc/tetragon/tetragon.conf.d/
             name: tetragon-config
             readOnly: true
@@ -294,6 +420,7 @@ spec:
             name: export-logs
           - mountPath: "/procRoot"
             name: host-proc
+          
         env:
           - name: NODE_NAME
             valueFrom:
@@ -301,14 +428,10 @@ spec:
                   fieldPath: spec.nodeName
         livenessProbe:
            timeoutSeconds: 60
-           exec:
-             command:
-             - tetra
-             - status
-             - --server-address
-             - localhost:54321
-             - --retries
-             - "5"
+           grpc:
+            port: 6789
+            service: "liveness"
+      
       tolerations:
         - operator: Exists
       hostNetwork: true
@@ -334,18 +457,19 @@ spec:
         hostPath:
           path: /proc
           type: Directory
-      - emptyDir: {}
-        name: metadata-files
 ---
 # Source: tetragon/templates/operator_deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    helm.sh/chart: tetragon-1.0.2
     app.kubernetes.io/name: "tetragon-operator"
     app.kubernetes.io/instance: tetragon
+    helm.sh/chart: tetragon-1.6.0
+    app.kubernetes.io/version: "1.6.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: tetragon
+    app.kubernetes.io/component: operator
   name: tetragon-operator
   namespace: kube-system
 spec:
@@ -357,10 +481,13 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: tetragon-1.0.2
         app.kubernetes.io/name: "tetragon-operator"
         app.kubernetes.io/instance: tetragon
+        helm.sh/chart: tetragon-1.6.0
+        app.kubernetes.io/version: "1.6.0"
         app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: tetragon
+        app.kubernetes.io/component: operator
     spec:
       containers:
       - name: tetragon-operator
@@ -369,7 +496,8 @@ spec:
         args:
           - serve
           - --config-dir=/etc/tetragon/operator.conf.d/
-        image: "quay.io/cilium/tetragon-operator:v1.0.1"
+          - --metrics-bind-address=:2113
+        image: "quay.io/cilium/tetragon-operator:v1.6.0"
         imagePullPolicy: IfNotPresent
         volumeMounts:
           - mountPath: /etc/tetragon/operator.conf.d/
@@ -379,7 +507,14 @@ spec:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
-              - "ALL"
+            - ALL
+          runAsGroup: 65532
+          runAsNonRoot: true
+          runAsUser: 65532
+        ports:
+          - name: metrics
+            containerPort: 2113
+            protocol: TCP
         livenessProbe:
           httpGet:
             path: /healthz
@@ -399,9 +534,23 @@ spec:
           requests:
             cpu: 10m
             memory: 64Mi
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: tetragon-operator
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       serviceAccountName: tetragon-operator-service-account
       terminationGracePeriodSeconds: 10
       volumes:
         - name: tetragon-operator-config
           configMap:
             name: tetragon-operator-config
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate

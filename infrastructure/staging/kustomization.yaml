@@ -21,9 +21,9 @@ resources:
   - ../common/ingress
 #  - ../common/flux-system
   - ../common/trivy-system
-  - ../common/tracee-system # Needs BTF support
+#  - ../common/tracee-system # Needs BTF support
   - ../common/cilium
-#  - ../common/tetragon   # Need BTF support
+  - ../common/tetragon   # Need BTF support
 #  - ../common/authentik
 #  - ../common/containerescapes
 #  - ../common/mariadb-operator

@@ -20,7 +20,7 @@ locals {
 
 provider "grafana" {
 #  url = "https://grafana.internal.com"
-  url = "https://grafana.cluster0.net"
+  url = "https://grafana.cluster1.cyonomy.net"
   auth = var.GRAFANA_APIKEY
   insecure_skip_verify = true
   org_id = local.org_id

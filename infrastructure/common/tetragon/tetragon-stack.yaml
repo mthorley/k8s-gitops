@@ -70,6 +70,7 @@ metadata:
     app.kubernetes.io/component: agent
 data:
   cluster-name: ""
+  btf: /var/lib/tetragon/btf/vmlinux
   procfs: /procRoot
   debug: "false"
   enable-process-cred: "false"
@@ -370,7 +371,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 64c525d4d45e4a1017ec271725687f3470a4980dcfb792c71205e37a5a4fbc0f
+        checksum/configmap: 95cead89af157b52620dc1980c611f358612930ca4551d35411754d2403081cd
       labels:
         app.kubernetes.io/name: tetragon
         app.kubernetes.io/instance: tetragon
@@ -420,6 +421,9 @@ spec:
             name: export-logs
           - mountPath: "/procRoot"
             name: host-proc
+          - name: tetragon-btf
+            mountPath: /var/lib/tetragon/btf
+            readOnly: true
           
         env:
           - name: NODE_NAME
@@ -457,6 +461,9 @@ spec:
         hostPath:
           path: /proc
           type: Directory
+      - name: tetragon-btf
+        hostPath:
+          path: /var/lib/tetragon/btf
 ---
 # Source: tetragon/templates/operator_deployment.yaml
 apiVersion: apps/v1

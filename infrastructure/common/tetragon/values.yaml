@@ -1,0 +1,8 @@
+tetragon:
+  btf: /var/lib/tetragon/btf/vmlinux
+
+extraHostPathMounts:
+  - name: tetragon-btf
+    hostPath: /var/lib/tetragon/btf
+    mountPath: /var/lib/tetragon/btf
+    readOnly: true

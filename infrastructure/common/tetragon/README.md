@@ -52,6 +52,10 @@ ls -lh "$VMLINUX_DBG"
 
 ### Make it readable (like /sys/kernel/btf/vmlinux would be)
 ```sudo chmod 444 /var/lib/tetragon/btf/vmlinux
-ls -lh /var/lib/tetragon/btf/vmlinux```
+ls -lh /var/lib/tetragon/btf/vmlinux
+```
 
 This aligns with Tetragon’s documented guidance: if /sys/kernel/btf/vmlinux is missing, provide a BTF file yourself (and Tetragon also checks /var/lib/tetragon/btf).
+
+### Copy all vmlinux btf file to all other nodes
+

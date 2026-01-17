@@ -20,7 +20,7 @@ resources:
   - ../common/certmanager-1.19
   - ../common/ingress
 #  - ../common/flux-system
-  - ../common/trivy-system
+#  - ../common/trivy-system
 #  - ../common/tracee-system
   - ../common/cilium
 #  - ../common/tetragon

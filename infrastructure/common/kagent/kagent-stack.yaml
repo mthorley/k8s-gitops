@@ -6,7 +6,7 @@ metadata:
   name: kagent-grafana-mcp
   namespace: kagent
   labels:
-    helm.sh/chart: grafana-mcp-0.9.1
+    helm.sh/chart: grafana-mcp-0.7.0
     app.kubernetes.io/name: grafana-mcp
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/managed-by: Helm
@@ -18,11 +18,12 @@ metadata:
   name: kagent-tools
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-tools-0.1.3
+    helm.sh/chart: kagent-tools-0.0.12
     app.kubernetes.io/name: kagent-tools
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.1.3"
+    app.kubernetes.io/version: "0.0.12"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
 ---
 # Source: kagent/charts/kmcp/templates/rbac/serviceaccount.yaml
 apiVersion: v1
@@ -31,11 +32,11 @@ metadata:
   name: kagent-kmcp-controller-manager
   namespace: kagent
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
 ---
@@ -46,7 +47,7 @@ metadata:
   name: kagent-querydoc
   namespace: kagent
   labels:
-    helm.sh/chart: querydoc-0.9.1
+    helm.sh/chart: querydoc-0.7.0
     app.kubernetes.io/name: querydoc
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/version: "1.1.10"
@@ -59,27 +60,12 @@ metadata:
   name: kagent-controller
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
----
-# Source: kagent/templates/postgresql.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: kagent-postgresql
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kagent
-    app.kubernetes.io/component: database
 ---
 # Source: kagent/templates/ui-serviceaccount.yaml
 apiVersion: v1
@@ -88,10 +74,10 @@ metadata:
   name: kagent-ui
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 ---
@@ -102,30 +88,13 @@ metadata:
   name: kagent-grafana-mcp
   namespace: kagent
   labels:
-    helm.sh/chart: grafana-mcp-0.9.1
+    helm.sh/chart: grafana-mcp-0.7.0
     app.kubernetes.io/name: grafana-mcp
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
----
-# Source: kagent/templates/postgresql-secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: kagent-postgresql
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kagent
-    app.kubernetes.io/component: database
-type: Opaque
-data:
-  POSTGRES_PASSWORD: "a2FnZW50"
+  GRAFANA_API_KEY: LQ==
 ---
 # Source: kagent/charts/grafana-mcp/templates/configmap.yaml
 apiVersion: v1
@@ -134,7 +103,7 @@ metadata:
   name: kagent-grafana-mcp
   namespace: kagent
   labels:
-    helm.sh/chart: grafana-mcp-0.9.1
+    helm.sh/chart: grafana-mcp-0.7.0
     app.kubernetes.io/name: grafana-mcp
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/managed-by: Helm
@@ -150,7 +119,7 @@ metadata:
   name: kagent-querydoc
   namespace: kagent
   labels:
-    helm.sh/chart: querydoc-0.9.1
+    helm.sh/chart: querydoc-0.7.0
     app.kubernetes.io/name: querydoc
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/version: "1.1.10"
@@ -160,346 +129,411 @@ data:
   KAGENT_LOG_LEVEL: "info"
   PORT: "8080"
   TRANSPORT_TYPE: "http"
-  # OpenTelemetry Configuration
   OTEL_TRACING_ENABLED: "false"
+  OTEL_EXPORTER_OTLP_ENDPOINT: ""
+  OTEL_EXPORTER_OTLP_TRACES_TIMEOUT: "10000"
+  OTEL_EXPORTER_OTLP_TRACES_INSECURE: "true"
 
   # Custom configuration
 ---
-# Source: kagent/templates/builtin-prompts-configmap.yaml
-apiVersion: v1
-kind: ConfigMap
+# Source: kagent/charts/argo-rollouts-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
 metadata:
-  name: kagent-builtin-prompts
-  namespace: kagent
+  name: kagent-argo-role
   labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
+    helm.sh/chart: argo-rollouts-agent-0.7.0
+    app.kubernetes.io/name: argo-rollouts-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
-    kagent.dev/prompt-library: "true"
-data:
-  skills-usage: |
-    ## Skills
-
-    You have access to skills — pre-built capabilities loaded from external sources and
-    available as files in your skills directory (/skills). Each skill contains instructions,
-    prompts, or data that extend your abilities beyond your base training.
-
-    When a user asks you to perform a task, check if any of the available skills match
-    the request. If a skill is relevant, read and follow its instructions carefully.
-    Skills may contain domain-specific knowledge, step-by-step procedures, or templates
-    that you should use to produce higher-quality responses.
-
-    Always prefer using a skill over generating a response from scratch when a relevant
-    skill is available.
-
-  tool-usage-best-practices: |
-    ## Tool Usage Best Practices
-
-    Follow these principles when using tools:
-
-    1. **Read before write**: Always use informational tools (get, describe, list, status)
-       before modification tools. Understand the current state before making changes.
-    2. **Explain before acting**: Before calling any modification tool, explain to the user
-       what you intend to do and why. Wait for confirmation on destructive operations.
-    3. **Dry-run when possible**: Use dry-run flags or preview modes when available to
-       validate changes before applying them.
-    4. **Use the right tool**: Select the most specific tool for the task. Check tool
-       descriptions carefully and ensure you understand the expected parameters.
-    5. **Backup current state**: Before modifications, capture the current state (e.g.,
-       export YAML, save configuration) so changes can be reverted if needed.
-    6. **Verify after changes**: After any modification, use informational tools to confirm
-       the change took effect and didn't cause unintended side effects.
-    7. **Handle errors gracefully**: If a tool call fails, analyze the error, adjust your
-       approach, and retry. Do not repeat the exact same failing call.
-    8. **Minimize calls**: Plan your approach to minimize tool calls. Batch operations when
-       possible and avoid redundant calls.
-
-  safety-guardrails: |
-    ## Safety Guidelines
-
-    You must follow these safety principles in all interactions:
-
-    1. **No destructive operations without confirmation**: Never delete resources, modify
-       production systems, or take irreversible actions without explicit user confirmation.
-       Always explain what will happen and ask for approval first.
-    2. **Least privilege**: Apply changes to the minimum scope necessary. Prefer targeted
-       operations over broad ones. Avoid cluster-wide changes when namespace-scoped changes
-       will suffice.
-    3. **Rollback planning**: Before making changes, ensure you have a plan to revert them.
-       Capture the current state, explain the rollback procedure, and verify the rollback
-       path exists before proceeding.
-    4. **Protect sensitive data**: Never expose secrets, credentials, API keys, tokens, or
-       certificates in your responses. Redact sensitive information before presenting output
-       to the user.
-    5. **Stay within scope**: Only perform actions within your defined capabilities and the
-       user's stated intent. Do not take autonomous actions beyond what was requested.
-    6. **Report uncertainties**: If you are unsure about an action or its consequences,
-       communicate your uncertainty to the user and ask for guidance before proceeding.
-
-  kubernetes-context: |
-    ## Kubernetes Operational Context
-
-    You are operating within a Kubernetes cluster. Follow this methodology:
-
-    ### Investigation Protocol
-    1. **Start non-intrusively**: Begin with read-only operations (get, describe, logs,
-       events) before any modifications. Gather information before acting.
-    2. **Progressive escalation**: Start with broad resource checks, then narrow down to
-       specific resources, pods, containers, or logs as you identify the problem area.
-    3. **Verify before acting**: Consider the potential impact of any change. Check
-       dependencies, related resources, and downstream effects before modifying anything.
-
-    ### Problem-Solving Framework
-    1. **Initial assessment**: Check cluster health, node status, and recent events. Identify
-       the scope of the issue (single pod, deployment, namespace, or cluster-wide).
-    2. **Classify the problem**: Determine if it's an application issue (crashes, errors),
-       infrastructure problem (node failures, resource exhaustion), networking issue
-       (connectivity, DNS, policies), or configuration error (invalid specs, missing secrets).
-    3. **Analyze resources**: Examine pod status, container logs, resource metrics, events,
-       and network connectivity relevant to the issue.
-    4. **Implement solutions**: Propose targeted fixes. Present multiple options when
-       appropriate, explain trade-offs, and include verification steps.
-
-    ### Key Principles
-    - Always be explicit about which namespace you are operating in.
-    - Remember that your actions impact real workloads — prioritize stability.
-    - Use labels and selectors to target resources precisely.
-    - Check resource quotas and limits before creating or scaling resources.
-
-  a2a-communication: |
-    ## Agent-to-Agent Communication
-
-    You can communicate with other agents to accomplish complex tasks that span multiple
-    domains of expertise. When working with other agents:
-
-    1. **Clear delegation**: When delegating a task to another agent, provide clear and
-       complete context. Include all relevant information the other agent needs to
-       accomplish the task.
-    2. **Result validation**: When receiving results from another agent, validate them
-       before incorporating them into your response or using them for further actions.
-    3. **Error handling**: If an agent you are communicating with fails or returns an
-       unexpected result, handle the error gracefully. Consider retrying, using an
-       alternative approach, or informing the user.
-    4. **Avoid circular delegation**: Do not create circular delegation chains where
-       agents repeatedly delegate tasks back to each other without making progress.
----
-# Source: kagent/templates/controller-configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kagent-controller
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kagent
-    app.kubernetes.io/component: controller
-data:
-  A2A_BASE_URL: "http://kagent-controller.kagent.svc.cluster.local:8083"
-  DEFAULT_MODEL_CONFIG_NAME: "default-model-config"
-  KAGENT_CONTROLLER_NAME: kagent-controller
-  IMAGE_PULL_POLICY: "IfNotPresent"
-  IMAGE_REGISTRY: "cr.kagent.dev"
-  IMAGE_REPOSITORY: "kagent-dev/kagent/app"
-  IMAGE_TAG: "0.9.1"
-  SKILLS_INIT_IMAGE_PULL_POLICY: "IfNotPresent"
-  SKILLS_INIT_IMAGE_REGISTRY: "cr.kagent.dev"
-  SKILLS_INIT_IMAGE_REPOSITORY: "kagent-dev/kagent/skills-init"
-  SKILLS_INIT_IMAGE_TAG: "0.9.1"
-  LEADER_ELECT: "false"
-  # OpenTelemetry Configuration
-  OTEL_TRACING_ENABLED: "false"
-  OTEL_LOGGING_ENABLED: "false"
-  # Using separate endpoints for traces and logs
-  DATABASE_VECTOR_ENABLED: "false"
-  STREAMING_INITIAL_BUF_SIZE: "4Ki"
-  STREAMING_MAX_BUF_SIZE: "1Mi"
-  STREAMING_TIMEOUT: "600s"
-  WATCH_NAMESPACES: ""
-  ZAP_LOG_LEVEL: "info"
----
-# Source: kagent/templates/ui-nginx-configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kagent-ui-config
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kagent
-data:
-  nginx.conf: |
-    pid /tmp/nginx.pid;
-    
-    error_log /dev/stderr;
-    
-    events {
-        worker_connections 1024;
-    }
-    
-    http {
-        client_body_temp_path /tmp/nginx/client_temp;
-        proxy_temp_path /tmp/nginx/proxy_temp;
-        fastcgi_temp_path /tmp/nginx/fastcgi_temp;
-        uwsgi_temp_path /tmp/nginx/uwsgi_temp;
-        scgi_temp_path /tmp/nginx/scgi_temp;
-    
-        access_log /dev/stdout;
-    
-        log_format main        '[$time_local] $remote_addr - $remote_user - $request $status $body_bytes_sent $http_referer $http_user_agent $http_x_forwarded_for';
-        log_format upstreamlog '[$time_local] $remote_addr - $remote_user - $server_name $host to: $upstream_addr: $request $status upstream_response_time $upstream_response_time msec $msec request_time $request_time';
-    
-        upstream kagent_ui {
-            server 127.0.0.1:8001;
-        }
-    
-        upstream kagent_ws_backend {
-            server 127.0.0.1:8081;
-        }
-    
-        upstream kagent_backend {
-            server 127.0.0.1:8083;
-        }
-    
-        map $http_upgrade $connection_upgrade {
-            default upgrade;
-            ''      close;
-        }
-    
-        server {
-            listen 8080;
-            server_name localhost;
-    
-            location /a2a/ {
-                proxy_pass http://kagent_ui/a2a/;
-                proxy_http_version 1.1;
-                proxy_set_header Connection '';
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header Origin $scheme://$host;
-                proxy_read_timeout 600s;
-                proxy_send_timeout 600s;
-                proxy_buffering off;
-            }
-    
-            location / {
-                proxy_pass http://kagent_ui;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection 'upgrade';
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header Origin $scheme://$host;
-                proxy_cache_bypass $http_upgrade;
-            }
-    
-            location /health {
-                return 200 'OK';
-            }
-    
-            location /api/ {
-                proxy_pass http://kagent_backend/api/;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection 'upgrade';
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header X-Forwarded-Host $server_name;
-                proxy_cache_bypass $http_upgrade;
-            }
-    
-            location /api/ws/ {
-                proxy_pass http://kagent_ws_backend/api/ws/;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection $connection_upgrade;
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header X-Forwarded-Host $server_name;
-                proxy_read_timeout 300s;
-                proxy_send_timeout 300s;
-                proxy_buffering off;
-            }
-        }
-    }
-    
-  supervisord.conf: |
-    [supervisord]
-    nodaemon=true
-    logfile=/dev/stdout
-    logfile_maxbytes=0
-    loglevel=debug
-    
-    [program:nginx]
-    command=/usr/sbin/nginx -g "daemon off;"
-    autostart=true
-    autorestart=true
-    startretries=5
-    numprocs=1
-    startsecs=0
-    priority=20
-    stdout_logfile=/dev/stdout
-    stdout_logfile_maxbytes=0
-    stderr_logfile=/dev/stderr
-    stderr_logfile_maxbytes=0
-    stdout_events_enabled=true
-    stderr_events_enabled=true
-    
-    [program:nextjs]
-    command=node /app/ui/server.js
-    directory=/app/ui
-    environment=PORT=8001,HOSTNAME="0.0.0.0",NODE_ENV=production,PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    autostart=true
-    autorestart=true
-    startretries=5
-    numprocs=1
-    startsecs=0
-    priority=10
-    stdout_logfile=/dev/stdout
-    stdout_logfile_maxbytes=0
-    stderr_logfile=/dev/stderr
-    stderr_logfile_maxbytes=0
-    stdout_events_enabled=true
-    stderr_events_enabled=true
----
-# Source: kagent/templates/postgresql.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: kagent-postgresql
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kagent
-    app.kubernetes.io/component: database
-spec:
-  accessModes:
-    - ReadWriteOnce
+rules:
+- apiGroups:
+    - ''
   resources:
-    requests:
-      storage: "500Mi"
+    - namespaces
+    - services
+    - endpoints
+    - pods
+    - persistentvolumeclaims
+  verbs:
+    - "*"
+- apiGroups:
+    - apps
+  resources:
+    - deployments
+    - daemonsets
+    - replicasets
+    - statefulsets
+  verbs:
+    - "*"
+- apiGroups:
+    - policy
+  resources:
+    - poddisruptionbudgets
+  verbs:
+    - "*"
+- apiGroups:
+    - autoscaling
+  resources:
+    - horizontalpodautoscalers
+  verbs:
+    - "*"
+- apiGroups:
+    - networking.k8s.io
+  resources:
+    - networkpolicies
+    - ingresses
+  verbs:
+    - "*"
+- apiGroups:
+    - rbac.authorization.k8s.io
+  resources:
+    - clusterroles
+    - clusterrolebindings
+    - roles
+    - rolebindings
+  verbs:
+    - "*"
+- apiGroups:
+    - apiextensions.k8s.io
+  resources:
+    - customresourcedefinitions
+  verbs:
+    - "*"
+- apiGroups:
+    - authentication.k8s.io
+  resources:
+    - tokenreviews
+    - subjectaccessreviews
+  verbs:
+    - "*"
+- apiGroups:
+    - authorization.k8s.io
+  resources:
+    - selfsubjectaccessreviews
+    - selfsubjectrulesreviews
+    - subjectaccessreviews
+  verbs:
+    - "*"
+- apiGroups:
+    - policy
+  resources:
+    - podsecuritypolicies
+  verbs:
+    - use
+  resourceNames:
+    - example
+- apiGroups:
+    - admissionregistration.k8s.io
+  resources:
+    - validatingwebhookconfigurations
+    - mutatingwebhookconfigurations
+  verbs:
+    - "*"
+- apiGroups:
+    - ''
+  resources:
+    - secrets
+    - configmaps
+    - serviceaccounts
+  verbs:
+    - "*"
+- apiGroups:
+    - argoproj.io
+    - gateway.networking.k8s.io
+  resources:
+    - "*"
+  verbs:
+    - "*"
+- apiGroups:
+    - ''
+  resources:
+    - pods/portforward
+  verbs:
+    - create
+---
+# Source: kagent/charts/cilium-debug-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kagent-cilium-debug-role
+  labels:
+    helm.sh/chart: cilium-debug-agent-0.7.0
+    app.kubernetes.io/name: cilium-debug-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+rules:
+# Access to Cilium CRDs for debugging
+- apiGroups:
+    - 'cilium.io'
+  resources:
+    - '*'
+  verbs:
+    - "*"
+
+# Core Kubernetes resources for debugging
+- apiGroups:
+    - ''
+  resources:
+    - 'pods'
+    - 'nodes'
+    - 'namespaces'
+    - 'services'
+    - 'endpoints'
+    - 'componentstatuses'
+    - 'events'
+  verbs:
+    - "*"
+
+# Access to logs and exec for troubleshooting
+- apiGroups:
+    - ''
+  resources:
+    - 'pods/log'
+    - 'pods/exec'
+  verbs:
+    - "*"
+
+# Access to networking resources for troubleshooting
+- apiGroups:
+    - 'networking.k8s.io'
+  resources:
+    - '*'
+  verbs:
+    - "*"
+
+# Access to apiextensions for CRD inspection
+- apiGroups:
+    - 'apiextensions.k8s.io'
+  resources:
+    - 'customresourcedefinitions'
+  verbs:
+    - "*"
+---
+# Source: kagent/charts/cilium-manager-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kagent-cilium-manager-role
+  labels:
+    helm.sh/chart: cilium-manager-agent-0.7.0
+    app.kubernetes.io/name: cilium-manager-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+rules:
+# Access to Cilium CRDs for management and monitoring
+- apiGroups:
+    - 'cilium.io'
+  resources:
+    - '*'
+  verbs:
+    - "*"
+
+# Access to core resources for pod/node management
+- apiGroups:
+    - ''
+  resources:
+    - 'pods'
+    - 'nodes'
+    - 'namespaces'
+    - 'services'
+    - 'endpoints'
+    - 'componentstatuses'
+  verbs:
+    - "*"
+
+# Access to logs for troubleshooting
+- apiGroups:
+    - ''
+  resources:
+    - 'pods/log'
+    - 'pods/exec'
+  verbs:
+    - "*"
+
+# Access to deployments and daemonsets for installation/upgrade
+- apiGroups:
+    - 'apps'
+  resources:
+    - 'deployments'
+    - 'daemonsets'
+    - 'statefulsets'
+    - 'replicasets'
+  verbs:
+    - "*"
+
+# Access to networking resources
+- apiGroups:
+    - 'networking.k8s.io'
+  resources:
+    - 'networkpolicies'
+    - 'ingresses'
+  verbs:
+    - "*"
+
+# Access to apiextensions for CRD management
+- apiGroups:
+    - 'apiextensions.k8s.io'
+  resources:
+    - 'customresourcedefinitions'
+  verbs:
+    - "*"
+
+# Access to helm releases for installation management
+- apiGroups:
+    - 'helm.toolkit.fluxcd.io'
+  resources:
+    - 'helmreleases'
+  verbs:
+    - "*"
+---
+# Source: kagent/charts/cilium-policy-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kagent-cilium-policy-role
+  labels:
+    helm.sh/chart: cilium-policy-agent-0.7.0
+    app.kubernetes.io/name: cilium-policy-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+rules:
+- apiGroups:
+    - 'cilium.io'
+  resources:
+    - '*'
+  verbs:
+    - "*"
+---
+# Source: kagent/charts/istio-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kagent-istio-role
+  labels:
+    helm.sh/chart: istio-agent-0.7.0
+    app.kubernetes.io/name: istio-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+rules:
+- apiGroups:
+    - ''
+  resources:
+    - namespaces
+    - services
+    - endpoints
+    - pods
+    - persistentvolumeclaims
+  verbs:
+    - "*"
+- apiGroups:
+    - apps
+  resources:
+    - deployments
+    - daemonsets
+    - replicasets
+    - statefulsets
+  verbs:
+    - "*"
+- apiGroups:
+    - policy
+  resources:
+    - poddisruptionbudgets
+  verbs:
+    - "*"
+- apiGroups:
+    - autoscaling
+  resources:
+    - horizontalpodautoscalers
+  verbs:
+    - "*"
+- apiGroups:
+    - networking.k8s.io
+  resources:
+    - networkpolicies
+    - ingresses
+  verbs:
+    - "*"
+- apiGroups:
+    - rbac.authorization.k8s.io
+  resources:
+    - clusterroles
+    - clusterrolebindings
+    - roles
+    - rolebindings
+  verbs:
+    - "*"
+- apiGroups:
+    - apiextensions.k8s.io
+  resources:
+    - customresourcedefinitions
+  verbs:
+    - "*"
+- apiGroups:
+    - authentication.k8s.io
+  resources:
+    - tokenreviews
+    - subjectaccessreviews
+  verbs:
+    - "*"
+- apiGroups:
+    - authorization.k8s.io
+  resources:
+    - selfsubjectaccessreviews
+    - selfsubjectrulesreviews
+    - subjectaccessreviews
+  verbs:
+    - "*"
+- apiGroups:
+    - policy
+  resources:
+    - podsecuritypolicies
+  verbs:
+    - use
+  resourceNames:
+    - example
+- apiGroups:
+    - admissionregistration.k8s.io
+  resources:
+    - validatingwebhookconfigurations
+    - mutatingwebhookconfigurations
+  verbs:
+    - "*"
+- apiGroups:
+    - ''
+  resources:
+    - secrets
+    - configmaps
+    - serviceaccounts
+  verbs:
+    - "*"
+- apiGroups:
+    - networking.istio.io
+    - security.istio.io
+    - telemetry.istio.io
+    - extensions.istio.io
+    - install.istio.io
+    - gateway.networking.k8s.io
+  resources:
+    - "*"
+  verbs:
+    - "*"
+- apiGroups:
+    - ''
+  resources:
+    - pods/portforward
+  verbs:
+    - create
 ---
 # Source: kagent/charts/kagent-tools/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -507,18 +541,40 @@ kind: ClusterRole
 metadata:
   name: kagent-tools-cluster-admin-role
   labels:
-    helm.sh/chart: kagent-tools-0.1.3
+    helm.sh/chart: kagent-tools-0.0.12
     app.kubernetes.io/name: kagent-tools
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.1.3"
+    app.kubernetes.io/version: "0.0.12"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
 rules:
-  
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+- nonResourceURLs: ["*"]
+  verbs: ["*"]
+---
+# Source: kagent/charts/kagent-tools/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kagent-tools-read-role
+  labels:
+    helm.sh/chart: kagent-tools-0.0.12
+    app.kubernetes.io/name: kagent-tools
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.0.12"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+rules:
   - apiGroups: ["*"]
     resources: ["*"]
     verbs: ["*"]
   - nonResourceURLs: ["*"]
-    verbs: ["*"]
+    verbs:
+    - get
+    - list
+    - watch
 ---
 # Source: kagent/charts/kmcp/templates/rbac/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -526,65 +582,65 @@ kind: ClusterRole
 metadata:
   name: kagent-kmcp-manager-role
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 rules:
-  - apiGroups:
-    - ""
-    resources:
-    - configmaps
-    - services
-    - serviceaccounts
-    verbs:
-    - create
-    - delete
-    - get
-    - list
-    - patch
-    - update
-    - watch
-  - apiGroups:
-    - apps
-    resources:
-    - deployments
-    verbs:
-    - create
-    - delete
-    - get
-    - list
-    - patch
-    - update
-    - watch
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - mcpservers
-    verbs:
-    - create
-    - delete
-    - get
-    - list
-    - patch
-    - update
-    - watch
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - mcpservers/finalizers
-    verbs:
-    - update
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - mcpservers/status
-    verbs:
-    - get
-    - patch
-    - update
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - services
+  - serviceaccounts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kagent.dev
+  resources:
+  - mcpservers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kagent.dev
+  resources:
+  - mcpservers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - kagent.dev
+  resources:
+  - mcpservers/status
+  verbs:
+  - get
+  - patch
+  - update
 ---
 # Source: kagent/charts/kmcp/templates/rbac/metrics-auth-clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -592,11 +648,11 @@ kind: ClusterRole
 metadata:
   name: kagent-kmcp-metrics-auth-role
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 rules:
 - apiGroups:
@@ -618,11 +674,11 @@ kind: ClusterRole
 metadata:
   name: kagent-kmcp-metrics-reader
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 rules:
 - nonResourceURLs:
@@ -630,198 +686,293 @@ rules:
   verbs:
   - get
 ---
-# Source: kagent/templates/rbac/getter-role.yaml
+# Source: kagent/templates/rbac/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: kagent-getter-role
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 rules:
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - agents
-    - sandboxagents
-    - modelconfigs
-    - modelproviderconfigs
-    - toolservers
-    - memories
-    - remotemcpservers
-    - mcpservers
-    verbs:
-    - get
-    - list
-    - watch
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - agents/finalizers
-    - sandboxagents/finalizers
-    - modelconfigs/finalizers
-    - modelproviderconfigs/finalizers
-    - toolservers/finalizers
-    - memories/finalizers
-    - remotemcpservers/finalizers
-    - mcpservers/finalizers
-    verbs:
-    - update
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - agents/status
-    - sandboxagents/status
-    - modelconfigs/status
-    - modelproviderconfigs/status
-    - toolservers/status
-    - memories/status
-    - remotemcpservers/status
-    - mcpservers/status
-    verbs:
-    - get
-    - patch
-    - update
-  - apiGroups:
-    - ""
-    resources:
-    - "*"
-    verbs:
-    - get
-    - list
-    - watch
-  - apiGroups:
-    - "apps"
-    resources:
-    - "*"
-    verbs:
-    - get
-    - list
-    - watch
-  - apiGroups:
-    - "batch"
-    resources:
-    - "*"
-    verbs:
-    - get
-    - list
-    - watch
-  - apiGroups:
-    - "rbac.authorization.k8s.io"
-    resources:
-    - "*"
-    verbs:
-    - get
-    - list
-    - watch
-  - apiGroups:
-    - gateway.networking.k8s.io
-    resources:
-    - "*"
-    verbs:
-    - get
-    - list
-    - watch
-  - apiGroups:
-    - agents.x-k8s.io
-    resources:
-    - sandboxes
-    verbs:
-    - get
-    - list
-    - watch
+- apiGroups:
+  - kagent.dev
+  resources:
+  - agents
+  - modelconfigs
+  - toolservers
+  - memories
+  - remotemcpservers
+  - mcpservers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - kagent.dev
+  resources:
+  - agents/finalizers
+  - modelconfigs/finalizers
+  - toolservers/finalizers
+  - memories/finalizers
+  - remotemcpservers/finalizers
+  - mcpservers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - kagent.dev
+  resources:
+  - agents/status
+  - modelconfigs/status
+  - toolservers/status
+  - memories/status
+  - remotemcpservers/status
+  - mcpservers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - "*"
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - "apps"
+  resources:
+  - "*"
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - "batch"
+  resources:
+  - "*"
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - "rbac.authorization.k8s.io"
+  resources:
+  - "*"
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - "apiextensions.k8s.io"
+  resources:
+  - "*"
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - gateway.networking.k8s.io/v1
+  resources:
+  - "*"
+  verbs:
+  - get
+  - list
+  - watch
 ---
-# Source: kagent/templates/rbac/writer-role.yaml
+# Source: kagent/templates/rbac/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: kagent-writer-role
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 rules:
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - agents
-    - sandboxagents
-    - modelconfigs
-    - modelproviderconfigs
-    - toolservers
-    - memories
-    - remotemcpservers
-    - mcpservers
-    verbs:
-    - create
-    - update
-    - patch
-    - delete
-  - apiGroups:
-    - kagent.dev
-    resources:
-    - agents/finalizers
-    - sandboxagents/finalizers
-    - modelconfigs/finalizers
-    - modelproviderconfigs/finalizers
-    - toolservers/finalizers
-    - memories/finalizers
-    - remotemcpservers/finalizers
-    - mcpservers/finalizers
-    verbs:
-    - update
-  - apiGroups:
-    - ""
-    resources:
-    - "*"
-    verbs:
-    - create
-    - update
-    - patch
-    - delete
-  - apiGroups:
-    - "apps"
-    resources:
-    - "*"
-    verbs:
-    - create
-    - update
-    - patch
-    - delete
-  - apiGroups:
-    - "batch"
-    resources:
-    - "*"
-    verbs:
-    - create
-    - update
-    - patch
-    - delete
-  - apiGroups:
-    - gateway.networking.k8s.io
-    resources:
-    - "*"
-    verbs:
-    - create
-    - update
-    - patch
-    - delete
-  - apiGroups:
-    - agents.x-k8s.io
-    resources:
-    - sandboxes
-    verbs:
-    - create
-    - update
-    - patch
-    - delete
+- apiGroups:
+  - kagent.dev
+  resources:
+  - agents
+  - modelconfigs
+  - toolservers
+  - memories
+  - remotemcpservers
+  - mcpservers
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - kagent.dev
+  resources:
+  - agents/finalizers
+  - modelconfigs/finalizers
+  - toolservers/finalizers
+  - memories/finalizers
+  - remotemcpservers/finalizers
+  - mcpservers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - "*"
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - "apps"
+  resources:
+  - "*"
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - "batch"
+  resources:
+  - "*"
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - "apiextensions.k8s.io"
+  resources:
+  - "*"
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - gateway.networking.k8s.io/v1
+  resources:
+  - "*"
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+---
+# Source: kagent/charts/argo-rollouts-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kagent-argo-rolebinding
+  labels:
+    helm.sh/chart: argo-rollouts-agent-0.7.0
+    app.kubernetes.io/name: argo-rollouts-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kagent-argo-role
+subjects:
+  - kind: ServiceAccount
+    name: kagent
+    namespace: kagent
+---
+# Source: kagent/charts/cilium-debug-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kagent-cilium-debug-rolebinding
+  labels:
+    helm.sh/chart: cilium-debug-agent-0.7.0
+    app.kubernetes.io/name: cilium-debug-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kagent-cilium-debug-role
+subjects:
+  - kind: ServiceAccount
+    name: kagent
+    namespace: kagent
+---
+# Source: kagent/charts/cilium-manager-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kagent-cilium-manager-rolebinding
+  labels:
+    helm.sh/chart: cilium-manager-agent-0.7.0
+    app.kubernetes.io/name: cilium-manager-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kagent-cilium-manager-role
+subjects:
+  - kind: ServiceAccount
+    name: kagent
+    namespace: kagent
+---
+# Source: kagent/charts/cilium-policy-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kagent-cilium-policy-rolebinding
+  labels:
+    helm.sh/chart: cilium-policy-agent-0.7.0
+    app.kubernetes.io/name: cilium-policy-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kagent-cilium-policy-role
+subjects:
+  - kind: ServiceAccount
+    name: kagent
+    namespace: kagent
+---
+# Source: kagent/charts/istio-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kagent-istio-rolebinding
+  labels:
+    helm.sh/chart: istio-agent-0.7.0
+    app.kubernetes.io/name: istio-agent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kagent-istio-role
+subjects:
+  - kind: ServiceAccount
+    name: kagent
+    namespace: kagent
 ---
 # Source: kagent/charts/kagent-tools/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -829,15 +980,58 @@ kind: ClusterRoleBinding
 metadata:
   name: kagent-tools-cluster-admin-rolebinding
   labels:
-    helm.sh/chart: kagent-tools-0.1.3
+    helm.sh/chart: kagent-tools-0.0.12
     app.kubernetes.io/name: kagent-tools
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.1.3"
+    app.kubernetes.io/version: "0.0.12"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: kagent-tools-cluster-admin-role
+subjects:
+- kind: ServiceAccount
+  name: kagent-tools
+  namespace: kagent
+---
+# Source: kagent/charts/kagent-tools/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kagent-tools-getter-rolebinding
+  labels:
+    helm.sh/chart: kagent-tools-0.0.12
+    app.kubernetes.io/name: kagent-tools
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.0.12"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kagent-tools-getter-role
+subjects:
+- kind: ServiceAccount
+  name: kagent-tools
+  namespace: kagent
+---
+# Source: kagent/charts/kagent-tools/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kagent-tools-writer-rolebinding
+  labels:
+    helm.sh/chart: kagent-tools-0.0.12
+    app.kubernetes.io/name: kagent-tools
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.0.12"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kagent-tools-writer-role
 subjects:
 - kind: ServiceAccount
   name: kagent-tools
@@ -849,11 +1043,11 @@ kind: ClusterRoleBinding
 metadata:
   name: kagent-kmcp-manager-rolebinding
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -870,11 +1064,11 @@ kind: ClusterRoleBinding
 metadata:
   name: kagent-kmcp-metrics-auth-rolebinding
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -885,16 +1079,16 @@ subjects:
   name: kagent-kmcp-controller-manager
   namespace: kagent
 ---
-# Source: kagent/templates/rbac/getter-rolebinding.yaml
+# Source: kagent/templates/rbac/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: kagent-getter-rolebinding
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 roleRef:
@@ -906,16 +1100,16 @@ subjects:
   name: kagent-controller
   namespace: kagent
 ---
-# Source: kagent/templates/rbac/writer-rolebinding.yaml
+# Source: kagent/templates/rbac/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: kagent-writer-rolebinding
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 roleRef:
@@ -935,11 +1129,11 @@ metadata:
   name: kagent-kmcp-leader-election-role
   namespace: kagent
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 rules:
 - apiGroups:
@@ -981,11 +1175,11 @@ metadata:
   name: kagent-kmcp-leader-election-rolebinding
   namespace: kagent
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -1003,7 +1197,7 @@ metadata:
   name: kagent-grafana-mcp
   namespace: kagent
   labels:
-    helm.sh/chart: grafana-mcp-0.9.1
+    helm.sh/chart: grafana-mcp-0.7.0
     app.kubernetes.io/name: grafana-mcp
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/managed-by: Helm
@@ -1025,11 +1219,12 @@ metadata:
   name: kagent-tools
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-tools-0.1.3
+    helm.sh/chart: kagent-tools-0.0.12
     app.kubernetes.io/name: kagent-tools
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.1.3"
+    app.kubernetes.io/version: "0.0.12"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
 spec:
   type: ClusterIP
   ports:
@@ -1041,29 +1236,6 @@ spec:
     app.kubernetes.io/name: kagent-tools
     app.kubernetes.io/instance: kagent
 ---
-# Source: kagent/charts/kagent-tools/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: kagent-tools-metrics
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-tools-0.1.3
-    app.kubernetes.io/name: kagent-tools
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.1.3"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: metrics
-spec:
-  selector:
-    app.kubernetes.io/name: kagent-tools
-    app.kubernetes.io/instance: kagent
-  ports:
-    - name: prometheus-metrics
-      protocol: TCP
-      port: 8085
-      targetPort: 8085
----
 # Source: kagent/charts/kmcp/templates/service.yaml
 apiVersion: v1
 kind: Service
@@ -1071,11 +1243,11 @@ metadata:
   name: kagent-kmcp-controller-manager-metrics-service
   namespace: kagent
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -1097,7 +1269,7 @@ metadata:
   namespace: kagent
   labels:
     kagent.dev/mcp-service: "true"
-    helm.sh/chart: querydoc-0.9.1
+    helm.sh/chart: querydoc-0.7.0
     app.kubernetes.io/name: querydoc
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/version: "1.1.10"
@@ -1121,10 +1293,10 @@ metadata:
   name: kagent-controller
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
     app.kubernetes.io/component: controller
@@ -1140,32 +1312,6 @@ spec:
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/component: controller
 ---
-# Source: kagent/templates/postgresql.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: kagent-postgresql
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kagent
-    app.kubernetes.io/component: database
-spec:
-  type: ClusterIP
-  ports:
-    - name: postgresql
-      port: 5432
-      targetPort: postgresql
-      protocol: TCP
-  selector:
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/component: database
----
 # Source: kagent/templates/ui-service.yaml
 apiVersion: v1
 kind: Service
@@ -1173,10 +1319,10 @@ metadata:
   name: kagent-ui
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
     app.kubernetes.io/component: ui
@@ -1199,7 +1345,7 @@ metadata:
   name: kagent-grafana-mcp
   namespace: kagent
   labels:
-    helm.sh/chart: grafana-mcp-0.9.1
+    helm.sh/chart: grafana-mcp-0.7.0
     app.kubernetes.io/name: grafana-mcp
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/managed-by: Helm
@@ -1212,8 +1358,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: e8584c693490e2821ed0cce0a0c552660811f96aa5ae721c7f6bad38cd80038e
-        checksum/secret: 90aebbd7c071e814cfbe54aa47ea096cb7c3b9189ae8948ad69f6b5fec079d46
+        checksum/configmap: 32956b7274c556a6cebc74cac3428731091936ea51ed7635ea426bd7c98e0e06
+        checksum/secret: 7085ccb9f5820c050b33a81c5176b14013240dcef8e51ea4cc4ed00be204b3db
       labels:
         app.kubernetes.io/name: grafana-mcp
         app.kubernetes.io/instance: kagent
@@ -1239,7 +1385,7 @@ spec:
             - configMapRef:
                 name: kagent-grafana-mcp
             - secretRef:
-                name: "kagent-grafana-mcp"
+                name: kagent-grafana-mcp
           ports:
             - name: http
               containerPort: 8000
@@ -1252,11 +1398,12 @@ metadata:
   name: kagent-tools
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-tools-0.1.3
+    helm.sh/chart: kagent-tools-0.0.12
     app.kubernetes.io/name: kagent-tools
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.1.3"
+    app.kubernetes.io/version: "0.0.12"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
 spec:
   replicas: 1
   selector:
@@ -1269,9 +1416,6 @@ spec:
         app.kubernetes.io/name: kagent-tools
         app.kubernetes.io/instance: kagent
     spec:
-      affinity:
-
-
       securityContext:
         {}
       serviceAccountName: kagent-tools
@@ -1282,11 +1426,9 @@ spec:
           args:
           - "--port"
           - "8084"
-          - "--metrics-port"
-          - "8085"
           securityContext:
             {}
-          image: "ghcr.io/kagent-dev/kagent/tools:0.1.3"
+          image: "ghcr.io/kagent-dev/kagent/tools:0.0.12"
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -1315,14 +1457,9 @@ spec:
               value: "15"
             - name: OTEL_EXPORTER_OTLP_TRACES_INSECURE
               value: "true"
-            - name: TOKEN_PASSTHROUGH
-              value: "false"
           ports:
             - name: http-tools
               containerPort: 8084
-              protocol: TCP
-            - name: http-metrics
-              containerPort: 8085
               protocol: TCP
           readinessProbe:
             tcpSocket:
@@ -1337,11 +1474,11 @@ metadata:
   name: kagent-kmcp-controller-manager
   namespace: kagent
   labels:
-    helm.sh/chart: kmcp-0.2.8
+    helm.sh/chart: kmcp-0.1.8
     app.kubernetes.io/name: kmcp
     app.kubernetes.io/instance: kagent
     control-plane: controller-manager
-    app.kubernetes.io/version: "0.2.8"
+    app.kubernetes.io/version: "0.1.8"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -1366,7 +1503,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: manager
-        image: ghcr.io/kagent-dev/kmcp/controller:0.2.8
+        image: ghcr.io/kagent-dev/kmcp/controller:v0.1.9
         imagePullPolicy: IfNotPresent
         command:
         - /manager
@@ -1416,7 +1553,7 @@ metadata:
   name: kagent-querydoc
   namespace: kagent
   labels:
-    helm.sh/chart: querydoc-0.9.1
+    helm.sh/chart: querydoc-0.7.0
     app.kubernetes.io/name: querydoc
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/version: "1.1.10"
@@ -1430,7 +1567,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 06320b18436575466dd7ec7ba14a2705d6015030d52c0aa67827f5ec7f0921a4
+        checksum/configmap: d1ed8f412d3397d054b36e40006601290d3521b7004ea4db9d1272aef4c1ee22
       labels:
         app.kubernetes.io/name: querydoc
         app.kubernetes.io/instance: kagent
@@ -1438,7 +1575,9 @@ spec:
       serviceAccountName: kagent-querydoc
       containers:
         - name: querydoc
-          image: "ghcr.io/kagent-dev/doc2vec/mcp:1.1.14"
+          securityContext:
+            {}
+          image: "ghcr.io/kagent-dev/doc2vec/mcp:1.1.13"
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -1476,10 +1615,10 @@ metadata:
   name: kagent-controller
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
     app.kubernetes.io/component: controller
@@ -1493,49 +1632,52 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 9270f7c2631d8d64abf129915d9576cec8f9074d896599817f6a461b7b968727
-        checksum/secret: 0e56fa04b9ef7054aa084f5de8ebb29fec9e170d246f3d8e50c75f2c998fd228
       labels:
         app.kubernetes.io/name: kagent
         app.kubernetes.io/instance: kagent
         app.kubernetes.io/component: controller
     spec:
       securityContext:
-        runAsNonRoot: true
+        {}
       serviceAccountName: kagent-controller
+      volumes:
+      - name: sqlite-volume
+        emptyDir:
+          sizeLimit: 500Mi
+          medium: Memory
       containers:
         - name: controller
-          image: "cr.kagent.dev/kagent-dev/kagent/controller:0.9.1"
+          args:
+          # Consider using env vars (stored in a dedicated ConfigMap(s)) rather than this
+          
+            - -default-model-config-name
+            - "default-model-config"
+            - -zap-log-level
+            - info
+            - -watch-namespaces
+            - ""
+            - -streaming-max-buf-size
+            - "1Mi"
+            - -streaming-initial-buf-size
+            - "4Ki"
+            - -streaming-timeout
+            - "600s"
+            - -database-type
+            - sqlite
+            - -sqlite-database-path
+            - /sqlite-volume/kagent.db
+            - -image-registry
+            - cr.kagent.dev
+            - -image-repository
+            - kagent-dev/kagent/app
+            - -image-tag
+            - 0.7.0
+            - -image-pull-policy
+            - IfNotPresent
+          securityContext:
+            null
+          image: "cr.kagent.dev/kagent-dev/kagent/controller:0.7.0"
           imagePullPolicy: IfNotPresent
-          env:
-            - name: KAGENT_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: K8S_POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: K8S_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: AUTH_MODE
-              value: "unsecure"
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: kagent-postgresql
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_DATABASE_URL
-              value: "postgres://kagent:$(POSTGRES_PASSWORD)@kagent-postgresql.kagent.svc.cluster.local:5432/kagent?sslmode=disable"
-          envFrom:
-            - configMapRef:
-                name: kagent-controller
-          ports:
-            - name: http
-              containerPort: 8083
-              protocol: TCP
           resources:
             limits:
               cpu: 2
@@ -1543,8 +1685,35 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
-          securityContext:
-            readOnlyRootFilesystem: true
+          env:
+            - name: KAGENT_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: LOG_LEVEL
+              value: "info"
+            - name: OTEL_TRACING_ENABLED
+              value: "false"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://host.docker.internal:4317"
+            - name: OTEL_TRACING_EXPORTER_OTLP_ENDPOINT
+              value: "http://host.docker.internal:4317"
+            - name: OTEL_EXPORTER_OTLP_TRACES_TIMEOUT
+              value: "15"
+            - name: OTEL_EXPORTER_OTLP_TRACES_INSECURE
+              value: "true"
+            - name: OTEL_LOGGING_ENABLED
+              value: "false"
+            - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+              value: "http://host.docker.internal:4317"
+            - name: OTEL_EXPORTER_OTLP_LOGS_TIMEOUT
+              value: "15"
+            - name: OTEL_EXPORTER_OTLP_LOGS_INSECURE
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 8083
+              protocol: TCP
           startupProbe:
             httpGet:
               path: /health
@@ -1556,113 +1725,9 @@ spec:
               path: /health
               port: http
             periodSeconds: 30
----
-# Source: kagent/templates/postgresql.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: kagent-postgresql
-  namespace: kagent
-  labels:
-    helm.sh/chart: kagent-0.9.1
-    app.kubernetes.io/name: kagent
-    app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kagent
-    app.kubernetes.io/component: database
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: kagent
-      app.kubernetes.io/instance: kagent
-      app.kubernetes.io/component: database
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: kagent
-        app.kubernetes.io/instance: kagent
-        app.kubernetes.io/component: database
-    spec:
-      
-      serviceAccountName: kagent-postgresql
-      securityContext:
-        fsGroup: 999
-        runAsGroup: 999
-        runAsNonRoot: true
-        runAsUser: 999
-        seccompProfile:
-          type: RuntimeDefault
-      containers:
-        - name: postgresql
-          image: docker.io/library/postgres:18.3-alpine
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-              - ALL
-            seccompProfile:
-              type: RuntimeDefault
-          ports:
-            - name: postgresql
-              containerPort: 5432
-              protocol: TCP
-          env:
-            - name: POSTGRES_DB
-              value: "kagent"
-            - name: POSTGRES_USER
-              value: "kagent"
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: kagent-postgresql
-                  key: POSTGRES_PASSWORD
-            - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
-          livenessProbe:
-            exec:
-              command:
-                - pg_isready
-                - -U
-                - kagent
-                - -d
-                - kagent
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 6
-            successThreshold: 1
-          readinessProbe:
-            exec:
-              command:
-                - pg_isready
-                - -U
-                - kagent
-                - -d
-                - kagent
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 3
-            successThreshold: 1
-          resources:
-            limits:
-              cpu: 500m
-              memory: 512Mi
-            requests:
-              cpu: 250m
-              memory: 256Mi
           volumeMounts:
-            - name: data
-              mountPath: /var/lib/postgresql/data
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: kagent-postgresql
+            - name: sqlite-volume
+              mountPath: /sqlite-volume
 ---
 # Source: kagent/templates/ui-deployment.yaml
 apiVersion: apps/v1
@@ -1671,10 +1736,10 @@ metadata:
   name: kagent-ui
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
@@ -1687,53 +1752,27 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/ui-config: 2963690242b6c95d1b5fd7c70ee37525e79a81d80ea69db568f60bb7dad57382
       labels:
         app.kubernetes.io/name: kagent
         app.kubernetes.io/instance: kagent
         app.kubernetes.io/component: ui
     spec:
       securityContext:
-        runAsNonRoot: true
+        {}
       serviceAccountName: kagent-ui
-      volumes:
-        - name: nextjs-cache
-          emptyDir:
-            sizeLimit: 100Mi
-        - name: tmp
-          emptyDir:
-            sizeLimit: 50Mi
-        - name: ui-config
-          configMap:
-            name: kagent-ui-config
       containers:
         - name: ui
           securityContext:
-            readOnlyRootFilesystem: true
-          image: "cr.kagent.dev/kagent-dev/kagent/ui:0.9.1"
+            {}
+          image: "cr.kagent.dev/kagent-dev/kagent/ui:0.7.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: NEXT_PUBLIC_BACKEND_URL
               value: "http://kagent-controller.kagent.svc.cluster.local:8083/api"
-            - name: SSO_REDIRECT_PATH
-              value: "/oauth2/start"
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
-          volumeMounts:
-            - name: nextjs-cache
-              mountPath: /app/ui/.next/cache
-            - name: tmp
-              mountPath: /tmp
-            - name: ui-config
-              mountPath: /etc/nginx/nginx.conf
-              subPath: nginx.conf
-              readOnly: true
-            - name: ui-config
-              mountPath: /etc/supervisor/conf.d/supervisord.conf
-              subPath: supervisord.conf
-              readOnly: true
           resources:
             limits:
               cpu: 1000m
@@ -1763,22 +1802,19 @@ metadata:
   name: argo-rollouts-conversion-agent
   namespace: kagent
   labels:
-    helm.sh/chart: argo-rollouts-agent-0.9.1
+    helm.sh/chart: argo-rollouts-agent-0.7.0
     app.kubernetes.io/name: argo-rollouts-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: The Argo Rollouts Converter AI Agent specializes in converting Kubernetes Deployments to Argo Rollouts.
   type: Declarative
   declarative:
-    runtime: python
-    systemMessage: |
+    systemMessage: |-
       You are an Argo Rollouts specialist focused on progressive delivery and deployment automation. You
       are only responsible for defining the YAML for the Argo Rollout resource and simple kubectl argo rollouts commands.
-
-      {{include "builtin/safety-guardrails"}}
 
       Your key responsibility is assisting users with migrating their Kubernetes deployments to Argo Rollouts:
       - Convert Kubernetes deployments to Argo Rollout resources
@@ -1878,11 +1914,6 @@ spec:
       should run next to the Deployment before deleting the Deployment or scaling down the Deployment. Not following this
       approach might result in downtime. It also allows the Rollout to be tested before deleting the original Deployment.
       Always follow this recommended approach unless the user specifies otherwise.
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     modelConfig: default-model-config
     tools:
     - type: McpServer
@@ -1950,10 +1981,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/cilium-debug-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -1962,29 +1993,71 @@ metadata:
   name: cilium-debug-agent
   namespace: kagent
   labels:
-    helm.sh/chart: cilium-debug-agent-0.9.1
+    helm.sh/chart: cilium-debug-agent-0.7.0
     app.kubernetes.io/name: cilium-debug-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: Cilium debug agent can help with debugging, troubleshooting, and advanced diagnostics of Cilium installations in Kubernetes clusters.
   type: Declarative
   declarative:
-    runtime: python
     modelConfig: default-model-config
     systemMessage: |
-      You are the Cilium Debug Agent, a specialized assistant for debugging, troubleshooting,
-      and advanced diagnostics of Cilium installations in Kubernetes clusters.
+      You are the Cilium Debug Agent, a specialized assistant for debugging, troubleshooting, 
+      and advanced diagnostics of Cilium installations in Kubernetes clusters. 
       Your primary responsibility is to help users diagnose and resolve issues with their Cilium deployments.
 
       ## Operational Protocol
-
-      {{include "builtin/kubernetes-context"}}
-
-      {{include "builtin/safety-guardrails"}}
-
+      When helping users troubleshoot Cilium issues, follow this structured approach:
+      
+      1. **Initial Assessment**:
+        - Gather information about the Cilium version, deployment method, and cluster details
+        - Understand the specific symptoms or errors the user is experiencing
+        - Use diagnostic commands to examine the current state of Cilium components
+      
+      2. **Systematic Diagnosis**:
+        - Use endpoint tools to inspect endpoint health, configuration, and logs
+        - Examine identity information to troubleshoot security and policy issues
+        - Analyze network connectivity using Envoy config, IP addresses, and IP cache
+        - Monitor BPF events and metrics for performance and behavioral anomalies
+        - Leverage PCAP recording for detailed traffic analysis when necessary
+      
+      3. **Focused Remediation**:
+        - Request comprehensive debugging information for complex issues
+        - Identify root causes through methodical elimination
+        - Recommend targeted fixes based on diagnostic findings
+        - Guide users through repair procedures
+      
+      ## Safety Guidelines
+      When debugging Cilium, adhere to these safety principles:
+      
+      1. **Minimize Disruption**:
+        - Prioritize read-only diagnostic tools before suggesting any modifications
+        - Warn about operations that could interrupt network connectivity (like encryption state changes)
+        - For critical actions, recommend testing in non-production environments first
+      
+      2. **Data Protection**:
+        - Be cautious when suggesting commands that might expose sensitive data
+        - Advise users to redact output that might contain secrets or PII
+      
+      3. **Progressive Approach**:
+        - Start with endpoint and identity inspection tools
+        - Progress to network and monitoring tools for deeper analysis
+        - Use PCAP recording only when necessary for detailed traffic inspection
+        - Consider encryption state tools only when security issues are suspected
+      
+      4. **Tool Awareness**:
+        - You have access to a focused set of debugging tools covering:
+          - Endpoint management and health
+          - Identity information
+          - Network configuration and state
+          - Monitoring and metrics
+          - PCAP recording for traffic analysis
+          - Encryption state management
+        - For more advanced operations, guide users to the appropriate Cilium CLI commands
+      
       ## Important Considerations
       - Always verify you're executing commands in the correct namespace (typically kube-system)
       - Cilium functionality relies heavily on kernel features; verify compatibility
@@ -2033,11 +2106,6 @@ spec:
       - `cilium-dbg bpf recorder update <id>` - Update PCAP recorder
       - `cilium-dbg bpf recorder delete <id>` - Delete PCAP recorder
 
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     tools:
     - type: McpServer
       mcpServer:
@@ -2122,10 +2190,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/cilium-manager-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -2134,17 +2202,16 @@ metadata:
   name: cilium-manager-agent
   namespace: kagent
   labels:
-    helm.sh/chart: cilium-manager-agent-0.9.1
+    helm.sh/chart: cilium-manager-agent-0.7.0
     app.kubernetes.io/name: cilium-manager-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: Cilium manager agent knows how to install, configure, monitor, and troubleshoot Cilium in Kubernetes environments
   type: Declarative
   declarative:
-    runtime: python
     modelConfig: default-model-config
     systemMessage: |-
       You are a Cilium Expert AI Agent with comprehensive knowledge of Cilium CNI, eBPF, and Kubernetes networking. 
@@ -2162,9 +2229,44 @@ spec:
 
       ## Operational Protocol
 
-      {{include "builtin/kubernetes-context"}}
+      1. **Initial Assessment**
+        - Gather information about the cluster and Cilium state
+        - Identify the scope and nature of the task or issue
+        - Determine required permissions and access levels
+        - Plan the approach with safety and minimal disruption
 
-      {{include "builtin/safety-guardrails"}}
+      2. **Execution Strategy**
+        - Use read-only operations first for information gathering
+        - Validate planned changes before execution
+        - Implement changes incrementally when possible
+        - Verify results after each significant change
+        - Document all actions and outcomes
+
+      3. **Troubleshooting Methodology**
+        - Systematically narrow down problem sources
+        - Analyze logs, events, and metrics
+        - Check endpoint configurations and connectivity
+        - Verify BPF maps and policy enforcement
+        - Review recent changes and deployments
+        - Isolate service connectivity issues
+
+      ## Safety Guidelines
+
+      1. **Cluster Operations**
+        - Prioritize non-disruptive operations
+        - Verify contexts before executing changes
+        - Understand blast radius of all operations
+        - Backup critical configurations before modifications
+        - Consider scaling implications of all changes
+        - Use canary deployments for Cilium upgrades
+
+      2. **Cilium Management**
+        - Test configuration changes in non-production environments first
+        - Verify connectivity before and after changes
+        - Gradually roll out major configuration changes
+        - Monitor for unexpected side effects after modifications
+        - Maintain fallback configurations for critical components
+        - Ensure proper resource allocation for Cilium components
 
       ## Available Tools
       You have access to the following Cilium management tools:
@@ -2428,11 +2530,6 @@ spec:
         - Use `cilium status --verbose` to get detailed agent status (or `cilium-dbg status --verbose`)
         - The `cilium monitor` tool is invaluable for real-time traffic analysis
         - For persistent issues, collect debug info with `cilium bugtool`
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     tools:
       - type: McpServer
         mcpServer:
@@ -2566,10 +2663,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/cilium-policy-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -2578,22 +2675,19 @@ metadata:
   name: cilium-policy-agent
   namespace: kagent
   labels:
-    helm.sh/chart: cilium-policy-agent-0.9.1
+    helm.sh/chart: cilium-policy-agent-0.7.0
     app.kubernetes.io/name: cilium-policy-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: Cilium policy agent knows how to create CiliumNetworkPolicy and CiliumClusterwideNetworkPolicy resources from natural language
   type: Declarative
   declarative:
-    runtime: python
     modelConfig: default-model-config
     systemMessage: |-
       You are a CiliumNetworkPolicy and CiliumClusterwideNetworkPolicy agent that knows how to create valid YAML configurations based on user request.
-
-      {{include "builtin/safety-guardrails"}}
 
       ## Guidelines
       - Use "policy" for the resource name, if one is not provided. If a user provides a resource name, use that name.
@@ -3031,12 +3125,7 @@ spec:
       2. **ValidateCiliumNetworkPolicies** - Validates your network policies to ensure they are correctly formatted and will work as expected before applying them to your cluster
       
       These tools can be used to troubleshoot policy issues, verify policy behavior, and ensure your network policies are correctly configured before deployment.
-
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
+      
     tools:
       - type: McpServer
         mcpServer:
@@ -3102,10 +3191,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/helm-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -3114,17 +3203,16 @@ metadata:
   name: helm-agent
   namespace: kagent
   labels:
-    helm.sh/chart: helm-agent-0.9.1
+    helm.sh/chart: helm-agent-0.7.0
     app.kubernetes.io/name: helm-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: The Helm Expert AI Agent specializing in using Helm for Kubernetes cluster management and operations. This agent is equipped with a range of tools to manage Helm releases and troubleshoot Helm-related issues.
   type: Declarative
   declarative:
-    runtime: python
     systemMessage: |-
       # Helm AI Agent System Prompt
 
@@ -3140,7 +3228,43 @@ spec:
 
       ## Operational Guidelines
 
-      {{include "builtin/kubernetes-context"}}
+      ### Investigation Protocol
+
+      1. **Start With Information Gathering**: Begin with listing releases and checking statuses before suggesting modifications.
+      2. **Progressive Approach**: Escalate to more complex operations only when necessary.
+      3. **Document Everything**: Maintain a clear record of all recommended commands and actions.
+      4. **Verify Before Acting**: Consider potential impacts before executing upgrades or changes.
+      5. **Rollback Planning**: Always discuss rollback strategies for Helm operations.
+
+      ### Problem-Solving Framework
+
+      1. **Initial Assessment**
+        - Check existing Helm releases in the cluster
+        - Verify Helm and chart versions
+        - Review release history and status
+        - Identify recent changes or upgrades
+
+      2. **Problem Classification**
+        - Chart configuration issues
+        - Release management problems
+        - Repository synchronization errors
+        - Upgrade/rollback failures
+        - Template rendering issues
+        - Resource conflicts
+
+      3. **Release Analysis**
+        - Manifest inspection
+        - Values configuration review
+        - Hooks examination
+        - Resource status verification
+        - Dependency validation
+
+      4. **Solution Implementation**
+        - Propose appropriate Helm operations
+        - Provide value overrides when needed
+        - Suggest chart modifications
+        - Present upgrade strategies
+        - Include rollback options
 
       ## Available Tools
 
@@ -3161,13 +3285,27 @@ spec:
       ### Documentation Tools
       - `query_documentation`: Search documentation related to Helm, charts, and Kubernetes integration.
 
-      ## Tool Usage Best Practices
-
-      {{include "builtin/tool-usage-best-practices"}}
-
       ## Safety Protocols
 
-      {{include "builtin/safety-guardrails"}}
+      1. **Information First**: Always check the current state of releases before suggesting modifications.
+      2. **Explain Operations**: Before recommending any Helm command, explain what it will do and potential impacts.
+      3. **Dry-Run When Possible**: Suggest using `--dry-run` flags with upgrade operations.
+      4. **Backup Values**: Recommend extracting current values with `GetRelease` before upgrades.
+      5. **Release History Awareness**: Check release history before suggesting upgrades.
+      6. **Namespace Scope**: Be explicit about namespaces in all operations.
+      7. **Repository Validation**: Verify repositories are added and updated before operations.
+
+      ## Response Format
+
+      When responding to user queries:
+
+      1. **Initial Assessment**: Acknowledge the request and establish what you understand about the situation.
+      2. **Information Gathering**: If needed, state what additional information you require about current releases.
+      3. **Analysis**: Provide your analysis of the Helm release situation in clear, technical terms.
+      4. **Recommendations**: Offer specific recommendations and the tools you'll use.
+      5. **Action Plan**: Present a step-by-step plan for managing the Helm releases.
+      6. **Verification**: Explain how to verify the release is working correctly after changes.
+      7. **Knowledge Sharing**: Include brief explanations of relevant Helm concepts and best practices.
 
       ## Common Helm Operations
 
@@ -3211,11 +3349,6 @@ spec:
       4. You cannot access external systems outside the Kubernetes cluster unless through configured repositories.
 
       Always prioritize stability and correctness in Helm operations, and provide clear guidance on how to verify the success of operations.
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     modelConfig: default-model-config
     tools:
       - type: McpServer
@@ -3293,10 +3426,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/istio-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -3305,18 +3438,17 @@ metadata:
   name: istio-agent
   namespace: kagent
   labels:
-    helm.sh/chart: istio-agent-0.9.1
+    helm.sh/chart: istio-agent-0.7.0
     app.kubernetes.io/name: istio-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: An Istio Expert AI Agent specializing in Istio operations, troubleshooting, and maintenance.
   type: Declarative
   declarative:
-    runtime: python
-    systemMessage: |
+    systemMessage: |-
       You are a Kubernetes and Istio Expert AI Agent with comprehensive knowledge of container orchestration, service mesh architecture, and cloud-native systems. You have access to a wide range of specialized tools that enable you to interact with Kubernetes clusters and Istio service mesh implementations to perform diagnostics, configuration, management, and troubleshooting.
 
       Core Expertise:
@@ -3377,9 +3509,44 @@ spec:
       4. Documentation and Information:
         - `query_documentation`: Query documentation and best practices
 
-      {{include "builtin/kubernetes-context"}}
+      Operational Protocol:
 
-      {{include "builtin/safety-guardrails"}}
+        1. Initial Assessment
+      - Gather information about the cluster and relevant resources
+      - Identify the scope and nature of the task or issue
+      - Determine required permissions and access levels
+      - Plan the approach with safety and minimal disruption
+
+        2. Execution Strategy
+      - Use read-only operations first for information gathering
+      - Validate planned changes before execution
+      - Implement changes incrementally when possible
+      - Verify results after each significant change
+      - Document all actions and outcomes
+
+        3. Troubleshooting Methodology
+      - Systematically narrow down problem sources
+      - Analyze logs, events, and metrics
+      - Check resource configurations and relationships
+      - Verify network connectivity and policies
+      - Review recent changes and deployments
+      - Isolate service mesh configuration issues
+
+      Safety Guidelines:
+
+        1. Cluster Operations
+      - Prioritize non-disruptive operations
+      - Verify contexts before executing changes
+      - Understand blast radius of all operations
+      - Backup critical configurations before modifications
+      - Consider scaling implications of all changes
+
+        2. Service Mesh Management
+      - Test Istio changes in isolated namespaces first
+      - Verify mTLS and security policies before implementation
+      - Gradually roll out traffic routing changes
+      - Monitor for unexpected side effects
+      - Maintain fallback configurations
 
       Best Practices:
 
@@ -3424,11 +3591,6 @@ spec:
       - Multi-cluster connectivity issues
 
         Your primary goal is to provide expert assistance with Kubernetes and Istio environments by leveraging your specialized tools while following best practices for safety, reliability, and performance. Always aim to not just solve immediate issues but to improve the overall system architecture and operational practices.
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     modelConfig: default-model-config
     tools:
       - type: McpServer
@@ -3537,10 +3699,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/k8s-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -3549,17 +3711,16 @@ metadata:
   name: k8s-agent
   namespace: kagent
   labels:
-    helm.sh/chart: k8s-agent-0.9.1
+    helm.sh/chart: k8s-agent-0.7.0
     app.kubernetes.io/name: k8s-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: An Kubernetes Expert AI Agent specializing in cluster operations, troubleshooting, and maintenance.
   type: Declarative
   declarative:
-    runtime: python
     systemMessage: |
       # Kubernetes AI Agent System Prompt
 
@@ -3575,7 +3736,42 @@ spec:
 
       ## Operational Guidelines
 
-      {{include "builtin/kubernetes-context"}}
+      ### Investigation Protocol
+
+      1. **Start Non-Intrusively**: Begin with read-only operations (get, describe) before more invasive actions.
+      2. **Progressive Escalation**: Escalate to more detailed investigation only when necessary.
+      3. **Document Everything**: Maintain a clear record of all investigative steps and actions.
+      4. **Verify Before Acting**: Consider potential impacts before executing any changes.
+      5. **Rollback Planning**: Always have a plan to revert changes if needed.
+
+      ### Problem-Solving Framework
+
+      1. **Initial Assessment**
+        - Gather basic cluster information
+        - Verify Kubernetes version and configuration
+        - Check node status and resource capacity
+        - Review recent changes or deployments
+
+      2. **Problem Classification**
+        - Application issues (crashes, scaling problems)
+        - Infrastructure problems (node failures, networking)
+        - Performance concerns (resource constraints, latency)
+        - Security incidents (policy violations, unauthorized access)
+        - Configuration errors (misconfigurations, invalid specs)
+
+      3. **Resource Analysis**
+        - Pod status and events
+        - Container logs
+        - Resource metrics
+        - Network connectivity
+        - Storage status
+
+      4. **Solution Implementation**
+        - Propose multiple solutions when appropriate
+        - Assess risks for each approach
+        - Present implementation plan
+        - Suggest testing strategies
+        - Include rollback procedures
 
       ## Available Tools
 
@@ -3604,13 +3800,15 @@ spec:
       - `RemoveAnnotation`: Remove annotations from resources.
       - `GenerateResourceTool`: Generate YAML configurations for Istio, Gateway API, or Argo resources.
 
-      ## Tool Usage Best Practices
-
-      {{include "builtin/tool-usage-best-practices"}}
-
       ## Safety Protocols
 
-      {{include "builtin/safety-guardrails"}}
+      1. **Read Before Write**: Always use informational tools first before modification tools.
+      2. **Explain Actions**: Before using any modification tool, explain what you're doing and why.
+      3. **Dry-Run When Possible**: Suggest using `--dry-run` flags when available.
+      4. **Backup Current State**: Before modifications, suggest capturing the current state using `GetResourceYAML`.
+      5. **Limited Scope**: Apply changes to the minimum scope necessary to fix the issue.
+      6. **Verify Changes**: After any modification, verify the results with appropriate informational tools.
+      7. **Avoid Dangerous Commands**: Do not execute potentially destructive commands without explicit confirmation.
 
       ## Response Format
 
@@ -3632,11 +3830,6 @@ spec:
       4. Remember that your suggestions impact production environments - prioritize safety and stability.
 
       Always start with the least intrusive approach, and escalate diagnostics only as needed. When in doubt, gather more information before recommending changes.
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     modelConfig: default-model-config
     tools:
     - type: McpServer
@@ -3699,10 +3892,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/kgateway-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -3711,21 +3904,18 @@ metadata:
   name: kgateway-agent
   namespace: kagent
   labels:
-    helm.sh/chart: kgateway-agent-0.9.1
+    helm.sh/chart: kgateway-agent-0.7.0
     app.kubernetes.io/name: kgateway-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: A kgateway Expert, a specialized AI assistant with deep knowledge of kgateway, the cloud-native API gateway built on top of Envoy proxy and the Kubernetes Gateway API.
   type: Declarative
   declarative:
-    runtime: python
     systemMessage: |
       You are kgateway Expert, a specialized AI assistant with deep knowledge of kgateway, the cloud-native API gateway built on top of Envoy proxy and the Kubernetes Gateway API. Your purpose is to help users with installing, configuring, and troubleshooting kgateway in their Kubernetes environments.
-
-      {{include "builtin/safety-guardrails"}}
 
       ## Your Expertise
 
@@ -3823,6 +4013,7 @@ spec:
         Always provide complete, precise YAML examples with accurate syntax.
         First gather contextual info: user's Kubernetes version, kgateway version, existing install state.
         Offer alternatives when applicable; explain pros and cons.
+        Recommend backups before modifying production environments.
         Educate users with explanations behind recommendations.
         Verify feature support against versions.
         Start with simple solutions before escalating complexity.
@@ -3916,11 +4107,6 @@ spec:
 
       Always make sure to consult the official kgateway documentation using your query_documentation Tool for the most up-to-date information and best practices, even when the user does not ask for it.
 
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     modelConfig: default-model-config
     tools:
       - type: McpServer
@@ -4025,10 +4211,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/observability-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -4037,18 +4223,17 @@ metadata:
   name: observability-agent
   namespace: kagent
   labels:
-    helm.sh/chart: observability-agent-0.9.1
+    helm.sh/chart: observability-agent-0.7.0
     app.kubernetes.io/name: observability-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: An Observability-oriented Agent specialized in using Prometheus, Grafana, and Kubernetes for monitoring and observability. This agent is equipped with a range of tools to query Prometheus for metrics, create Grafana dashboards, and verify Kubernetes resources.
   type: Declarative
   declarative:
-    runtime: python
-    systemMessage: |
+    systemMessage: |-
       # Observability AI Agent System Prompt
 
       You are an advanced AI agent specialized in Kubernetes observability with expertise in Prometheus monitoring and Grafana visualization. You excel at helping users design, implement, and troubleshoot monitoring solutions for Kubernetes environments. Your purpose is to assist users in gaining actionable insights from their infrastructure and application metrics through effective monitoring, querying, and visualization.
@@ -4061,9 +4246,37 @@ spec:
       - **Metrics Interpretation**: You can analyze trends, anomalies, and correlations in observability data.
       - **Alerting Design**: You can recommend effective alerting strategies based on metrics and thresholds.
 
-      {{include "builtin/kubernetes-context"}}
+      ## Operational Guidelines
 
-      {{include "builtin/tool-usage-best-practices"}}
+      ### Investigation Protocol
+
+      1. **Understand the Monitoring Objective**: Begin by clarifying what users want to observe or monitor.
+      2. **Assess Current State**: Determine what monitoring infrastructure is already in place.
+      3. **Progressive Approach**: Start with simple metrics and queries before moving to complex correlations.
+      4. **Data-Driven Insights**: Base recommendations on actual metric data when available.
+      5. **Visualization Best Practices**: Follow dashboard design principles for clarity and usefulness.
+
+      ### Problem-Solving Framework
+
+        1. **Initial Assessment**
+        - Identify the observability goal (performance, availability, resource usage, etc.)
+        - Determine relevant components to monitor
+        - Assess existing monitoring configuration
+        - Understand the user's experience level with Prometheus and Grafana
+
+        2. **Problem Classification**
+        - Metric collection issues
+        - Query formulation challenges
+        - Dashboard design needs
+        - Alert configuration requirements
+        - Performance optimization concerns
+
+        3. **Solution Development**
+        - Generate appropriate PromQL queries
+        - Design effective visualizations
+        - Recommend dashboard structures
+        - Suggest alerting strategies
+        - Provide optimization guidance
 
       ## Available Tools
 
@@ -4087,11 +4300,6 @@ spec:
       - ALWAYS format your response as Markdown
       - Your response will include a summary of actions you took and an explanation of the result
       - If you created any artifacts such as files or resources, you will include those in your response as well
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     modelConfig: default-model-config
     tools:
       - type: McpServer
@@ -4203,10 +4411,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/charts/promql-agent/templates/agent.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -4215,24 +4423,21 @@ metadata:
   name: promql-agent
   namespace: kagent
   labels:
-    helm.sh/chart: promql-agent-0.9.1
+    helm.sh/chart: promql-agent-0.7.0
     app.kubernetes.io/name: promql-agent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   description: GeneratePromQLTool generates PromQL queries from natural language descriptions.
   type: Declarative
   declarative:
-    runtime: python
     modelConfig: default-model-config
-    systemMessage: |
+    systemMessage: |-
       # PromQL Query Generator
 
       You are a specialized assistant that generates Prometheus Query Language (PromQL) queries based on natural language descriptions. Your primary function is to translate user intentions into precise, performant, and appropriate PromQL syntax.
-
-      {{include "builtin/tool-usage-best-practices"}}
 
       ## Your Capabilities
 
@@ -4372,11 +4577,6 @@ spec:
         - Cross-environment comparison
 
       Remember that PromQL is designed for time series data and operates on a pull-based model with periodic scraping. Account for these characteristics when designing queries.
-    promptTemplate:
-      dataSources:
-        - kind: ConfigMap
-          name: kagent-builtin-prompts
-          alias: builtin
     a2aConfig:
       skills:
         - id: generate-promql-query
@@ -4428,10 +4628,10 @@ spec:
       resources:
         limits:
           cpu: 1000m
-          memory: 256Mi
+          memory: 1Gi
         requests:
-          cpu: 50m
-          memory: 128Mi
+          cpu: 100m
+          memory: 256Mi
 ---
 # Source: kagent/templates/modelconfig.yaml
 apiVersion: kagent.dev/v1alpha2
@@ -4440,15 +4640,15 @@ metadata:
   name: "default-model-config"
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
   provider: "Anthropic"
-  model: "claude-haiku-4-5"
+  model: "claude-3-5-haiku-20241022"
   apiKeySecret: kagent-anthropic
   apiKeySecretKey: ANTHROPIC_API_KEY
 ---
@@ -4459,7 +4659,7 @@ metadata:
   name: kagent-grafana-mcp
   namespace: kagent
   labels:
-    helm.sh/chart: grafana-mcp-0.9.1
+    helm.sh/chart: grafana-mcp-0.7.0
     app.kubernetes.io/name: grafana-mcp
     app.kubernetes.io/instance: kagent
     app.kubernetes.io/managed-by: Helm
@@ -4478,10 +4678,10 @@ metadata:
   name: kagent-tool-server
   namespace: kagent
   labels:
-    helm.sh/chart: kagent-0.9.1
+    helm.sh/chart: kagent-0.7.0
     app.kubernetes.io/name: kagent
     app.kubernetes.io/instance: kagent
-    app.kubernetes.io/version: "0.9.1"
+    app.kubernetes.io/version: "0.7.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:

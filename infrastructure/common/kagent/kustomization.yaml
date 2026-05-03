@@ -6,8 +6,3 @@ resources:
   - namespace.yaml
   - kagent-crds-stack.yaml
   - kagent-stack.yaml
-patches:
-  - path: patches/postgresql-pvc-storageclass.yaml
-    target:
-      kind: PersistentVolumeClaim
-      name: kagent-postgresql

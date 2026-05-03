@@ -174,6 +174,11 @@ variable "UNIFI_DNS_API_KEY" {
   description = "Unifi DNS API key"
 }
 
+variable "KAGENT_ANTHROPIC_APIKEY" {
+  type = string
+  description = "Anthropic API key for kagent"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -548,6 +553,38 @@ resource "vault_kv_secret_v2" "unifi-dns-api-token" {
     }
   )
 }
+
+# -----------------------------------------------------------------------------
+# kagent
+resource "vault_policy" "kagent-secrets-policy" {
+  name = "kagent-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/kagent" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "kagent" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "kagent-secrets-role"
+  bound_service_account_names      = ["default"]
+  bound_service_account_namespaces = ["kagent"]
+  token_ttl                        = 86400
+  token_policies                   = ["kagent-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "kagent" {
+  mount     = vault_mount.kvv2.path
+  name      = "kagent"
+  data_json = jsonencode(
+    {
+      anthropic-apikey = var.KAGENT_ANTHROPIC_APIKEY
+    }
+  )
+}
+
 
 # -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"

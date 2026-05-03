@@ -4447,10 +4447,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kagent
 spec:
-  provider: "OpenAI"
-  model: "gpt-4.1-mini"
-  apiKeySecret: kagent-openai
-  apiKeySecretKey: OPENAI_API_KEY
+  provider: "Anthropic"
+  model: "claude-haiku-4-5"
+  apiKeySecret: kagent-anthropic
+  apiKeySecretKey: ANTHROPIC_API_KEY
 ---
 # Source: kagent/charts/grafana-mcp/templates/remotemcpserver.yaml
 apiVersion: kagent.dev/v1alpha2

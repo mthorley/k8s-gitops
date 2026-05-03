@@ -4,4 +4,5 @@ kind: Kustomization
 namespace: kagent
 resources:
   - namespace.yaml
+  - kagent-crds-stack.yaml
   - kagent-stack.yaml

@@ -22,7 +22,8 @@ helm template kagent oci://ghcr.io/kagent-dev/kagent/helm/kagent \
     --version $VERSION \
     --namespace kagent \
     --set providers.default=anthropic \
-    --set providers.anthropic.apiKey=PLACEHOLDER > kagent-stack.yaml
+    --set providers.anthropic.apiKey=PLACEHOLDER \
+    --set providers.anthropic.model=claude-sonnet-4-5 > kagent-stack.yaml
 
 # strip the placeholder secret block (managed out-of-band)
 awk 'BEGIN{skip=0} /^# Source: kagent\/templates\/modelconfig-secret\.yaml$/{skip=1; next} skip && /^---$/{skip=0; next} !skip{print}' \

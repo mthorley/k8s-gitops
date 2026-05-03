@@ -4648,7 +4648,7 @@ metadata:
     app.kubernetes.io/part-of: kagent
 spec:
   provider: "Anthropic"
-  model: "claude-3-5-haiku-20241022"
+  model: "claude-sonnet-4-5"
   apiKeySecret: kagent-anthropic
   apiKeySecretKey: ANTHROPIC_API_KEY
 ---

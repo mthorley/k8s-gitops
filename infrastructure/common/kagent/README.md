@@ -9,6 +9,14 @@ The Anthropic API key Secret block is stripped from the rendered manifest
 and managed out-of-band as `Secret/kagent-anthropic` in the `kagent`
 namespace, key `ANTHROPIC_API_KEY`.
 
+Two image tags are overridden away from the chart defaults:
+
+- `kmcp.image.tag=0.1.9` — chart default is `v0.1.9`, but the registry tag has
+  no `v` prefix (see upstream [kmcp#74](https://github.com/kagent-dev/kmcp/issues/74)).
+- `querydoc.image.tag=1.1.14` — chart default `1.1.13`'s arm64 manifest is
+  mis-built and contains x86-64 binaries, causing `exec format error` on the
+  Pi 4. 1.1.14 is the first tag with a correct aarch64 build.
+
 To re-render:
 
 ```sh
@@ -25,6 +33,7 @@ helm template kagent oci://ghcr.io/kagent-dev/kagent/helm/kagent \
     --set providers.anthropic.apiKey=PLACEHOLDER \
     --set providers.anthropic.model=claude-sonnet-4-5 \
     --set kmcp.image.tag=0.1.9 \
+    --set querydoc.image.tag=1.1.14 \
     --set agents.argo-rollouts-agent.enabled=false \
     --set agents.cilium-debug-agent.enabled=false \
     --set agents.cilium-manager-agent.enabled=false \

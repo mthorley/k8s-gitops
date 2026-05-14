@@ -1073,7 +1073,7 @@ spec:
         - name: querydoc
           securityContext:
             {}
-          image: "ghcr.io/kagent-dev/doc2vec/mcp:1.1.13"
+          image: "ghcr.io/kagent-dev/doc2vec/mcp:1.1.14"
           imagePullPolicy: IfNotPresent
           resources:
             limits:

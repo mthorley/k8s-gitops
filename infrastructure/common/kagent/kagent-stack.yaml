@@ -96,6 +96,23 @@ type: Opaque
 data:
   GRAFANA_API_KEY: LQ==
 ---
+# Source: kagent/templates/modelconfig-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "kagent-anthropic"
+  namespace: kagent
+  labels:
+    helm.sh/chart: kagent-0.7.0
+    app.kubernetes.io/name: kagent
+    app.kubernetes.io/instance: kagent
+    app.kubernetes.io/version: "0.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kagent
+type: Opaque
+data:
+  ANTHROPIC_API_KEY: UExBQ0VIT0xERVI=
+---
 # Source: kagent/charts/grafana-mcp/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap

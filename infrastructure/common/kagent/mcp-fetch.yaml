@@ -9,13 +9,6 @@ spec:
   deployment:
     image: mcp/fetch:latest
     cmd: mcp-server-fetch
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 50m
-        memory: 64Mi
 ---
 apiVersion: kagent.dev/v1alpha2
 kind: RemoteMCPServer

@@ -8,7 +8,7 @@ resources:
   - kagent-crds-stack.yaml
   - kagent-stack.yaml
   - mcp-fetch.yaml
-  - ingress.yaml
+  - gateway.yaml
 
 components:
   - ../../../components/secrets-eso-vault

@@ -2,23 +2,21 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kagent
+  name: unifi-dns
   namespace: flux-system
 spec:
   dependsOn:
     - name: infrastructure
     - name: gateway-api-crds
-    - name: nginx-gateway
   interval: 30m0s
-  path: ./infrastructure/common/kagent
+  path: ./infrastructure/common/unifi-dns
   prune: true
   postBuild:
     substitute:
-      APP: "kagent"
+      APP: "unifi-dns"
       domain: cluster0.cyonomy.net
-      ACME_EMAIL: "matt.thorley@gmail.com"
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: kagent
+  targetNamespace: unifi-dns
   wait: false

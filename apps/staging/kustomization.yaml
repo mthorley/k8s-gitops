@@ -7,7 +7,6 @@ resources:
   - ../common/mqtt
   - mqtt-vault-secret-store.yaml
   - mqtt-vault-secret.yaml
-  - ../common/node-red
 #  - ../common/adguard
   - ../common/jupyternb
   - jupyternb-vaultissuer-role.yaml

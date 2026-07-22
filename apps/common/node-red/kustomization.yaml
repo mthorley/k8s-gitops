@@ -9,7 +9,9 @@ resources:
   - deployment.yaml
   - loadbalancer.yaml
   - service.yaml
-  - ingress.yaml
+  - gateway.yaml
   - netpol
-  - secrets
-  - pki
+
+components:
+  - ../../../components/secrets-eso-vault
+  - ../../../components/pki-certman-letsencrypt

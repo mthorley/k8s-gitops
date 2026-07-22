@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - nodered-cert-le.yaml
-  - nodered-cf-external-secrets.yaml
-  - nodered-le-prod-issuer.yaml
-#  - nodered-le-stg-issuer.yaml

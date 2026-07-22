@@ -8,6 +8,8 @@ resources:
   - kagent-crds-stack.yaml
   - kagent-stack.yaml
   - mcp-fetch.yaml
+  - ingress.yaml
 
 components:
   - ../../../components/secrets-eso-vault
+  - ../../../components/pki-certman-letsencrypt

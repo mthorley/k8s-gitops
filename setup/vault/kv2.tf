@@ -563,6 +563,9 @@ resource "vault_policy" "kagent-secrets-policy" {
 path "secret/data/kagent" {
   capabilities = ["read", "list"]
 }
+path "secret/data/kagent-cf-api-token" {
+  capabilities = ["read", "list"]
+}
 EOT
 }
 
@@ -581,6 +584,16 @@ resource "vault_kv_secret_v2" "kagent" {
   data_json = jsonencode(
     {
       anthropic-apikey = var.KAGENT_ANTHROPIC_APIKEY
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "kagent-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "kagent-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
     }
   )
 }

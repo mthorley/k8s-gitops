@@ -13,6 +13,8 @@ spec:
   postBuild:
     substitute:
       APP: "kagent"
+      domain: cluster0.cyonomy.net
+      ACME_EMAIL: "matt.thorley@gmail.com"
   sourceRef:
     kind: GitRepository
     name: flux-system

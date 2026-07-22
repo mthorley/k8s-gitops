@@ -18,9 +18,10 @@ spec:
             - -c
             - |
               set -e
+              mkdir -p /backup/homeassistant
               DATE="$(date +%Y%m%d_%H%M%S)"
-              tar czf "/backup/homeassistant_$DATE.tar.gz" -C /config .
-              cd /backup && ls -1t homeassistant_*.tar.gz | tail -n +11 | xargs -r rm -f
+              tar czf "/backup/homeassistant/homeassistant_$DATE.tar.gz" -C /config .
+              cd /backup/homeassistant && ls -1t homeassistant_*.tar.gz | tail -n +11 | xargs -r rm -f
             volumeMounts:
               - name: config
                 mountPath: /config
@@ -35,4 +36,4 @@ spec:
             - name: nfs-volume
               nfs:
                 server: "${qnap_ip}"
-                path: "/k8s/backup/${cluster_id}/homeassistant"
+                path: "/k8s/backup/${cluster_id}"

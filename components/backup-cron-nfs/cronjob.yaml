@@ -18,9 +18,10 @@ spec:
             - -c
             - |
               set -e
+              mkdir -p "/backup/${APP}"
               DATE="$(date +%Y%m%d_%H%M%S)"
-              tar czf "/backup/${APP}_$DATE.tar.gz" --exclude='node_modules' --exclude='.npm' -C /source .
-              cd /backup && ls -1t ${APP}_*.tar.gz | tail -n +11 | xargs -r rm -f
+              tar czf "/backup/${APP}/${APP}_$DATE.tar.gz" --exclude='node_modules' --exclude='.npm' -C /source .
+              cd "/backup/${APP}" && ls -1t ${APP}_*.tar.gz | tail -n +11 | xargs -r rm -f
             volumeMounts:
               - name: source
                 mountPath: /source
@@ -35,4 +36,4 @@ spec:
             - name: nfs-volume
               nfs:
                 server: "${qnap_ip}"
-                path: "/k8s/backup/${cluster_id}/${APP}"
+                path: "/k8s/backup/${cluster_id}"

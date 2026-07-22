@@ -569,7 +569,7 @@ EOT
 resource "vault_kubernetes_auth_backend_role" "kagent" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "kagent-secrets-role"
-  bound_service_account_names      = ["default"]
+  bound_service_account_names      = ["kagent"]
   bound_service_account_namespaces = ["kagent"]
   token_ttl                        = 86400
   token_policies                   = ["kagent-secrets-policy"]

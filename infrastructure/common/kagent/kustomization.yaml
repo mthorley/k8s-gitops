@@ -4,6 +4,10 @@ kind: Kustomization
 namespace: kagent
 resources:
   - namespace.yaml
+  - service-account.yaml
   - kagent-crds-stack.yaml
   - kagent-stack.yaml
   - mcp-fetch.yaml
+
+components:
+  - ../../../components/secrets-eso-vault

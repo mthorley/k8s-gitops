@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: unifi-dns
 resources:
   - namespace.yaml
+  - service-account.yaml
   - helmrelease.yaml
   - ocirepository.yaml
 

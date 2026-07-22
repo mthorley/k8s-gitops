@@ -11,6 +11,16 @@ spec:
   interval: 1h
   values:
     fullnameOverride: *app
+    serviceAccount:
+# Avoid race condition, not a config bug: kustomize-controller applied the secrets-eso-vault
+# component's ServiceAccount-token Secret (annotated to bind SA unifi-dns) before the 
+# Helm-chart-managed unifi-dns ServiceAccount existed. Kubernetes' legacy token-cleanup 
+# controller deletes orphaned service-account-token Secrets referencing a nonexistent SA, 
+# so it got swept — which cascaded: SecretStore → ExternalSecret → 
+# the real UniFi API token Secret never materialized → the webhook sidecar couldn't start → 
+# external-dns crash-looped.
+      create: false
+      name: *app
     provider:
       name: webhook
       webhook:

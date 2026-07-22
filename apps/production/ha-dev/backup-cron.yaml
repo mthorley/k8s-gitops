@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: home-assistant-backup
+spec:
+  schedule: "0 0 * * *" # once a day at midnight
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: home-assistant-backup
+            image: alpine:3
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              DATE="$(date +%Y%m%d_%H%M%S)"
+              tar czf "/backup/homeassistant_$DATE.tar.gz" -C /config .
+              cd /backup && ls -1t homeassistant_*.tar.gz | tail -n +11 | xargs -r rm -f
+            volumeMounts:
+              - name: config
+                mountPath: /config
+                readOnly: true
+              - name: nfs-volume
+                mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+            - name: config
+              persistentVolumeClaim:
+                claimName: home-assistant-config
+            - name: nfs-volume
+              nfs:
+                server: "${qnap_ip}"
+                path: "/k8s/backup/${cluster_id}/homeassistant"

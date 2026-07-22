@@ -5,6 +5,7 @@ namespace: homeassistant
 resources:
   - namespace.yaml
   - home-assistant-stack.yaml
+  - backup-cron.yaml
   - lb.yaml
   - allow-local-egress-unifi-netpol.yaml
   - allow-local-egress-dns-netpol.yaml

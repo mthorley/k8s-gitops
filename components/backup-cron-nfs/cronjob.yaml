@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: home-assistant-backup
+  name: "${APP}-backup"
 spec:
-  schedule: "0 0 * * *" # once a day at midnight
+  schedule: "${BACKUP_SCHEDULE}"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: home-assistant-backup
+          - name: "${APP}-backup"
             image: alpine:3
             imagePullPolicy: IfNotPresent
             command:
@@ -18,22 +18,22 @@ spec:
             - -c
             - |
               set -e
-              mkdir -p /backup/homeassistant
+              mkdir -p "/backup/${APP}"
               DATE="$(date +%Y%m%d_%H%M%S)"
-              tar czf "/backup/homeassistant/homeassistant_$DATE.tar.gz" -C /config .
-              cd /backup/homeassistant && ls -1t homeassistant_*.tar.gz | tail -n +11 | xargs -r rm -f
+              tar czf "/backup/${APP}/${APP}_$DATE.tar.gz" -C /source .
+              cd "/backup/${APP}" && ls -1t ${APP}_*.tar.gz | tail -n +11 | xargs -r rm -f
             volumeMounts:
-              - name: config
-                mountPath: /config
+              - name: source
+                mountPath: /source
                 readOnly: true
               - name: nfs-volume
                 mountPath: /backup
           restartPolicy: OnFailure
           volumes:
-            - name: config
+            - name: source
               persistentVolumeClaim:
-                claimName: home-assistant-config
+                claimName: "${BACKUP_SOURCE_CLAIM}"
             - name: nfs-volume
               nfs:
                 server: "${qnap_ip}"
-                path: "/k8s/backup/${cluster_id}"
+                path: "/k8s/backup/${cluster_id}/${APP}"

@@ -2,29 +2,25 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: node-red
+  name: ha-dev
   namespace: flux-system
 spec:
   dependsOn:
     - name: infrastructure
-    - name: gateway-api-crds
-    - name: nginx-gateway
   interval: 30m0s
-  path: ./apps/production/node-red
+  path: ./apps/production/ha-dev
   prune: true
   postBuild:
     substitute:
-      APP: "nodered"
-      ACME_EMAIL: "matt.thorley@gmail.com"
-      cluster_tz: "Australia/Melbourne"
-      mqtt_ip: 192.168.2.11
-      nodered_web_ip: 192.168.2.14
-      nodered_syslog_ip: 192.168.2.26
-      domain: cluster0.cyonomy.net
-      BACKUP_SOURCE_CLAIM: "node-red-claim"
+      APP: "homeassistant"
+      BACKUP_SOURCE_CLAIM: "home-assistant-config"
       BACKUP_SCHEDULE: "0 0 * * *"
+      cluster_tz: "Australia/Melbourne"
+      homeassistant_ip: 192.168.2.19
+      qnap_ip: 192.168.1.147
+      cluster_id: cluster0
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: node-red
+  targetNamespace: homeassistant
   wait: false

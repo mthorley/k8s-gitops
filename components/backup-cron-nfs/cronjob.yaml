@@ -4,6 +4,7 @@ metadata:
   name: "${APP}-backup"
 spec:
   schedule: "${BACKUP_SCHEDULE}"
+  timeZone: "${cluster_tz}"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:

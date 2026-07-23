@@ -54,6 +54,7 @@ Nightly tar backup of a PVC to an NFS share via a CronJob, keeping the last 10 a
 | BACKUP_SCHEDULE | Cron schedule for the backup | 0 0 * * * |
 | qnap_ip | NFS server IP (already defined per-cluster) | 192.168.1.147 |
 | cluster_id | Cluster identifier (already defined per-cluster) | cluster0 |
+| cluster_tz | Timezone the schedule is evaluated in (already defined per-cluster); without this the schedule runs in UTC | Australia/Melbourne |
 
 # Example
 

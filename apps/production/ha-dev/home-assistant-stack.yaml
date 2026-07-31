@@ -88,6 +88,10 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: http-config
+              mountPath: /config/http.yaml
+              subPath: http.yaml
+              readOnly: true
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -113,3 +117,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: home-assistant-config
+        - name: http-config
+          configMap:
+            name: home-assistant-http-config

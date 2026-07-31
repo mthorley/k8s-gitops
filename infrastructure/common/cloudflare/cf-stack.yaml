@@ -125,6 +125,10 @@ kind: ServiceMonitor
 metadata:
   name: cloudflared-servicemonitor
 spec:
+  # Derive the `job` label from the Service's `app` label (-> "cloudflared")
+  # instead of the default (the Service's own name, "cloudflared-metrics").
+  # Community Grafana dashboards for cloudflared expect job="cloudflared".
+  jobLabel: app
   selector:
     matchLabels:
       app: cloudflared

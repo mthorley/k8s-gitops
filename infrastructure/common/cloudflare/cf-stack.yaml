@@ -13,10 +13,10 @@ spec:
       labels:
         app: cloudflared
     spec:
-      serviceAccountName: cf-tunnel
+      serviceAccountName: cloudflare
       containers:
       - name: cloudflared
-        image: cloudflare/cloudflared:2024.2.1
+        image: cloudflare/cloudflared:2026.7.3
         args:
         - tunnel
         # Points cloudflared to the config file, which configures what
@@ -47,13 +47,14 @@ spec:
       volumes:
       - name: creds
         secret:
-          # By default, the credentials file will be created under ~/.cloudflared/<tunnel ID>.json
-          # when you run `cloudflared tunnel create`. You can move it into a secret by using:
-          # ```sh
-          # kubectl create secret generic tunnel-credentials \
-          # --from-file=credentials.json=/Users/yourusername/.cloudflared/<tunnel ID>.json
-          # ```
-          secretName: tunnel-credentials
+          # Populated by the secrets-eso-vault component from Vault path
+          # secret/cloudflare, key "creds" (var.CLOUDFLARE_TUNNEL in
+          # setup/vault/kv2.tf) -- remapped here to the credentials.json
+          # filename cloudflared expects.
+          secretName: secret-cloudflare
+          items:
+          - key: creds
+            path: credentials.json
       # Create a config.yaml file from the ConfigMap below.
       - name: config
         configMap:
@@ -72,8 +73,10 @@ metadata:
   name: cloudflared
 data:
   config.yaml: |
-    # Name of the tunnel you want to run
-    tunnel: example-tunnel
+    # Tunnel ID for the "home-assistant" tunnel (`cloudflared tunnel list`).
+    # Its credentials.json must be stored in Vault at secret/cloudflare,
+    # key "creds" (var.CLOUDFLARE_TUNNEL in setup/vault/kv2.tf).
+    tunnel: c7504fee-674f-47e4-9f01-89e28ac56354
     credentials-file: /etc/cloudflared/creds/credentials.json
     # Serves the metrics server under /metrics and the readiness server under /ready
     metrics: 0.0.0.0:2000
@@ -86,16 +89,12 @@ data:
     # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/ingress
     #
     # Remember, these rules route traffic from cloudflared to a local service. To route traffic
-    # from the internet to cloudflared, run `cloudflared tunnel route dns <tunnel> <hostname>`.
-    # E.g. `cloudflared tunnel route dns example-tunnel tunnel.example.com`.
+    # from the internet to cloudflared, run:
+    # `cloudflared tunnel route dns c7504fee-674f-47e4-9f01-89e28ac56354 ha.${domain}`.
     ingress:
-    # The first rule proxies traffic to the httpbin sample Service defined in app.yaml
-    - hostname: tunnel.example.com
-      service: http://web-service:80
-    # This rule sends traffic to the built-in hello-world HTTP server. This can help debug connectivity
-    # issues. If hello.example.com resolves and tunnel.example.com does not, then the problem is
-    # in the connection from cloudflared to your local service, not from the internet to cloudflared.
-    - hostname: hello.example.com
-      service: hello_world
+    # Home Assistant lives in the `homeassistant` namespace; cloudflared runs in
+    # `cloudflare`, so it must be addressed via its fully-qualified in-cluster DNS name.
+    - hostname: "ha.${domain}"
+      service: http://home-assistant.homeassistant.svc.cluster.local:8123
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404

@@ -144,7 +144,7 @@ variable "FRIGATE_RTSP_PASSWORD" {
   description = "FRIGATE_RTSP_PASSWORD"
 }
 
-variable "CLOUDFLARE_CREDS" {
+variable "CLOUDFLARE_TUNNEL" {
   type = string
   description = "Json creds for Cloudflared tunnel"
 }
@@ -748,7 +748,7 @@ resource "vault_kv_secret_v2" "cloudflare" {
   name      = "cloudflare"
   data_json = jsonencode(
     {
-      creds = var.CLOUDFLARE_CREDS
+      creds = var.CLOUDFLARE_TUNNEL
     }
   )
 }

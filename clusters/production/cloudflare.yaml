@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudflare
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: infrastructure
+  interval: 30m0s
+  path: ./infrastructure/common/cloudflare
+  prune: true
+  postBuild:
+    substitute:
+      APP: "cloudflare"
+      domain: cluster0.cyonomy.net
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: cloudflare
+  wait: false

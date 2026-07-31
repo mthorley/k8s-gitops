@@ -103,3 +103,32 @@ data:
       service: http://home-assistant.homeassistant.svc.cluster.local:8123
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404
+---
+# Exposes cloudflared's built-in Prometheus metrics endpoint (metrics: 0.0.0.0:2000
+# above) so it can be scraped -- see the ServiceMonitor below.
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudflared-metrics
+  labels:
+    app: cloudflared
+spec:
+  selector:
+    app: cloudflared
+  ports:
+  - name: metrics
+    port: 2000
+    targetPort: 2000
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cloudflared-servicemonitor
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s

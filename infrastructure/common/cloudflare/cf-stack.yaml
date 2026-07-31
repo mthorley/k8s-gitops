@@ -90,11 +90,16 @@ data:
     #
     # Remember, these rules route traffic from cloudflared to a local service. To route traffic
     # from the internet to cloudflared, run:
-    # `cloudflared tunnel route dns c7504fee-674f-47e4-9f01-89e28ac56354 ha.${domain}`.
+    # `cloudflared tunnel route dns c7504fee-674f-47e4-9f01-89e28ac56354 ha.cyonomy.net`.
+    #
+    # NOTE: deliberately ha.cyonomy.net, not ha.${domain} (ha.cluster0.cyonomy.net).
+    # Cloudflare's free Universal SSL only covers the zone apex + one level of
+    # wildcard (cyonomy.net / *.cyonomy.net), not two levels deep, so a hostname
+    # under cluster0.cyonomy.net has no edge certificate and fails TLS handshake.
     ingress:
     # Home Assistant lives in the `homeassistant` namespace; cloudflared runs in
     # `cloudflare`, so it must be addressed via its fully-qualified in-cluster DNS name.
-    - hostname: "ha.${domain}"
+    - hostname: "ha.cyonomy.net"
       service: http://home-assistant.homeassistant.svc.cluster.local:8123
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404

@@ -3,7 +3,7 @@ data "grafana_folder" "folder" {
 }
 
 resource "grafana_rule_group" "security_rules" {
-  org_id = local.org_id
+  org_id           = local.org_id
   name             = "Security"
   interval_seconds = 10
   folder_uid       = data.grafana_folder.folder.uid
@@ -120,6 +120,154 @@ resource "grafana_rule_group" "security_rules" {
             evaluator = {
               params = [
                 1,
+              ]
+              type = "gt"
+            }
+            operator = {
+              type = "and"
+            }
+            query = {
+              params = [
+                "C",
+              ]
+            }
+            reducer = {
+              params = []
+              type   = "last"
+            }
+            type = "query"
+          },
+        ]
+        datasource = {
+          type = "__expr__"
+          uid  = "-100"
+        }
+        expression    = "B"
+        hide          = false
+        intervalMs    = 1000
+        maxDataPoints = 43200
+        refId         = "C"
+        type          = "threshold"
+      })
+      relative_time_range {
+        from = 3600
+        to   = 0
+      }
+    }
+  }
+
+  rule {
+    name = "alert_falco_homeassistant"
+    annotations = {
+      description : "Alert on any Falco event tagged to the homeassistant namespace (CF-GRF-08) -- surfaces post-compromise activity Falco detects on the HA pod regardless of how access was gained"
+      summary : "Falco event in homeassistant namespace"
+    }
+    condition      = "C"
+    for            = "0s"
+    exec_err_state = "Alerting"
+    no_data_state  = "OK"
+    labels = {
+      security : "warning"
+    }
+
+    data {
+      ref_id = "A"
+      relative_time_range {
+        from = 300
+        to   = 0
+      }
+      datasource_uid = grafana_data_source.loki.uid
+
+      model = jsonencode({
+        editorMode = "code"
+        // Falco itself runs in the `falco` namespace regardless of which
+        // namespace an event is about, so this can't filter on the Loki
+        // `namespace` label -- it matches the JSON `k8s.ns.name` output
+        // field instead (requires falco.yaml json_output: true, CF-FAL-02).
+        expr = "count_over_time(({namespace=\"falco\"} |= `\"k8s.ns.name\":\"homeassistant\"`)[$__interval])"
+        groupBy = [
+          {
+            params = [
+              "$__interval",
+            ]
+            type = "time"
+          },
+          {
+            params = [
+              "null",
+            ]
+            type = "fill"
+          },
+        ]
+        hide          = false
+        intervalMs    = 1000
+        maxDataPoints = 43200
+        orderByTime   = "ASC"
+        policy        = "default"
+        queryType     = "range"
+        refId         = "A"
+        resultFormat  = "time_series"
+        tags          = []
+        }
+      )
+      query_type = "range"
+    }
+
+    data {
+      ref_id         = "B"
+      datasource_uid = "-100"
+      model = jsonencode({
+        conditions = [
+          {
+            evaluator = {
+              params = []
+              type   = "gt"
+            }
+            operator = {
+              type = "and"
+            }
+            query = {
+              params = [
+                "B",
+              ]
+            }
+            reducer = {
+              params = []
+              type   = "last"
+            }
+            type = "query"
+          },
+        ]
+        datasource = {
+          type = "__expr__"
+          uid  = "-100"
+        }
+        expression    = "A"
+        hide          = false
+        intervalMs    = 1000
+        maxDataPoints = 43200
+        reducer       = "last"
+        refId         = "B"
+        settings = {
+          mode = ""
+        }
+        type = "reduce"
+      })
+      relative_time_range {
+        from = 3600
+        to   = 0
+      }
+    }
+
+    data {
+      ref_id         = "C"
+      datasource_uid = "-100"
+      model = jsonencode({
+        conditions = [
+          {
+            evaluator = {
+              params = [
+                0,
               ]
               type = "gt"
             }

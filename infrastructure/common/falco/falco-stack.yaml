@@ -88,7 +88,7 @@ data:
     json_include_output_fields_property: true
     json_include_output_property: true
     json_include_tags_property: true
-    json_output: false
+    json_output: true
     libs_logger:
       enabled: true
       severity: info
@@ -299,7 +299,7 @@ spec:
         app.kubernetes.io/name: falco
         app.kubernetes.io/instance: falco
       annotations:
-        checksum/config: 3ee30a232a543e55f8b831880e77f3c8a417ffe9df393be484b7c6cc8ca64c89
+        checksum/config: 832718c5b58810feae870f706190140bf53acc97fbb61e4a0ff637461f9b2503
         checksum/rules: 54315acd7acd62a78e048545740baf3d39dc9c70020233eb2159d9de81269097
         checksum/certs: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     spec:

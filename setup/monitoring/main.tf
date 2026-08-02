@@ -14,3 +14,7 @@ resource "grafana_dashboard" "tasmota" {
 resource "grafana_dashboard" "networklogs" {
   config_json = file("grafana-dashboardNetworklogs.json")
 }
+
+resource "grafana_dashboard" "cloudflare_tunnels" {
+  config_json = file("grafana-dashboardCloudflareTunnels.json")
+}

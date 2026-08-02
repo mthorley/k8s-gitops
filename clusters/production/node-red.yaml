@@ -19,7 +19,6 @@ spec:
     substitute:
       APP: "nodered"
       ACME_EMAIL: "matt.thorley@gmail.com"
-      cluster_tz: "Australia/Melbourne"
       mqtt_ip: 192.168.2.11
       nodered_web_ip: 192.168.2.14
       nodered_syslog_ip: 192.168.2.26

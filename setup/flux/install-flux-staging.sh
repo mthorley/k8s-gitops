@@ -11,6 +11,7 @@ export REPO_ROOT=$(git rev-parse --show-toplevel)
 kubectl create namespace flux-system --dry-run=client -o yaml | kubectl apply -f -
 kubectl -n flux-system create secret generic cluster-vars \
   --from-literal=domain="$TF_VAR_INTERNAL_DOMAIN" \
+  --from-literal=cluster_tz="$CLUSTER_TZ" \
   --dry-run=client -o yaml | kubectl apply -f -
 
 # staging

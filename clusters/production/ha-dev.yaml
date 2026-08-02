@@ -11,11 +11,13 @@ spec:
   path: ./apps/production/ha-dev
   prune: true
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
     substitute:
       APP: "homeassistant"
       BACKUP_SOURCE_CLAIM: "home-assistant-config"
       BACKUP_SCHEDULE: "0 0 * * *"
-      cluster_tz: "Australia/Melbourne"
       homeassistant_ip: 192.168.2.19
       qnap_ip: 192.168.1.147
       cluster_id: cluster0

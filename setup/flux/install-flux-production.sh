@@ -12,6 +12,7 @@ kubectl create namespace flux-system --dry-run=client -o yaml | kubectl apply -f
 kubectl -n flux-system create secret generic cluster-vars \
   --from-literal=domain="$TF_VAR_INTERNAL_DOMAIN_PROD" \
   --from-literal=ha_fqdn="$HA_FQDN" \
+  --from-literal=cluster_tz="$CLUSTER_TZ" \
   --dry-run=client -o yaml | kubectl apply -f -
 
 # staging

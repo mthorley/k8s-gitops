@@ -7,6 +7,11 @@ metadata:
   namespace: monitoring
 spec:
   replicas: 1
+  strategy:
+    # Grafana's bleve search index lives on the shared NFS-backed PVC and
+    # isn't safe for concurrent access. Default RollingUpdate briefly runs
+    # old+new pods together, which deadlocks on the index lock file.
+    type: Recreate
   selector:
     matchLabels:
       app: grafana
@@ -30,11 +35,11 @@ spec:
             port: http
         resources:
           limits:
-            cpu: 200m
-            memory: 200Mi
+            cpu: 500m
+            memory: 1Gi
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - mountPath: /var/lib/grafana
           name: grafana-storage

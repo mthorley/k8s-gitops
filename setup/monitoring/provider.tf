@@ -12,6 +12,11 @@ variable "GRAFANA_APIKEY" {
   description = "Grafana internal API key (not cloud)."
 }
 
+variable "GRAFANA_URL" {
+  type = string
+  description = "Grafana base URL, e.g. https://grafana.<domain>"
+}
+
 locals {
   influxdb_url = "http://influxdb.influxdb:8086"
   loki_url = "http://loki.loki:3100"
@@ -19,8 +24,7 @@ locals {
 }
 
 provider "grafana" {
-#  url = "https://grafana.internal.com"
-  url = "https://grafana.cluster0.cyonomy.net"
+  url = var.GRAFANA_URL
   auth = var.GRAFANA_APIKEY
   insecure_skip_verify = true
   org_id = local.org_id

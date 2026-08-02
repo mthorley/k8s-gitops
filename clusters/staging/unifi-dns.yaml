@@ -11,9 +11,11 @@ spec:
   path: ./infrastructure/common/unifi-dns
   prune: true
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
     substitute:
       APP: "unifi-dns"
-      domain: cluster1.cyonomy.net
   sourceRef:
     kind: GitRepository
     name: flux-system

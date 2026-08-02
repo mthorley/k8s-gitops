@@ -13,6 +13,9 @@ spec:
   path: ./apps/production/node-red
   prune: true
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
     substitute:
       APP: "nodered"
       ACME_EMAIL: "matt.thorley@gmail.com"
@@ -20,7 +23,6 @@ spec:
       mqtt_ip: 192.168.2.11
       nodered_web_ip: 192.168.2.14
       nodered_syslog_ip: 192.168.2.26
-      domain: cluster0.cyonomy.net
       BACKUP_SOURCE_CLAIM: "node-red-claim"
       BACKUP_SCHEDULE: "0 0 * * *"
       qnap_ip: 192.168.1.147

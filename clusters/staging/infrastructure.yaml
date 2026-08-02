@@ -12,6 +12,9 @@ spec:
   prune: true
 #  validation: client
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
     substitute:
       nfs_server_ip: 192.168.3.111
       # FIXME: Ingress this up
@@ -24,5 +27,4 @@ spec:
       # external
       qnap_ip: 192.168.1.147
       pki_path: pki_int/sign/internal-dot-com
-      domain: cluster1.cyonomy.net
       cluster_id: cluster1

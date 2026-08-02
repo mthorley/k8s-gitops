@@ -14,5 +14,6 @@ spec:
   path: ./infrastructure/common/nginx-gateway
   prune: true
   postBuild:
-    substitute:
-      domain: cluster1.cyonomy.net
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars

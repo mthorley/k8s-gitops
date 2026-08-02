@@ -13,7 +13,9 @@ spec:
   path: ./apps/staging/node-red-dev
   prune: true
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
     substitute:
       APP: "nodereddev"
       ACME_EMAIL: "matt.thorley@gmail.com"
-      domain: cluster1.cyonomy.net

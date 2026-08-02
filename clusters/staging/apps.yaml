@@ -14,9 +14,12 @@ spec:
   prune: true
 #  validation: client
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
     substitute:
       cluster_tz: "Australia/Melbourne"
-      # FIXME: Ingress this up 
+      # FIXME: Ingress this up
       pi_temp_agent_ip: 192.168.3.13
       mqtt_ip: 192.168.3.14
       adguard_web_ip: 192.168.3.16
@@ -34,5 +37,4 @@ spec:
       # external
       qnap_ip: 192.168.1.147
       pki_path: pki_int/sign/internal-dot-com
-      domain: cluster1.cyonomy.net
       cluster_id: cluster1

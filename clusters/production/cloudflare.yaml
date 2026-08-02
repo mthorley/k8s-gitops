@@ -11,9 +11,11 @@ spec:
   path: ./infrastructure/common/cloudflare
   prune: true
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
     substitute:
       APP: "cloudflare"
-      domain: cluster0.cyonomy.net
   sourceRef:
     kind: GitRepository
     name: flux-system

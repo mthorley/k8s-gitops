@@ -16,21 +16,21 @@ resource "grafana_data_source" "influxdb_rackcontroller" {
   json_data_encoded   = jsonencode({})
 }
 
-resource "grafana_data_source" "influxdb_tasmota" {
-  type                = "influxdb"
-  name                = "InfluxDB-Tasmota"
-  uid                 = "ZxLMwSd4z"
-  url                 = local.influxdb_url
-  database_name       = "tasmota_rssi" # FIXME: use local vars from influxdb
-  json_data_encoded   = jsonencode({})
-}
-
 resource "grafana_data_source" "influxdb_unifitemps" {
   type                = "influxdb"
   name                = "InfluxDB-unifitemps"
   uid                 = "MmT8wId4y"
   url                 = local.influxdb_url
   database_name       = "unifitemps" # FIXME: use local vars from influxdb
+  json_data_encoded   = jsonencode({})
+}
+
+resource "grafana_data_source" "tasmota_rssi" {
+  type                = "influxdb"
+  name                = "InfluxDB-tasmota"
+  uid                 = "ZxLMwSd4z"
+  url                 = local.influxdb_url
+  database_name       = "tasmota" # FIXME: use local vars from influxdb
   json_data_encoded   = jsonencode({})
 }
 

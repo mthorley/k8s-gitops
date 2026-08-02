@@ -4,9 +4,9 @@
 # Design Decisions
 
 * Split horizon DNS
-* Cloudflare authoritative for cynonomy.net
+* Cloudflare authoritative for ${domain}
 * No public A/AAAA records (internal services only)
-* Blue green per cluster - cluster0.cyonomy.net and cluster1.cyonomy.net
+* Blue green per cluster - cluster0.${domain} and cluster1.${domain}
 
 # 1) Cloudflare - API token for cert-manager
 

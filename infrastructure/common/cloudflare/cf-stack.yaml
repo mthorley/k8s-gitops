@@ -84,6 +84,15 @@ data:
     # autoupdate doesn't make sense in Kubernetes. However, outside of Kubernetes, we strongly
     # recommend using autoupdate.
     no-autoupdate: true
+    # Default ("auto") prefers QUIC over UDP for the edge connection. Forced
+    # to http2 (TCP) because one replica was observed repeatedly failing to
+    # hold its QUIC connection ("control stream encountered a failure while
+    # serving", then the same on a second connIndex against a different edge
+    # IP) for hours at a stretch, while its sibling replica on a different
+    # node stayed clean the whole time -- consistent with UDP/QUIC being
+    # unreliable somewhere on that node's path to Cloudflare's edge, not an
+    # application or Cloudflare-side problem. http2-over-TCP avoids that.
+    protocol: http2
     # The `ingress` block tells cloudflared which local service to route incoming
     # requests to. For more about ingress rules, see
     # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/ingress

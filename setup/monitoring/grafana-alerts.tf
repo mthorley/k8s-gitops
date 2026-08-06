@@ -161,6 +161,8 @@ resource "grafana_rule_group" "security_rules" {
     annotations = {
       description : "Alert on any Falco event tagged to the homeassistant namespace (CF-GRF-08) -- surfaces post-compromise activity Falco detects on the HA pod regardless of how access was gained"
       summary : "Falco event in homeassistant namespace"
+      __dashboardUid__ : grafana_dashboard.falco_events.uid
+      __panelId__ : "1"
     }
     condition      = "C"
     for            = "0s"

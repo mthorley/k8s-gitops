@@ -5,3 +5,4 @@ infrastructure/**/unseal.sh
 **/.terraform*
 **/terraform.tfstate*
 **/*.pem
+setup/cf/.build/

@@ -18,3 +18,7 @@ resource "grafana_dashboard" "networklogs" {
 resource "grafana_dashboard" "cloudflare_tunnels" {
   config_json = file("grafana-dashboardCloudflareTunnels.json")
 }
+
+resource "grafana_dashboard" "falco_events" {
+  config_json = file("grafana-dashboardFalcoEvents.json")
+}

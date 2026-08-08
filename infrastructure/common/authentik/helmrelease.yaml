@@ -42,3 +42,7 @@ spec:
       auth:
         username: authentik
         database: authentik
+      primary:
+        persistence:
+          enabled: true
+          storageClass: managed-nfs-storage

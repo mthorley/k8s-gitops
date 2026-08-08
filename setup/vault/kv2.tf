@@ -134,6 +134,12 @@ variable "AUTHENTIK_POSTGRESQL_PASSWORD" {
   description = "Authentik PostgreSQL password"
 }
 
+variable "AUTHENTIK_SECRET_KEY" {
+  type        = string
+  description = "Authentik secret key, used for cookie signing and unique user IDs (e.g. `openssl rand -base64 60`)"
+  sensitive   = true
+}
+
 variable "FRIGATE_RTSP_USERNAME" {
   type = string
   description = "FRIGATE_RTSP_USERNAME"
@@ -390,13 +396,20 @@ resource "vault_policy" "authentik-secrets-policy" {
 path "secret/data/authentik" {
   capabilities = ["read", "list"]
 }
+path "secret/data/authentik-cf-api-token" {
+  capabilities = ["read", "list"]
+}
 EOT
 }
 
 resource "vault_kubernetes_auth_backend_role" "authentik" {
-  backend                          = vault_auth_backend.kubernetes.path
-  role_name                        = "authentik-secrets-role"
-  bound_service_account_names      = ["authentik"]
+  backend   = vault_auth_backend.kubernetes.path
+  role_name = "authentik-secrets-role"
+  # Bound to a dedicated "authentik-vault" SA (infrastructure/common/authentik/service-account.yaml),
+  # not the chart-created "authentik" SA: the ExternalSecret that authenticates via
+  # this role feeds the authentik HelmRelease's valuesFrom, and that HelmRelease is
+  # what creates the "authentik" SA - binding to it here would deadlock on first apply.
+  bound_service_account_names      = ["authentik-vault"]
   bound_service_account_namespaces = ["authentik"]
   token_ttl                        = 86400
   token_policies                   = ["authentik-secrets-policy"]
@@ -726,6 +739,17 @@ resource "vault_kv_secret_v2" "authentik" {
   data_json = jsonencode(
     {
       postgresql-password = var.AUTHENTIK_POSTGRESQL_PASSWORD
+      secret_key          = var.AUTHENTIK_SECRET_KEY
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "authentik-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "authentik-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
     }
   )
 }

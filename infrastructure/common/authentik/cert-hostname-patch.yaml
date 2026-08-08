@@ -1,0 +1,11 @@
+# The pki-certman-letsencrypt component defaults the certificate hostname to
+# "${APP}.${domain}" (i.e. authentik.${domain}). Authentik's established
+# hostname is "auth.${domain}" - override it here rather than changing the
+# public URL.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${APP}-tls-prod"
+spec:
+  dnsNames:
+    - "auth.${domain}"

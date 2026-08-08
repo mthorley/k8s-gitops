@@ -4,8 +4,17 @@ kind: Kustomization
 namespace: authentik
 resources:
   - namespace.yaml
-  - authentik-stack.yaml
-  - cert-issuer.yaml
-  - cert.yaml
+  - service-account.yaml
+  - helmrepository.yaml
+  - helmrelease.yaml
+  - vault-secret-store.yaml
+  - external-secret.yaml
+  - gateway.yaml
 #  - ingress-outpost.yaml
 #  - ingress-outpost-nodered.yaml
+
+components:
+  - ../../../components/pki-certman-letsencrypt
+
+patchesStrategicMerge:
+  - cert-hostname-patch.yaml

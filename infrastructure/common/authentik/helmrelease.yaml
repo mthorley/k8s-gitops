@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: authentik
+      version: "2026.5.6"
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+  # secret_key / postgresql passwords are injected below rather than inlined -
+  # see external-secret.yaml / vault-secret-store.yaml
+  valuesFrom:
+    - kind: Secret
+      name: authentik-secret
+      valuesKey: secret_key
+      targetPath: authentik.secret_key
+    - kind: Secret
+      name: authentik-secret
+      valuesKey: postgresql-password
+      targetPath: authentik.postgresql.password
+    - kind: Secret
+      name: authentik-secret
+      valuesKey: postgresql-password
+      targetPath: postgresql.auth.password
+  # server.ingress is left disabled (chart default) - traffic comes in via the
+  # standalone Gateway/HTTPRoute in gateway.yaml instead, matching node-red/kagent.
+  values:
+    authentik:
+      error_reporting:
+        enabled: true
+      postgresql:
+        user: authentik
+        name: authentik
+    postgresql:
+      enabled: true
+      auth:
+        username: authentik
+        database: authentik

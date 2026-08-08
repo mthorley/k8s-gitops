@@ -10,8 +10,6 @@ resources:
   - ../common/external-secrets
   - ../common/certmanager-1.12
   - ../common/ingress
-  - ../common/authentik
-  - authentik-vaultissuer-role.yaml
   - ../common/monitoring/setup
   - ../common/monitoring
   - monitoring-vaultissuer-role.yaml  # move to common once cluster1 upgraded
@@ -28,5 +26,4 @@ resources:
 #  - grafana-mcp-vault-secret-store.yaml
 #  - grafana-mcp-vault-secret.yaml
 patchesStrategicMerge:
-  - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml

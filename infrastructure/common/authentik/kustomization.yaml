@@ -5,6 +5,7 @@ namespace: authentik
 resources:
   - namespace.yaml
   - service-account.yaml
+  - service-account-token-secret.yaml
   - helmrepository.yaml
   - helmrelease.yaml
   - vault-secret-store.yaml

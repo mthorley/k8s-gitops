@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deluge
+  name: qbittorrent
   namespace: torrent
   labels:
-    app: deluge
+    app: qbittorrent
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: deluge
+      app: qbittorrent
   template:
     metadata:
       labels:
-        app: deluge
+        app: qbittorrent
     spec:
       containers:
-        - name: deluge
-          image: linuxserver/deluge
+        - name: qbittorrent
+          image: linuxserver/qbittorrent
           resources:
             limits:
               memory: "2Gi"
@@ -28,6 +28,10 @@ spec:
              value: "65534"
            - name: PGID
              value: "65534"
+           - name: TZ
+             value: "${cluster_tz}"
+           - name: WEBUI_PORT
+             value: "8080"
           volumeMounts:
             - name: config
               mountPath: /config
@@ -37,12 +41,9 @@ spec:
               mountPath: /nas
           ports:
             - name: torrent-ui
-              containerPort: 8112         # Deluge Web UI
+              containerPort: 8080          # qBittorrent Web UI
               protocol: TCP
-            - name: torrent-daemon
-              containerPort: 58846        # Daemon port
-              protocol: TCP
-          # Set Deluge to use Gluetun's DNS to ensure all traffic is routed via VPN
+          # Set qBittorrent to use Gluetun's DNS to ensure all traffic is routed via VPN
           dnsPolicy: None
           dnsConfig:
             nameservers:
@@ -72,7 +73,7 @@ spec:
             - name: TZ
               value: "${cluster_tz}"
             - name: FIREWALL_INPUT_PORTS
-              value: "8112,58846"
+              value: "8080"
           securityContext:
               capabilities:
                 add: ["NET_ADMIN"]

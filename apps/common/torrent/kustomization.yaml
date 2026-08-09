@@ -9,6 +9,7 @@ resources:
   - external-secrets.yaml
   - vault-secret-store.yaml
   - service.yaml
-  - ingress.yaml
-  - cert-issuer.yaml
-  - cert.yaml
+  - gateway.yaml
+
+components:
+  - ../../../components/pki-certman-letsencrypt

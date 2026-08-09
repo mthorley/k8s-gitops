@@ -5,14 +5,10 @@ metadata:
   namespace: torrent
 spec:
   selector:
-    app: deluge
+    app: qbittorrent
   type: ClusterIP
   ports:
     - name: http
       port: 80
       targetPort: torrent-ui
-      protocol: TCP
-    - name: daemon 
-      port: 58846
-      targetPort: torrent-daemon         # Deluge Daemon
       protocol: TCP

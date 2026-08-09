@@ -447,6 +447,9 @@ resource "vault_policy" "vpn-secrets-policy" {
 path "secret/data/vpn" {
   capabilities = ["read", "list"]
 }
+path "secret/data/torrent-cf-api-token" {
+  capabilities = ["read", "list"]
+}
 EOT
 }
 
@@ -457,6 +460,16 @@ resource "vault_kubernetes_auth_backend_role" "vpn" {
   bound_service_account_namespaces = ["torrent"]
   token_ttl                        = 86400
   token_policies                   = ["vpn-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "torrent-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "torrent-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
 }
 
 # -----------------------------------------------------------------------------

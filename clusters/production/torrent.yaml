@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: torrent
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: infrastructure
+    - name: gateway-api-crds
+    - name: nginx-gateway
+  interval: 30m0s
+  path: ./apps/production/torrent
+  prune: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
+    substitute:
+      APP: "torrent"
+      ACME_EMAIL: "matt.thorley@gmail.com"
+      qnap_ip: 192.168.1.147
+      cluster_id: cluster0
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: torrent
+  wait: false

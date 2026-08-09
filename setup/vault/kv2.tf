@@ -438,13 +438,13 @@ resource "vault_kubernetes_auth_backend_role" "frigate" {
 }
 
 # -----------------------------------------------------------------------------
-# vpn
+# torrent (vpn)
 
-resource "vault_policy" "vpn-secrets-policy" {
-  name = "vpn-secrets-policy"
+resource "vault_policy" "torrent-secrets-policy" {
+  name = "torrent-secrets-policy"
 
   policy = <<EOT
-path "secret/data/vpn" {
+path "secret/data/torrent" {
   capabilities = ["read", "list"]
 }
 path "secret/data/torrent-cf-api-token" {
@@ -453,13 +453,13 @@ path "secret/data/torrent-cf-api-token" {
 EOT
 }
 
-resource "vault_kubernetes_auth_backend_role" "vpn" {
+resource "vault_kubernetes_auth_backend_role" "torrent" {
   backend                          = vault_auth_backend.kubernetes.path
-  role_name                        = "vpn-secrets-role"
-  bound_service_account_names      = ["default"]
+  role_name                        = "torrent-secrets-role"
+  bound_service_account_names      = ["torrent"]
   bound_service_account_namespaces = ["torrent"]
   token_ttl                        = 86400
-  token_policies                   = ["vpn-secrets-policy"]
+  token_policies                   = ["torrent-secrets-policy"]
 }
 
 resource "vault_kv_secret_v2" "torrent-cf-api-token" {
@@ -790,9 +790,9 @@ resource "vault_kv_secret_v2" "cloudflare" {
   )
 }
 
-resource "vault_kv_secret_v2" "vpn" {
+resource "vault_kv_secret_v2" "torrent" {
   mount     = vault_mount.kvv2.path
-  name      = "vpn"
+  name      = "torrent"
   data_json = jsonencode(
     {
       username = var.VPN_USERNAME

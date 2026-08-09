@@ -15,6 +15,7 @@ spec:
       labels:
         app: qbittorrent
     spec:
+      serviceAccountName: torrent
       containers:
         - name: qbittorrent
           image: linuxserver/qbittorrent
@@ -61,12 +62,12 @@ spec:
             - name: OPENVPN_USER
               valueFrom:
                 secretKeyRef:
-                  name: secret-vpn
+                  name: secret-torrent
                   key: username
             - name: OPENVPN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret-vpn
+                  name: secret-torrent
                   key: password
             - name: SERVER_COUNTRIES
               value: "Singapore"

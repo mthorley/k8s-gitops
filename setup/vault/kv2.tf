@@ -170,6 +170,11 @@ variable "VPN_PASSWORD" {
   description = "VPN password"
 }
 
+variable "QBITTORRENT_WEBUI_PASSWORD" {
+  type        = string
+  description = "qBittorrent WebUI admin password, set declaratively via initContainer as a PBKDF2 hash"
+}
+
 variable "MCP_GRAFANA_APIKEY" {
   type = string
   description = "Service account token for Grafana used by grafana-mcp server"
@@ -795,8 +800,9 @@ resource "vault_kv_secret_v2" "torrent" {
   name      = "torrent"
   data_json = jsonencode(
     {
-      username = var.VPN_USERNAME
-      password = var.VPN_PASSWORD
+      username       = var.VPN_USERNAME
+      password       = var.VPN_PASSWORD
+      webui-password = var.QBITTORRENT_WEBUI_PASSWORD
     }
   )
 }

@@ -16,6 +16,71 @@ spec:
         app: qbittorrent
     spec:
       serviceAccountName: torrent
+      # Route pod DNS through gluetun's resolver so lookups can't leak outside
+      # the VPN. Belt-and-suspenders: gluetun also rewrites /etc/resolv.conf
+      # itself once its DoT resolver is up, independent of this setting.
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 127.0.0.1
+      initContainers:
+        - name: set-webui-password
+          image: python:3-alpine
+          resources:
+            limits:
+              memory: "64Mi"
+            requests:
+              memory: "32Mi"
+          env:
+            - name: WEBUI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-torrent
+                  key: webui-password
+          # Writes qBittorrent's own PBKDF2-SHA512 password hash directly into
+          # qBittorrent.conf before the app starts, so the WebUI password is
+          # managed declaratively instead of relying on the linuxserver image's
+          # random-temp-password-on-first-boot behaviour. Algorithm verified
+          # against qBittorrent's own src/base/utils/password.cpp: PBKDF2-HMAC-
+          # SHA512, 100000 iterations, 16-byte salt, 64-byte derived key.
+          # Only ever touches the one WebUI\Password_PBKDF2 line - reruns on
+          # every pod start, so it will overwrite any password set via the UI.
+          command:
+            - python3
+            - -c
+            - |
+              import os, hashlib, base64, secrets, pathlib
+
+              password = os.environ["WEBUI_PASSWORD"]
+              conf_path = pathlib.Path("/config/qBittorrent/qBittorrent.conf")
+              conf_path.parent.mkdir(parents=True, exist_ok=True)
+
+              salt = secrets.token_bytes(16)
+              derived = hashlib.pbkdf2_hmac("sha512", password.encode(), salt, 100000, dklen=64)
+              b64 = lambda b: base64.b64encode(b).decode()
+              value_line = f'WebUI\\Password_PBKDF2="@ByteArray({b64(salt)}:{b64(derived)})"\n'
+
+              lines = conf_path.read_text().splitlines(keepends=True) if conf_path.exists() else ["[Preferences]\n"]
+
+              replaced = False
+              for i, line in enumerate(lines):
+                  if line.startswith("WebUI\\Password_PBKDF2="):
+                      lines[i] = value_line
+                      replaced = True
+                      break
+
+              if not replaced:
+                  pref_idx = next((i for i, l in enumerate(lines) if l.strip() == "[Preferences]"), None)
+                  if pref_idx is not None:
+                      lines.insert(pref_idx + 1, value_line)
+                  else:
+                      lines += ["[Preferences]\n", value_line]
+
+              conf_path.write_text("".join(lines))
+              print("qBittorrent WebUI password set from Vault.")
+          volumeMounts:
+            - name: config
+              mountPath: /config
       containers:
         - name: qbittorrent
           image: linuxserver/qbittorrent
@@ -44,11 +109,6 @@ spec:
             - name: torrent-ui
               containerPort: 8080          # qBittorrent Web UI
               protocol: TCP
-          # Set qBittorrent to use Gluetun's DNS to ensure all traffic is routed via VPN
-          dnsPolicy: None
-          dnsConfig:
-            nameservers:
-            - 127.0.0.1                   # Gluetun's DNS resolver inside the Pod
         - name: gluetun
           image: qmcgaw/gluetun
           resources:

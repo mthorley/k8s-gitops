@@ -10,6 +10,7 @@ spec:
   - toFQDNs:
     - matchPattern: "user-field.aylanetworks.com"   # Fujitsu AC HA component
     - matchPattern: "ads-field.aylanetworks.com"    # Fujitsu AC HA component
+    - matchPattern: "app2plus.airtouch.com.au"      # Airtouch2Plus HA component (cloud relay)
     - matchPattern: "plex.tv"
     - matchPattern: "*.api.met.no"                  # Weather 
     - matchPattern: "pypi.org"

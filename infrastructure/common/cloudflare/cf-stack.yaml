@@ -25,6 +25,21 @@ spec:
         - --config
         - /etc/cloudflared/config/config.yaml
         - run
+        # Hardening: the image already ships a built-in "nonroot" user
+        # (uid/gid 65532, confirmed via the image config on Docker Hub) and
+        # declares no writable volumes, so it doesn't need root or a
+        # writable root filesystem to run `tunnel run` against a static
+        # config + credentials file. no-autoupdate is set in the ConfigMap
+        # below, so there's nothing that needs to write back to disk at
+        # runtime.
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65532
+          runAsGroup: 65532
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
         livenessProbe:
           httpGet:
             # Cloudflared has a /ready endpoint which returns 200 if and only if

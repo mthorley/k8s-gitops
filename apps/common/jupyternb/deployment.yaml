@@ -15,11 +15,12 @@ spec:
       labels:
         app: jupyternb
     spec:
+      serviceAccountName: jupyter
       containers:
       - name: jupyternb
         image: mthorley/jnb:1.0
         ports:
-          - name: jupyternb-ui
+          - name: jupyter-ui
             containerPort: 8888
             protocol: TCP
         securityContext:
@@ -27,13 +28,7 @@ spec:
         volumeMounts:
         - name: jupyternb-data
           mountPath: /data
-#        - name: jupyter-tls
-#          mountPath: "/etc/ssl/private"
-#          readOnly: true
       volumes:
       - name: jupyternb-data
         persistentVolumeClaim:
           claimName: jupyternb-claim
-#      - name: jupyter-tls
-#        secret:
-#          secretName: internal-com-tls

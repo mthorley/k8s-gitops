@@ -478,6 +478,41 @@ resource "vault_kv_secret_v2" "torrent-cf-api-token" {
 }
 
 # -----------------------------------------------------------------------------
+# jupyter
+
+resource "vault_policy" "jupyter-secrets-policy" {
+  name = "jupyter-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/jupyter" {
+  capabilities = ["read", "list"]
+}
+path "secret/data/jupyter-cf-api-token" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "jupyter" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "jupyter-secrets-role"
+  bound_service_account_names      = ["jupyter"]
+  bound_service_account_namespaces = ["jupyter"]
+  token_ttl                        = 86400
+  token_policies                   = ["jupyter-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "jupyter-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "jupyter-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}
+
+# -----------------------------------------------------------------------------
 # cloudflared
 
 resource "vault_policy" "cloudflare-secrets-policy" {

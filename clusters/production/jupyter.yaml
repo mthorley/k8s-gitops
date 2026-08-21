@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jupyter
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: infrastructure
+    - name: gateway-api-crds
+    - name: nginx-gateway
+  interval: 30m0s
+  path: ./apps/production/jupyter
+  prune: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
+    substitute:
+      APP: "jupyter"
+      ACME_EMAIL: "matt.thorley@gmail.com"
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: jupyter
+  wait: false

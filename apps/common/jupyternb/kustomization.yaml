@@ -5,8 +5,11 @@ namespace: jupyter
 resources:
   - namespace.yaml
   - pvc.yaml
+  - serviceaccount.yaml
   - deployment.yaml
   - service.yaml
-  - ingress.yaml
-  - cert-issuer.yaml
-  - cert.yaml
+  - gateway.yaml
+
+components:
+  - ../../../components/secrets-eso-vault
+  - ../../../components/pki-certman-letsencrypt

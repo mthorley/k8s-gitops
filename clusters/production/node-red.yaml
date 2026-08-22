@@ -9,6 +9,7 @@ spec:
     - name: infrastructure
     - name: gateway-api-crds
     - name: nginx-gateway
+    - name: envoy-gateway
   interval: 30m0s
   path: ./apps/production/node-red
   prune: true

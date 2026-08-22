@@ -10,6 +10,7 @@ resources:
   - loadbalancer.yaml
   - service.yaml
   - gateway.yaml
+  - gateway-envoy.yaml
   - netpol
 
 components:

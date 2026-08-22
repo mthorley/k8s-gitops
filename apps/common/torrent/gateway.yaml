@@ -4,7 +4,7 @@ metadata:
   name: torrent-gateway
   namespace: torrent
 spec:
-  gatewayClassName: nginx
+  gatewayClassName: envoy
   listeners:
     - name: https
       protocol: HTTPS

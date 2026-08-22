@@ -4,7 +4,7 @@ metadata:
   name: jupyter-gateway
   namespace: jupyter
 spec:
-  gatewayClassName: nginx
+  gatewayClassName: envoy
   listeners:
     - name: https
       protocol: HTTPS

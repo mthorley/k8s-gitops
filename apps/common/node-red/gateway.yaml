@@ -4,7 +4,7 @@ metadata:
   name: nodered-gateway
   namespace: node-red
 spec:
-  gatewayClassName: nginx
+  gatewayClassName: envoy
   listeners:
     - name: https
       protocol: HTTPS

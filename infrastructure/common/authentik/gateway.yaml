@@ -4,7 +4,7 @@ metadata:
   name: authentik-gateway
   namespace: authentik
 spec:
-  gatewayClassName: nginx
+  gatewayClassName: envoy
   listeners:
     - name: https
       protocol: HTTPS

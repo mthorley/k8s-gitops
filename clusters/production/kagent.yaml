@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: infrastructure
     - name: gateway-api-crds
-    - name: nginx-gateway
+    - name: envoy-gateway
   interval: 30m0s
   path: ./infrastructure/common/kagent
   prune: true

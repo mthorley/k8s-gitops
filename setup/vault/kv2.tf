@@ -664,6 +664,48 @@ resource "vault_kv_secret_v2" "kagent-cf-api-token" {
   )
 }
 
+# -----------------------------------------------------------------------------
+# adguard
+#
+# Migrated from a hand-rolled internal-CA Issuer to the shared
+# pki-certman-letsencrypt component (apps/common/adguard), same shape as
+# kagent/torrent/jupyter above. Bound to the "adguard" SA
+# (apps/common/adguard/serviceaccount.yaml), not the app's own "default" SA
+# the AdGuard Home pod actually runs as -- same split as kagent/authentik.
+# No plain "secret/adguard" KV entry: AdGuard Home has no app-level secret
+# data to pull via ExternalSecret, only the ACME DNS-01 token below.
+
+resource "vault_policy" "adguard-secrets-policy" {
+  name = "adguard-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/adguard" {
+  capabilities = ["read", "list"]
+}
+path "secret/data/adguard-cf-api-token" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "adguard" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "adguard-secrets-role"
+  bound_service_account_names      = ["adguard"]
+  bound_service_account_namespaces = ["adguard-home"]
+  token_ttl                        = 86400
+  token_policies                   = ["adguard-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "adguard-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "adguard-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}
 
 # -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"

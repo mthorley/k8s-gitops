@@ -7,8 +7,6 @@ resources:
   - ../common/mqtt
   - mqtt-vault-secret.yaml
   - mqtt-vault-secret-store.yaml
-  - ../common/adguard
-  - adguard-vaultissuer-role.yaml
 #  - ../common/jupyternb
 #  - ../common/crypto-automation
 #  - ../common/unifi-controller
@@ -17,5 +15,3 @@ resources:
 #  - ../common/frigate
 #  - frigate-vault-secret.yaml
 #  - frigate-vault-secret-store.yaml
-patchesStrategicMerge:
-  - cert-issuer-adguard.yaml

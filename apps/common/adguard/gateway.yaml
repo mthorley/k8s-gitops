@@ -1,0 +1,36 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: adguard-gateway
+  namespace: adguard-home
+spec:
+  gatewayClassName: envoy
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "adguard.${domain}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: "${APP}-tls-prod"
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: adguard
+  namespace: adguard-home
+spec:
+  parentRefs:
+    - name: adguard-gateway
+  hostnames:
+    - "adguard.${domain}"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: adguard-home-web
+          port: 80

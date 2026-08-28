@@ -17,7 +17,7 @@ resources:
   - monitoring-vault-secret.yaml
 #  - ../common/mongodb
   - ../common/influxdb
-  - ../common/loki
+  # loki: moved to its own clusters/production/loki.yaml Kustomization
 #  - ../common/starboard
 #  - ../common/tetragon
 #  - ../common/neuvector

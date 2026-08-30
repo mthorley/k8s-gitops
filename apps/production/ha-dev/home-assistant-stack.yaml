@@ -74,7 +74,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: home-assistant
-          image: "ghcr.io/home-assistant/home-assistant:2025.8"
+          image: "ghcr.io/home-assistant/home-assistant:2026.8.3"
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: null

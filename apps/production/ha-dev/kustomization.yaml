@@ -7,7 +7,8 @@ resources:
   - home-assistant-stack.yaml
   - http-config.yaml
   - lb.yaml
-  - allow-local-egress-unifi-netpol.yaml
+#  - allow-local-egress-unifi-netpol.yaml   # UDM Pro hosting
+  - allow-local-egress-qbittorrent-netpol.yaml
   - allow-local-egress-dns-netpol.yaml
   - allow-ext-egress-netpol.yaml
   - allow-ext-egress-components-netpol.yaml

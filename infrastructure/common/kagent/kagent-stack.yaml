@@ -1628,7 +1628,20 @@ spec:
               drop:
               - ALL
             readOnlyRootFilesystem: true
-          image: "ghcr.io/kagent-dev/kagent/ui:0.10.0"
+          # STOPGAP -> FIXED (2026-09-06): stock ui:0.10.0 (Node 24.20) SIGILLs
+          # in V8 on the Pi 4's Cortex-A72 the first time a real page load's
+          # burst of code paths gets JIT/Wasm-compiled -- reproduced on demand
+          # (fresh pod, zero prior traffic, fire "/" + all its real asset
+          # URLs at once -> crashes every time on stock 0.10.0). Custom image
+          # below is the same kagent-dev/kagent v0.10.0 ui/ source rebuilt
+          # with TOOLS_NODE_VERSION=20 instead of the chart default 24 --
+          # confirmed with the same on-demand repro (4+ cold runs, zero
+          # crashes) and load-tested live against production before cutover.
+          # See README for the full incident writeup and rebuild recipe.
+          # TODO: this is mthorley's personal Docker Hub, not a permanent
+          # home -- move to a proper registry once one exists, or track
+          # upstream for a released fix and drop this custom image.
+          image: "docker.io/mthorley/kagent-ui:0.10.0-node20"
           imagePullPolicy: IfNotPresent
           env:
             - name: NEXT_PUBLIC_BACKEND_URL

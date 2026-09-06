@@ -2,6 +2,72 @@
 
 Upgraded from **0.7.0** to **0.10.0** on 2026-09-06.
 
+## Fixed: kagent-ui SIGILL on the Pi 4 (2026-09-06)
+
+Stock `ui:0.10.0`'s `next-server` process crashed with `SIGILL` on real
+traffic — confirmed live in production (`kagent.cluster0.cyonomy.net` was
+502ing on ~85% of requests). Because the crash happens inside the pod's own
+supervisord-managed process (nginx sidecar proxies to `next-server` on
+`127.0.0.1:8001`, both in the same container), `kubectl get pods` never
+shows it — supervisord silently respawns the crashed process, so it only
+shows up in the pod's logs (`terminated by SIGILL (core dumped)`) or as
+502s from outside.
+
+**Root cause, confirmed by direct on-demand reproduction:** pulled the
+crashed pod's history from Loki and found the real signal — for the pod's
+first 42 minutes it received *only* `/health` probe traffic (nginx answers
+that itself; it never reaches `next-server`). The instant the first real
+browser request landed, `next-server` crashed immediately. It isn't a
+duration or warm-up thing — it's the **concurrent burst of many distinct
+first-time code paths a real page load fires at once** (a dozen-plus JS
+chunks, CSS, a font, the dynamic icon route, all in parallel) hitting V8's
+JIT/Wasm compiler for the first time in the process's life. Reproduced
+on demand: fresh pod, zero prior traffic, fire `/` plus every real asset
+URL from an actual page load simultaneously — stock `ui:0.10.0`
+(Node 24.20) crashes on the very first try, every time. There's also no
+arm64 native addon anywhere in the standalone build (checked
+`find /app/ui/node_modules -iname '*.node'` — only two unreachable x86_64
+`sharp` bindings), which rules out the original 0.7.0-pin-era theory of an
+`@next/swc` native binary using ARMv8.2-A instructions. This is Node
+24.20's V8 emitting something the Cortex-A72 doesn't support, not a
+Next.js/Turbopack native binary.
+
+**The fix:** the same `kagent-dev/kagent` `v0.10.0` `ui/` source, rebuilt
+with `--build-arg TOOLS_NODE_VERSION=20` instead of the chart's default
+`24`, pushed to `docker.io/mthorley/kagent-ui:0.10.0-node20`. Verified with
+the identical on-demand repro (fresh pod, same real asset burst, run 4
+times) — zero crashes. Then verified again directly against production
+with the same burst — zero 502s, zero SIGILL, zero restarts. Rebuild
+recipe:
+
+```sh
+git clone --depth 1 --branch v0.10.0 https://github.com/kagent-dev/kagent.git
+cd kagent/ui
+docker buildx build --platform linux/arm64 \
+  --build-arg TOOLS_NODE_VERSION=20 \
+  --build-arg VERSION=0.10.0-node20 \
+  -t docker.io/<you>/kagent-ui:0.10.0-node20 --push .
+```
+
+An earlier `NODE_OPTIONS=--jitless` stopgap (forcing V8 to interpret-only)
+was used to hold production stable while this was built — no longer
+needed now that the actual image is fixed, and removed from
+`kagent-stack.yaml`.
+
+**Near-miss during this fix, worth remembering:** the `kagent` Flux
+Kustomization was suspended (`kubectl patch kustomization kagent --type
+merge -p '{"spec":{"suspend":true}}'`) to stop it reverting the live
+mitigation back to whatever was last committed — but that suspension was
+never surfaced clearly, and something (Flux's own periodic reconcile
+picking back up, or a manual resume) un-suspended it mid-fix, which
+silently reverted **both** the `--jitless` mitigation and the new image
+back to the broken stock image, live, without any explicit action on this
+file. If you ever suspend this Kustomization for a live mitigation again:
+say so out loud, and get the fix committed+pushed immediately rather than
+leaving cluster and git in different states for any longer than
+necessary — a suspended Kustomization protecting an uncommitted fix is a
+ticking revert, not a stable state.
+
 ## Why 0.7.0 was pinned, and why that no longer applies
 
 0.7.0 was the last release before two breaking changes upstream:
@@ -10,15 +76,15 @@ Upgraded from **0.7.0** to **0.10.0** on 2026-09-06.
   controller entirely — Postgres is now the only supported backend. This
   chart now deploys the chart's *bundled* Postgres (see below); it was not
   needed at all under 0.7.0.
-- **0.8.x+ ships a UI on Next.js 16**, whose `@next/swc` native binary was
-  believed to use ARMv8.2-A instructions that `SIGILL` on the Pi 4's
-  Cortex-A72 cores. **This was re-tested live on `rpi-kube-worker-02` on
-  2026-09-06 against the `ui:0.10.0` image (Next.js 16.2.12 / Node 24.20)
-  and did not reproduce** — the server booted, and rendered `/`, `/agents`,
-  and `/models` all returned `200` under repeated requests with no crash.
-  Whatever caused the original crash appears to have been fixed upstream
-  since the 0.7.0 pin. If the UI pods crash-loop after this upgrade is
-  actually applied, this is the first thing to suspect.
+- **0.8.x+ ships a UI on Next.js 16, and stock `ui:0.10.0` SIGILLs on this
+  hardware — see "Fixed: kagent-ui SIGILL" above** (the Deployment now runs
+  a custom-built image, not the stock one). A pre-deploy smoke test (a
+  handful of sequential requests to `/`, `/agents`, `/models` on
+  `ui:0.10.0`) came back clean and this README previously said the issue
+  was resolved upstream. That test wasn't rigorous enough: a real page
+  load's concurrent asset burst reliably crashes it. Don't trust a few
+  sequential curls as proof this is
+  fixed in any future version bump either — load-test it properly first.
 
 ## Things that changed in this upgrade — read before applying
 

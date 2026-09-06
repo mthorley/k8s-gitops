@@ -1,26 +1,98 @@
 # kagent
 
-Pinned to **0.7.0** because the 0.9.x UI ships Next.js 16 whose `@next/swc`
-binary uses ARMv8.2-A instructions and crashes with `SIGILL` on the Pi 4
-(Cortex-A72) worker nodes. 0.7.0 is the last release before the 0.8.x bump
-and uses SQLite instead of PostgreSQL (no PVC required).
+Upgraded from **0.7.0** to **0.10.0** on 2026-09-06.
 
-The Anthropic API key Secret block is stripped from the rendered manifest
-and managed out-of-band as `Secret/kagent-anthropic` in the `kagent`
-namespace, key `ANTHROPIC_API_KEY`.
+## Why 0.7.0 was pinned, and why that no longer applies
 
-Two image tags are overridden away from the chart defaults:
+0.7.0 was the last release before two breaking changes upstream:
 
-- `kmcp.image.tag=0.1.9` — chart default is `v0.1.9`, but the registry tag has
-  no `v` prefix (see upstream [kmcp#74](https://github.com/kagent-dev/kmcp/issues/74)).
-- `querydoc.image.tag=1.1.14` — chart default `1.1.13`'s arm64 manifest is
-  mis-built and contains x86-64 binaries, causing `exec format error` on the
-  Pi 4. 1.1.14 is the first tag with a correct aarch64 build.
+- **0.8.x+ requires PostgreSQL.** SQLite support was removed from the
+  controller entirely — Postgres is now the only supported backend. This
+  chart now deploys the chart's *bundled* Postgres (see below); it was not
+  needed at all under 0.7.0.
+- **0.8.x+ ships a UI on Next.js 16**, whose `@next/swc` native binary was
+  believed to use ARMv8.2-A instructions that `SIGILL` on the Pi 4's
+  Cortex-A72 cores. **This was re-tested live on `rpi-kube-worker-02` on
+  2026-09-06 against the `ui:0.10.0` image (Next.js 16.2.12 / Node 24.20)
+  and did not reproduce** — the server booted, and rendered `/`, `/agents`,
+  and `/models` all returned `200` under repeated requests with no crash.
+  Whatever caused the original crash appears to have been fixed upstream
+  since the 0.7.0 pin. If the UI pods crash-loop after this upgrade is
+  actually applied, this is the first thing to suspect.
+
+## Things that changed in this upgrade — read before applying
+
+- **Bundled Postgres, backed by NFS.** The chart's `database.postgres.bundled`
+  (a single `postgres:18.6-alpine3.23` pod + PVC, upstream default) is now
+  enabled. The only StorageClass in this cluster is `managed-nfs-storage`
+  (not marked default), so `bundled.storageClassName` is set explicitly to
+  it — otherwise the PVC would sit `Pending` forever. **Postgres data
+  directories on NFS are a known risk** (file-locking / fsync semantics);
+  upstream's own chart docs say the bundled Postgres is "for development
+  and evaluation only, not suitable for production." For a homelab agent
+  DB this is probably an acceptable trade-off, but if kagent's data matters,
+  point `database.postgres.url` / `urlFile` at a real external Postgres
+  instead and set `database.postgres.bundled.enabled=false`.
+- **The bundled Postgres password is externalized to Vault, not the chart's
+  hardcoded value.** The chart has no values-based override for this (the
+  password, secret name, and key are all baked into
+  `templates/postgresql-secret.yaml`), so `Secret/kagent-postgresql` is
+  stripped from `kagent-stack.yaml` at render time (same `awk` trick
+  previously used for the API key) and replaced by
+  [postgresql-external-secret.yaml](postgresql-external-secret.yaml), an
+  `ExternalSecret` producing a `Secret` with the identical name/key the
+  chart's Postgres pod and controller already expect — no chart-side
+  changes needed downstream. The value itself lives in Vault at
+  `secret/kagent` (key `postgres-password`), added alongside the existing
+  Anthropic key in [setup/vault/kv2.tf](../../../setup/vault/kv2.tf) as
+  TF var `KAGENT_POSTGRES_PASSWORD`.
+  **Before this is applied, someone needs to run `terraform apply` in
+  `setup/vault`** with `TF_VAR_KAGENT_POSTGRES_PASSWORD` set (a Terraform
+  project outside this GitOps repo's own reconciliation, run by hand against
+  the real Vault) — otherwise the ExternalSecret has nothing to pull and the
+  Postgres pod won't start.
+  Caveat: Postgres only reads `POSTGRES_PASSWORD` on first `initdb`.
+  Rotating the value in Vault later updates the k8s Secret but not the
+  running database's actual password, and nothing here auto-restarts the
+  Postgres pod on rotation (its `checksum/secret` annotation is baked in at
+  `helm template` time against the chart's static placeholder, not this
+  live Secret).
+- **No more SQLite volume.** The `sqlite-volume` `emptyDir` on the
+  controller deployment is gone; the controller now talks to
+  `kagent-postgresql.kagent:5432`.
+- **Existing kagent data does not carry over.** Agents/sessions/history
+  living in the 0.7.0 controller's SQLite `emptyDir` are not migrated —
+  they were already ephemeral (in-memory `emptyDir`), so there is nothing
+  to lose here, but note this for any future non-bundled upgrade too.
+- **`querydoc` component is gone.** It was a separate chart dependency in
+  0.7.0 (worked around here for a broken arm64 image tag); it's not part of
+  the 0.10.0 dependency tree at all, so that workaround is removed.
+- **`kmcp.image.tag` override no longer needed.** 0.10.0's `kmcp` subchart
+  (now v0.3.0) defaults to `ghcr.io/kagent-dev/kmcp/controller:0.3.0` with no
+  `v`-prefix mismatch — confirmed arm64 image exists at that tag.
+- **API key wiring is now native to the chart.** 0.7.0 rendered a
+  placeholder `Secret` for the Anthropic key and stripped it via `awk`
+  post-render, because the chart had no way to point at an existing secret.
+  0.10.0 added `providers.anthropic.apiKeySecretRef` /
+  `apiKeySecretKey`, so the render now points directly at the existing
+  out-of-band `Secret/secret-kagent` (key `anthropic-apikey`, created by the
+  `secrets-eso-vault` component) — no placeholder/strip step required.
+- Images re-verified as multi-arch (arm64) before rendering:
+  `kagent/controller:0.10.0`, `kagent/ui:0.10.0` (live-tested, see above),
+  `kagent/tools:0.2.1`, `kmcp/controller:0.3.0`, `postgres:18.6-alpine3.23`.
+  `grafana-mcp` still pulls `mcp/grafana:latest` (unpinned) — unchanged from
+  0.7.0, not something this upgrade introduced.
+
+## Status
+
+Rendered and committed here for review. **Not yet applied to the cluster.**
+Before letting Flux reconcile this, decide on the bundled-Postgres-on-NFS
+question above.
 
 To re-render:
 
 ```sh
-VERSION=0.7.0
+VERSION=0.10.0
 helm template kagent-crds oci://ghcr.io/kagent-dev/kagent/helm/kagent-crds \
     --version $VERSION \
     --namespace kagent \
@@ -30,21 +102,25 @@ helm template kagent oci://ghcr.io/kagent-dev/kagent/helm/kagent \
     --version $VERSION \
     --namespace kagent \
     --set providers.default=anthropic \
-    --set providers.anthropic.apiKey=PLACEHOLDER \
+    --set providers.anthropic.apiKeySecretRef=secret-kagent \
+    --set providers.anthropic.apiKeySecretKey=anthropic-apikey \
     --set providers.anthropic.model=claude-sonnet-4-5 \
-    --set kmcp.image.tag=0.1.9 \
-    --set querydoc.image.tag=1.1.14 \
-    --set agents.argo-rollouts-agent.enabled=false \
-    --set agents.cilium-debug-agent.enabled=false \
-    --set agents.cilium-manager-agent.enabled=false \
-    --set agents.cilium-policy-agent.enabled=false \
-    --set agents.helm-agent.enabled=false \
-    --set agents.istio-agent.enabled=false \
-    --set agents.kgateway-agent.enabled=false \
-    --set agents.observability-agent.enabled=false \
-    --set agents.promql-agent.enabled=false > kagent-stack.yaml
+    --set database.postgres.bundled.storageClassName=managed-nfs-storage \
+    --set argo-rollouts-agent.enabled=false \
+    --set cilium-debug-agent.enabled=false \
+    --set cilium-manager-agent.enabled=false \
+    --set cilium-policy-agent.enabled=false \
+    --set helm-agent.enabled=false \
+    --set istio-agent.enabled=false \
+    --set kgateway-agent.enabled=false \
+    --set observability-agent.enabled=false \
+    --set promql-agent.enabled=false > kagent-stack.yaml
 
-# strip the placeholder secret block (managed out-of-band)
-awk 'BEGIN{skip=0} /^# Source: kagent\/templates\/modelconfig-secret\.yaml$/{skip=1; next} skip && /^---$/{skip=0; next} !skip{print}' \
+# strip the chart-hardcoded Postgres password secret (externalized via
+# postgresql-external-secret.yaml instead -- see note above)
+awk 'BEGIN{skip=0} /^# Source: kagent\/templates\/postgresql-secret\.yaml$/{skip=1; next} skip && /^---$/{skip=0; next} !skip{print}' \
     kagent-stack.yaml > kagent-stack.yaml.tmp && mv kagent-stack.yaml.tmp kagent-stack.yaml
 ```
+
+The API key placeholder-secret strip from 0.7.0 is no longer needed (see
+API key note above) — only the Postgres secret needs stripping now.

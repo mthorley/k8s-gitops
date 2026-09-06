@@ -190,6 +190,12 @@ variable "KAGENT_ANTHROPIC_APIKEY" {
   description = "Anthropic API key for kagent"
 }
 
+variable "KAGENT_POSTGRES_PASSWORD" {
+  type        = string
+  sensitive   = true
+  description = "Password for kagent's bundled PostgreSQL instance (kagent-postgresql), pulled in via ExternalSecret"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -649,7 +655,8 @@ resource "vault_kv_secret_v2" "kagent" {
   name      = "kagent"
   data_json = jsonencode(
     {
-      anthropic-apikey = var.KAGENT_ANTHROPIC_APIKEY
+      anthropic-apikey  = var.KAGENT_ANTHROPIC_APIKEY
+      postgres-password = var.KAGENT_POSTGRES_PASSWORD
     }
   )
 }

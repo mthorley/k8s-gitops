@@ -9,6 +9,7 @@ resources:
   - kagent-stack.yaml
   - mcp-fetch.yaml
   - gateway.yaml
+  - postgresql-external-secret.yaml
 
 components:
   - ../../../components/secrets-eso-vault

@@ -24,6 +24,7 @@ backed by git, so anything below is lost with the volume).
 |---|---|---|---|
 | FGLair heat pump controller | [bigmoby/fglair_for_homeassistant](https://github.com/bigmoby/fglair_for_homeassistant) | `fglair_heatpump_controller` | Controls a Fujitsu AC over the FGLair/Ayla cloud API. Installed to work around the official `fujitsu_fglair` core integration refusing `AC-UTY`-prefixed devices ([home-assistant/core#132460](https://github.com/home-assistant/core/issues/132460), closed not-planned) — this fork's `pyfujitsugeneral` dependency has no such prefix check. |
 | Airtouch2Plus | self-authored, vendored at [`airtouch2plus/`](airtouch2plus/) (no upstream repo) | `airtouch2plus` | Controls a Polyaire AirTouch 2+ over Polyaire's cloud relay (`app2plus.airtouch.com.au:9200`, same protocol as the official app), not local TCP — sidesteps the earlier local-network unreachability problem (see below). `iot_class: cloud_polling`. Requires `app2plus.airtouch.com.au` in `allow-ext-egress-components-netpol.yaml`. Installed via `install-custom-component.sh`'s copy step, sourced from the local `airtouch2plus/` folder instead of a git clone since there's no upstream repo. AC/zone control commands are unverified against a real device — see [`airtouch2plus/README.md`](airtouch2plus/README.md). |
+| Zen WiFi Thermostat | self-authored, vendored at [`zenwifi/`](zenwifi/), ported from [mthorley/zen-wifi-client](https://github.com/mthorley/zen-wifi-client) (Node.js, not directly usable in HA) | `zenwifi` | Controls a Zen Ecosystems WiFi thermostat over its cloud API (`wifi.zenhq.com`), same as the official app. `iot_class: cloud_polling`. Requires `wifi.zenhq.com` in `allow-ext-egress-components-netpol.yaml`. Installed via `install-custom-component.sh`'s copy step, sourced from the local `zenwifi/` folder instead of a git clone since the upstream repo isn't a HA custom component. Mode/setpoint write commands are unverified against a real device — see [`zenwifi/README.md`](zenwifi/README.md). |
 
 Tried and removed:
 
@@ -50,4 +51,12 @@ username:   <username>
 password:   <pwd>
 port:       8443
 verify SSL: unchecked
+```
+
+## Add qbittorrent Integration
+
+```
+Host: torrent-internal.torrent.svc.cluster.local
+Port: 80
+SSL:  off (it's plain HTTP internally; TLS termination only happens at the external gateway)
 ```

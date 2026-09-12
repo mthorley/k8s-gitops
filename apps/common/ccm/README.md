@@ -50,8 +50,11 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
   `Always` for a `:latest` tag and re-pulls every run), while the API
   `Deployment` explicitly sets `IfNotPresent` (so it won't pick up a new
   `:latest` push once a pod is running). Worth pinning to real tags.
-- `neo4j.yaml` requests a `10Gi` PVC with the default `StorageClass` —
-  confirm that resolves to something sane on the target cluster.
+- Both PVCs (Neo4j's `data` volume in `neo4j.yaml`, `10Gi`; the OTEL
+  collector's `tls-scanner-otel-storage` in `otel-collector.yaml`, `1Gi`)
+  pin `storageClassName: managed-nfs-storage`, matching every other app
+  here — the cluster has no default `StorageClass`, so an unset one would
+  never bind.
 
 ## Layout
 

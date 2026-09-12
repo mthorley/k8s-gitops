@@ -16,6 +16,11 @@ spec:
         name: cluster-vars
     substitute:
       APP: "ccm"
+      # Bolt + Browser UI for Neo4j Desktop (apps/common/ccm/loadbalancer.yaml).
+      # Free in the MetalLB pool (192.168.2.10-40): .21-.25, .27, .33-.40 are
+      # unused, and .22/.23/.30/.32 are earmarked in apps.yaml for
+      # crypto-automation/unifi/zigbee2mqtt/frigate.
+      neo4j_ip: 192.168.2.21
   sourceRef:
     kind: GitRepository
     name: flux-system

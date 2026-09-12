@@ -88,3 +88,29 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
 - `tls-graph-adapter.yaml` — OTLP → Neo4j adapter.
 - `neo4j.yaml` — single-node Neo4j StatefulSet backing the graph. Reads
   `secret-ccm` (from `components/secrets-eso-vault`, see notes above).
+- `loadbalancer.yaml` — `neo4j-public`, a MetalLB `LoadBalancer` exposing
+  Bolt `7687` and the Browser UI `7474` on `${neo4j_ip}`
+  (`192.168.2.21`, set in `clusters/production/ccm.yaml`).
+
+## Remote access (Neo4j Desktop)
+
+Connect Neo4j Desktop / cypher-shell to `bolt://192.168.2.21:7687`, or open
+the Browser UI at `http://192.168.2.21:7474`. Credentials are whatever is
+in Vault at `secret/ccm` (`username`/`password`).
+
+This deliberately does **not** go through envoy-gateway. Bolt is a raw TCP
+protocol, so a Gateway would need `TCPRoute`/`TLSRoute` — both
+experimental-channel Gateway API resources, while
+`infrastructure/common/gateway-api-crds` installs the standard channel
+(v1.4.1). Exposing it with a `LoadBalancer` matches every other non-HTTP
+service in this cluster (`mqtt` 1883, `influxdb` 8086, `node-red` syslog
+514/UDP) and needs no cluster-wide CRD change. If Bolt ever has to be
+routed through the gateway with a hostname and TLS, that means switching
+`gateway-api-crds` to `experimental-install.yaml` — which replaces the
+Gateway API CRDs for every gateway in the cluster.
+
+Two caveats: the traffic is plain `bolt://` (auth still enforced, but
+unencrypted) unless Neo4j is given its own certs for `bolt+s://`; and
+`192.168.2.21` is a private MetalLB address, so this is LAN-only — it is
+not reachable from the internet, which is the right default for a
+database.

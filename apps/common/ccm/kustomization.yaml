@@ -13,6 +13,7 @@ resources:
   - otel-collector.yaml
   - tls-graph-adapter.yaml
   - neo4j.yaml
+  - loadbalancer.yaml
 
 components:
   - ../../../components/secrets-eso-vault

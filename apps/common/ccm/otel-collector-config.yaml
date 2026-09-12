@@ -35,13 +35,6 @@ data:
       # Re-add it (and put it back in the traces pipeline) if Tempo lands.
       otlphttp/graph-adapter:
         endpoint: http://tls-graph-adapter:4318
-        # tls-graph-adapter parses request.body() as protobuf directly and
-        # ignores Content-Encoding, so the otlphttp default of gzip makes every
-        # export fail with a protobuf DecodeError surfaced as HTTP 500 (the
-        # collector then logs "Permanent error ... HTTP Status Code 500" and
-        # drops the batch). Traffic is in-cluster and tiny, so sending
-        # uncompressed costs nothing. Remove this once the adapter gunzips.
-        compression: none
         retry_on_failure:
           enabled: true
         sending_queue:

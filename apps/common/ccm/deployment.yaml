@@ -16,7 +16,7 @@ spec:
       containers:
         - name: tls-scanner-api
           image: mthorley/tls-scanner:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           command: ["uvicorn"]
           args: ["tls_scanner.api:app", "--host", "0.0.0.0", "--port", "8080"]
           ports:

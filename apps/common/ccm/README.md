@@ -44,12 +44,22 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
 - **`configmap-endpoints.yaml` ships with placeholder endpoints**
   (`example.com`, `www.python.org`) — replace with the real list to
   monitor.
-- **Image tags are `:latest`** (`mthorley/tls-scanner`,
-  `mthorley/tls-graph-adapter`), and pull policy is inconsistent: the
-  `CronJob` has no `imagePullPolicy` set (so Kubernetes defaults to
-  `Always` for a `:latest` tag and re-pulls every run), while the API
-  `Deployment` explicitly sets `IfNotPresent` (so it won't pick up a new
-  `:latest` push once a pod is running). Worth pinning to real tags.
+- **Image tags are `:latest`** (`mthorley/tls-scanner` for both the API
+  `Deployment` and the `CronJob`, `mthorley/tls-graph-adapter`), so all
+  three set `imagePullPolicy: Always`. They originally used
+  `IfNotPresent`, which meant a rebuilt `:latest` was never picked up —
+  the node keeps serving the image it already cached under that tag, and
+  even deleting the pod doesn't help. That bit during the arm64 rebuild.
+  Pinning real tags (or digests) would be better than `:latest` +
+  `Always`, since `Always` re-pulls on every pod start and still gives no
+  record of which build is running.
+- **The cluster is arm64** (Raspberry Pi nodes), so these images must be
+  built multi-arch or arm64 — an amd64-only image fails at runtime with
+  `exec /usr/local/bin/uvicorn: exec format error`, not at pull time.
+  Verify a push with
+  `docker buildx imagetools inspect mthorley/tls-scanner:latest`
+  (`docker manifest inspect` can't read OCI image indexes and will
+  mislead you).
 - Both PVCs (Neo4j's `data` volume in `neo4j.yaml`, `10Gi`; the OTEL
   collector's `tls-scanner-otel-storage` in `otel-collector.yaml`, `1Gi`)
   pin `storageClassName: managed-nfs-storage`, matching every other app

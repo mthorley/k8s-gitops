@@ -16,7 +16,7 @@ spec:
       containers:
         - name: tls-graph-adapter
           image: mthorley/tls-graph-adapter:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - name: otlp-http
               containerPort: 4318

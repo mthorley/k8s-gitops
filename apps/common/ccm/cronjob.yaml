@@ -17,7 +17,7 @@ spec:
           containers:
             - name: tls-checker
               image: mthorley/tls-scanner:latest
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
               args:
                 - "--endpoints-config"
                 - "/etc/tls-checker/endpoints/endpoints.yaml"

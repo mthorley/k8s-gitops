@@ -65,6 +65,13 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
   (locking/fsync semantics) — if the graph is ever more than a toy,
   move it to node-local storage (see `frigate/pv.yaml` for the
   `local-storage` pattern).
+- **Neo4j sets `enableServiceLinks: false`.** Its Service is named
+  `neo4j`, so Kubernetes injects service-link env vars such as
+  `NEO4J_PORT_7687_TCP_PORT`, and the entrypoint turns every `NEO4J_*`
+  env var into a config setting — producing
+  `Unrecognized setting ... PORT.7687.TCP.PORT` and a crash loop. Don't
+  remove this, and don't rename the Service to anything else starting
+  with `neo4j` (the prefix is what triggers it).
 
 ## Layout
 

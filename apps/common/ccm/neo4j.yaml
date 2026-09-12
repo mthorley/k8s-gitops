@@ -30,6 +30,12 @@ spec:
       labels:
         app: neo4j
     spec:
+      # The Service below is named "neo4j", so Kubernetes injects service-link
+      # env vars like NEO4J_PORT_7687_TCP_PORT into this pod. The neo4j
+      # entrypoint turns every NEO4J_* env var into a config setting, yielding
+      # the bogus "PORT.7687.TCP.PORT" and failing strict validation. Neo4j
+      # resolves everything via DNS, so drop the injected links entirely.
+      enableServiceLinks: false
       # Run as the image's own neo4j user (uid/gid 7474). The entrypoint only
       # chowns /data when it is running as root, and NFS root_squash denies
       # that chown ("Operation not permitted" on /data/dbms), so running

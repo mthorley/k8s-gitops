@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tls-scanner-otel
+  namespace: ccm
+data:
+  otel-collector.yaml: |
+    extensions:
+      file_storage:
+        directory: /var/lib/otelcol/file_storage
+
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+
+    processors:
+      batch:
+
+    exporters:
+      debug:
+        verbosity: basic
+      otlp/tempo:
+        endpoint: tempo:4317
+        tls:
+          insecure: true
+        retry_on_failure:
+          enabled: true
+        sending_queue:
+          enabled: true
+          storage: file_storage
+      otlphttp/graph-adapter:
+        endpoint: http://tls-graph-adapter:4318
+        retry_on_failure:
+          enabled: true
+        sending_queue:
+          enabled: true
+          storage: file_storage
+
+    service:
+      extensions: [file_storage]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug, otlp/tempo, otlphttp/graph-adapter]

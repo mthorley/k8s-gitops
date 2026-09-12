@@ -196,6 +196,17 @@ variable "KAGENT_POSTGRES_PASSWORD" {
   description = "Password for kagent's bundled PostgreSQL instance (kagent-postgresql), pulled in via ExternalSecret"
 }
 
+variable "NEO4J_USERNAME" {
+  type        = string
+  description = "Neo4j admin username for ccm's graph (apps/common/ccm)"
+}
+
+variable "NEO4J_PASSWORD" {
+  type        = string
+  sensitive   = true
+  description = "Neo4j admin password for ccm's graph (apps/common/ccm)"
+}
+
 # -----------------------------------------------------------------------------
 # vault secrets enable -path=secret -version=2 kv
 resource "vault_mount" "kvv2" {
@@ -895,8 +906,46 @@ resource "vault_kv_secret_v2" "grafana-mcp" {
   mount     = vault_mount.kvv2.path
   name      = "grafana-mcp"
   data_json = jsonencode(
-    { 
+    {
       apikey = var.MCP_GRAFANA_APIKEY
+    }
+  )
+}
+
+# -----------------------------------------------------------------------------
+# ccm (TLS Certificate/Compliance Monitor)
+#
+# Bound to the "ccm" SA (apps/common/ccm/serviceaccount.yaml). neo4j.yaml
+# reads NEO4J_AUTH as a combined "user/password" string; it's derived here
+# from username/password so the two can't drift out of sync.
+
+resource "vault_policy" "ccm-secrets-policy" {
+  name = "ccm-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/ccm" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "ccm" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "ccm-secrets-role"
+  bound_service_account_names      = ["ccm"]
+  bound_service_account_namespaces = ["ccm"]
+  token_ttl                        = 86400
+  token_policies                   = ["ccm-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "ccm" {
+  mount     = vault_mount.kvv2.path
+  name      = "ccm"
+  data_json = jsonencode(
+    {
+      username = var.NEO4J_USERNAME
+      password = var.NEO4J_PASSWORD
+      auth     = "${var.NEO4J_USERNAME}/${var.NEO4J_PASSWORD}"
     }
   )
 }

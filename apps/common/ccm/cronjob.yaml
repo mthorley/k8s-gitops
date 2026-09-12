@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: tls-checker
+  namespace: ccm
+spec:
+  schedule: "*/10 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 120
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 300
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: tls-checker
+              image: mthorley/tls-scanner:latest
+              imagePullPolicy: IfNotPresent
+              args:
+                - "--endpoints-config"
+                - "/etc/tls-checker/endpoints/endpoints.yaml"
+                - "--policies-config"
+                - "/etc/tls-checker/policies/policies.yaml"
+              volumeMounts:
+                - name: endpoints-config
+                  mountPath: /etc/tls-checker/endpoints
+                  readOnly: true
+                - name: policies-config
+                  mountPath: /etc/tls-checker/policies
+                  readOnly: true
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  cpu: 100m
+                  memory: 128Mi
+          volumes:
+            - name: endpoints-config
+              configMap:
+                name: tls-checker-endpoints
+            - name: policies-config
+              configMap:
+                name: tls-checker-policies

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tls-graph-adapter
+  namespace: ccm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tls-graph-adapter
+  template:
+    metadata:
+      labels:
+        app: tls-graph-adapter
+    spec:
+      containers:
+        - name: tls-graph-adapter
+          image: mthorley/tls-graph-adapter:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: otlp-http
+              containerPort: 4318
+          env:
+            - name: NEO4J_URI
+              value: bolt://neo4j:7687
+            - name: NEO4J_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ccm
+                  key: username
+            - name: NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ccm
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: otlp-http
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tls-graph-adapter
+  namespace: ccm
+spec:
+  selector:
+    app: tls-graph-adapter
+  ports:
+    - name: otlp-http
+      port: 4318
+      targetPort: otlp-http

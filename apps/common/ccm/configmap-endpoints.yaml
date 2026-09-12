@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tls-checker-endpoints
+  namespace: ccm
+data:
+  endpoints.yaml: |
+    endpoints:
+      - example.com
+      - www.python.org
+    timeout_seconds: 10

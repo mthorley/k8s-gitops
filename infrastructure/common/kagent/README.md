@@ -37,17 +37,9 @@ with `--build-arg TOOLS_NODE_VERSION=20` instead of the chart's default
 `24`, pushed to `docker.io/mthorley/kagent-ui:0.10.0-node20`. Verified with
 the identical on-demand repro (fresh pod, same real asset burst, run 4
 times) — zero crashes. Then verified again directly against production
-with the same burst — zero 502s, zero SIGILL, zero restarts. Rebuild
-recipe:
-
-```sh
-git clone --depth 1 --branch v0.10.0 https://github.com/kagent-dev/kagent.git
-cd kagent/ui
-docker buildx build --platform linux/arm64 \
-  --build-arg TOOLS_NODE_VERSION=20 \
-  --build-arg VERSION=0.10.0-node20 \
-  -t docker.io/<you>/kagent-ui:0.10.0-node20 --push .
-```
+with the same burst — zero 502s, zero SIGILL, zero restarts. Build recipe,
+Dockerfile reference copy, and rebuild/retirement notes live in
+[`setup/kagent/`](../../../setup/kagent/README.md).
 
 An earlier `NODE_OPTIONS=--jitless` stopgap (forcing V8 to interpret-only)
 was used to hold production stable while this was built — no longer

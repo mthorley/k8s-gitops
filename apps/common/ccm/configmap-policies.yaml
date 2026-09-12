@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tls-checker-policies
+  namespace: ccm
+data:
+  policies.yaml: |
+    policies:
+      - id: CCM-TLS-01
+        name: tls-must-be-valid
+        expression: "!result.reachable || !result.certificate_valid || !result.hostname_verified"
+        outcome: fail
+
+      - id: CCM-TLS-02
+        name: certificate-expiry-warning
+        expression: "result.expires_in_seconds >= 0 && result.expires_in_seconds < 604800"
+        outcome: warn
+
+      - id: CCM-TLS-03
+        name: minimum-tls-version
+        expression: "result.tls_version != 'TLSv1.2' && result.tls_version != 'TLSv1.3'"
+        outcome: fail
+
+      - id: CCM-TLS-04
+        name: cipher-suite-compliance
+        expression: "!(result.tls_version == 'TLSv1.2' && 
+        (result.cipher == 'ECDHE-RSA-AES128-GCM-SHA256' || result.cipher == 'ECDHE-RSA-AES256-GCM-SHA384' || result.cipher == 'ECDHE-ECDSA-AES128-GCM-SHA256' || result.cipher == 'ECDHE-ECDSA-AES256-GCM-SHA384')) && !(result.tls_version == 'TLSv1.3' && 
+        (result.cipher == 'TLS_AES_128_GCM_SHA256' || result.cipher == 'TLS_AES_256_GCM_SHA384' || result.cipher == 'TLS_CHACHA20_POLY1305_SHA256'))"
+        outcome: fail

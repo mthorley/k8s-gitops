@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tls-scanner-api
+  namespace: ccm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tls-scanner-api
+  template:
+    metadata:
+      labels:
+        app: tls-scanner-api
+    spec:
+      containers:
+        - name: tls-scanner-api
+          image: mthorley/tls-scanner:latest
+          imagePullPolicy: IfNotPresent
+          command: ["uvicorn"]
+          args: ["tls_scanner.api:app", "--host", "0.0.0.0", "--port", "8080"]
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: tls-scanner
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://otel-collector:4317
+            - name: TLS_SCANNER_BACKEND
+              value: sslyze
+            - name: NEO4J_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ccm
+                  key: username
+                  optional: true
+            - name: NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ccm
+                  key: password
+                  optional: true
+            - name: TLS_SCANNER_ENDPOINTS_CONFIG
+              value: /etc/tls-checker/endpoints/endpoints.yaml
+            - name: TLS_SCANNER_POLICIES_CONFIG
+              value: /etc/tls-checker/policies/policies.yaml
+          volumeMounts:
+            - name: endpoints-config
+              mountPath: /etc/tls-checker/endpoints
+              readOnly: true
+            - name: policies-config
+              mountPath: /etc/tls-checker/policies
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: endpoints-config
+          configMap:
+            name: tls-checker-endpoints
+        - name: policies-config
+          configMap:
+            name: tls-checker-policies
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tls-scanner-api
+  namespace: ccm
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8080"
+spec:
+  selector:
+    app: tls-scanner-api
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tls-scanner-otel-storage
+  namespace: ccm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tls-scanner-otel
+  namespace: ccm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tls-scanner-otel
+  template:
+    metadata:
+      labels:
+        app: tls-scanner-otel
+    spec:
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:0.123.0
+          args: ["--config=/etc/otelcol/otel-collector.yaml"]
+          ports:
+            - name: otlp-grpc
+              containerPort: 4317
+            - name: otlp-http
+              containerPort: 4318
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otelcol
+              readOnly: true
+            - name: storage
+              mountPath: /var/lib/otelcol/file_storage
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+      volumes:
+        - name: config
+          configMap:
+            name: tls-scanner-otel
+        - name: storage
+          persistentVolumeClaim:
+            claimName: tls-scanner-otel-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  namespace: ccm
+spec:
+  selector:
+    app: tls-scanner-otel
+  ports:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: otlp-grpc
+    - name: otlp-http
+      port: 4318
+      targetPort: otlp-http

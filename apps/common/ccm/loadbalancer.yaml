@@ -1,0 +1,32 @@
+# Exposes Neo4j on the LAN so Neo4j Desktop can connect over Bolt.
+# Bolt is a raw TCP protocol, so it cannot go through envoy-gateway: routing it
+# would need TCPRoute/TLSRoute, which are experimental-channel Gateway API
+# resources and this cluster installs the standard channel (see
+# infrastructure/common/gateway-api-crds). A MetalLB LoadBalancer is how every
+# other non-HTTP service here is exposed (mqtt 1883, influxdb 8086,
+# node-red syslog 514/UDP).
+#
+# Bolt and the Browser UI share one IP, so the Browser served from :7474
+# offers bolt://<same-ip>:7687 by default and no advertised_address override
+# is needed.
+apiVersion: v1
+kind: Service
+metadata:
+  name: neo4j-public
+  namespace: ccm
+  labels:
+    app: neo4j
+spec:
+  type: LoadBalancer
+  loadBalancerIP: "${neo4j_ip}"
+  selector:
+    app: neo4j
+  ports:
+    - name: bolt
+      protocol: TCP
+      port: 7687
+      targetPort: bolt
+    - name: http
+      protocol: TCP
+      port: 7474
+      targetPort: http

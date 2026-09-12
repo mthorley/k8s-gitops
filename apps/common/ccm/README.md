@@ -60,6 +60,10 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
   sender and all spans were lost silently, with the collector logging
   nothing about it. `otel-collector-config.yaml` now sets the endpoints
   explicitly.
+- **`mthorley/ccm-dashboard:latest` does not exist on Docker Hub yet.**
+  Until it is built and pushed (multi-arch/arm64 — see below) the
+  dashboard pod will sit in `ImagePullBackOff`, and the `ccm-gateway`
+  route will have no healthy backend.
 - The scanner emits `tls.reachable`, `tls.hostname.verified`,
   `tls.certificate.valid` and `tls.error.category`, none of which the
   adapter writes to the graph — the `Endpoint`/`Certificate` nodes carry
@@ -127,19 +131,27 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
 - `namespace.yaml` — the `ccm` namespace.
 - `serviceaccount.yaml` — `ccm` ServiceAccount that
   `components/secrets-eso-vault` issues a long-lived token `Secret` for.
-- `configmap-endpoints.yaml` / `configmap-policies.yaml` — FQDN list and
-  CEL policies for the scanner.
-- `cronjob.yaml` — runs the checker every 10 minutes.
-- `deployment.yaml` — `tls-scanner-api` (on-demand scan over HTTP) + its
-  Service.
-- `otel-collector.yaml` / `otel-collector-config.yaml` — OTLP collector
-  that routes scan traces to Tempo and to `tls-graph-adapter`.
-- `tls-graph-adapter.yaml` — OTLP → Neo4j adapter.
+- `tls-scanner/` — the scanner and its telemetry path, with its own
+  `kustomization.yaml` (referenced as `- tls-scanner` from the parent, the
+  same arrangement as `node-red/netpol`):
+  - `configmap-endpoints.yaml` / `configmap-policies.yaml` — FQDN list and
+    CEL policies for the scanner.
+  - `cronjob.yaml` — runs the checker every 10 minutes.
+  - `deployment.yaml` — `tls-scanner-api` (on-demand scan over HTTP) + its
+    Service.
+  - `otel-collector.yaml` / `otel-collector-config.yaml` — OTLP collector
+    that forwards scan traces to `tls-graph-adapter`.
+  - `tls-graph-adapter.yaml` — OTLP → Neo4j adapter.
 - `neo4j.yaml` — single-node Neo4j StatefulSet backing the graph. Reads
   `secret-ccm` (from `components/secrets-eso-vault`, see notes above).
 - `loadbalancer.yaml` — `neo4j-public`, a MetalLB `LoadBalancer` exposing
   Bolt `7687` and the Browser UI `7474` on `${neo4j_ip}`
   (`192.168.2.21`, set in `clusters/production/ccm.yaml`).
+- `ccm-dashboard.yaml` — the dashboard `Deployment` + ClusterIP Service,
+  reading the graph from Neo4j via `secret-ccm`.
+- `gateway.yaml` — `ccm-gateway` + `HTTPRoute` publishing the dashboard at
+  `https://ccm.${domain}`, with a Let's Encrypt cert from the
+  `pki-certman-letsencrypt` component.
 
 ## Remote access (Neo4j Desktop)
 

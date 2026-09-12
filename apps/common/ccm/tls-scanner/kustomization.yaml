@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - configmap-endpoints.yaml
+  - configmap-policies.yaml
+  - cronjob.yaml
+  - deployment.yaml
+  - otel-collector-config.yaml
+  - otel-collector.yaml
+  - tls-graph-adapter.yaml

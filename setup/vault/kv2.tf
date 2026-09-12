@@ -926,6 +926,9 @@ resource "vault_policy" "ccm-secrets-policy" {
 path "secret/data/ccm" {
   capabilities = ["read", "list"]
 }
+path "secret/data/ccm-cf-api-token" {
+  capabilities = ["read", "list"]
+}
 EOT
 }
 
@@ -946,6 +949,18 @@ resource "vault_kv_secret_v2" "ccm" {
       username = var.NEO4J_USERNAME
       password = var.NEO4J_PASSWORD
       auth     = "${var.NEO4J_USERNAME}/${var.NEO4J_PASSWORD}"
+    }
+  )
+}
+
+# Read by the pki-certman-letsencrypt component's ExternalSecret to solve the
+# ACME DNS-01 challenge for ccm.<domain> (the dashboard Gateway).
+resource "vault_kv_secret_v2" "ccm-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "ccm-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
     }
   )
 }

@@ -5,15 +5,12 @@ namespace: ccm
 resources:
   - namespace.yaml
   - serviceaccount.yaml
-  - configmap-endpoints.yaml
-  - configmap-policies.yaml
-  - cronjob.yaml
-  - deployment.yaml
-  - otel-collector-config.yaml
-  - otel-collector.yaml
-  - tls-graph-adapter.yaml
+  - tls-scanner
   - neo4j.yaml
   - loadbalancer.yaml
+  - ccm-dashboard.yaml
+  - gateway.yaml
 
 components:
   - ../../../components/secrets-eso-vault
+  - ../../../components/pki-certman-letsencrypt

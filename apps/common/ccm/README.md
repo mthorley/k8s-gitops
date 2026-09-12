@@ -60,6 +60,15 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
   sender and all spans were lost silently, with the collector logging
   nothing about it. `otel-collector-config.yaml` now sets the endpoints
   explicitly.
+- **`otlphttp/graph-adapter` sets `compression: none`.** `otlphttp`
+  defaults to gzip, but `tls_graph_adapter/main.py` parses
+  `request.body()` as protobuf and ignores `Content-Encoding`, so every
+  export failed with a protobuf `DecodeError` returned as HTTP 500 — the
+  collector logged `Permanent error ... HTTP Status Code 500` and dropped
+  the batch, while the adapter logged only the bare access line because it
+  re-raises as `HTTPException` without logging the cause. The real fix
+  belongs upstream in the adapter (gunzip when `Content-Encoding: gzip`);
+  drop this setting once that lands.
 - **The `otlp/tempo` exporter is removed.** No Tempo is deployed here, so
   it failed forever (`lookup tempo ... no such host`) and, with
   `retry_on_failure` plus the persistent queue, would fill the 1Gi

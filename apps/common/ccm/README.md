@@ -55,6 +55,16 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
   pin `storageClassName: managed-nfs-storage`, matching every other app
   here — the cluster has no default `StorageClass`, so an unset one would
   never bind.
+- **Neo4j runs as uid/gid `7474` on NFS.** Its entrypoint `chown -R`s
+  `/data` only when running as root, and the NFS export uses
+  `root_squash`, so as root it dies with
+  `chown: changing ownership of '/data/dbms': Operation not permitted`.
+  Running as the image's own `neo4j` user skips the chown; the
+  nfs-subdir provisioner creates volume dirs `0777` so it can still
+  write. Note Neo4j does not officially support NFS for store files
+  (locking/fsync semantics) — if the graph is ever more than a toy,
+  move it to node-local storage (see `frigate/pv.yaml` for the
+  `local-storage` pattern).
 
 ## Layout
 

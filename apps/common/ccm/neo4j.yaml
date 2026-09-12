@@ -30,6 +30,14 @@ spec:
       labels:
         app: neo4j
     spec:
+      # Run as the image's own neo4j user (uid/gid 7474). The entrypoint only
+      # chowns /data when it is running as root, and NFS root_squash denies
+      # that chown ("Operation not permitted" on /data/dbms), so running
+      # non-root skips it. The nfs-subdir provisioner creates volume dirs
+      # 0777, so 7474 can still write.
+      securityContext:
+        runAsUser: 7474
+        runAsGroup: 7474
       containers:
         - name: neo4j
           image: neo4j:5.26-community

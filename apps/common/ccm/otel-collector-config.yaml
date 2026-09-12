@@ -12,8 +12,15 @@ data:
     receivers:
       otlp:
         protocols:
+          # Must be explicit. Since collector v0.110 the OTLP receiver
+          # defaults to localhost, not 0.0.0.0, so leaving these empty makes
+          # the collector reachable only from inside its own pod — every
+          # sender gets "connection refused" on otel-collector:4317 and all
+          # spans are silently lost.
           grpc:
+            endpoint: 0.0.0.0:4317
           http:
+            endpoint: 0.0.0.0:4318
 
     processors:
       batch:
@@ -21,15 +28,11 @@ data:
     exporters:
       debug:
         verbosity: basic
-      otlp/tempo:
-        endpoint: tempo:4317
-        tls:
-          insecure: true
-        retry_on_failure:
-          enabled: true
-        sending_queue:
-          enabled: true
-          storage: file_storage
+      # No Tempo is deployed in this cluster, so the otlp/tempo exporter that
+      # upstream ships is omitted: it could never resolve ("lookup tempo ...
+      # no such host") and, with retry_on_failure plus a persistent queue,
+      # would slowly fill the 1Gi file_storage PVC with undeliverable spans.
+      # Re-add it (and put it back in the traces pipeline) if Tempo lands.
       otlphttp/graph-adapter:
         endpoint: http://tls-graph-adapter:4318
         retry_on_failure:
@@ -44,4 +47,4 @@ data:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [debug, otlp/tempo, otlphttp/graph-adapter]
+          exporters: [debug, otlphttp/graph-adapter]

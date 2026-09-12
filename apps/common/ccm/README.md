@@ -53,6 +53,24 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
   Pinning real tags (or digests) would be better than `:latest` +
   `Always`, since `Always` re-pulls on every pod start and still gives no
   record of which build is running.
+- **The collector must bind `0.0.0.0`, not the default.** Since collector
+  v0.110 the OTLP receiver defaults to `localhost`, so upstream's empty
+  `grpc:`/`http:` protocol blocks made it reachable only from inside its
+  own pod — `otel-collector:4317` gave `connection refused` to every
+  sender and all spans were lost silently, with the collector logging
+  nothing about it. `otel-collector-config.yaml` now sets the endpoints
+  explicitly.
+- **The `otlp/tempo` exporter is removed.** No Tempo is deployed here, so
+  it failed forever (`lookup tempo ... no such host`) and, with
+  `retry_on_failure` plus the persistent queue, would fill the 1Gi
+  `file_storage` PVC with undeliverable spans. Re-add it and put it back
+  in the traces pipeline if Tempo is ever deployed.
+- Editing `otel-collector-config.yaml` does **not** restart the collector
+  — the ConfigMap changes but the Deployment's pod template doesn't, so
+  Flux won't roll it and the collector won't re-read the file. Delete the
+  `tls-scanner-otel` pod after a config change (or convert it to a
+  kustomize `configMapGenerator`, whose name hash would roll the
+  Deployment automatically).
 - **The `CronJob` needs the OTEL env vars explicitly.** Upstream's
   `cronjob.yaml` had no `env:` block, so the SDK fell back to
   `localhost:4317`, every scheduled scan's spans were dropped

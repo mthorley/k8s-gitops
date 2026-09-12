@@ -23,6 +23,17 @@ spec:
                 - "/etc/tls-checker/endpoints/endpoints.yaml"
                 - "--policies-config"
                 - "/etc/tls-checker/policies/policies.yaml"
+              # Without these the SDK defaults to localhost:4317, so every
+              # scheduled scan's spans are dropped ("Transient error
+              # StatusCode.UNAVAILABLE ... localhost:4317") and nothing ever
+              # reaches tls-graph-adapter or Neo4j. Mirrors deployment.yaml.
+              env:
+                - name: OTEL_SERVICE_NAME
+                  value: tls-scanner
+                - name: OTEL_EXPORTER_OTLP_ENDPOINT
+                  value: http://otel-collector:4317
+                - name: TLS_SCANNER_BACKEND
+                  value: sslyze
               volumeMounts:
                 - name: endpoints-config
                   mountPath: /etc/tls-checker/endpoints

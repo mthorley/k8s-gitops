@@ -53,6 +53,14 @@ It needs the same treatment as `torrent`/`node-red`/`node-red-dev`:
   Pinning real tags (or digests) would be better than `:latest` +
   `Always`, since `Always` re-pulls on every pod start and still gives no
   record of which build is running.
+- **The `CronJob` needs the OTEL env vars explicitly.** Upstream's
+  `cronjob.yaml` had no `env:` block, so the SDK fell back to
+  `localhost:4317`, every scheduled scan's spans were dropped
+  (`Transient error StatusCode.UNAVAILABLE ... localhost:4317`, then
+  `Timeout was exceeded in force_flush()`), and nothing reached
+  `tls-graph-adapter` or Neo4j — while the job still exited 0, so it
+  looked healthy. `OTEL_EXPORTER_OTLP_ENDPOINT` must be set here the same
+  way `deployment.yaml` sets it.
 - **The cluster is arm64** (Raspberry Pi nodes), so these images must be
   built multi-arch or arm64 — an amd64-only image fails at runtime with
   `exec /usr/local/bin/uvicorn: exec format error`, not at pull time.

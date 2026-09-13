@@ -39,6 +39,10 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      # Explicit, rather than inheriting the gateway default, to leave headroom
+      # for large graph queries.
+      timeouts:
+        request: 30s
       backendRefs:
         - name: ccm-dashboard
           port: 8080

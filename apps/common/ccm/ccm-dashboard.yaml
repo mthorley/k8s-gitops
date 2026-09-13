@@ -50,7 +50,11 @@ spec:
               cpu: 10m
               memory: 32Mi
             limits:
-              cpu: 100m
+              # 100m CFS-throttled query rendering badly: ~2.3s for 200 rows
+              # against a Neo4j that answers the same query in ~0.19s from a
+              # laptop. Request stays low - the load is spiky and interactive,
+              # so bursting headroom is what matters, not reserved capacity.
+              cpu: 500m
               memory: 128Mi
 ---
 apiVersion: v1

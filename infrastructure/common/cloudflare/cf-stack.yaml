@@ -125,6 +125,15 @@ data:
     # `cloudflare`, so it must be addressed via its fully-qualified in-cluster DNS name.
     - hostname: "${ha_fqdn}"
       service: http://home-assistant.homeassistant.svc.cluster.local:8123
+    # Same shape as Home Assistant: a dedicated FQDN one level under the apex
+    # (see the Universal SSL note above), addressed to the in-cluster Service by
+    # its fully-qualified name. Note this bypasses ccm-gateway entirely, so the
+    # gateway's TLS termination and HTTPRoute rules do not apply here; if a
+    # path rewrite is ever needed, cloudflared cannot do it (it forwards the
+    # request path unchanged) and it would have to be done at the Cloudflare
+    # edge or by routing through the gateway instead.
+    - hostname: "${ccm_fqdn}"
+      service: http://ccm-dashboard.ccm.svc.cluster.local:8080
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404
 ---

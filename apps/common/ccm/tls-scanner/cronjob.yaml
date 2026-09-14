@@ -4,9 +4,16 @@ metadata:
   name: tls-checker
   namespace: ccm
 spec:
-  schedule: "*/10 * * * *"
+  # Once a day at 02:00 local. Deliberately not midnight: the influxdb,
+  # home-assistant and node-red backups all run at 00:00 and are NFS-heavy, and
+  # there is no reason to add to that window on a small cluster.
+  schedule: "0 2 * * *"
+  timeZone: "${cluster_tz}"
   concurrencyPolicy: Forbid
-  startingDeadlineSeconds: 120
+  # Wider than the 120s that suited the old 10-minute cadence: a missed daily
+  # run is a 24h gap, so tolerate a longer controller/node blip before the
+  # scheduler gives up on the run entirely.
+  startingDeadlineSeconds: 600
   jobTemplate:
     spec:
       backoffLimit: 0

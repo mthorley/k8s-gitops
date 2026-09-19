@@ -8,7 +8,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: migrate-influx
+  name: migrate-influx-CHANGEME_K8S
   namespace: victoria-metrics
 spec:
   backoffLimit: 0
@@ -22,7 +22,7 @@ spec:
           image: victoriametrics/vmctl:v1.151.0
           env:
             - name: INFLUX_DB
-              value: "CHANGEME"
+              value: "CHANGEME"  # influx db name; CHANGEME_K8S in the Job name is the same with _ -> - (see migrate-influx.sh)
           args:
             - influx
             - --influx-addr=http://influxdb.influxdb:8086

@@ -13,8 +13,9 @@ spec:
   interval: 1h0m0s
   values:
     server:
-      # months unless a unit suffix is given
-      retentionPeriod: 12
+      # VM rejects samples older than this at ingest, so it must cover the
+      # oldest InfluxDB history being migrated (mid-2022).
+      retentionPeriod: 5y
       persistentVolume:
         enabled: true
         storageClassName: managed-nfs-storage

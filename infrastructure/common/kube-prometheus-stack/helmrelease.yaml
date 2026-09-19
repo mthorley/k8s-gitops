@@ -125,7 +125,8 @@ spec:
 
     # kubeadm control plane. Static pods bind 127.0.0.1 by default; the node
     # needs --bind-address=0.0.0.0 (controller-manager, scheduler) and
-    # --listen-metrics-urls=http://0.0.0.0:2381 (etcd) in
+    # --listen-metrics-urls=http://127.0.0.1:2381,http://<node ip>:2381 (etcd;
+    # not 0.0.0.0, that double-binds the port and etcd crash-loops) in
     # /etc/kubernetes/manifests or these targets stay down. See README.
     kubeControllerManager:
       endpoints:

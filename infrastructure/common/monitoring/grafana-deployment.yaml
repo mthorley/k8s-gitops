@@ -12,6 +12,9 @@ spec:
     # isn't safe for concurrent access. Default RollingUpdate briefly runs
     # old+new pods together, which deadlocks on the index lock file.
     type: Recreate
+    # Explicit null clears the rollingUpdate the live object still carries
+    # from before this strategy was set to Recreate (API rejects both being set).
+    rollingUpdate: null
   selector:
     matchLabels:
       app: grafana

@@ -1,0 +1,7 @@
+# Same object as common/monitoring/setup/0namespace-namespace.yaml. It must stay
+# in the flux inventory when a cluster switches from ../monitoring to this
+# stack, otherwise prune deletes the namespace (and grafana, vault secrets...).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring

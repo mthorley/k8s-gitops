@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Staging monitoring: kube-prometheus-stack (operator, prometheus, alertmanager,
+# kube-state-metrics, node-exporter, default rules) plus the pieces of
+# ../../common/monitoring that it does not replace. Production still runs the
+# whole of common/monitoring; promote by pointing it at this layout.
+#
+# Individual files are referenced (rather than the common kustomization) so the
+# objects keep their identity in the flux inventory and are updated, not
+# pruned and recreated, during the cutover.
+resources:
+  - ../../common/kube-prometheus-stack
+
+  # grafana (chart grafana disabled; grafana.ini comes from vault)
+  - ../../common/monitoring/grafana-dashboardDatasources.yaml
+  - ../../common/monitoring/grafana-dashboardDefinitions.yaml
+  - ../../common/monitoring/grafana-dashboardSources.yaml
+  - ../../common/monitoring/grafana-deployment.yaml
+  - ../../common/monitoring/grafana-service.yaml
+  - ../../common/monitoring/grafana-serviceAccount.yaml
+  - ../../common/monitoring/grafana-serviceMonitor.yaml
+  - ../../common/monitoring/grafana-storage.yaml
+  - ../../common/monitoring/external-secrets.yaml
+
+  # ingress + tls (backends resolve via the prometheus-k8s / alertmanager-main
+  # shim services in kube-prometheus-stack/services.yaml)
+  - ../../common/monitoring/ingress-alertmanager.yaml
+  - ../../common/monitoring/ingress-grafana.yaml
+  - ../../common/monitoring/ingress-prometheus.yaml
+  - ../../common/monitoring/cert.yaml
+  - ../../common/monitoring/cert-issuer.yaml
+
+  # metrics.k8s.io (kubectl top / HPA) backed by prometheus
+  - ../../common/monitoring/prometheus-adapter-apiService.yaml
+  - ../../common/monitoring/prometheus-adapter-clusterRole.yaml
+  - ../../common/monitoring/prometheus-adapter-clusterRoleAggregatedMetricsReader.yaml
+  - ../../common/monitoring/prometheus-adapter-clusterRoleBinding.yaml
+  - ../../common/monitoring/prometheus-adapter-clusterRoleBindingDelegator.yaml
+  - ../../common/monitoring/prometheus-adapter-clusterRoleServerResources.yaml
+  - ../../common/monitoring/prometheus-adapter-configMap.yaml
+  - ../../common/monitoring/prometheus-adapter-deployment.yaml
+  - ../../common/monitoring/prometheus-adapter-roleBindingAuthReader.yaml
+  - ../../common/monitoring/prometheus-adapter-service.yaml
+  - ../../common/monitoring/prometheus-adapter-serviceAccount.yaml
+
+  # metallb speaker/controller metrics
+  - ../../common/monitoring/metallbexporter-clusterRole.yaml
+  - ../../common/monitoring/metallbexporter-clusterRoleBinding.yaml
+  - ../../common/monitoring/metallbexporter-service.yaml
+  - ../../common/monitoring/metallbexporter-serviceMonitor.yaml
+
+  # Dropped from common/monitoring on purpose:
+  #  - prometheus-operator (setup/), prometheus, alertmanager, node-exporter,
+  #    kube-state-metrics, prometheus-rules, apiserver/coredns/kubelet/
+  #    controller-manager/scheduler ServiceMonitors: all provided by the chart
+  #  - arm-exporter: privileged + kube-rbac-proxy sidecar; node-exporter 1.x
+  #    exposes the same SoC temperature as node_thermal_zone_temp

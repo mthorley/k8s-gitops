@@ -1,0 +1,134 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+spec:
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+      version: "91.4.1"
+  interval: 1h0m0s
+  # the pis are slow to pull the operator/prometheus/alertmanager images
+  timeout: 15m
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    # keep the monitoring.coreos.com CRDs in lockstep with the chart
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  values:
+    # grafana is deployed from common/monitoring (vault-generated grafana.ini,
+    # terraform-managed dashboards); it reaches prometheus via the
+    # prometheus-k8s shim in services.yaml
+    grafana:
+      enabled: false
+
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          memory: 300Mi
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 64Mi
+
+    prometheus:
+      prometheusSpec:
+        externalUrl: https://prometheus.${domain}
+        scrapeInterval: 30s
+        retention: 7d
+        # hard cap so the WAL/TSDB can't balloon on the unquota'd NFS share;
+        # whichever of retention/retentionSize hits first wins
+        retentionSize: 8GB
+        # pick up every ServiceMonitor/PodMonitor/PrometheusRule/Probe in the
+        # cluster, not just the chart's own (vault, metallb, victoria-metrics,
+        # grafana...)
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            # the previous instance grew to 1.9Gi with no limit and a 400Mi
+            # request; OOM-restart is preferable to swapping the node
+            memory: 2Gi
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: managed-nfs-storage
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 10Gi
+
+    alertmanager:
+      alertmanagerSpec:
+        externalUrl: https://alertmanager.${domain}
+        resources:
+          requests:
+            cpu: 10m
+            memory: 50Mi
+          limits:
+            memory: 150Mi
+        # persist silences/notification log across restarts
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: managed-nfs-storage
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 1Gi
+
+    kube-state-metrics:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          memory: 200Mi
+
+    prometheus-node-exporter:
+      # no cpu limit: the old daemonset had 250m and CPUThrottlingHigh fired
+      # on every node
+      resources:
+        requests:
+          cpu: 50m
+          memory: 32Mi
+        limits:
+          memory: 100Mi
+
+    # kubeadm control plane. Static pods bind 127.0.0.1 by default; the node
+    # needs --bind-address=0.0.0.0 (controller-manager, scheduler) and
+    # --listen-metrics-urls=http://0.0.0.0:2381 (etcd) in
+    # /etc/kubernetes/manifests or these targets stay down. See README.
+    kubeControllerManager:
+      endpoints:
+        - ${controlplane_ip}
+    kubeScheduler:
+      endpoints:
+        - ${controlplane_ip}
+    kubeEtcd:
+      endpoints:
+        - ${controlplane_ip}
+
+    # kube-proxy metrics bind 127.0.0.1:10249 and cilium is the intended
+    # replacement, so don't scrape it (would only produce KubeProxyDown)
+    kubeProxy:
+      enabled: false

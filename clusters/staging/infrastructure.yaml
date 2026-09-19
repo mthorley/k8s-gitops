@@ -17,6 +17,7 @@ spec:
         name: cluster-vars
     substitute:
       nfs_server_ip: 192.168.3.111
+      controlplane_ip: 192.168.3.101
       # FIXME: Ingress this up
       hubble_ui_ip: 192.168.3.11
       influxdb_ip: 192.168.3.20

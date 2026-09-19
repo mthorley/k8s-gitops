@@ -49,6 +49,23 @@ kube-proxy is not scraped (`kubeProxy.enabled: false`): it also binds
 4. `arm-exporter` is gone; SoC temperature is `node_thermal_zone_temp` from
    node-exporter.
 
+## Dashboards
+
+`dashboards/*.json` are packaged as ConfigMaps (`grafana-dashboard-<name>`,
+no hash suffix) and mounted into the common/monitoring grafana by each
+cluster's `grafana-deployment-patch.yaml` at
+`/grafana-dashboard-definitions/0/<name>`; the existing file provider picks
+them up on its next scan. Grafana's UI edits are not persisted for provisioned
+dashboards - change the JSON here.
+
+- **App Health** (`app-health`): single page - firing alerts (minus
+  Watchdog/InfoInhibitor), per-namespace pod health / restarts / cpu / memory /
+  network, containers near their memory limit or CPU-throttled, node cpu /
+  memory / SoC temperature / NIC throughput / load, filesystem and NFS
+  client/server activity, PVC usage, and prometheus TSDB self-health (head
+  span, compactions/h, WAL size). Every panel that caught or would have caught
+  the 2026-09-20 NFS write storm is on it.
+
 ## Promoting to production
 
 Add `controlplane_ip` to `clusters/production/infrastructure.yaml`, create

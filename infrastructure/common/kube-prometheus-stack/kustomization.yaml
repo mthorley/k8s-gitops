@@ -7,3 +7,13 @@ resources:
   - helmrepository.yaml
   - helmrelease.yaml
   - services.yaml
+
+# Dashboards for the existing grafana deployment (common/monitoring), which
+# loads /grafana-dashboard-definitions/0/* from named ConfigMaps rather than a
+# sidecar. Each cluster's grafana-deployment patch mounts them.
+configMapGenerator:
+  - name: grafana-dashboard-app-health
+    files:
+      - dashboards/app-health.json
+    options:
+      disableNameSuffixHash: true

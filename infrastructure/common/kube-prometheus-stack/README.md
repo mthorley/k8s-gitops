@@ -25,10 +25,12 @@ control-plane node edit `/etc/kubernetes/manifests/`:
 |---|---|
 | `kube-controller-manager.yaml` | `--bind-address=127.0.0.1` → `--bind-address=0.0.0.0` |
 | `kube-scheduler.yaml` | `--bind-address=127.0.0.1` → `--bind-address=0.0.0.0` |
-| `etcd.yaml` | `--listen-metrics-urls=http://127.0.0.1:2381` → `--listen-metrics-urls=http://127.0.0.1:2381,http://0.0.0.0:2381` |
+| `etcd.yaml` | `--listen-metrics-urls=http://127.0.0.1:2381` → `--listen-metrics-urls=http://127.0.0.1:2381,http://<node ip>:2381` (not `0.0.0.0`: it double-binds the port with the loopback listener and etcd crash-loops) |
 
 kubelet restarts each static pod when its manifest changes. The node IP is
 `${controlplane_ip}`, substituted by the cluster's flux Kustomization.
+Restarting etcd takes the API server down for about a minute; do it when
+nothing else is being rolled out.
 
 kube-proxy is not scraped (`kubeProxy.enabled: false`): it also binds
 `127.0.0.1` and cilium is the intended replacement.

@@ -79,6 +79,7 @@ flux leaves grafana's `${var}` references alone.
 | folder | dashboard | source |
 |---|---|---|
 | Cluster | App Health (`app-health`) | built here: alerts, per-namespace app health, nodes, NFS, prometheus self-health |
+| Cluster | Kubernetes cluster monitoring (via Prometheus) (`Xjag-X7vk`) | the grafana.com #315 summary from the old stack; temperature panel moved to `node_thermal_zone_temp`, cAdvisor `pod_name` labels updated |
 | Home | Power, Tasmota, Rack Controller Temperatures | moved from setup/monitoring (terraform) |
 | Security | Falco Events, Cloudflare Tunnels | moved from setup/monitoring (terraform) |
 

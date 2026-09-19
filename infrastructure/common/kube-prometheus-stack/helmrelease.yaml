@@ -113,6 +113,15 @@ spec:
           memory: 32Mi
         limits:
           memory: 100Mi
+      prometheus:
+        monitor:
+          # instance=<node name> instead of <pod ip>:9100, as the old
+          # kube-prometheus manifests did; dashboards/alerts read better and
+          # the label survives pod restarts
+          relabelings:
+            - action: replace
+              sourceLabels: [__meta_kubernetes_pod_node_name]
+              targetLabel: instance
 
     # kubeadm control plane. Static pods bind 127.0.0.1 by default; the node
     # needs --bind-address=0.0.0.0 (controller-manager, scheduler) and

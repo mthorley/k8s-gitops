@@ -683,6 +683,45 @@ resource "vault_kv_secret_v2" "kagent-cf-api-token" {
 }
 
 # -----------------------------------------------------------------------------
+# victoria-metrics
+#
+# Same shape as adguard: cert only, no app-level secret. Bound to the
+# "victoria-metrics" SA (infrastructure/common/victoria-metrics/serviceaccount.yaml),
+# not the chart-created SA the vmsingle pod runs as.
+
+resource "vault_policy" "victoria-metrics-secrets-policy" {
+  name = "victoria-metrics-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/victoria-metrics" {
+  capabilities = ["read", "list"]
+}
+path "secret/data/victoria-metrics-cf-api-token" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "victoria-metrics" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "victoria-metrics-secrets-role"
+  bound_service_account_names      = ["victoria-metrics"]
+  bound_service_account_namespaces = ["victoria-metrics"]
+  token_ttl                        = 86400
+  token_policies                   = ["victoria-metrics-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "victoria-metrics-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "victoria-metrics-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}
+
+# -----------------------------------------------------------------------------
 # adguard
 #
 # Migrated from a hand-rolled internal-CA Issuer to the shared

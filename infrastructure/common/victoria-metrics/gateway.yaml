@@ -1,0 +1,39 @@
+# Exposes vmsingle (UI at /vmui, API incl. /api/v1/write) on
+# victoria-metrics.${domain} through envoy-gateway, same shape as kagent/ccm.
+# The cert comes from the pki-certman-letsencrypt component, which issues
+# ${APP}-tls-prod for ${APP}.${domain} via the Cloudflare DNS-01 solver.
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: victoria-metrics-gateway
+spec:
+  gatewayClassName: envoy
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "victoria-metrics.${domain}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: "${APP}-tls-prod"
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: victoria-metrics
+spec:
+  parentRefs:
+    - name: victoria-metrics-gateway
+  hostnames:
+    - "victoria-metrics.${domain}"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        # service name is <release>-<chart>-server
+        - name: victoria-metrics-victoria-metrics-single-server
+          port: 8428

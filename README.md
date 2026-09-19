@@ -24,6 +24,7 @@ Two physically separate Pi clusters
 | [metallb](https://metallb.universe.tf/) | raw manifests | BGP routing from Unifi to k8s for both staging and production clusters |
 | [nfs-storage](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/charts/nfs-subdir-external-provisioner) | raw manifests | NFS storage |
 | [vault](https://www.vaultproject.io/docs/platform/k8s/helm) | helm (TBD) | Secrets management |
+| [victoria-metrics](https://docs.victoriametrics.com/victoriametrics/single-server-victoriametrics/) | flux HelmRelease | Long-term metrics storage (Prometheus remote write), exposed via envoy-gateway |
  
 ### Apps
 

@@ -1,0 +1,41 @@
+# One-shot migration of historical InfluxDB 1.8 data into VictoriaMetrics
+# using vmctl. Deliberately NOT in kustomization.yaml: a Job is immutable and
+# only makes sense to run once per database, by hand. See README.md.
+#
+# Series land as <measurement>_<field>{<tags>, db="<INFLUX_DB>"} - the same
+# naming VM gives live InfluxDB line protocol writes, so once Node-RED is
+# repointed at VM the migrated history and new data form continuous series.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-influx
+  namespace: victoria-metrics
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 86400
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: vmctl
+          # keep in step with the chart's appVersion in helmrelease.yaml
+          image: victoriametrics/vmctl:v1.151.0
+          env:
+            - name: INFLUX_DB
+              value: "CHANGEME"
+          args:
+            - influx
+            - --influx-addr=http://influxdb.influxdb:8086
+            - --influx-database=$(INFLUX_DB)
+            - --influx-chunk-size=10000
+            - --influx-concurrency=1
+            - --vm-addr=http://victoria-metrics-victoria-metrics-single-server:8428
+            - --vm-concurrency=2
+            - --disable-progress-bar
+            - -s
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 512Mi

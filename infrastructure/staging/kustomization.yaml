@@ -33,3 +33,4 @@ patchesStrategicMerge:
 #  - cert-issuer-authentik.yaml
   - cert-issuer-monitoring.yaml
   - grafana-deployment-patch.yaml
+  - grafana-datasources-patch.yaml

@@ -8,6 +8,7 @@ resources:
   - helmrepository.yaml
   - helmrelease.yaml
   - gateway.yaml
+  - grafana-datasource.yaml
 
 components:
   - ../../../components/secrets-eso-vault

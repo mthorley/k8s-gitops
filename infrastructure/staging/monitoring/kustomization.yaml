@@ -1,37 +1,28 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# Staging monitoring: kube-prometheus-stack (operator, prometheus, alertmanager,
-# kube-state-metrics, node-exporter, default rules) plus the pieces of
-# ../../common/monitoring that it does not replace. Production still runs the
-# whole of common/monitoring; promote by pointing it at this layout.
+# Staging monitoring, reconciled by the "monitoring" flux Kustomization
+# (clusters/staging/monitoring.yaml, which supplies APP/ACME_EMAIL):
+# kube-prometheus-stack (operator, prometheus, alertmanager,
+# grafana, kube-state-metrics, node-exporter, rules, dashboards, ingresses +
+# letsencrypt cert) plus the pieces of ../../common/monitoring it does not
+# replace. Production still runs the whole of common/monitoring.
 #
 # Individual files are referenced (rather than the common kustomization) so the
-# objects keep their identity in the flux inventory and are updated, not
-# pruned and recreated, during the cutover.
+# objects keep their identity in the flux inventory.
 resources:
   - ../../common/kube-prometheus-stack
 
-  # grafana (chart grafana disabled; grafana.ini comes from vault)
-  - ../../common/monitoring/grafana-dashboardDatasources.yaml
-  - ../../common/monitoring/grafana-dashboardDefinitions.yaml
-  - ../../common/monitoring/grafana-dashboardSources.yaml
-  - ../../common/monitoring/grafana-deployment.yaml
-  - ../../common/monitoring/grafana-service.yaml
-  - ../../common/monitoring/grafana-serviceAccount.yaml
-  - ../../common/monitoring/grafana-serviceMonitor.yaml
+  # the pre-chart grafana's PVC, kept only until its decommission is confirmed;
+  # removing this line makes flux delete the claim (and, with
+  # archiveOnDelete=false, the data)
   - ../../common/monitoring/grafana-storage.yaml
-  - ../../common/monitoring/external-secrets.yaml
+  # ServiceAccount whose token secret (infrastructure/staging/
+  # monitoring-vault-secret.yaml) authenticates the vault-backend SecretStore
+  - ../../common/monitoring/grafana-serviceAccount.yaml
 
-  # ingress + tls (backends resolve via the prometheus-k8s / alertmanager-main
-  # shim services in kube-prometheus-stack/services.yaml)
-  - ../../common/monitoring/ingress-alertmanager.yaml
-  - ../../common/monitoring/ingress-grafana.yaml
-  - ../../common/monitoring/ingress-prometheus.yaml
-  - ../../common/monitoring/cert.yaml
-  - ../../common/monitoring/cert-issuer.yaml
-
-  # metrics.k8s.io (kubectl top / HPA) backed by prometheus
+  # metrics.k8s.io (kubectl top / HPA) backed by prometheus, via the
+  # prometheus-k8s shim service
   - ../../common/monitoring/prometheus-adapter-apiService.yaml
   - ../../common/monitoring/prometheus-adapter-clusterRole.yaml
   - ../../common/monitoring/prometheus-adapter-clusterRoleAggregatedMetricsReader.yaml
@@ -52,7 +43,9 @@ resources:
 
   # Dropped from common/monitoring on purpose:
   #  - prometheus-operator (setup/), prometheus, alertmanager, node-exporter,
-  #    kube-state-metrics, prometheus-rules, apiserver/coredns/kubelet/
-  #    controller-manager/scheduler ServiceMonitors: all provided by the chart
-  #  - arm-exporter: privileged + kube-rbac-proxy sidecar; node-exporter 1.x
-  #    exposes the same SoC temperature as node_thermal_zone_temp
+  #    kube-state-metrics, prometheus-rules, the kube ServiceMonitors: chart
+  #  - grafana deployment/service/serviceMonitor/datasources/dashboard
+  #    ConfigMaps, external-secrets (grafana.ini): chart grafana with sidecars
+  #  - ingress-*, cert.yaml, cert-issuer.yaml (vault issuer): chart ingresses
+  #    with the letsencrypt component's certificate
+  #  - arm-exporter: node-exporter exposes node_thermal_zone_temp

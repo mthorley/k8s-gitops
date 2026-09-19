@@ -1,0 +1,19 @@
+# Provisioned into grafana by the kube-prometheus-stack sidecar
+# (grafana_datasource label). Same name as the previous staging
+# grafana-datasources patch so existing dashboards keep resolving it.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource-victoriametrics
+  labels:
+    grafana_datasource: "1"
+data:
+  victoriametrics.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: victoriametrics
+        uid: victoriametrics
+        type: prometheus
+        access: proxy
+        url: http://victoria-metrics-victoria-metrics-single-server.victoria-metrics.svc:8428
+        editable: false

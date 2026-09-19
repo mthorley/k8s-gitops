@@ -24,9 +24,9 @@
         "label": "Datasource",
         "type": "datasource",
         "query": "prometheus",
-        "regex": "/^prometheus$/",
+        "regex": "/^[Pp]rometheus$/",
         "current": {
-          "text": "prometheus",
+          "text": "Prometheus",
           "value": "prometheus"
         },
         "hide": 0

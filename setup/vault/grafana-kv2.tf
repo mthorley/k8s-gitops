@@ -16,6 +16,9 @@ path "secret/data/grafana" {
 path "secret/data/certs" {
   capabilities = ["read", "list"]
 }
+path "secret/data/grafana-cf-api-token" {
+  capabilities = ["read", "list"]
+}
 EOT
 }
 
@@ -54,3 +57,15 @@ resource "vault_kv_secret_v2" "grafana" {
     }
   )
 }*/
+
+# ACME DNS-01 token for the monitoring ingresses (grafana/prometheus/alertmanager),
+# consumed by components/pki-certman-letsencrypt with APP=grafana.
+resource "vault_kv_secret_v2" "grafana-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "grafana-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}

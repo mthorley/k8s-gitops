@@ -23,11 +23,61 @@ spec:
     remediation:
       retries: 3
   values:
-    # grafana is deployed from common/monitoring (vault-generated grafana.ini,
-    # terraform-managed dashboards); it reaches prometheus via the
-    # prometheus-k8s shim in services.yaml
     grafana:
-      enabled: false
+      enabled: true
+      defaultDashboardsTimezone: browser
+      # fresh instance on its own PVC; the pre-chart grafana's sqlite
+      # (grafana-storage) is left to be decommissioned. Everything grafana
+      # needs is provisioned (sidecar dashboards/datasources) or applied by
+      # terraform (setup/monitoring), so there is nothing to migrate.
+      persistence:
+        enabled: true
+        storageClassName: managed-nfs-storage
+        size: 5Gi
+      initChownData:
+        # NFS
+        enabled: false
+      testFramework:
+        enabled: false
+      grafana.ini:
+        server:
+          root_url: https://grafana.${domain}
+        auth.anonymous:
+          enabled: false
+        # carried over from the old vault-templated grafana.ini; no smtp-server
+        # service exists yet so this is inert until one does
+        smtp:
+          enabled: true
+          host: smtp-server.monitoring.svc:25
+          from_address: myemail@gmail.com
+          from_name: Grafana Alert
+          skip_verify: true
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - grafana.${domain}
+        tls:
+          - secretName: ${APP}-tls-prod
+            hosts:
+              - grafana.${domain}
+      sidecar:
+        # any ConfigMap labelled grafana_dashboard=1 / grafana_datasource=1 in
+        # any namespace is provisioned, so apps ship their own next to their
+        # manifests (see dashboards/ here, victoria-metrics/grafana-datasource)
+        dashboards:
+          searchNamespace: ALL
+          folderAnnotation: grafana_folder
+          provider:
+            foldersFromFilesStructure: true
+        datasources:
+          searchNamespace: ALL
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          memory: 768Mi
 
     prometheusOperator:
       resources:
@@ -45,6 +95,15 @@ spec:
             memory: 64Mi
 
     prometheus:
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - prometheus.${domain}
+        tls:
+          - secretName: ${APP}-tls-prod
+            hosts:
+              - prometheus.${domain}
       prometheusSpec:
         externalUrl: https://prometheus.${domain}
         scrapeInterval: 30s
@@ -78,6 +137,15 @@ spec:
                   storage: 10Gi
 
     alertmanager:
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - alertmanager.${domain}
+        tls:
+          - secretName: ${APP}-tls-prod
+            hosts:
+              - alertmanager.${domain}
       alertmanagerSpec:
         externalUrl: https://alertmanager.${domain}
         resources:
@@ -104,6 +172,14 @@ spec:
         limits:
           memory: 200Mi
 
+    nodeExporter:
+      # only ship the linux node dashboards
+      operatingSystems:
+        aix:
+          enabled: false
+        darwin:
+          enabled: false
+
     prometheus-node-exporter:
       # no cpu limit: the old daemonset had 250m and CPUThrottlingHigh fired
       # on every node
@@ -123,20 +199,14 @@ spec:
               sourceLabels: [__meta_kubernetes_pod_node_name]
               targetLabel: instance
 
-    # kubeadm control plane. Static pods bind 127.0.0.1 by default; the node
-    # needs --bind-address=0.0.0.0 (controller-manager, scheduler) and
+    # kubeadm control plane: the chart's Services select the static pods by
+    # their component=kube-controller-manager|kube-scheduler|etcd labels, and as
+    # they are hostNetwork the endpoints resolve to the node IP(s) without
+    # listing them here. The pods bind 127.0.0.1 by default; the node needs
+    # --bind-address=0.0.0.0 (controller-manager, scheduler) and
     # --listen-metrics-urls=http://127.0.0.1:2381,http://<node ip>:2381 (etcd;
     # not 0.0.0.0, that double-binds the port and etcd crash-loops) in
     # /etc/kubernetes/manifests or these targets stay down. See README.
-    kubeControllerManager:
-      endpoints:
-        - ${controlplane_ip}
-    kubeScheduler:
-      endpoints:
-        - ${controlplane_ip}
-    kubeEtcd:
-      endpoints:
-        - ${controlplane_ip}
 
     # kube-proxy metrics bind 127.0.0.1:10249 and cilium is the intended
     # replacement, so don't scrape it (would only produce KubeProxyDown)

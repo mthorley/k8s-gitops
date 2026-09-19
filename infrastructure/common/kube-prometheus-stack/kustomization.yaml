@@ -8,12 +8,59 @@ resources:
   - helmrelease.yaml
   - services.yaml
 
-# Dashboards for the existing grafana deployment (common/monitoring), which
-# loads /grafana-dashboard-definitions/0/* from named ConfigMaps rather than a
-# sidecar. Each cluster's grafana-deployment patch mounts them.
+components:
+  # letsencrypt cert ${APP}-tls-prod for the three ingresses (APP=grafana);
+  # needs secret/grafana-cf-api-token in vault (setup/vault/grafana-kv2.tf)
+  - ../../../components/pki-certman-letsencrypt
+
+patches:
+  # the component issues ${APP}.${domain} only; prometheus and alertmanager
+  # share the same certificate
+  - target:
+      kind: Certificate
+      # regex: kustomize anchors target names, and ${APP} would be read as one
+      name: .*-tls-prod
+    patch: |
+      - op: add
+        path: /spec/dnsNames/-
+        value: prometheus.${domain}
+      - op: add
+        path: /spec/dnsNames/-
+        value: alertmanager.${domain}
+
+# Dashboards and datasources, provisioned by the grafana sidecars via the
+# grafana_dashboard / grafana_datasource labels. Drop a json in dashboards/
+# (grafana_folder annotation = folder) or a provisioning yaml in datasources/
+# and add it here.
+#
+# substitute=disabled: dashboard json is full of grafana ${var} references,
+# which flux postBuild substitution would otherwise blank out.
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
 configMapGenerator:
   - name: grafana-dashboard-app-health
-    files:
-      - dashboards/app-health.json
-    options:
-      disableNameSuffixHash: true
+    files: [dashboards/app-health.json]
+    options: {labels: {grafana_dashboard: "1"}, annotations: {grafana_folder: Cluster}}
+  - name: grafana-dashboard-power
+    files: [dashboards/power.json]
+    options: {labels: {grafana_dashboard: "1"}, annotations: {grafana_folder: Home}}
+  - name: grafana-dashboard-tasmota
+    files: [dashboards/tasmota.json]
+    options: {labels: {grafana_dashboard: "1"}, annotations: {grafana_folder: Home}}
+  - name: grafana-dashboard-rack-controller-temperatures
+    files: [dashboards/rack-controller-temperatures.json]
+    options: {labels: {grafana_dashboard: "1"}, annotations: {grafana_folder: Home}}
+  - name: grafana-dashboard-falco-events
+    files: [dashboards/falco-events.json]
+    options: {labels: {grafana_dashboard: "1"}, annotations: {grafana_folder: Security}}
+  - name: grafana-dashboard-cloudflare-tunnels
+    files: [dashboards/cloudflare-tunnels.json]
+    options: {labels: {grafana_dashboard: "1"}, annotations: {grafana_folder: Security}}
+  - name: grafana-datasource-influxdb
+    files: [datasources/influxdb.yaml]
+    options: {labels: {grafana_datasource: "1"}}
+  - name: grafana-datasource-loki
+    files: [datasources/loki.yaml]
+    options: {labels: {grafana_datasource: "1"}}

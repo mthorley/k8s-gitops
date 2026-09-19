@@ -1,0 +1,36 @@
+# uids match setup/monitoring/grafana-datasource.tf (still applied to prod by
+# terraform) so the dashboards resolve on both.
+apiVersion: 1
+datasources:
+  - name: InfluxDB-power
+    uid: gvJin5OVz
+    type: influxdb
+    access: proxy
+    url: http://influxdb.influxdb:8086
+    jsonData:
+      dbName: power
+    editable: false
+  - name: InfluxDB-rackcontroller
+    uid: MmT8wId4z
+    type: influxdb
+    access: proxy
+    url: http://influxdb.influxdb:8086
+    jsonData:
+      dbName: rackcontroller
+    editable: false
+  - name: InfluxDB-unifitemps
+    uid: MmT8wId4y
+    type: influxdb
+    access: proxy
+    url: http://influxdb.influxdb:8086
+    jsonData:
+      dbName: unifitemps
+    editable: false
+  - name: InfluxDB-tasmota
+    uid: ZxLMwSd4z
+    type: influxdb
+    access: proxy
+    url: http://influxdb.influxdb:8086
+    jsonData:
+      dbName: tasmota
+    editable: false

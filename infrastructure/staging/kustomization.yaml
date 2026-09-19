@@ -6,7 +6,6 @@ resources:
   - metallb.yaml
   - ../common/nfs-storage
   - ../common/vault
-  - monitoring  # kube-prometheus-stack + the grafana/adapter parts of common/monitoring
   - monitoring-vaultissuer-role.yaml  # move to common once cluster1 upgraded
   - monitoring-vault-secret-store.yaml
   - monitoring-vault-secret.yaml
@@ -30,6 +29,3 @@ resources:
 #  - ../common/neuvector
 patchesStrategicMerge:
 #  - cert-issuer-authentik.yaml
-  - cert-issuer-monitoring.yaml
-  - grafana-deployment-patch.yaml
-  - grafana-datasources-patch.yaml

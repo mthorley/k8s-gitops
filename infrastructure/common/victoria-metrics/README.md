@@ -46,8 +46,10 @@ SELECT mean("temp") FROM "sensors" WHERE "room"='study' GROUP BY time($__interva
   -> avg_over_time(sensors_temp{db="iot",room="study"}[$__interval])
 ```
 
-Re-running for the same db is safe (VM dedups identical samples), so the
-migration can be repeated just before cutting Node-RED over to write to VM.
+Re-running for the same db is safe because VM runs with
+`-dedup.minScrapeInterval=1ms` (helmrelease.yaml), which drops samples with
+identical timestamps - without that flag VM stores duplicates. The migration
+can therefore be repeated just before cutting Node-RED over to write to VM.
 
 ### Upgrade
 

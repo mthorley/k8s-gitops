@@ -30,7 +30,8 @@ spec:
             - --influx-chunk-size=10000
             - --influx-concurrency=1
             - --vm-addr=http://victoria-metrics-victoria-metrics-single-server:8428
-            - --vm-concurrency=2
+            # keep VM memory in check on the Pi
+            - --vm-concurrency=1
             - --disable-progress-bar
             - -s
           resources:

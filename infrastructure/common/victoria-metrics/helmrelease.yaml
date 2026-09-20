@@ -16,6 +16,10 @@ spec:
       # VM rejects samples older than this at ingest, so it must cover the
       # oldest InfluxDB history being migrated (mid-2022).
       retentionPeriod: 5y
+      extraArgs:
+        # de-duplicate samples with identical timestamps, so re-running the
+        # influx migration (or dual-writing) never double counts
+        dedup.minScrapeInterval: 1ms
       persistentVolume:
         enabled: true
         storageClassName: managed-nfs-storage
@@ -25,7 +29,8 @@ spec:
           cpu: 100m
           memory: 256Mi
         limits:
-          memory: 1Gi
+          # 1Gi was OOMKilled during bulk vmctl imports
+          memory: 2Gi
       # scraped by the prometheus-operator in monitoring ns
       serviceMonitor:
         enabled: true

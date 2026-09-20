@@ -7,8 +7,8 @@ resources:
   - serviceaccount.yaml
   - helmrepository.yaml
   - helmrelease.yaml
-  - services.yaml
   - gateway.yaml
+  - metallb-podmonitor.yaml
 
 components:
   - ../../../components/secrets-eso-vault

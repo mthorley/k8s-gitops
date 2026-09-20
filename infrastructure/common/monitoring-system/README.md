@@ -21,8 +21,9 @@ Added here: `gateway.yaml` exposing grafana / prometheus / alertmanager through
 envoy-gateway on one Gateway (external-dns registers the hostnames from the
 HTTPRoutes), a letsencrypt certificate for it via
 `components/pki-certman-letsencrypt` (APP=grafana, extended to the prometheus
-and alertmanager hostnames), the `prometheus-k8s` / `alertmanager-main` shim
-services, and the dashboards in `dashboards/`.
+and alertmanager hostnames), a PodMonitor for metallb, and the dashboards in
+`dashboards/`. `metrics.k8s.io` comes from `../metrics-server` rather than the
+old prometheus-adapter.
 
 Vault access for the namespace (SecretStore, SA token) comes from
 `components/secrets-eso-vault` with the `${APP}` ServiceAccount in
@@ -30,10 +31,9 @@ Vault access for the namespace (SecretStore, SA token) comes from
 ExternalSecret. (Its own `external-secret-grafana` -> `secret-grafana`, the
 old grafana.ini, is unused by the chart grafana.)
 
-What stays from `../monitoring` (see
-[infrastructure/staging/monitoring](../../staging/monitoring/kustomization.yaml)):
-the old `grafana-storage` PVC until decommissioned, prometheus-adapter, metallb
-ServiceMonitor.
+Nothing is borrowed from `../monitoring` any more; the staging composition
+([infrastructure/staging/monitoring](../../staging/monitoring/kustomization.yaml))
+is just this directory.
 
 This directory needs its own flux Kustomization
 ([clusters/staging/monitoring.yaml](../../../clusters/staging/monitoring.yaml))
@@ -69,8 +69,8 @@ kube-proxy is not scraped (`kubeProxy.enabled: false`): it also binds
    the chart to take over (otherwise every ServiceMonitor/Prometheus in the
    cluster is cascade-deleted):
    `kubectl annotate crd alertmanagers.monitoring.coreos.com podmonitors.monitoring.coreos.com prometheuses.monitoring.coreos.com prometheusrules.monitoring.coreos.com servicemonitors.monitoring.coreos.com thanosrulers.monitoring.coreos.com kustomize.toolkit.fluxcd.io/prune=disabled`
-2. `namespace.yaml` and `services.yaml` re-declare objects from `../monitoring`
-   under the same names so they are updated rather than pruned.
+2. `namespace.yaml` re-declares the namespace from `../monitoring` under the
+   same name so it is updated rather than pruned.
 3. After the cutover delete the old PVC `prometheus-k8s-db-prometheus-k8s-0`
    in `monitoring`; the chart's prometheus uses a new one.
 4. `arm-exporter` is gone; SoC temperature is `node_thermal_zone_temp` from
@@ -157,10 +157,10 @@ namespace (which moves between them) and everything in it.
 6. Check `kubectl -n monitoring get certificate,gateway,httproute,pvc`, log in
    with the generated admin password, confirm the Cluster folder and
    datasources.
-7. Decommission: drop `grafana-storage.yaml` from the staging composition
-   (flux deletes the old PVC), delete PVC `prometheus-k8s-db-prometheus-k8s-0`
-   and secret `domain-tls`. Recreate the `terraform` / `grafana-mcp` service
-   accounts if staging needs them.
+7. Decommission (done on staging): `grafana-storage.yaml` dropped from the
+   composition (flux deletes the old PVC); PVC
+   `prometheus-k8s-db-prometheus-k8s-0` and secret `domain-tls` deleted by
+   hand. Recreate the `terraform` / `grafana-mcp` service accounts if needed.
 
 ## Promoting to production
 

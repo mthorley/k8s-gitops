@@ -2,47 +2,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 # Staging monitoring, reconciled by the "monitoring" flux Kustomization
-# (clusters/staging/monitoring.yaml, which supplies APP/ACME_EMAIL):
-# kube-prometheus-stack (operator, prometheus, alertmanager,
-# grafana, kube-state-metrics, node-exporter, rules, dashboards, ingresses +
-# letsencrypt cert) plus the pieces of ../../common/monitoring it does not
-# replace. Production still runs the whole of common/monitoring.
-#
-# Individual files are referenced (rather than the common kustomization) so the
-# objects keep their identity in the flux inventory.
+# (clusters/staging/monitoring.yaml, which supplies APP/ACME_EMAIL).
+# Everything comes from monitoring-system; nothing is borrowed from
+# ../../common/monitoring any more (production still runs that stack).
 resources:
   - ../../common/monitoring-system
-
-  # the pre-chart grafana's PVC, kept only until its decommission is confirmed;
-  # removing this line makes flux delete the claim (and, with
-  # archiveOnDelete=false, the data)
-  - ../../common/monitoring/grafana-storage.yaml
-
-  # metrics.k8s.io (kubectl top / HPA) backed by prometheus, via the
-  # prometheus-k8s shim service
-  - ../../common/monitoring/prometheus-adapter-apiService.yaml
-  - ../../common/monitoring/prometheus-adapter-clusterRole.yaml
-  - ../../common/monitoring/prometheus-adapter-clusterRoleAggregatedMetricsReader.yaml
-  - ../../common/monitoring/prometheus-adapter-clusterRoleBinding.yaml
-  - ../../common/monitoring/prometheus-adapter-clusterRoleBindingDelegator.yaml
-  - ../../common/monitoring/prometheus-adapter-clusterRoleServerResources.yaml
-  - ../../common/monitoring/prometheus-adapter-configMap.yaml
-  - ../../common/monitoring/prometheus-adapter-deployment.yaml
-  - ../../common/monitoring/prometheus-adapter-roleBindingAuthReader.yaml
-  - ../../common/monitoring/prometheus-adapter-service.yaml
-  - ../../common/monitoring/prometheus-adapter-serviceAccount.yaml
-
-  # metallb speaker/controller metrics
-  - ../../common/monitoring/metallbexporter-clusterRole.yaml
-  - ../../common/monitoring/metallbexporter-clusterRoleBinding.yaml
-  - ../../common/monitoring/metallbexporter-service.yaml
-  - ../../common/monitoring/metallbexporter-serviceMonitor.yaml
-
-  # Dropped from common/monitoring on purpose:
-  #  - prometheus-operator (setup/), prometheus, alertmanager, node-exporter,
-  #    kube-state-metrics, prometheus-rules, the kube ServiceMonitors: chart
-  #  - grafana deployment/service/serviceMonitor/datasources/dashboard
-  #    ConfigMaps, external-secrets (grafana.ini): chart grafana with sidecars
-  #  - ingress-*, cert.yaml, cert-issuer.yaml (vault issuer): chart ingresses
-  #    with the letsencrypt component's certificate
-  #  - arm-exporter: node-exporter exposes node_thermal_zone_temp

@@ -5,6 +5,7 @@ resources:
   - ../common/metallb-15
   - metallb.yaml
   - ../common/nfs-storage
+  - ../common/metrics-server  # metrics.k8s.io; production still uses prometheus-adapter from common/monitoring
   - ../common/vault
 #  - ../common/mongodb
   - ../common/influxdb

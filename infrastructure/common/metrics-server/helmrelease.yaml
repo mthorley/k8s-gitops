@@ -1,0 +1,36 @@
+# metrics.k8s.io for kubectl top / HPA. Replaces the prometheus-adapter from
+# common/monitoring: independent of prometheus, so node/pod metrics keep
+# working while prometheus is restarting or unhealthy. Custom-metrics HPA
+# would be a separate prometheus-adapter serving custom.metrics.k8s.io.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: metrics-server
+spec:
+  chart:
+    spec:
+      chart: metrics-server
+      sourceRef:
+        kind: HelmRepository
+        name: metrics-server
+      version: "3.14.0"
+  interval: 1h0m0s
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    args:
+      # kubeadm kubelets serve self-signed certs
+      - --kubelet-insecure-tls
+    resources:
+      requests:
+        cpu: 20m
+        memory: 40Mi
+      limits:
+        memory: 120Mi
+    # scraped via the ServiceMonitor CRD from kube-prometheus-stack
+    serviceMonitor:
+      enabled: true

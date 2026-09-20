@@ -1,14 +1,14 @@
 
 resource "grafana_dashboard" "power" {
-  config_json = file("${path.module}/../../infrastructure/common/kube-prometheus-stack/dashboards/power.json")
+  config_json = file("grafana-dashboardPower.json")
 }
 
 resource "grafana_dashboard" "rackcontroller" {
-  config_json = file("${path.module}/../../infrastructure/common/kube-prometheus-stack/dashboards/rack-controller-temperatures.json")
+  config_json = file("grafana-dashboardRackControllerTemperatures.json")
 }
 
 resource "grafana_dashboard" "tasmota" {
-  config_json = file("${path.module}/../../infrastructure/common/kube-prometheus-stack/dashboards/tasmota.json")
+  config_json = file("grafana-dashboardTasmota.json")
 }
 
 resource "grafana_dashboard" "networklogs" {
@@ -16,9 +16,9 @@ resource "grafana_dashboard" "networklogs" {
 }
 
 resource "grafana_dashboard" "cloudflare_tunnels" {
-  config_json = file("${path.module}/../../infrastructure/common/kube-prometheus-stack/dashboards/cloudflare-tunnels.json")
+  config_json = file("grafana-dashboardCloudflareTunnels.json")
 }
 
 resource "grafana_dashboard" "falco_events" {
-  config_json = file("${path.module}/../../infrastructure/common/kube-prometheus-stack/dashboards/falco-events.json")
+  config_json = file("grafana-dashboardFalcoEvents.json")
 }

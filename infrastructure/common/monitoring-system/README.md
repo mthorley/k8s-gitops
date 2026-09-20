@@ -1,4 +1,9 @@
-# kube-prometheus-stack
+# monitoring-system
+
+The kube-prometheus-stack Helm chart plus the gateway, certificate,
+dashboards and datasources that make up the monitoring stack. The Helm
+release and its objects are still named `kube-prometheus-stack`; the
+namespace is `monitoring`.
 
 Replaces the 2020 jsonnet-generated stack in [../monitoring](../monitoring)
 (prometheus-operator v0.40, prometheus v2.19, kube-state-metrics v1.9,
@@ -82,8 +87,8 @@ flux leaves grafana's `${var}` references alone.
 |---|---|---|
 | Cluster | App Health (`app-health`) | built here: alerts, per-namespace app health, nodes, NFS, prometheus self-health |
 | Cluster | Kubernetes cluster monitoring (via Prometheus) (`Xjag-X7vk`) | the grafana.com #315 summary from the old stack; temperature panel moved to `node_thermal_zone_temp`, cAdvisor `pod_name` labels updated |
-| Home | Power, Tasmota, Rack Controller Temperatures | moved from setup/monitoring (terraform) |
-| Security | Falco Events, Cloudflare Tunnels | moved from setup/monitoring (terraform) |
+| Home | Power, Tasmota, Rack Controller Temperatures | copies of the setup/monitoring (terraform) dashboards |
+| Security | Falco Events, Cloudflare Tunnels | copies of the setup/monitoring (terraform) dashboards |
 
 Datasources: InfluxDB x4 and Loki with the same uids as
 `setup/monitoring/grafana-datasource.tf`, Prometheus/Alertmanager from the
@@ -93,9 +98,9 @@ panel was repointed from the old auto-generated datasource uid to `prometheus`.
 Not carried over: Network Logs (terraform, `setup/monitoring`) and the
 hand-imported Trivy Operator dashboard.
 
-`setup/monitoring` terraform still applies the same JSON files and
-datasources to production until it is promoted; then the `grafana_dashboard`
-and `grafana_data_source` resources go. Not yet gitops: the `Security` alert
+`setup/monitoring` terraform is the old stack's (production's) copy of the
+same dashboards and datasources and is left untouched; it retires when
+production is promoted. Not yet gitops: the `Security` alert
 rule group in `grafana-alerts.tf` (chart supports `sidecar.alerts` for
 file-provisioned alert rules) and the `terraform` / `grafana-mcp` service
 accounts, which have to be recreated on the new instance.

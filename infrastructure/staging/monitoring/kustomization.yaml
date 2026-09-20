@@ -11,7 +11,7 @@ kind: Kustomization
 # Individual files are referenced (rather than the common kustomization) so the
 # objects keep their identity in the flux inventory.
 resources:
-  - ../../common/kube-prometheus-stack
+  - ../../common/monitoring-system
 
   # the pre-chart grafana's PVC, kept only until its decommission is confirmed;
   # removing this line makes flux delete the claim (and, with

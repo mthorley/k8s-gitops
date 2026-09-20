@@ -6,9 +6,6 @@ resources:
   - metallb.yaml
   - ../common/nfs-storage
   - ../common/vault
-  - monitoring-vaultissuer-role.yaml  # move to common once cluster1 upgraded
-  - monitoring-vault-secret-store.yaml
-  - monitoring-vault-secret.yaml
 #  - ../common/mongodb
   - ../common/influxdb
 #  - ../common/apparmor

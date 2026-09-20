@@ -24,10 +24,16 @@ HTTPRoutes), a letsencrypt certificate for it via
 and alertmanager hostnames), the `prometheus-k8s` / `alertmanager-main` shim
 services, and the dashboards in `dashboards/`.
 
+Vault access for the namespace (SecretStore, SA token) comes from
+`components/secrets-eso-vault` with the `${APP}` ServiceAccount in
+`serviceaccount.yaml`; it exists to feed the certificate's Cloudflare-token
+ExternalSecret. (Its own `external-secret-grafana` -> `secret-grafana`, the
+old grafana.ini, is unused by the chart grafana.)
+
 What stays from `../monitoring` (see
 [infrastructure/staging/monitoring](../../staging/monitoring/kustomization.yaml)):
-the `grafana-storage` PVC (grafana's sqlite), the `grafana` ServiceAccount
-(vault SecretStore token), prometheus-adapter, metallb ServiceMonitor.
+the old `grafana-storage` PVC until decommissioned, prometheus-adapter, metallb
+ServiceMonitor.
 
 This directory needs its own flux Kustomization
 ([clusters/staging/monitoring.yaml](../../../clusters/staging/monitoring.yaml))

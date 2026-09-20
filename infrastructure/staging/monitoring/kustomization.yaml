@@ -17,9 +17,6 @@ resources:
   # removing this line makes flux delete the claim (and, with
   # archiveOnDelete=false, the data)
   - ../../common/monitoring/grafana-storage.yaml
-  # ServiceAccount whose token secret (infrastructure/staging/
-  # monitoring-vault-secret.yaml) authenticates the vault-backend SecretStore
-  - ../../common/monitoring/grafana-serviceAccount.yaml
 
   # metrics.k8s.io (kubectl top / HPA) backed by prometheus, via the
   # prometheus-k8s shim service

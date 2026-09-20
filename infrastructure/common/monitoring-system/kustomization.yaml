@@ -4,14 +4,14 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - namespace.yaml
+  - serviceaccount.yaml
   - helmrepository.yaml
   - helmrelease.yaml
   - services.yaml
   - gateway.yaml
 
 components:
-  # letsencrypt cert ${APP}-tls-prod for the gateway listeners (APP=grafana);
-  # needs secret/grafana-cf-api-token in vault (setup/vault/grafana-kv2.tf)
+  - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
 
 patches:

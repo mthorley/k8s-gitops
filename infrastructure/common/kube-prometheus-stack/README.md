@@ -8,11 +8,13 @@ runs `../monitoring`.
 
 What the chart provides: prometheus-operator + CRDs, prometheus, alertmanager,
 grafana (with dashboard/datasource sidecars and the current kubernetes-mixin
-dashboards), kube-state-metrics, node-exporter, the mixin alert rules,
+dashboards), kube-state-metrics, node-exporter, the mixin alert rules and
 ServiceMonitors for apiserver / kubelet / coredns / controller-manager /
-scheduler / etcd, and the three ingresses.
+scheduler / etcd.
 
-Added here: a letsencrypt certificate for the ingresses via
+Added here: `gateway.yaml` exposing grafana / prometheus / alertmanager through
+envoy-gateway on one Gateway (external-dns registers the hostnames from the
+HTTPRoutes), a letsencrypt certificate for it via
 `components/pki-certman-letsencrypt` (APP=grafana, extended to the prometheus
 and alertmanager hostnames), the `prometheus-k8s` / `alertmanager-main` shim
 services, and the dashboards in `dashboards/`.
@@ -126,17 +128,25 @@ namespace (which moves between them) and everything in it.
 1. `terraform apply` in setup/vault (adds `secret/grafana-cf-api-token` and the
    policy path) so the component's ExternalSecret resolves.
 2. `flux suspend kustomization infrastructure`.
-3. Push. The `monitoring` Kustomization is created, applies the composition
-   (re-labelling the moved objects as its own) and upgrades the HelmRelease;
-   chart grafana starts on a new PVC. Both ingresses claim `grafana.${domain}`
-   for a few minutes; ingress-nginx keeps serving the older one until it goes.
+3. Push. `dependsOn: infrastructure` blocks `monitoring` while
+   `infrastructure` is suspended at the old revision, so drop it in-cluster
+   for the first apply (`kubectl -n flux-system patch kustomization monitoring
+   --type json -p '[{"op":"remove","path":"/spec/dependsOn"}]'`; flux-system
+   restores it from git). The composition applies (re-labelling the moved
+   objects as its own) and the HelmRelease upgrades; chart grafana starts on
+   a new PVC.
 4. `flux resume kustomization infrastructure`. Its prune removes the old grafana
    Deployment/Service/ConfigMaps/Secret/ServiceMonitor, the old ingresses and
    the vault-issuer Certificate/Issuer; objects now labelled as owned by
-   `monitoring` are skipped.
-5. Check `kubectl -n monitoring get certificate,ingress,pvc`, log in with the
-   generated admin password, confirm the Cluster folder and datasources.
-6. Decommission: drop `grafana-storage.yaml` from the staging composition
+   `monitoring` are skipped. (When the chart still rendered ingresses, the
+   ingress-nginx admission webhook rejected them until this prune ran.)
+5. DNS: external-dns only manages records carrying its ownership TXT. Delete
+   any hand-made UniFi record for `grafana.${domain}` (it pointed at
+   ingress-nginx) so the Gateway's record can be created.
+6. Check `kubectl -n monitoring get certificate,gateway,httproute,pvc`, log in
+   with the generated admin password, confirm the Cluster folder and
+   datasources.
+7. Decommission: drop `grafana-storage.yaml` from the staging composition
    (flux deletes the old PVC), delete PVC `prometheus-k8s-db-prometheus-k8s-0`
    and secret `domain-tls`. Recreate the `terraform` / `grafana-mcp` service
    accounts if staging needs them.

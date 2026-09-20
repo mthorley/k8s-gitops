@@ -7,9 +7,10 @@ resources:
   - helmrepository.yaml
   - helmrelease.yaml
   - services.yaml
+  - gateway.yaml
 
 components:
-  # letsencrypt cert ${APP}-tls-prod for the three ingresses (APP=grafana);
+  # letsencrypt cert ${APP}-tls-prod for the gateway listeners (APP=grafana);
   # needs secret/grafana-cf-api-token in vault (setup/vault/grafana-kv2.tf)
   - ../../../components/pki-certman-letsencrypt
 

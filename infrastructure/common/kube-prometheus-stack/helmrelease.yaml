@@ -39,6 +39,7 @@ spec:
         enabled: false
       testFramework:
         enabled: false
+      # exposed via envoy-gateway, see gateway.yaml (no chart ingresses)
       grafana.ini:
         server:
           root_url: https://grafana.${domain}
@@ -52,15 +53,6 @@ spec:
           from_address: myemail@gmail.com
           from_name: Grafana Alert
           skip_verify: true
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - grafana.${domain}
-        tls:
-          - secretName: ${APP}-tls-prod
-            hosts:
-              - grafana.${domain}
       sidecar:
         # any ConfigMap labelled grafana_dashboard=1 / grafana_datasource=1 in
         # any namespace is provisioned, so apps ship their own next to their
@@ -95,15 +87,6 @@ spec:
             memory: 64Mi
 
     prometheus:
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - prometheus.${domain}
-        tls:
-          - secretName: ${APP}-tls-prod
-            hosts:
-              - prometheus.${domain}
       prometheusSpec:
         externalUrl: https://prometheus.${domain}
         scrapeInterval: 30s
@@ -137,15 +120,6 @@ spec:
                   storage: 10Gi
 
     alertmanager:
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - alertmanager.${domain}
-        tls:
-          - secretName: ${APP}-tls-prod
-            hosts:
-              - alertmanager.${domain}
       alertmanagerSpec:
         externalUrl: https://alertmanager.${domain}
         resources:

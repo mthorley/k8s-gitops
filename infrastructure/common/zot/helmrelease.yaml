@@ -1,0 +1,77 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zot
+spec:
+  chart:
+    spec:
+      chart: zot
+      sourceRef:
+        kind: HelmRepository
+        name: zot
+      version: "0.1.125"
+  interval: 1h0m0s
+  # the chart's two test pods are helm test hooks; helm-controller does not run
+  # them (spec.test.enable defaults to false), so they are never applied
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    # the chart's default image is a multi-arch manifest that includes
+    # linux/arm64, so it runs on the pis unchanged
+    fullnameOverride: zot
+
+    # reached through the gateway (gateway.yaml), not a node port
+    service:
+      type: ClusterIP
+      port: 5000
+
+    persistence: true
+    pvc:
+      create: true
+      storage: 20Gi
+      storageClassName: managed-nfs-storage
+      accessModes: ["ReadWriteOnce"]
+
+    # the chart only mounts configFiles when mountConfig is set
+    mountConfig: true
+    configFiles:
+      config.json: |-
+        {
+          "storage": {
+            "rootDirectory": "/var/lib/registry",
+            "dedupe": true,
+            "gc": true,
+            "gcDelay": "1h",
+            "gcInterval": "24h"
+          },
+          "http": {
+            "address": "0.0.0.0",
+            "port": "5000"
+          },
+          "log": { "level": "info" },
+          "extensions": {
+            "ui": { "enable": true },
+            "search": { "enable": true },
+            "metrics": { "enable": true, "prometheus": { "path": "/metrics" } }
+          }
+        }
+
+    # /metrics is served by the extension above on the same port; the
+    # ServiceMonitor CRD comes from monitoring-system
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        interval: 30s
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        # image pushes and the search extension's indexing are the memory peaks
+        memory: 1Gi

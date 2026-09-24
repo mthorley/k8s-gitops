@@ -1004,3 +1004,39 @@ resource "vault_kv_secret_v2" "ccm-cf-api-token" {
   )
 }
 
+# -----------------------------------------------------------------------------
+# zot
+#
+# Same shape as victoria-metrics: cert only, no app-level secret (the registry
+# runs without authentication). Bound to the "zot" SA
+# (infrastructure/common/zot/serviceaccount.yaml), not the chart-created SA the
+# registry pod runs as.
+
+resource "vault_policy" "zot-secrets-policy" {
+  name = "zot-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/zot-cf-api-token" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "zot" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "zot-secrets-role"
+  bound_service_account_names      = ["zot"]
+  bound_service_account_namespaces = ["zot"]
+  token_ttl                        = 86400
+  token_policies                   = ["zot-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "zot-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "zot-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}

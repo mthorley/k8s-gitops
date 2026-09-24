@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: zot
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - helmrepository.yaml
+  - helmrelease.yaml
+  - gateway.yaml
+
+components:
+  # vault SecretStore + SA token for this namespace (role ${APP}-secrets-role)
+  - ../../../components/secrets-eso-vault
+  # letsencrypt cert ${APP}-tls-prod for the gateway listener; reads
+  # secret/${APP}-cf-api-token through that SecretStore (setup/vault/kv2.tf)
+  - ../../../components/pki-certman-letsencrypt
+
+patches:
+  # the secrets-eso-vault component ships an ExternalSecret for secret/${APP};
+  # zot has no credentials of its own, only the cloudflare token the
+  # letsencrypt component reads, so drop it rather than leave it permanently
+  # in SecretSyncedError
+  - target:
+      kind: ExternalSecret
+      name: .*\$\{APP\}$
+    patch: |
+      $patch: delete
+      apiVersion: external-secrets.io/v1beta1
+      kind: ExternalSecret
+      metadata:
+        name: external-secret-${APP}

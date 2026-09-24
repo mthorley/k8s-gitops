@@ -1,0 +1,37 @@
+# Exposes the registry on ${APP}.${domain} through envoy-gateway, same shape as
+# victoria-metrics. The cert comes from the pki-certman-letsencrypt component.
+# external-dns (unifi-dns, source gateway-httproute) creates the A record.
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: zot-gateway
+spec:
+  gatewayClassName: envoy
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "${APP}.${domain}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: "${APP}-tls-prod"
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: zot
+spec:
+  parentRefs:
+    - name: zot-gateway
+  hostnames:
+    - "${APP}.${domain}"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: zot
+          port: 5000

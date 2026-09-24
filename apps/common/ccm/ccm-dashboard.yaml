@@ -55,7 +55,7 @@ spec:
               # laptop. Request stays low - the load is spiky and interactive,
               # so bursting headroom is what matters, not reserved capacity.
               cpu: 500m
-              memory: 128Mi
+              memory: 512Mi
 ---
 apiVersion: v1
 kind: Service

@@ -1,12 +1,28 @@
-data "grafana_folder" "folder" {
-  title = "Default"
+# The dashboards and datasources are now provisioned by the grafana sidecar
+# from infrastructure/common/monitoring-system, so terraform only owns these
+# alert rules. It needs a folder of its own: the old "Default" folder does not
+# exist on the chart-deployed grafana, whose folders (Cluster/Home/Security)
+# are created by the dashboard sidecar.
+resource "grafana_folder" "alerts" {
+  title = "Alerts"
+}
+
+# uids of the sidecar-provisioned datasources
+# (monitoring-system/datasources/*.yaml and the chart's own prometheus)
+locals {
+  loki_uid       = "2_DjQId4k"
+  prometheus_uid = "prometheus"
+  # dashboards the alert annotations deep-link to, now provisioned as
+  # ConfigMaps in monitoring-system/dashboards
+  falco_events_uid       = "falco-ha-events"
+  cloudflare_tunnels_uid = "V1SL92dVo"
 }
 
 resource "grafana_rule_group" "security_rules" {
   org_id           = local.org_id
   name             = "Security"
   interval_seconds = 10
-  folder_uid       = data.grafana_folder.folder.uid
+  folder_uid       = grafana_folder.alerts.uid
 
   rule {
     name = "alert_egress_not_network"
@@ -28,7 +44,7 @@ resource "grafana_rule_group" "security_rules" {
         from = 300
         to   = 0
       }
-      datasource_uid = grafana_data_source.loki.uid
+      datasource_uid = local.loki_uid
 
       model = jsonencode({
         editorMode = "code"
@@ -161,7 +177,7 @@ resource "grafana_rule_group" "security_rules" {
     annotations = {
       description : "Alert on any Falco event tagged to the homeassistant namespace (CF-GRF-08) -- surfaces post-compromise activity Falco detects on the HA pod regardless of how access was gained"
       summary : "Falco event in homeassistant namespace"
-      __dashboardUid__ : grafana_dashboard.falco_events.uid
+      __dashboardUid__ : local.falco_events_uid
       __panelId__ : "1"
     }
     condition      = "C"
@@ -178,7 +194,7 @@ resource "grafana_rule_group" "security_rules" {
         from = 300
         to   = 0
       }
-      datasource_uid = grafana_data_source.loki.uid
+      datasource_uid = local.loki_uid
 
       model = jsonencode({
         editorMode = "code"
@@ -311,8 +327,8 @@ resource "grafana_rule_group" "security_rules" {
     annotations = {
       description : "Alert when cloudflared's concurrent-request count sustains well above what's plausible for a household with at most 3 simultaneous users (CF-GRF-02) -- catches scanning, credential-stuffing bursts, or a runaway retry loop, none of which a normal page load would produce"
       summary : "Anomalous concurrent request volume through the Cloudflare tunnel"
-      __dashboardUid__ : grafana_dashboard.cloudflare_tunnels.uid
-      __panelId__ : "4" # "Concurrent Requests" panel, see setup/monitoring/grafana-dashboardCloudflareTunnels.json
+      __dashboardUid__ : local.cloudflare_tunnels_uid
+      __panelId__ : "4" # "Concurrent Requests" panel, see infrastructure/common/monitoring-system/dashboards/cloudflare-tunnels.json
     }
     condition      = "C"
     for            = "2m"
@@ -329,10 +345,10 @@ resource "grafana_rule_group" "security_rules" {
         to   = 0
       }
       # Prometheus datasource UID as used by the existing cloudflared panels
-      // in grafana-dashboardCloudflareTunnels.json. Not Terraform-managed
+      // in monitoring-system/dashboards/cloudflare-tunnels.json. Not Terraform-managed
       // here (auto-provisioned by kube-prometheus-stack) -- re-check this
       // UID against the live instance if it's ever regenerated.
-      datasource_uid = "P1809F7CD0C75ACF3"
+      datasource_uid = local.prometheus_uid
 
       model = jsonencode({
         editorMode = "code"
@@ -453,8 +469,8 @@ resource "grafana_rule_group" "security_rules" {
     annotations = {
       description : "Alert on a burst of 4xx/5xx responses from cloudflared (CF-GRF-01) -- covers auth failures (401), forbidden (403), not-found/scanning (404), and origin errors (5xx) in one rule. Deliberately excludes 2xx and 3xx: 304 Not Modified alone would fire constantly from normal browser asset caching, and that's not a signal of anything wrong"
       summary : "Spike in error responses through the Cloudflare tunnel"
-      __dashboardUid__ : grafana_dashboard.cloudflare_tunnels.uid
-      __panelId__ : "3" # "Response By Code" panel, see setup/monitoring/grafana-dashboardCloudflareTunnels.json
+      __dashboardUid__ : local.cloudflare_tunnels_uid
+      __panelId__ : "3" # "Response By Code" panel, see infrastructure/common/monitoring-system/dashboards/cloudflare-tunnels.json
     }
     condition      = "C"
     for            = "0s"
@@ -470,7 +486,7 @@ resource "grafana_rule_group" "security_rules" {
         from = 300
         to   = 0
       }
-      datasource_uid = "P1809F7CD0C75ACF3" # Prometheus, see the concurrent-requests rule above
+      datasource_uid = local.prometheus_uid # Prometheus, see the concurrent-requests rule above
 
       model = jsonencode({
         editorMode = "code"

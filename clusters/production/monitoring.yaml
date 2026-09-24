@@ -1,0 +1,25 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: monitoring
+  namespace: flux-system
+spec:
+  interval: 30m0s
+  dependsOn:
+    # vault + external-secrets (cf token), cert-manager, nfs storage class,
+    # and the vault-backend SecretStore in monitoring
+    - name: infrastructure
+    - name: gateway-api-crds
+    - name: envoy-gateway
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/production/monitoring
+  prune: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
+    substitute:
+      APP: "grafana"
+      ACME_EMAIL: "matt.thorley@gmail.com"

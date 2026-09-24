@@ -104,9 +104,11 @@ panel was repointed from the old auto-generated datasource uid to `prometheus`.
 Not carried over: Network Logs (terraform, `setup/monitoring`) and the
 hand-imported Trivy Operator dashboard.
 
-`setup/monitoring` terraform is the old stack's (production's) copy of the
-same dashboards and datasources and is left untouched; it retires when
-production is promoted. Not yet gitops: the `Security` alert
+`setup/monitoring` terraform no longer manages dashboards or datasources (its
+`main.tf` and `grafana-datasource.tf` were retired when production was
+promoted); it keeps only the `Security` alert rule group, which now targets its
+own "Alerts" folder and references the sidecar-provisioned datasource uids via
+locals. The Network Logs dashboard was dropped rather than carried over. Not yet gitops: the `Security` alert
 rule group in `grafana-alerts.tf` (chart supports `sidecar.alerts` for
 file-provisioned alert rules) and the `terraform` / `grafana-mcp` service
 accounts, which have to be recreated on the new instance.

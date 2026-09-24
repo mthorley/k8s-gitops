@@ -4,17 +4,13 @@ kind: Kustomization
 resources:
   - ../common/cilium
   - ../common/metallb-15
+  - ../common/metrics-server  # metrics.k8s.io, replaces the old prometheus-adapter
   - metallb.yaml
   - ../common/nfs-storage
   - ../common/vault
   - ../common/external-secrets
   - ../common/certmanager-1.12
   - ../common/ingress
-  - ../common/monitoring/setup
-  - ../common/monitoring
-  - monitoring-vaultissuer-role.yaml  # move to common once cluster1 upgraded
-  - monitoring-vault-secret-store.yaml
-  - monitoring-vault-secret.yaml
 #  - ../common/mongodb
   - ../common/influxdb
   # loki: moved to its own clusters/production/loki.yaml Kustomization
@@ -25,5 +21,3 @@ resources:
 #  - ../common/grafana-mcp
 #  - grafana-mcp-vault-secret-store.yaml
 #  - grafana-mcp-vault-secret.yaml
-patchesStrategicMerge:
-  - cert-issuer-monitoring.yaml

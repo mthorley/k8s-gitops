@@ -21,9 +21,15 @@ spec:
           type: RuntimeDefault
       containers:
       - name: node-red
+        # mirrored into each cluster's own zot (infrastructure/common/zot) from
+        # docker.io/mthorley/node-red with `crane copy`, so the two clusters do
+        # not depend on each other or on docker hub at pod start. ${domain}
+        # resolves per cluster, so each pulls locally.
         #image: mthorley/node-red:70c3567104b5fd73cde156249157f4f848bbe0ab
-        image: mthorley/node-red:173acf81507b5b87a32f85320214af2c3eb28fd2
-        imagePullPolicy: Always
+        image: zot.${domain}/node-red:173acf81507b5b87a32f85320214af2c3eb28fd2
+        # the tag is immutable (a git sha), so no need to re-pull every start;
+        # IfNotPresent also means a registry outage cannot stop a pod restart
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 1880
           name: node-red-ui

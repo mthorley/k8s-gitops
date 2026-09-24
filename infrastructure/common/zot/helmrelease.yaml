@@ -67,6 +67,11 @@ spec:
       serviceMonitor:
         enabled: true
         interval: 30s
+        # the chart emits a basicAuth block whenever this key is truthy, which
+        # points at a "basic-auth" secret that does not exist here (the
+        # registry has no auth) and makes the operator reject the
+        # ServiceMonitor outright - null removes the block
+        basicAuth: null
 
     resources:
       requests:

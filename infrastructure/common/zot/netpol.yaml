@@ -1,0 +1,64 @@
+# Ingress to the registry: only this cluster's nodes (containerd pulling images)
+# and 192.168.1.0/24 reach the gateway; only the gateway and prometheus reach
+# zot itself. Egress is left open.
+#
+# Cilium policies, not NetworkPolicy ipBlocks: Cilium gives node traffic the
+# reserved identities host / remote-node, so an ipBlock of the node IPs never
+# matches it. A node pulling from zot.${domain} hits the LoadBalancer IP,
+# kube-proxy on that node DNATs it straight to the envoy pod, and it arrives as
+# host (same node) or remote-node (any other). Clients on 192.168.1.0/24 keep
+# their source IP because zot-gateway is externalTrafficPolicy: Local.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-ingress-zot-gateway
+spec:
+  endpointSelector:
+    matchLabels:
+      gateway.envoyproxy.io/owning-gateway-name: zot-gateway
+  ingress:
+    # kubelet probes (envoy readiness on 19003) come from the pod's own node
+    - fromEntities:
+        - host
+    - fromEntities:
+        - host
+        - remote-node
+      toPorts:
+        - ports:
+            - port: "10443"  # envoy's listener behind the Service's 443
+              protocol: TCP
+    - fromCIDR:
+        - 192.168.1.0/24
+      toPorts:
+        - ports:
+            - port: "10443"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-ingress-zot
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: zot
+  ingress:
+    # kubelet probes
+    - fromEntities:
+        - host
+    - fromEndpoints:
+        - matchLabels:
+            gateway.envoyproxy.io/owning-gateway-name: zot-gateway
+      toPorts:
+        - ports:
+            - port: "5000"
+              protocol: TCP
+    # ServiceMonitor zot scrapes /metrics on the same port
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: monitoring
+            app.kubernetes.io/name: prometheus
+      toPorts:
+        - ports:
+            - port: "5000"
+              protocol: TCP

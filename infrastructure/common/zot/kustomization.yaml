@@ -8,6 +8,7 @@ resources:
   - helmrepository.yaml
   - helmrelease.yaml
   - gateway.yaml
+  - netpol.yaml
 
 components:
   # vault SecretStore + SA token for this namespace (role ${APP}-secrets-role)

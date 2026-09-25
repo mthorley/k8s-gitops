@@ -21,7 +21,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: ccm-dashboard
-          image: mthorley/ccm-dashboard:latest
+          image: zot.cluster0.cyonomy.net/ccm-dashboard:latest
           # :latest, so Always - IfNotPresent means a rebuilt image is never
           # picked up, even across a pod delete (matches the other workloads).
           imagePullPolicy: Always

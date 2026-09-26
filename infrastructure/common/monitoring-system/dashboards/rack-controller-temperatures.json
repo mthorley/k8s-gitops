@@ -1,999 +1,19 @@
 {
-  "annotations": [
-    {
-      "kind": "AnnotationQuery",
-      "spec": {
-        "builtIn": true,
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "query": {
-          "datasource": {
-            "name": "grafana"
-          },
-          "group": "grafana",
-          "kind": "DataQuery",
-          "spec": {
-            "limit": 100,
-            "matchAny": false,
-            "tags": [],
-            "type": "dashboard"
-          },
-          "version": "v0"
-        }
-      }
-    }
-  ],
-  "cursorSync": "Off",
+  "uid": "wLGZooSnz",
+  "title": "Rack Controller Temperatures",
   "description": "Unifi rack controller temperatures",
-  "editable": true,
-  "elements": {
-    "panel-2": {
-      "kind": "Panel",
-      "spec": {
-        "data": {
-          "kind": "QueryGroup",
-          "spec": {
-            "queries": [
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4z"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "device/temp/rack/average",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "A"
-                }
-              },
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4z"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "device/temp/rack/base",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "B"
-                }
-              },
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4z"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "device/temp/rack/top",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "C"
-                }
-              }
-            ],
-            "queryOptions": {},
-            "transformations": []
-          }
-        },
-        "description": "Rack controller DS18B*",
-        "id": 2,
-        "links": [],
-        "title": "Rack Temperatures",
-        "vizConfig": {
-          "group": "timeseries",
-          "kind": "VizConfig",
-          "spec": {
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "palette-classic"
-                },
-                "custom": {
-                  "axisBorderShow": false,
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "barWidthFactor": 0.6,
-                  "drawStyle": "line",
-                  "fillOpacity": 8,
-                  "gradientMode": "none",
-                  "hideFrom": {
-                    "legend": false,
-                    "tooltip": false,
-                    "viz": false
-                  },
-                  "insertNulls": false,
-                  "lineInterpolation": "linear",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                    "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "showValues": false,
-                  "spanNulls": true,
-                  "stacking": {
-                    "group": "A",
-                    "mode": "none"
-                  },
-                  "thresholdsStyle": {
-                    "mode": "off"
-                  }
-                },
-                "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "red",
-                      "value": 80
-                    }
-                  ]
-                },
-                "unit": "celsius"
-              },
-              "overrides": []
-            },
-            "options": {
-              "legend": {
-                "calcs": [],
-                "displayMode": "table",
-                "placement": "bottom",
-                "showLegend": true
-              },
-              "tooltip": {
-                "hideZeros": false,
-                "mode": "multi",
-                "sort": "desc"
-              }
-            }
-          },
-          "version": "13.2.2"
-        }
-      }
-    },
-    "panel-4": {
-      "kind": "Panel",
-      "spec": {
-        "data": {
-          "kind": "QueryGroup",
-          "spec": {
-            "queries": [
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "prometheus"
-                    },
-                    "group": "prometheus",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "expr": "node_thermal_zone_temp{type=\"cpu-thermal\"}",
-                      "format": "time_series",
-                      "intervalFactor": 5,
-                      "legendFormat": "{{instance}}"
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "A"
-                }
-              }
-            ],
-            "queryOptions": {},
-            "transformations": []
-          }
-        },
-        "description": "SoC temperature from node-exporter (node_thermal_zone_temp); the old arm-exporter rpi_cpu_temperature_celsius metric went away with the kube-prometheus-stack migration. Pi 4 throttles from ~80 C.",
-        "id": 4,
-        "links": [],
-        "title": "Pi's CPU Temperature",
-        "vizConfig": {
-          "group": "timeseries",
-          "kind": "VizConfig",
-          "spec": {
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "palette-classic"
-                },
-                "custom": {
-                  "axisBorderShow": false,
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "barWidthFactor": 0.6,
-                  "drawStyle": "line",
-                  "fillOpacity": 8,
-                  "gradientMode": "none",
-                  "hideFrom": {
-                    "legend": false,
-                    "tooltip": false,
-                    "viz": false
-                  },
-                  "insertNulls": false,
-                  "lineInterpolation": "linear",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                    "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "showValues": false,
-                  "spanNulls": true,
-                  "stacking": {
-                    "group": "A",
-                    "mode": "none"
-                  },
-                  "thresholdsStyle": {
-                    "mode": "line+area"
-                  }
-                },
-                "max": 90,
-                "min": 30,
-                "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "orange",
-                      "value": 70
-                    },
-                    {
-                      "color": "red",
-                      "value": 80
-                    }
-                  ]
-                },
-                "unit": "celsius"
-              },
-              "overrides": []
-            },
-            "options": {
-              "legend": {
-                "calcs": [
-                  "lastNotNull",
-                  "max"
-                ],
-                "displayMode": "table",
-                "placement": "right",
-                "showLegend": true
-              },
-              "tooltip": {
-                "hideZeros": false,
-                "mode": "multi",
-                "sort": "desc"
-              }
-            }
-          },
-          "version": "13.2.2"
-        }
-      }
-    },
-    "panel-6": {
-      "kind": "Panel",
-      "spec": {
-        "data": {
-          "kind": "QueryGroup",
-          "spec": {
-            "queries": [
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4z"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "alias": "Base",
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "device/temp/rack/base",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "query": "SELECT mean(\"value\") FROM \"device/temp/rack/base\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-                      "rawQuery": false,
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "A"
-                }
-              },
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4z"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "alias": "Average",
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "device/temp/rack/average",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "B"
-                }
-              },
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4z"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "alias": "Top",
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "device/temp/rack/top",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "C"
-                }
-              }
-            ],
-            "queryOptions": {},
-            "transformations": []
-          }
-        },
-        "description": "",
-        "id": 6,
-        "links": [],
-        "title": "Rack Temperatures",
-        "vizConfig": {
-          "group": "gauge",
-          "kind": "VizConfig",
-          "spec": {
-            "fieldConfig": {
-              "defaults": {
-                "decimals": 2,
-                "max": 40,
-                "min": 4,
-                "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "orange",
-                      "value": 20
-                    },
-                    {
-                      "color": "red",
-                      "value": 22
-                    }
-                  ]
-                },
-                "unit": "celsius"
-              },
-              "overrides": []
-            },
-            "options": {
-              "barShape": "flat",
-              "barWidthFactor": 0.5,
-              "effects": {
-                "barGlow": false,
-                "centerGlow": false,
-                "gradient": false
-              },
-              "endpointMarker": "point",
-              "minVizHeight": 75,
-              "minVizWidth": 75,
-              "orientation": "auto",
-              "reduceOptions": {
-                "calcs": [
-                  "lastNotNull"
-                ],
-                "fields": "",
-                "values": false
-              },
-              "segmentCount": 1,
-              "segmentSpacing": 0.3,
-              "shape": "gauge",
-              "showThresholdLabels": false,
-              "showThresholdMarkers": false,
-              "sizing": "auto",
-              "sparkline": false,
-              "textMode": "auto"
-            }
-          },
-          "version": "13.2.2"
-        }
-      }
-    },
-    "panel-8": {
-      "kind": "Panel",
-      "spec": {
-        "data": {
-          "kind": "QueryGroup",
-          "spec": {
-            "queries": [
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4y"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "unifi/udmpro/flash/temp",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "A"
-                }
-              },
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4y"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "unifi/udmpro/cpu/temp",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "B"
-                }
-              },
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4y"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "unifi/us24p250/fan",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "C"
-                }
-              },
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "datasource": {
-                      "name": "MmT8wId4y"
-                    },
-                    "group": "influxdb",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "groupBy": [
-                        {
-                          "params": [
-                            "$__interval"
-                          ],
-                          "type": "time"
-                        },
-                        {
-                          "params": [
-                            "null"
-                          ],
-                          "type": "fill"
-                        }
-                      ],
-                      "measurement": "unifi/us24p250/temp",
-                      "orderByTime": "ASC",
-                      "policy": "default",
-                      "resultFormat": "time_series",
-                      "select": [
-                        [
-                          {
-                            "params": [
-                              "value"
-                            ],
-                            "type": "field"
-                          },
-                          {
-                            "params": [],
-                            "type": "mean"
-                          }
-                        ]
-                      ],
-                      "tags": []
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "D"
-                }
-              }
-            ],
-            "queryOptions": {},
-            "transformations": []
-          }
-        },
-        "description": "",
-        "id": 8,
-        "links": [],
-        "title": "Unifi Temps",
-        "vizConfig": {
-          "group": "timeseries",
-          "kind": "VizConfig",
-          "spec": {
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "palette-classic"
-                },
-                "custom": {
-                  "axisBorderShow": false,
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "barWidthFactor": 0.6,
-                  "drawStyle": "line",
-                  "fillOpacity": 0,
-                  "gradientMode": "none",
-                  "hideFrom": {
-                    "legend": false,
-                    "tooltip": false,
-                    "viz": false
-                  },
-                  "insertNulls": false,
-                  "lineInterpolation": "linear",
-                  "lineStyle": {
-                    "fill": "solid"
-                  },
-                  "lineWidth": 1,
-                  "pointSize": 5,
-                  "scaleDistribution": {
-                    "type": "linear"
-                  },
-                  "showPoints": "auto",
-                  "showValues": false,
-                  "spanNulls": true,
-                  "stacking": {
-                    "group": "A",
-                    "mode": "none"
-                  },
-                  "thresholdsStyle": {
-                    "mode": "off"
-                  }
-                },
-                "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "red",
-                      "value": 80
-                    }
-                  ]
-                }
-              },
-              "overrides": []
-            },
-            "options": {
-              "legend": {
-                "calcs": [],
-                "displayMode": "list",
-                "placement": "bottom",
-                "showLegend": true
-              },
-              "tooltip": {
-                "hideZeros": false,
-                "mode": "single",
-                "sort": "none"
-              }
-            }
-          },
-          "version": "13.2.2"
-        }
-      }
-    }
-  },
-  "layout": {
-    "kind": "GridLayout",
-    "spec": {
-      "items": [
-        {
-          "kind": "GridLayoutItem",
-          "spec": {
-            "element": {
-              "kind": "ElementReference",
-              "name": "panel-6"
-            },
-            "height": 8,
-            "width": 12,
-            "x": 0,
-            "y": 0
-          }
-        },
-        {
-          "kind": "GridLayoutItem",
-          "spec": {
-            "element": {
-              "kind": "ElementReference",
-              "name": "panel-8"
-            },
-            "height": 8,
-            "width": 12,
-            "x": 12,
-            "y": 0
-          }
-        },
-        {
-          "kind": "GridLayoutItem",
-          "spec": {
-            "element": {
-              "kind": "ElementReference",
-              "name": "panel-2"
-            },
-            "height": 9,
-            "width": 12,
-            "x": 0,
-            "y": 8
-          }
-        },
-        {
-          "kind": "GridLayoutItem",
-          "spec": {
-            "element": {
-              "kind": "ElementReference",
-              "name": "panel-4"
-            },
-            "height": 9,
-            "width": 12,
-            "x": 12,
-            "y": 8
-          }
-        }
-      ]
-    }
-  },
-  "links": [],
-  "liveNow": false,
-  "preload": false,
   "tags": [],
-  "timeSettings": {
-    "autoRefresh": "1m",
-    "autoRefreshIntervals": [
+  "editable": true,
+  "schemaVersion": 41,
+  "version": 1,
+  "timezone": "Australia/Melbourne",
+  "refresh": "1m",
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
       "10s",
       "30s",
       "1m",
@@ -1003,13 +23,789 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "fiscalYearStartMonth": 0,
-    "from": "now-12h",
-    "hideTimepicker": false,
-    "timezone": "Australia/Melbourne",
-    "to": "now"
+    ]
   },
-  "title": "Rack Controller Temperatures",
-  "variables": []
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "preload": false,
+  "annotations": {
+    "list": [
+      {
+        "name": "Annotations & Alerts",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "builtIn": 1,
+        "type": "dashboard",
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Grafana --"
+        }
+      }
+    ]
+  },
+  "templating": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 6,
+      "type": "gauge",
+      "title": "Rack Temperatures",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "MmT8wId4z"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "alias": "Base",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "device/temp/rack/base",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"device/temp/rack/base\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4z"
+          }
+        },
+        {
+          "alias": "Average",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "device/temp/rack/average",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "B",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4z"
+          }
+        },
+        {
+          "alias": "Top",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "device/temp/rack/top",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "C",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4z"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 2,
+          "max": 40,
+          "min": 4,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 22
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Unifi Temps",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "MmT8wId4y"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "unifi/udmpro/flash/temp",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4y"
+          }
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "unifi/udmpro/cpu/temp",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "B",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4y"
+          }
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "unifi/us24p250/fan",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "C",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4y"
+          }
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "unifi/us24p250/temp",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "D",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4y"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Rack Temperatures",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "MmT8wId4z"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "device/temp/rack/average",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4z"
+          }
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "device/temp/rack/base",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "B",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4z"
+          }
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "device/temp/rack/top",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "refId": "C",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "MmT8wId4z"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "description": "Rack controller DS18B*"
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Pi's CPU Temperature",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "expr": "node_thermal_zone_temp{type=\"cpu-thermal\"}",
+          "format": "time_series",
+          "intervalFactor": 5,
+          "legendFormat": "{{instance}}",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "max": 90,
+          "min": 30,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "description": "SoC temperature from node-exporter (node_thermal_zone_temp); the old arm-exporter rpi_cpu_temperature_celsius metric went away with the kube-prometheus-stack migration. Pi 4 throttles from ~80 C."
+    }
+  ]
 }

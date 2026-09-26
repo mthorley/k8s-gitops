@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 # Staging monitoring, reconciled by the "monitoring" flux Kustomization
 # (clusters/staging/monitoring.yaml, which supplies APP/ACME_EMAIL).
-# Everything comes from monitoring-system; nothing is borrowed from
-# ../../common/monitoring any more (production still runs that stack).
+# Everything comes from monitoring-system; the old common/monitoring stack
+# has been removed from the repo (both clusters run this one).
 resources:
   - ../../common/monitoring-system

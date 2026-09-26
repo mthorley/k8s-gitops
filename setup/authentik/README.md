@@ -17,7 +17,7 @@ Uses Authentik to support OIDC federation between Grafana and Authentik.
 
 OAuth client id and secret need to be configured within the Grafana.ini. The ini file is stored in vault and [provisioned via tf](/setup/vault/grafana-kv2.tf) using a [tf template](/setup/vault/grafana-ini-oauth.tftpl).
 
-The ini file is rendered as a [k8s secret](/infrastructure/common/monitoring/external-secrets.yaml) and mapped into the [grafana deployment](/infrastructure/common/monitoring/grafana-deployment.yaml).
+The ini file was rendered as a k8s secret and mapped into the grafana deployment of the old kube-prometheus stack, which has been retired; grafana now comes from [infrastructure/common/monitoring-system](/infrastructure/common/monitoring-system).
 
 ## Setup Authentik via tf for OIDC
 

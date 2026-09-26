@@ -1,5 +1,5 @@
-# metrics.k8s.io for kubectl top / HPA. Replaces the prometheus-adapter from
-# common/monitoring: independent of prometheus, so node/pod metrics keep
+# metrics.k8s.io for kubectl top / HPA. Replaces the prometheus-adapter of the
+# retired kube-prometheus stack: independent of prometheus, so node/pod metrics keep
 # working while prometheus is restarting or unhealthy. Custom-metrics HPA
 # would be a separate prometheus-adapter serving custom.metrics.k8s.io.
 apiVersion: helm.toolkit.fluxcd.io/v2

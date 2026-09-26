@@ -1,0 +1,18 @@
+# Envoy Gateway defaults its LoadBalancer Service to externalTrafficPolicy:
+# Local. kube-proxy here runs without a clusterCIDR, so it cannot tell pod
+# traffic from external traffic and only forwards to an envoy pod on the same
+# node - in-cluster OIDC clients (node-red-dev's token call to auth.${domain})
+# get EHOSTUNREACH whenever they land on a different node from the gateway.
+# Cluster forwards from any node, at the cost of Pocket ID seeing a node IP
+# rather than the real client IP.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: pocketid-proxy
+  namespace: pocket-id
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        externalTrafficPolicy: Cluster

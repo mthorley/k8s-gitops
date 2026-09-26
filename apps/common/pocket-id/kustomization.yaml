@@ -9,6 +9,7 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - service.yaml
+  - envoyproxy.yaml
   - gateway.yaml
 
 components:

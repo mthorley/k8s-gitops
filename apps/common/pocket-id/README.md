@@ -111,6 +111,15 @@ A dedicated Gateway API `Gateway`/`HTTPRoute` in `gateway.yaml` on the `envoy`
 `GatewayClass`, routed to the `pocketid-internal` Service — same pattern as
 `node-red`/`ccm`.
 
+Unlike those, the Gateway points at an `EnvoyProxy` (`envoyproxy.yaml`) that
+sets its LoadBalancer Service to `externalTrafficPolicy: Cluster`. Pocket ID has
+in-cluster clients (node-red-dev's back-channel token call goes to
+`auth.${domain}`, i.e. the LB IP), and with Envoy's default `Local` kube-proxy -
+which runs without a `clusterCIDR` here - rejects pod traffic with
+`EHOSTUNREACH` unless the caller shares a node with the envoy pod. The cost is
+that Pocket ID sees a node IP rather than the real client IP in its sign-in
+logs.
+
 `TRUST_PROXY=true` is required: TLS terminates at the gateway, so without it
 Pocket ID sees the gateway's pod IP as the client and builds `http://` callback
 URLs, which then fail client validation.

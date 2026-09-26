@@ -9,6 +9,12 @@ metadata:
   namespace: pocket-id
 spec:
   gatewayClassName: envoy
+  # externalTrafficPolicy: Cluster - see envoyproxy.yaml
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: pocketid-proxy
   listeners:
     - name: https
       protocol: HTTPS

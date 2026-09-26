@@ -57,6 +57,14 @@ usernames, **not** email addresses. Authenticating successfully but being absent
 from that list gets you no access, which is the usual cause of a login that
 loops back to the sign-in button.
 
+### Logout
+
+The editor's logout only revokes Node-RED's own token. The Pocket ID session
+outlives it, so without more config the next request silently signs straight
+back in and logout appears to do nothing. `editorTheme.logout.redirect` sends the
+browser on to Pocket ID's `https://auth.${domain}/api/oidc/end-session` to end
+that session as well.
+
 ### Image dependency
 
 `passport-openidconnect` must be present in the `mthorley/node-red` image — it is

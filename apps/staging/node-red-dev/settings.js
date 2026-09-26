@@ -417,6 +417,13 @@ module.exports = {
          * for all available options.
          */
         editorTheme: {
+            // Logging out of the editor only revokes Node-RED's own token; the
+            // Pocket ID session survives, so the next request silently signs
+            // straight back in. Sending the browser to Pocket ID's end-session
+            // endpoint ends that session too.
+            logout: {
+                redirect: 'https://auth.${domain}/api/oidc/end-session'
+            },
             /** The following property can be used to set a custom theme for the editor.
              * See https://github.com/node-red-contrib-themes/theme-collection for
              * a collection of themes to chose from.

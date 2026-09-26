@@ -10,15 +10,24 @@ Redis, which is the main reason it is a better fit here than authentik was.
 
 ## Deployment wiring
 
-Staging only for now: `clusters/staging/pocketid.yaml` → here. There is no
-production equivalent yet.
+Both clusters deploy it from here: `clusters/staging/pocketid.yaml` and
+`clusters/production/pocketid.yaml` are identical, and everything cluster-specific
+comes from `cluster-vars` - so staging serves `auth.cluster1.cyonomy.net` and
+production `auth.cluster0.cyonomy.net`. They are two independent IdPs: separate
+SQLite databases, users, passkeys and OIDC clients. A client registered on one
+does not exist on the other.
+
+Both clusters' Vaults are populated from the same `setup/vault` terraform, one
+workspace each (`staging`, `prod`), so the `pocketid` Vault role, policy and
+secrets exist on production only after `terraform apply` in the `prod`
+workspace.
 
 It **cannot** go in the bundled `apps/staging/kustomization.yaml` alongside
 `pi-temp-agent`/`mqtt`, because both components below depend on Flux
 `postBuild.substitute` for `${APP}`, which plain kustomize leaves as a literal.
 Hence the dedicated Flux `Kustomization`, same as `node-red`/`ccm`/`torrent`.
 
-`clusters/staging/pocketid.yaml` must supply:
+Each `clusters/<env>/pocketid.yaml` must supply:
 
 | Substitution | Used by |
 | --- | --- |

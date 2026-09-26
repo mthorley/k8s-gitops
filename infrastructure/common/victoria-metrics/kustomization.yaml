@@ -13,3 +13,18 @@ resources:
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
+
+# Same as adguard: no app-level secret in Vault (only the cf-api-token), so the
+# generic external-secret-${APP} from secrets-eso-vault has nothing to sync and
+# sits in SecretSyncedError. Keep the component - its SecretStore and token
+# Secret back the cf-api-token ExternalSecret - and drop just this resource.
+patches:
+  - target:
+      kind: ExternalSecret
+      name: ^external-secret-\$\{APP\}$
+    patch: |-
+      $patch: delete
+      apiVersion: external-secrets.io/v1beta1
+      kind: ExternalSecret
+      metadata:
+        name: external-secret-${APP}

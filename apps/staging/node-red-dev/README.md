@@ -43,8 +43,8 @@ Pocket ID has no terraform provider, so the client is created by hand:
 
 1. In the Pocket ID admin UI, add an OIDC client with callback
    `https://nodereddev.${domain}/auth/strategy/callback`.
-2. Put the resulting id/secret into the `POCKETID_NODERED_CLIENTID` /
-   `POCKETID_NODERED_SECRET` terraform variables and apply `setup/vault` — they
+2. Put the resulting id/secret into the `POCKETID_NODEREDDEV_CLIENTID` /
+   `POCKETID_NODEREDDEV_SECRET` terraform variables and apply `setup/vault` — they
    land in Vault at `secret/nodereddev` as `oidc-client-id` / `oidc-client-secret`.
 3. The `secrets-eso-vault` component syncs those into `secret-nodereddev`, which
    the Deployment exposes as `CLIENT_ID` / `CLIENT_SECRET`.

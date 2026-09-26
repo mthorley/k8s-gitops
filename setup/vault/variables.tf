@@ -1,13 +1,18 @@
 
-# defined by TF_VAR_ENV environment variable
-variable "ENV" {
-   description = "Environment name, either prod or staging"
-   type = string
-#   default = "staging"
-   validation {
-      condition     = can(regex("^staging$|^prod$", var.ENV))
-      error_message = "Allowed values for env are \"staging\" or \"prod\"."
-   }
+# The environment is the workspace, not a variable. A separate ENV variable let
+# the selected state and the targeted cluster disagree - applying the staging
+# workspace with ENV=prod rewrote production Vault from staging state, and a
+# kubeconfig pointing at the wrong cluster wrote staging's CA into prod's
+# Kubernetes auth. Deriving everything from terraform.workspace makes the Vault
+# address, token, kubeconfig and domains always match the state being written.
+#
+# Indexing the map fails the plan in any other workspace (including "default"),
+# which is the point - there is no safe fallback.
+locals {
+  env = {
+    prod    = "prod"
+    staging = "staging"
+  }[terraform.workspace]
 }
 
 # prod variables

@@ -38,8 +38,8 @@ resource "vault_kv_secret_v2" "grafana" {
     {
 //      "grafana.ini" = templatefile("${path.module}/grafana-ini-oauth.tftpl", {
       "grafana.ini" = templatefile("${path.module}/grafana-ini-unauth.tftpl", {
-         DOMAIN   = (var.ENV == "prod" ? "auth.${var.INTERNAL_DOMAIN_PROD}" : "auth.${var.INTERNAL_DOMAIN}")
-         ROOT_URL = (var.ENV == "prod" ? "grafana.${var.INTERNAL_DOMAIN_PROD}" : "grafana.${var.INTERNAL_DOMAIN}")
+         DOMAIN   = (local.env == "prod" ? "auth.${var.INTERNAL_DOMAIN_PROD}" : "auth.${var.INTERNAL_DOMAIN}")
+         ROOT_URL = (local.env == "prod" ? "grafana.${var.INTERNAL_DOMAIN_PROD}" : "grafana.${var.INTERNAL_DOMAIN}")
          APP_SLUG = "grafana"
       })
     }

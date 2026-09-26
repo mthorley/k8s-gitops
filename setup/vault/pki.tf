@@ -17,7 +17,7 @@ resource "vault_mount" "root" {
 resource "vault_pki_secret_backend_root_cert" "root-2023" {
   backend               = vault_mount.root.path
   type                  = "internal"
-  common_name           = (var.ENV == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))
+  common_name           = (local.env == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))
   ttl                   = "315360000"
   format                = "pem"
   private_key_format    = "der"
@@ -40,14 +40,14 @@ resource "vault_mount" "intermediate" {
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   backend     = vault_mount.intermediate.path
   type        = vault_pki_secret_backend_root_cert.root-2023.type
-  common_name = format("%s Intermediate CA", (var.ENV == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN)))
+  common_name = format("%s Intermediate CA", (local.env == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN)))
 }
 
 // sign intermediate
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
   backend              = vault_mount.root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
-  common_name          = (var.ENV == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))
+  common_name          = (local.env == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))
   exclude_cn_from_sans = true
   ou                   = "k8s"
   organization         = "homes"
@@ -109,7 +109,7 @@ resource "vault_pki_secret_backend_role" "internal-dot-com" {
   # Valid values: "default", an issuer name, or an issuer ID
   issuer_ref = "default"
 
-  allowed_domains    = [(var.ENV == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))]
+  allowed_domains    = [(local.env == "prod" ? format("%s", var.INTERNAL_DOMAIN_PROD) : format("%s", var.INTERNAL_DOMAIN))]
   allow_subdomains   = true
   allow_any_name     = true
   allow_glob_domains = true
@@ -169,7 +169,7 @@ resource "vault_kubernetes_auth_backend_role" "grafana-issuer" {
 resource "vault_kubernetes_auth_backend_role" "adguard-issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "adguard-issuer-cert-role"
-  bound_service_account_names      = (var.ENV == "prod" ? ["vault-issuer"] : ["default"])  // FIXME: Remove default once cluster1 upgraded
+  bound_service_account_names      = (local.env == "prod" ? ["vault-issuer"] : ["default"])  // FIXME: Remove default once cluster1 upgraded
   bound_service_account_namespaces = ["adguard-home"]
   token_ttl                        = 86400
   token_policies                   = ["issuer-cert-policy"]

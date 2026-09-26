@@ -119,24 +119,20 @@ variable "FRIGATE_MQTT_PASSWORD" {
   type = string
 }
 
-variable "AUTHENTIK_GRAFANA_CLIENTID" {
-  type = string
-  description = "Grafana client id for OAuth"
-}
-
-variable "AUTHENTIK_GRAFANA_SECRET" {
-  type = string
-  description = "Grafana client secret for OAuth"
-}
-
-variable "AUTHENTIK_POSTGRESQL_PASSWORD" {
-  type = string
-  description = "Authentik PostgreSQL password"
-}
-
-variable "AUTHENTIK_SECRET_KEY" {
+variable "POCKETID_NODERED_CLIENTID" {
   type        = string
-  description = "Authentik secret key, used for cookie signing and unique user IDs (e.g. `openssl rand -base64 60`)"
+  description = "node-red-dev editor client id for OIDC, from the Pocket ID admin UI"
+}
+
+variable "POCKETID_NODERED_SECRET" {
+  type        = string
+  description = "node-red-dev editor client secret for OIDC, from the Pocket ID admin UI"
+  sensitive   = true
+}
+
+variable "POCKETID_ENCRYPTION_KEY" {
+  type        = string
+  description = "Pocket ID data-at-rest encryption key (`openssl rand -base64 32`). Rotating it makes existing TOTP secrets and API keys unreadable."
   sensitive   = true
 }
 
@@ -409,32 +405,31 @@ resource "vault_kubernetes_auth_backend_role" "zig2mqtt" {
 }
 
 # -----------------------------------------------------------------------------
-# authentik
+# pocket-id (replaced authentik as the cluster IdP)
 
-resource "vault_policy" "authentik-secrets-policy" {
-  name = "authentik-secrets-policy"
+resource "vault_policy" "pocketid-secrets-policy" {
+  name = "pocketid-secrets-policy"
 
   policy = <<EOT
-path "secret/data/authentik" {
+path "secret/data/pocketid" {
   capabilities = ["read", "list"]
 }
-path "secret/data/authentik-cf-api-token" {
+path "secret/data/pocketid-cf-api-token" {
   capabilities = ["read", "list"]
 }
 EOT
 }
 
-resource "vault_kubernetes_auth_backend_role" "authentik" {
+resource "vault_kubernetes_auth_backend_role" "pocketid" {
   backend   = vault_auth_backend.kubernetes.path
-  role_name = "authentik-secrets-role"
-  # Bound to a dedicated "authentik-vault" SA (infrastructure/common/authentik/service-account.yaml),
-  # not the chart-created "authentik" SA: the ExternalSecret that authenticates via
-  # this role feeds the authentik HelmRelease's valuesFrom, and that HelmRelease is
-  # what creates the "authentik" SA - binding to it here would deadlock on first apply.
-  bound_service_account_names      = ["authentik-vault"]
-  bound_service_account_namespaces = ["authentik"]
+  role_name = "pocketid-secrets-role"
+  # "pocketid" matches the APP substitution in clusters/staging/pocketid.yaml,
+  # which components/secrets-eso-vault uses for both the role name and the
+  # ServiceAccount it authenticates as (apps/common/pocket-id/serviceaccount.yaml).
+  bound_service_account_names      = ["pocketid"]
+  bound_service_account_namespaces = ["pocket-id"]
   token_ttl                        = 86400
-  token_policies                   = ["authentik-secrets-policy"]
+  token_policies                   = ["pocketid-secrets-policy"]
 }
 
 # -----------------------------------------------------------------------------
@@ -728,7 +723,7 @@ resource "vault_kv_secret_v2" "victoria-metrics-cf-api-token" {
 # pki-certman-letsencrypt component (apps/common/adguard), same shape as
 # kagent/torrent/jupyter above. Bound to the "adguard" SA
 # (apps/common/adguard/serviceaccount.yaml), not the app's own "default" SA
-# the AdGuard Home pod actually runs as -- same split as kagent/authentik.
+# the AdGuard Home pod actually runs as -- same split as kagent.
 # No plain "secret/adguard" KV entry: AdGuard Home has no app-level secret
 # data to pull via ExternalSecret, only the ACME DNS-01 token below.
 
@@ -806,6 +801,11 @@ resource "vault_kv_secret_v2" "nodereddev" {
       zen-wifi-password  = var.ZEN_WIFI_PASSWORD
       unifi-user         = var.UNIFI_USER
       unifi-password     = var.UNIFI_PASSWORD
+      # Pocket ID OIDC client for the Node-RED editor login - read as
+      # CLIENT_ID/CLIENT_SECRET by the passport-openidconnect strategy in
+      # apps/staging/node-red-dev/settings.js.
+      oidc-client-id     = var.POCKETID_NODERED_CLIENTID
+      oidc-client-secret = var.POCKETID_NODERED_SECRET
     }
   )
 }
@@ -885,20 +885,23 @@ resource "vault_kv_secret_v2" "zig2mqtt" {
   )
 }
 
-resource "vault_kv_secret_v2" "authentik" {
+# Consumed by apps/common/pocket-id as the secret-pocketid Secret. Pocket ID
+# stores nothing else sensitive outside its own database.
+resource "vault_kv_secret_v2" "pocketid" {
   mount     = vault_mount.kvv2.path
-  name      = "authentik"
+  name      = "pocketid"
   data_json = jsonencode(
     {
-      postgresql-password = var.AUTHENTIK_POSTGRESQL_PASSWORD
-      secret_key          = var.AUTHENTIK_SECRET_KEY
+      encryption-key = var.POCKETID_ENCRYPTION_KEY
     }
   )
 }
 
-resource "vault_kv_secret_v2" "authentik-cf-api-token" {
+# ACME DNS-01 token for auth.${var.INTERNAL_DOMAIN}, consumed by
+# components/pki-certman-letsencrypt with APP=pocketid.
+resource "vault_kv_secret_v2" "pocketid-cf-api-token" {
   mount     = vault_mount.kvv2.path
-  name      = "authentik-cf-api-token"
+  name      = "pocketid-cf-api-token"
   data_json = jsonencode(
     {
       dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN

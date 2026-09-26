@@ -20,10 +20,7 @@ resources:
 #  - ../common/tracee-system
   - ../common/cilium
 #  - ../common/tetragon
-#  - ../common/authentik
 #  - ../common/containerescapes
 #  - ../common/mariadb-operator
 #  - ../common/grafana-mcp
 #  - ../common/neuvector
-patchesStrategicMerge:
-#  - cert-issuer-authentik.yaml

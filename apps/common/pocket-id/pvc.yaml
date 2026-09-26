@@ -1,0 +1,20 @@
+# Holds the SQLite database, the generated OIDC signing keys and uploaded
+# profile pictures - i.e. everything that makes the issuer identity stable.
+# Losing it invalidates every registered passkey and every issued token.
+#
+# ReadWriteOnce rather than the ReadWriteMany used elsewhere in this repo:
+# SQLite tolerates exactly one writer, and the Deployment uses the Recreate
+# strategy so the old pod is gone before the replacement claims the volume.
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pocket-id-claim
+  namespace: pocket-id
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

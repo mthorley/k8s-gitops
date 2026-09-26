@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocket-id
+  namespace: pocket-id
+  labels:
+    app: pocket-id
+spec:
+  replicas: 1
+  # SQLite on a single RWO volume: never run two pods at once. Recreate makes
+  # the rollout tear the old pod down first, at the cost of a short outage on
+  # every change - acceptable for an IdP that is only hit at login time.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: pocket-id
+  template:
+    metadata:
+      labels:
+        app: pocket-id
+    spec:
+      serviceAccountName: pocketid
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+        # The entrypoint drops to PUID/PGID (1000:1000) itself, so the process
+        # is not root even though the container starts as root to chown /app/data.
+        fsGroup: 1000
+      containers:
+      - name: pocket-id
+        image: ghcr.io/pocket-id/pocket-id:v2.16.0
+        # pinned to an exact release rather than the :v2 floating tag so an
+        # upstream push cannot restart the IdP under us - bump deliberately
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 1411
+          name: http
+        volumeMounts:
+        - name: pocket-id-data
+          mountPath: /app/data
+        env:
+        # WebAuthn binds every registered passkey to the origin's host, so this
+        # value is effectively permanent: changing it invalidates all passkeys.
+        - name: APP_URL
+          value: "https://auth.${domain}"
+        # TLS terminates at the envoy Gateway, so the real client IP and scheme
+        # only arrive in X-Forwarded-*. Without this, Pocket ID sees the
+        # gateway's pod IP and builds http:// callback URLs.
+        - name: TRUST_PROXY
+          value: "true"
+        # Defaults are relative to the /app working dir and would resolve to the
+        # same paths - spelled out absolutely so it is obvious both live on the PVC.
+        - name: DB_CONNECTION_STRING
+          value: "/app/data/pocket-id.db"
+        - name: UPLOAD_PATH
+          value: "/app/data/uploads"
+        # Encrypts the TOTP secrets and API keys held in the database. Rotating
+        # it makes the existing ciphertext unreadable, so it is generated once
+        # by terraform and kept in Vault at secret/pocketid.
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: secret-pocketid
+              key: encryption-key
+        # Every client in this cluster is reached over https, so refuse to
+        # register a plain-http callback - it would silently downgrade a login.
+        - name: ALLOW_INSECURE_CALLBACK_URLS
+          value: "false"
+        # Homelab: no phoning home, and no GitHub reachability at pod start.
+        - name: ANALYTICS_DISABLED
+          value: "true"
+        - name: VERSION_CHECK_DISABLED
+          value: "true"
+        # vector -> loki parses structured logs without a regex pipeline
+        - name: LOG_JSON
+          value: "true"
+        - name: TZ
+          value: "${cluster_tz}"
+        # Upstream's own healthcheck binary (same command docker-compose.yml
+        # uses) - it checks the HTTP listener without needing a probe host header.
+        readinessProbe:
+          exec:
+            command: ["/app/pocket-id", "healthcheck"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command: ["/app/pocket-id", "healthcheck"]
+          # Generous: a liveness kill mid-write is the one way to corrupt the
+          # SQLite database, and a wedged IdP is recoverable by hand.
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            # Go binary serving a handful of logins; the floor is the SQLite
+            # page cache rather than request throughput.
+            memory: 256Mi
+      volumes:
+      - name: pocket-id-data
+        persistentVolumeClaim:
+          claimName: pocket-id-claim

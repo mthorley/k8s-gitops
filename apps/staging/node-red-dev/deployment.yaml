@@ -31,6 +31,14 @@ spec:
         volumeMounts:
         - name: node-red-data
           mountPath: /data
+        # Mounted over the settings.js that otherwise lives on the PVC, so the
+        # Pocket ID adminAuth config comes from git. subPath keeps the rest of
+        # /data (flows, credentials, node_modules) on the volume. Read-only, and
+        # Node-RED never writes settings.js - it writes .config.*.json instead.
+        - name: node-red-settings
+          mountPath: /data/settings.js
+          subPath: settings.js
+          readOnly: true
         env:
         - name: HUE_BRIDGE_IP
           value: 192.168.1.191
@@ -92,9 +100,28 @@ spec:
             secretKeyRef:
               name: secret-nodereddev
               key: zen-wifi-password
+        # Read by the passport-openidconnect strategy in settings.js. The
+        # Pocket ID OIDC client is created by hand in the Pocket ID admin UI
+        # (it has no terraform provider); its id/secret are then stored in
+        # Vault at secret/nodereddev by setup/vault/kv2.tf.
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodereddev
+              key: oidc-client-id
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: secret-nodereddev
+              key: oidc-client-secret
         - name: TZ
           value: "${cluster_tz}"
       volumes:
       - name: node-red-data
         persistentVolumeClaim:
           claimName: node-red-claim
+      # name is rewritten to the hashed name by the configMapGenerator in
+      # kustomization.yaml
+      - name: node-red-settings
+        configMap:
+          name: node-red-settings

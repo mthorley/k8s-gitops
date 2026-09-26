@@ -11,6 +11,16 @@ resources:
   - service.yaml
   - ingress.yaml
 
+# settings.js carries the Pocket ID adminAuth config, so it has to be version
+# controlled rather than left to drift on the PVC. The generated name carries a
+# content hash, which changes the pod spec and rolls Node-RED whenever the file
+# changes - without it the ConfigMap would update silently and the running
+# editor would keep the old login config.
+configMapGenerator:
+  - name: node-red-settings
+    files:
+      - settings.js
+
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt

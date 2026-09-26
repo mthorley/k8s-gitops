@@ -167,15 +167,6 @@ resource "vault_kubernetes_auth_backend_role" "unifi-issuer" {
   token_policies                   = ["issuer-cert-policy"]
 }
 
-resource "vault_kubernetes_auth_backend_role" "auth-issuer" {
-  backend                          = vault_auth_backend.kubernetes.path
-  role_name                        = "auth-issuer-cert-role"
-  bound_service_account_names      = (var.ENV == "prod" ? ["vault-issuer"] : ["authentik"])  // FIXME: Remove authentik once cluster1 upgraded
-  bound_service_account_namespaces = ["authentik"]
-  token_ttl                        = 86400
-  token_policies                   = ["issuer-cert-policy"]
-}
-
 resource "vault_kubernetes_auth_backend_role" "grafana-issuer" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "grafana-issuer-cert-role"

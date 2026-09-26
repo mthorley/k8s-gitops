@@ -1,8 +1,8 @@
 # node-red-dev
 
 Staging Node-RED, deployed by `clusters/staging/nodereddev.yaml` with
-`APP: "nodereddev"`. Served on `https://nodereddev.${domain}` via the `nginx`
-GatewayClass (`ingress.yaml`).
+`APP: "nodereddev"`. Served on `https://nodereddev.${domain}` via the `envoy`
+GatewayClass (`gateway.yaml`), same as `node-red` and `pocket-id`.
 
 ## Editor login (Pocket ID OIDC)
 

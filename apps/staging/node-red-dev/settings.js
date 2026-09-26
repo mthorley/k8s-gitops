@@ -112,7 +112,7 @@ module.exports = {
                     clientSecret: process.env['CLIENT_SECRET'],
                     callbackURL: 'https://nodereddev.${domain}/auth/strategy/callback',
                     scope: ['openid', 'profile', 'email'],
-                    // TLS terminates at the nginx Gateway, so passport has to
+                    // TLS terminates at the envoy Gateway, so passport has to
                     // trust X-Forwarded-Proto when it builds the callback URL,
                     // otherwise it offers Pocket ID an http:// redirect_uri -
                     // which the client registration rejects.

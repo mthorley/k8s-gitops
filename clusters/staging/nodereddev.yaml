@@ -7,6 +7,8 @@ spec:
   interval: 30m0s
   dependsOn:
     - name: infrastructure
+    - name: gateway-api-crds
+    - name: envoy-gateway
   sourceRef:
     kind: GitRepository
     name: flux-system

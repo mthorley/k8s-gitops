@@ -119,39 +119,18 @@ variable "FRIGATE_MQTT_PASSWORD" {
   type = string
 }
 
-variable "POCKETID_NODEREDDEV_CLIENTID" {
+# One Pocket ID OIDC client shared by prod and staging node-red.
+# setup/pocketid/pocketid.py registers the same id and
+# secret in both Pocket ID instances from these same variables, so the value is
+# identical in every workspace.
+variable "POCKETID_NODERED_CLIENTID" {
   type        = string
-  description = "node-red-dev editor client id for OIDC, from the staging Pocket ID admin UI"
+  description = "Node-RED editor OIDC client id, shared by all Node-RED instances and registered by setup/pocketid"
 }
 
-variable "POCKETID_NODEREDDEV_SECRET" {
+variable "POCKETID_NODERED_SECRET" {
   type        = string
-  description = "node-red-dev editor client secret for OIDC, from the staging Pocket ID admin UI"
-  sensitive   = true
-}
-
-# node-red runs on both clusters, each against its own Pocket ID instance with
-# its own client registration, so unlike most variables here these differ per
-# workspace - selected by var.ENV in vault_kv_secret_v2.nodered.
-variable "POCKETID_NODERED_CLIENTID_PROD" {
-  type        = string
-  description = "node-red editor client id for OIDC, from the production Pocket ID admin UI"
-}
-
-variable "POCKETID_NODERED_SECRET_PROD" {
-  type        = string
-  description = "node-red editor client secret for OIDC, from the production Pocket ID admin UI"
-  sensitive   = true
-}
-
-variable "POCKETID_NODERED_CLIENTID_STG" {
-  type        = string
-  description = "node-red editor client id for OIDC, from the staging Pocket ID admin UI"
-}
-
-variable "POCKETID_NODERED_SECRET_STG" {
-  type        = string
-  description = "node-red editor client secret for OIDC, from the staging Pocket ID admin UI"
+  description = "Node-RED editor OIDC client secret (16+ printable ASCII), shared by all Node-RED instances and registered by setup/pocketid"
   sensitive   = true
 }
 
@@ -614,8 +593,8 @@ resource "vault_kv_secret_v2" "nodered" {
       # Pocket ID OIDC client for the Node-RED editor login - read as
       # CLIENT_ID/CLIENT_SECRET by the passport-openidconnect strategy in
       # apps/common/node-red/settings.js.
-      oidc-client-id     = (var.ENV == "prod" ? var.POCKETID_NODERED_CLIENTID_PROD : var.POCKETID_NODERED_CLIENTID_STG)
-      oidc-client-secret = (var.ENV == "prod" ? var.POCKETID_NODERED_SECRET_PROD : var.POCKETID_NODERED_SECRET_STG)
+      oidc-client-id     = var.POCKETID_NODERED_CLIENTID
+      oidc-client-secret = var.POCKETID_NODERED_SECRET
     }
   )
 }
@@ -791,64 +770,6 @@ resource "vault_kv_secret_v2" "adguard-cf-api-token" {
 
 # -----------------------------------------------------------------------------
 # vault kv patch secret/nodered hue-token="$HUE_TOKEN"
-
-# development
-resource "vault_policy" "nodereddev-secrets-policy" {
-  name = "nodereddev-secrets-policy"
-
-  policy = <<EOT
-path "secret/data/nodereddev" {
-  capabilities = ["read", "list"]
-}
-path "secret/data/nodereddev-cf-api-token" {
-  capabilities = ["read", "list"]
-}
-EOT
-}
-
-resource "vault_kubernetes_auth_backend_role" "nodereddev" {
-  backend                          = vault_auth_backend.kubernetes.path
-  role_name                        = "nodereddev-secrets-role"
-  bound_service_account_names      = ["nodereddev"]
-  bound_service_account_namespaces = ["node-red-dev"]
-  token_ttl                        = 86400
-  token_policies                   = ["nodereddev-secrets-policy"]
-}
-
-resource "vault_kv_secret_v2" "nodereddev" {
-  mount     = vault_mount.kvv2.path
-  name      = "nodereddev"
-  data_json = jsonencode(
-    {
-      mqtt-user          = var.NODERED_MQTT_USER
-      mqtt-password      = var.NODERED_MQTT_PASSWORD
-      hue-token          = var.HUE_TOKEN
-      sonos-diningroom-r = var.SONOS_DININGROOM_R
-      sonos-diningroom-l = var.SONOS_DININGROOM_L
-      sonos-whiskyroom-r = var.SONOS_WHISKYROOM_R
-      sonos-whiskyroom-l = var.SONOS_WHISKYROOM_L
-      zen-wifi-user      = var.ZEN_WIFI_USER
-      zen-wifi-password  = var.ZEN_WIFI_PASSWORD
-      unifi-user         = var.UNIFI_USER
-      unifi-password     = var.UNIFI_PASSWORD
-      # Pocket ID OIDC client for the Node-RED editor login - read as
-      # CLIENT_ID/CLIENT_SECRET by the passport-openidconnect strategy in
-      # apps/staging/node-red-dev/settings.js.
-      oidc-client-id     = var.POCKETID_NODEREDDEV_CLIENTID
-      oidc-client-secret = var.POCKETID_NODEREDDEV_SECRET
-    }
-  )
-}
-
-resource "vault_kv_secret_v2" "nodereddev-cf-api-token" {
-  mount     = vault_mount.kvv2.path
-  name      = "nodereddev-cf-api-token"
-  data_json = jsonencode(
-    {
-      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
-    }
-  )
-}
 
 resource "vault_kv_secret_v2" "mongodb" {
   mount     = vault_mount.kvv2.path

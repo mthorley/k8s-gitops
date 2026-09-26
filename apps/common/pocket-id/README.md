@@ -83,13 +83,15 @@ Rotating that key makes existing ciphertext unreadable — it is generated once
 
 ## OIDC clients
 
-Pocket ID has no terraform provider, so clients are created by hand in the
-admin UI (Application → OIDC Clients) and their id/secret then copied into Vault
-so the consuming workload can read them. Current clients:
+Groups, users and OIDC clients are declared in `setup/pocketid/config.yaml` and
+applied to each cluster's instance through the admin API by
+`setup/pocketid/pocketid.py` - see that README. Client ids and secrets come from
+the same variables `setup/vault` writes into the consuming app's Vault secret, so
+both sides always hold the same value. Current clients:
 
 | Client | Callback | Credentials land in |
 | --- | --- | --- |
-| node-red-dev editor | `https://nodereddev.${domain}/auth/strategy/callback` | `secret/nodereddev` as `oidc-client-id` / `oidc-client-secret` |
+| Node-RED editor | `https://nodered.${domain}/auth/strategy/callback` | `secret/nodered` as `oidc-client-id` / `oidc-client-secret` |
 
 Grafana SSO is wired up in `setup/vault/grafana-ini-oauth.tftpl` but **not
 currently enabled** — `setup/vault/grafana-kv2.tf` renders
@@ -122,7 +124,7 @@ A dedicated Gateway API `Gateway`/`HTTPRoute` in `gateway.yaml` on the `envoy`
 
 Unlike those, the Gateway points at an `EnvoyProxy` (`envoyproxy.yaml`) that
 sets its LoadBalancer Service to `externalTrafficPolicy: Cluster`. Pocket ID has
-in-cluster clients (node-red-dev's back-channel token call goes to
+in-cluster clients (node-red's back-channel token call goes to
 `auth.${domain}`, i.e. the LB IP), and with Envoy's default `Local` kube-proxy -
 which runs without a `clusterCIDR` here - rejects pod traffic with
 `EHOSTUNREACH` unless the caller shares a node with the envoy pod. The cost is

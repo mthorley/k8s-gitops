@@ -22,5 +22,6 @@ provider "vault" {
 }
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  config_path = (var.ENV == "prod" ? "~/.kube/prod.config" : "~/.kube/c1.config")
 }
+

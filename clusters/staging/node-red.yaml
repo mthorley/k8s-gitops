@@ -8,7 +8,6 @@ spec:
   dependsOn:
     - name: infrastructure
     - name: gateway-api-crds
-    - name: nginx-gateway
   interval: 30m0s
   path: ./apps/common/node-red
   prune: true

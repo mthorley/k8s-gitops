@@ -10,7 +10,6 @@ resources:
   - ../common/vault
   - ../common/external-secrets
   - ../common/certmanager-1.12
-  - ../common/ingress
 #  - ../common/mongodb
   - ../common/influxdb
   # loki: moved to its own clusters/production/loki.yaml Kustomization

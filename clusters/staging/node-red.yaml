@@ -19,7 +19,7 @@ spec:
       APP: "nodered"
       ACME_EMAIL: "matt.thorley@gmail.com"
       # under test here before production takes it
-      nodered_image_tag: "37e4ce388c96cdfa28b08996c20f77863558e40a"
+      nodered_image_tag: "72bd1650edb6a318e13d9d56bec8b8f9af852834"
       mqtt_ip: 192.168.3.14
       nodered_web_ip: 192.168.3.27
       nodered_syslog_ip: 192.168.3.26

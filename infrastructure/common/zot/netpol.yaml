@@ -1,6 +1,6 @@
-# Ingress to the registry: only this cluster's nodes (containerd pulling images)
-# and 192.168.1.0/24 reach the gateway; only the gateway and prometheus reach
-# zot itself. Egress is left open.
+# Ingress to the registry: only this cluster's nodes (containerd pulling images),
+# 192.168.1.0/24 and trivy-operator's scan jobs reach the gateway; only the
+# gateway and prometheus reach zot itself. Egress is left open.
 #
 # Cilium policies, not NetworkPolicy ipBlocks: Cilium gives node traffic the
 # reserved identities host / remote-node, so an ipBlock of the node IPs never
@@ -29,6 +29,19 @@ spec:
               protocol: TCP
     - fromCIDR:
         - 192.168.1.0/24
+      toPorts:
+        - ports:
+            - port: "10443"
+              protocol: TCP
+    # trivy-operator scan jobs. They scan by the image reference in the pod
+    # spec - zot.${domain}/... - so they arrive here at the gateway rather than
+    # at the zot Service, and as pods they get their own Cilium identity, which
+    # neither the host/remote-node entities nor the CIDR above match.
+    # Namespace-scoped rather than per-pod: trivy-system runs nothing else, and
+    # the scan jobs are created with generated names.
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: trivy-system
       toPorts:
         - ports:
             - port: "10443"

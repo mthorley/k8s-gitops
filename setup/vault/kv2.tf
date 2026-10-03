@@ -134,6 +134,17 @@ variable "POCKETID_NODERED_SECRET" {
   sensitive   = true
 }
 
+variable "POCKETID_GRAFANA_CLIENTID" {
+  type        = string
+  description = "Grafana OIDC client id, shared by both clusters and registered by setup/pocketid"
+}
+
+variable "POCKETID_GRAFANA_SECRET" {
+  type        = string
+  description = "Grafana OIDC client secret (16+ printable ASCII), shared by both clusters and registered by setup/pocketid"
+  sensitive   = true
+}
+
 variable "POCKETID_ENCRYPTION_KEY" {
   type        = string
   description = "Pocket ID data-at-rest encryption key (`openssl rand -base64 32`). Rotating it makes existing TOTP secrets and API keys unreadable."

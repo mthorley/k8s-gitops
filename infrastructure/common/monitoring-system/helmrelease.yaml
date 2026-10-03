@@ -45,6 +45,34 @@ spec:
           root_url: https://grafana.${domain}
         auth.anonymous:
           enabled: false
+        auth:
+          # the local admin login form stays enabled as the way back in if the
+          # OIDC config or role mapping below is wrong
+          signout_redirect_url: https://auth.${domain}/api/oidc/end-session
+        # Pocket ID (apps/common/pocket-id), the cluster IdP. The client is
+        # registered by setup/pocketid (config.yaml), and client_id/client_secret
+        # are injected as env vars from secret-grafana - see envValueFrom below -
+        # so they stay out of this ConfigMap.
+        auth.generic_oauth:
+          enabled: true
+          name: Pocket ID
+          icon: signin
+          scopes: openid email profile groups
+          # these are Pocket ID's own paths, not the standard OIDC ones: note
+          # the /api/oidc prefix on the back-channel calls and its absence on
+          # /authorize (same as apps/common/node-red/settings.js)
+          auth_url: https://auth.${domain}/authorize
+          token_url: https://auth.${domain}/api/oidc/token
+          api_url: https://auth.${domain}/api/oidc/userinfo
+          use_pkce: true
+          login_attribute_path: preferred_username
+          email_attribute_path: email
+          name_attribute_path: name
+          # Pocket ID group names, from the groups claim. The client is
+          # restricted to these two groups, so a signed-in user is always one or
+          # the other and the Viewer fallback is only a safety net.
+          role_attribute_path: contains(groups[*], 'grafana-admins') && 'Admin' || contains(groups[*], 'grafana-editors') && 'Editor' || 'Viewer'
+          allow_assign_grafana_admin: true
         # carried over from the old vault-templated grafana.ini; no smtp-server
         # service exists yet so this is inert until one does
         smtp:
@@ -53,6 +81,18 @@ spec:
           from_address: myemail@gmail.com
           from_name: Grafana Alert
           skip_verify: true
+      # the OIDC client id and secret, from vault secret/grafana via the
+      # secrets-eso-vault component's ExternalSecret (APP=grafana). Env vars win
+      # over grafana.ini, so the keys above are deliberately absent from it.
+      envValueFrom:
+        GF_AUTH_GENERIC_OAUTH_CLIENT_ID:
+          secretKeyRef:
+            name: secret-grafana
+            key: oidc-client-id
+        GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET:
+          secretKeyRef:
+            name: secret-grafana
+            key: oidc-client-secret
       sidecar:
         # any ConfigMap labelled grafana_dashboard=1 / grafana_datasource=1 in
         # any namespace is provisioned, so apps ship their own next to their

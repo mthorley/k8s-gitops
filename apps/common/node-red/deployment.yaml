@@ -25,10 +25,16 @@ spec:
         # docker.io/mthorley/node-red with `crane copy`, so the two clusters do
         # not depend on each other or on docker hub at pod start. ${domain}
         # resolves per cluster, so each pulls locally.
+        # The tag is per cluster (clusters/*/node-red.yaml), so staging can run
+        # a newer build while production stays pinned. Both clusters must set
+        # nodered_image_tag: flux substitutes an unset variable with nothing,
+        # which would leave an image ref ending in a bare colon.
         #image: mthorley/node-red:70c3567104b5fd73cde156249157f4f848bbe0ab
-        image: zot.${domain}/node-red:173acf81507b5b87a32f85320214af2c3eb28fd2
-        # the tag is immutable (a git sha), so no need to re-pull every start;
-        # IfNotPresent also means a registry outage cannot stop a pod restart
+        image: zot.${domain}/node-red:${nodered_image_tag}
+        # IfNotPresent suits an immutable tag (a git sha) and means a registry
+        # outage cannot stop a pod restart. It also means a re-pushed mutable
+        # tag is NOT picked up on nodes that already cached it - when testing,
+        # push a new tag rather than overwriting one.
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 1880

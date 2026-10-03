@@ -19,6 +19,8 @@ spec:
     substitute:
       APP: "nodered"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # pinned: staging tests newer builds first, see clusters/staging/node-red.yaml
+      nodered_image_tag: "173acf81507b5b87a32f85320214af2c3eb28fd2"
       mqtt_ip: 192.168.2.11
       nodered_web_ip: 192.168.2.14
       nodered_syslog_ip: 192.168.2.26

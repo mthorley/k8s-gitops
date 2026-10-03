@@ -10,7 +10,8 @@ spec:
     - name: gateway-api-crds
     - name: envoy-gateway
   interval: 30m0s
-  path: ./apps/common/pocket-id
+  # production overlay, not apps/common: it adds the backup-cron-nfs component
+  path: ./apps/production/pocket-id
   prune: true
   postBuild:
     substituteFrom:
@@ -22,6 +23,13 @@ spec:
       # hostname - cert-hostname-patch.yaml pins that to auth.${domain}.
       APP: "pocketid"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # backup-cron-nfs: nightly tar of the sqlite db / signing keys onto the
+      # qnap. Half an hour after node-red and home-assistant so the three
+      # don't hit the NFS share at once.
+      BACKUP_SOURCE_CLAIM: "pocket-id-claim"
+      BACKUP_SCHEDULE: "30 0 * * *"
+      qnap_ip: 192.168.1.147
+      cluster_id: cluster0
   sourceRef:
     kind: GitRepository
     name: flux-system

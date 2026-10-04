@@ -75,7 +75,11 @@ spec:
       enableServiceLinks: true
       containers:
         - name: home-assistant
-          image: "ghcr.io/home-assistant/home-assistant:2022.5.4"
+          # Same tag as apps/production/ha-dev. Bumped from the chart's 2022.5.4
+          # because hass-oidc-auth needs 2025.11+ (setup/homeassistant/README.md).
+          # The recorder schema migration on first start is one-way - going back
+          # to 2022.5.4 means restoring the home-assistant-config PVC.
+          image: "ghcr.io/home-assistant/home-assistant:2026.8.3"
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: null
@@ -89,6 +93,13 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            # hass-oidc-auth config, from auth-oidc-config.yaml. subPath so it
+            # lands as a single file beside the PVC's configuration.yaml, which
+            # pulls it in with `auth_oidc: !include auth_oidc.yaml`.
+            - name: auth-oidc-config
+              mountPath: /config/auth_oidc.yaml
+              subPath: auth_oidc.yaml
+              readOnly: true
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -114,3 +125,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: home-assistant-config
+        - name: auth-oidc-config
+          configMap:
+            name: home-assistant-auth-oidc-config

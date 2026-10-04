@@ -8,6 +8,7 @@ spec:
       app.kubernetes.io/name: home-assistant
   egress:
   - toFQDNs:
+    - matchPattern: "auth.${domain}"                # Pocket ID - hass-oidc-auth component (discovery, JWKS and token endpoints)
     - matchPattern: "user-field.aylanetworks.com"   # Fujitsu AC HA component
     - matchPattern: "ads-field.aylanetworks.com"    # Fujitsu AC HA component
     - matchPattern: "plex.tv"

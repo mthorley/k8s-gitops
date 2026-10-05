@@ -1,0 +1,97 @@
+# Home Assistant's whole configuration.yaml, mounted over the copy that
+# onboarding writes to the PVC.
+#
+# Everything is inline rather than split across `!include`d ConfigMaps. That
+# indirection only existed because configuration.yaml used to live on the PVC
+# and out of git, so the pieces had to be pulled in by hand after every
+# rebuild. With the top-level file version controlled there is nothing left for
+# the includes to buy: both `http:` and `auth_oidc:` need a full Home Assistant
+# restart to take effect either way, so there is no partial-reload advantage,
+# and neither holds a secret.
+#
+# Safe to mount read-only: Home Assistant core never writes configuration.yaml.
+# It writes .storage/, the recorder DB, logs, and - through the UI editors -
+# automations.yaml, scripts.yaml and scenes.yaml, all of which stay on the PVC.
+#
+# The cost of owning this file: scaffold entries that a future Home Assistant
+# version would add to a fresh configuration.yaml have to be copied in by hand,
+# and it cannot be edited from inside Home Assistant - a config mistake is
+# fixed in git and pushed, not in the container.
+#
+# Staging only. apps/production/ha-dev keeps its own http-config.yaml and an
+# unmanaged configuration.yaml on its PVC.
+#
+# Shipped as a configMapGenerator (see kustomization.yaml), so the ConfigMap name
+# carries a content hash: any change here changes the pod spec and rolls Home
+# Assistant. A plain ConfigMap would not - and a subPath mount is never refreshed
+# in a running pod - so an edit would sit unapplied until something else
+# restarted it.
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Reverse proxy settings. Required now that traffic arrives through
+# envoy-gateway rather than only on the LoadBalancer IP: without it Home
+# Assistant rejects every proxied request with "a request from a reverse
+# proxy was received ... but your HTTP integration is not set-up for
+# reverse proxies" (HTTP 400), and hass-oidc-auth builds its redirect URI
+# from the wrong scheme and host.
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 10.0.0.0/8
+
+# Pocket ID SSO, via the hass-oidc-auth custom component
+# (christiaangoossens/hass-oidc-auth), which is installed onto the PVC -
+# see setup/homeassistant/README.md. Until it is, Home Assistant logs a
+# setup failure for the unknown integration and carries on.
+#
+# No client secret: the Pocket ID client is a public client using PKCE,
+# which is what this component defaults to and recommends. See the Home
+# Assistant entry in setup/pocketid/config.yaml.
+auth_oidc:
+  client_id: home-assistant
+  discovery_url: https://auth.${domain}/.well-known/openid-configuration
+
+  # The component builds its redirect URI from the incoming request, so
+  # signing in must be started at https://homeassistant.${domain}/ (through
+  # the gateway), not at the LoadBalancer IP. Reaching Home Assistant on
+  # ${homeassistant_ip}:8123 still works for everything except SSO - Pocket
+  # ID rejects plain-http callbacks, which is why the gateway exists.
+  #
+  # The http: block above is what makes X-Forwarded-Proto from envoy
+  # trusted, so the URI comes out as https. If a redirect ever comes out as
+  # http anyway, set features.force_https: true rather than loosening
+  # Pocket ID.
+
+  # Shown as "Login with Pocket ID" on the welcome and login screens.
+  display_name: Pocket ID
+
+  # Pocket ID puts group names in the `groups` claim, which is the
+  # component's default, so only the group names themselves need setting.
+  roles:
+    # Members of this group become Home Assistant administrators.
+    admin: homeassistant-admins
+    # Setting this makes the component reject anyone in neither group, so
+    # it enforces the same restriction as the client's allowedGroups rather
+    # than relying on Pocket ID alone.
+    user: homeassistant
+
+  features:
+    # Adopts the existing Home Assistant account whose username matches the
+    # Pocket ID preferred_username, instead of creating an empty second one.
+    #
+    # Turn this back off once everyone has signed in via Pocket ID at least
+    # once: it means any Pocket ID user whose username matches a Home
+    # Assistant user gets that account and its rights, and it bypasses any
+    # MFA configured on it. Existing links keep working once it is off.
+    automatic_user_linking: true
+
+# Written by the Home Assistant UI editors, so these stay on the PVC.
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

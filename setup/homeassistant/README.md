@@ -52,9 +52,8 @@ production runs `apps/production/ha-dev`, which is untouched by this.
 | piece | where |
 | --- | --- |
 | Pocket ID groups + public OIDC client | [`setup/pocketid/config.yaml`](../pocketid/config.yaml) |
-| `auth_oidc.yaml` ConfigMap, mounted at `/config/auth_oidc.yaml` | `apps/common/homeassistant/auth-oidc-config.yaml` |
+| whole `configuration.yaml` — `http:` (trusted proxies) and `auth_oidc:` inline — mounted over the PVC copy | `apps/common/homeassistant/configuration.yaml` (configMapGenerator) |
 | TLS hostname `homeassistant.${domain}` | `apps/common/homeassistant/gateway.yaml` |
-| `trusted_proxies`, mounted at `/config/http.yaml` | `apps/common/homeassistant/http-config.yaml` |
 | own Flux Kustomization carrying `APP=homeassistant` | [`clusters/staging/homeassistant.yaml`](../../clusters/staging/homeassistant.yaml) |
 | Cloudflare DNS token for the ACME challenge | [`setup/vault/homeassistant-kv2.tf`](../vault/homeassistant-kv2.tf) |
 | egress to `auth.${domain}` | `apps/common/homeassistant/allow-ext-egress-components-netpol.yaml` |
@@ -129,16 +128,14 @@ Home Assistant pip-installs on first start — `pypi.org`,
 `files.pythonhosted.org` and `wheels.home-assistant.io` are already allowed in
 the egress policy.
 
-Then, once, on the PVC's `configuration.yaml` (it is not in git) — **both**
-lines, the `http:` one included, or logins through the gateway fail:
+Nothing to edit on the PVC afterwards: `configuration.yaml` itself is a
+ConfigMap generated from `apps/common/homeassistant/configuration.yaml`, mounted read-only over the copy onboarding
+writes, with the `http:` and `auth_oidc:` blocks inline. It survives the volume
+being recreated. Change it in git and push — Home Assistant restarts on the new
+pod spec, and an auth provider cannot be reloaded without a restart anyway.
 
-```yaml
-http: !include http.yaml
-auth_oidc: !include auth_oidc.yaml
-```
-
-and restart the deployment. Changes to `auth_oidc.yaml` need a restart too — an
-auth provider cannot be reloaded.
+Until the component is installed, Home Assistant logs a setup failure for the
+unknown `auth_oidc` integration and otherwise runs normally.
 
 Before the first login, `terraform apply` in [`setup/vault`](../vault) so
 `secret/homeassistant-cf-api-token` exists — cert-manager cannot complete the

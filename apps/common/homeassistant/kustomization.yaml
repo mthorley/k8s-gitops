@@ -10,8 +10,6 @@ resources:
   - namespace.yaml
   - serviceaccount.yaml
   - home-assistant-stack.yaml
-  - auth-oidc-config.yaml
-  - http-config.yaml
   - gateway.yaml
   - backup-cron.yaml
   - lb.yaml
@@ -20,6 +18,16 @@ resources:
   - allow-ext-egress-netpol.yaml
   - allow-ext-egress-components-netpol.yaml
   - deny-all-egress-netpol.yaml
+
+# configuration.yaml is Home Assistant's own config, version controlled rather
+# than left on the PVC. The generated name carries a content hash, which
+# changes the pod spec and rolls Home Assistant whenever the file changes -
+# same approach as node-red's settings.js. Without it the ConfigMap would update
+# silently and the subPath mount in the running pod would keep the old file.
+configMapGenerator:
+  - name: home-assistant-configuration
+    files:
+      - configuration.yaml
 
 components:
   # Provides the SecretStore and service-account token Secret that the

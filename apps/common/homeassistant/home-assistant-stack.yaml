@@ -95,16 +95,14 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            # hass-oidc-auth config, from auth-oidc-config.yaml. subPath so it
-            # lands as a single file beside the PVC's configuration.yaml, which
-            # pulls it in with `auth_oidc: !include auth_oidc.yaml`.
-            - name: auth-oidc-config
-              mountPath: /config/auth_oidc.yaml
-              subPath: auth_oidc.yaml
-              readOnly: true
-            - name: http-config
-              mountPath: /config/http.yaml
-              subPath: http.yaml
+            # Shadows the configuration.yaml onboarding writes to the PVC.
+            # subPath so only that one file is replaced and the rest of the
+            # volume (.storage, the DB, automations.yaml) stays writable.
+            # Carries the http: and auth_oidc: config inline - see
+            # configuration.yaml in this directory.
+            - name: ha-configuration
+              mountPath: /config/configuration.yaml
+              subPath: configuration.yaml
               readOnly: true
           livenessProbe:
             tcpSocket:
@@ -131,9 +129,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: home-assistant-config
-        - name: auth-oidc-config
+        - name: ha-configuration
           configMap:
-            name: home-assistant-auth-oidc-config
-        - name: http-config
-          configMap:
-            name: home-assistant-http-config
+            name: home-assistant-configuration

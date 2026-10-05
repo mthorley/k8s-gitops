@@ -1,0 +1,48 @@
+# Serves Home Assistant on homeassistant.${domain} through envoy-gateway, same
+# shape as node-red/ccm. The cert comes from the pki-certman-letsencrypt
+# component, which issues for ${APP}.${domain} - with APP=homeassistant that is
+# exactly this hostname, so unlike pocket-id no cert-hostname patch is needed.
+#
+# This exists because Pocket ID refuses plain-http callback URLs
+# (ALLOW_INSECURE_CALLBACK_URLS=false in apps/common/pocket-id/deployment.yaml),
+# so the OIDC redirect URI has to be https. The LoadBalancer in lb.yaml stays
+# as-is for direct LAN access on ${homeassistant_ip}:8123.
+#
+# unifi-dns (external-dns) watches gateway-httproute, so the DNS record is
+# created from the HTTPRoute below - nothing to add by hand.
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: homeassistant-gateway
+  namespace: homeassistant
+spec:
+  gatewayClassName: envoy
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "homeassistant.${domain}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: "${APP}-tls-prod"
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: homeassistant
+  namespace: homeassistant
+spec:
+  parentRefs:
+    - name: homeassistant-gateway
+  hostnames:
+    - "homeassistant.${domain}"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: home-assistant
+          port: 8123

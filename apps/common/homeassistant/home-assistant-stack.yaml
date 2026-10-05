@@ -69,7 +69,9 @@ spec:
         app.kubernetes.io/instance: home-assistant
     spec:
       
-      serviceAccountName: default
+      # Not `default`: the secrets-eso-vault SecretStore authenticates to Vault
+      # as this service account - see serviceaccount.yaml.
+      serviceAccountName: homeassistant
       automountServiceAccountToken: true
 #      dnsPolicy: ClusterFirst
       enableServiceLinks: true
@@ -100,6 +102,10 @@ spec:
               mountPath: /config/auth_oidc.yaml
               subPath: auth_oidc.yaml
               readOnly: true
+            - name: http-config
+              mountPath: /config/http.yaml
+              subPath: http.yaml
+              readOnly: true
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -128,3 +134,6 @@ spec:
         - name: auth-oidc-config
           configMap:
             name: home-assistant-auth-oidc-config
+        - name: http-config
+          configMap:
+            name: home-assistant-http-config

@@ -11,7 +11,9 @@ resources:
 #  - ../common/minecraft
 #  - ../common/crypto-automation
 #  - ../common/unifi-controller
-  - ../common/homeassistant
+# homeassistant moved to its own Flux Kustomization (clusters/staging/homeassistant.yaml)
+# so it can carry APP=homeassistant for its TLS cert - this bundle sets no APP.
+#  - ../common/homeassistant
 #  - ../common/zigbee2mqtt
 #  - ../common/freeradius
 #  - ../common/frigate

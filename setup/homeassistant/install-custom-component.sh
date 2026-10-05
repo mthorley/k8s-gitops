@@ -4,31 +4,73 @@
 # and restarting the deployment.
 #
 # Usage:
-#   ./install-custom-component.sh <git-repo-url> [component-name] [namespace]
+#   ./install-custom-component.sh <source> [component-name] [namespace]
 #
-# Examples:
+# <source> is either a git repo URL or a release-zip URL/path (anything ending
+# in .zip). Examples:
 #   ./install-custom-component.sh https://github.com/nathanvdh/homeassistant-airtouch2plus
 #   ./install-custom-component.sh https://github.com/nathanvdh/homeassistant-airtouch2plus airtouch2plus homeassistant
+#   ./install-custom-component.sh https://github.com/christiaangoossens/hass-oidc-auth/releases/download/v1.2.1/hass-oidc-auth.zip auth_oidc
 #
-# The repo must contain a custom_components/<component-name>/ directory
-# (the standard HA custom component layout). If component-name is omitted,
-# it is auto-detected when the repo has exactly one folder under
-# custom_components/.
+# Prefer the release zip whenever the component publishes one - a project with
+# "zip_release": true in hacs.json builds assets during its release workflow, so
+# its git tree is incomplete and a clone installs something that breaks at
+# runtime. hass-oidc-auth is the example: static/style.css is compiled from
+# static/input.css at release time and is absent from git, so the welcome page
+# 500s on a cloned install.
+#
+# Layouts handled:
+#   - git clone, or a zip, containing custom_components/<component-name>/
+#     (component-name auto-detected when there is exactly one such folder)
+#   - a zip whose root IS the component (no custom_components/ prefix), as
+#     produced by the HACS zip_release convention - component-name is then
+#     required, since nothing in the archive names it
 
 set -euo pipefail
 
-REPO_URL="${1:?Usage: $0 <git-repo-url> [component-name] [namespace]}"
+SOURCE="${1:?Usage: $0 <git-repo-url|release-zip-url> [component-name] [namespace]}"
 COMPONENT_NAME="${2:-}"
 NAMESPACE="${3:-homeassistant}"
 
 WORKDIR=$(mktemp -d)
 trap 'rm -rf "$WORKDIR"' EXIT
 
-echo "==> Cloning $REPO_URL"
-git clone --depth 1 --quiet "$REPO_URL" "$WORKDIR/repo"
+if [[ "$SOURCE" == *.zip ]]; then
+  ZIP="$WORKDIR/component.zip"
+  if [[ "$SOURCE" == http://* || "$SOURCE" == https://* ]]; then
+    echo "==> Downloading $SOURCE"
+    curl -fsSL -o "$ZIP" "$SOURCE"
+  else
+    echo "==> Using local zip $SOURCE"
+    cp "$SOURCE" "$ZIP"
+  fi
+  mkdir -p "$WORKDIR/unpack"
+  unzip -q "$ZIP" -d "$WORKDIR/unpack"
+
+  if [[ -d "$WORKDIR/unpack/custom_components" ]]; then
+    # Zip of a whole repo: same shape as a clone from here on.
+    ROOT="$WORKDIR/unpack"
+  else
+    # HACS zip_release: the archive root is the component itself, so it has to
+    # be renamed to the component name before copying - the directory name is
+    # what HA uses as the domain.
+    if [[ -z "$COMPONENT_NAME" ]]; then
+      echo "This zip has no custom_components/ directory, so its root is the component itself." >&2
+      echo "Pass component-name explicitly, e.g. auth_oidc." >&2
+      exit 1
+    fi
+    ROOT="$WORKDIR/root"
+    mkdir -p "$ROOT/custom_components"
+    mv "$WORKDIR/unpack" "$ROOT/custom_components/$COMPONENT_NAME"
+  fi
+else
+  echo "==> Cloning $SOURCE"
+  git clone --depth 1 --quiet "$SOURCE" "$WORKDIR/repo"
+  ROOT="$WORKDIR/repo"
+fi
 
 if [[ -z "$COMPONENT_NAME" ]]; then
-  CANDIDATES=("$WORKDIR"/repo/custom_components/*/)
+  CANDIDATES=("$ROOT"/custom_components/*/)
   if [[ ${#CANDIDATES[@]} -ne 1 ]]; then
     echo "Could not auto-detect a single component under custom_components/, pass component-name explicitly." >&2
     exit 1
@@ -37,9 +79,14 @@ if [[ -z "$COMPONENT_NAME" ]]; then
   echo "==> Detected component: $COMPONENT_NAME"
 fi
 
-SRC_DIR="$WORKDIR/repo/custom_components/$COMPONENT_NAME"
+SRC_DIR="$ROOT/custom_components/$COMPONENT_NAME"
 if [[ ! -d "$SRC_DIR" ]]; then
-  echo "custom_components/$COMPONENT_NAME not found in $REPO_URL" >&2
+  echo "custom_components/$COMPONENT_NAME not found in $SOURCE" >&2
+  exit 1
+fi
+
+if [[ ! -f "$SRC_DIR/manifest.json" ]]; then
+  echo "No manifest.json in $SRC_DIR - this does not look like a custom component." >&2
   exit 1
 fi
 
@@ -66,6 +113,8 @@ cat <<EOF
 
 Done. Next steps:
   1. In Home Assistant: Settings -> Devices & Services -> Add Integration -> search "$COMPONENT_NAME".
+     (Components configured by YAML instead, such as auth_oidc, need their
+     include adding to /config/configuration.yaml on the PVC - not this script.)
   2. If the component needs to reach a host/CIDR not already allowed, add it to
      apps/common/homeassistant/allow-ext-egress-netpol.yaml (local LAN) or
      apps/common/homeassistant/allow-ext-egress-components-netpol.yaml (external FQDNs).

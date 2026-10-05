@@ -24,7 +24,7 @@ backed by git, so anything below is lost with the volume).
 |---|---|---|---|
 | FGLair heat pump controller | [bigmoby/fglair_for_homeassistant](https://github.com/bigmoby/fglair_for_homeassistant) | `fglair_heatpump_controller` | Controls a Fujitsu AC over the FGLair/Ayla cloud API. Installed to work around the official `fujitsu_fglair` core integration refusing `AC-UTY`-prefixed devices ([home-assistant/core#132460](https://github.com/home-assistant/core/issues/132460), closed not-planned) — this fork's `pyfujitsugeneral` dependency has no such prefix check. |
 | Airtouch2Plus | self-authored, vendored at [`airtouch2plus/`](airtouch2plus/) (no upstream repo) | `airtouch2plus` | Controls a Polyaire AirTouch 2+ over Polyaire's cloud relay (`app2plus.airtouch.com.au:9200`, same protocol as the official app), not local TCP — sidesteps the earlier local-network unreachability problem (see below). `iot_class: cloud_polling`. Requires `app2plus.airtouch.com.au` in `allow-ext-egress-components-netpol.yaml`. Installed via `install-custom-component.sh`'s copy step, sourced from the local `airtouch2plus/` folder instead of a git clone since there's no upstream repo. AC/zone control commands are unverified against a real device — see [`airtouch2plus/README.md`](airtouch2plus/README.md). |
-| Pocket ID SSO (staging only) | [christiaangoossens/hass-oidc-auth](https://github.com/christiaangoossens/hass-oidc-auth) | `auth_oidc` | Lets people sign in with their Pocket ID account instead of a local Home Assistant password. See [Pocket ID SSO](#pocket-id-sso-staging-only) below — it needs **HA 2025.11+**, so it does not run on staging's current 2022.5.4. |
+| Pocket ID SSO (staging only) | [christiaangoossens/hass-oidc-auth](https://github.com/christiaangoossens/hass-oidc-auth) | `auth_oidc` | Lets people sign in with their Pocket ID account instead of a local Home Assistant password. See [Pocket ID SSO](#pocket-id-sso-staging-only) below. Needs **HA 2025.11+**, which is why staging was moved to 2026.8.3. Must be installed from the release zip, not a git clone. |
 | Zen WiFi Thermostat | self-authored, vendored at [`zenwifi/`](zenwifi/), ported from [mthorley/zen-wifi-client](https://github.com/mthorley/zen-wifi-client) (Node.js, not directly usable in HA) | `zenwifi` | Controls a Zen Ecosystems WiFi thermostat over its cloud API (`wifi.zenhq.com`), same as the official app. `iot_class: cloud_polling`. Requires `wifi.zenhq.com` in `allow-ext-egress-components-netpol.yaml`. Installed via `install-custom-component.sh`'s copy step, sourced from the local `zenwifi/` folder instead of a git clone since the upstream repo isn't a HA custom component. Mode/setpoint write commands are unverified against a real device — see [`zenwifi/README.md`](zenwifi/README.md). |
 
 Tried and removed:
@@ -53,37 +53,96 @@ production runs `apps/production/ha-dev`, which is untouched by this.
 | --- | --- |
 | Pocket ID groups + public OIDC client | [`setup/pocketid/config.yaml`](../pocketid/config.yaml) |
 | `auth_oidc.yaml` ConfigMap, mounted at `/config/auth_oidc.yaml` | `apps/common/homeassistant/auth-oidc-config.yaml` |
+| TLS hostname `homeassistant.${domain}` | `apps/common/homeassistant/gateway.yaml` |
+| `trusted_proxies`, mounted at `/config/http.yaml` | `apps/common/homeassistant/http-config.yaml` |
+| own Flux Kustomization carrying `APP=homeassistant` | [`clusters/staging/homeassistant.yaml`](../../clusters/staging/homeassistant.yaml) |
+| Cloudflare DNS token for the ACME challenge | [`setup/vault/homeassistant-kv2.tf`](../vault/homeassistant-kv2.tf) |
 | egress to `auth.${domain}` | `apps/common/homeassistant/allow-ext-egress-components-netpol.yaml` |
 
 There is no client secret anywhere: the Pocket ID client is a **public client**
-using PKCE, which is what the component defaults to and recommends. Nothing is
-needed from `setup/vault`.
+using PKCE, which is what the component defaults to and recommends. The only
+thing `setup/vault` holds is the Cloudflare DNS token for the certificate.
+
+### Why Home Assistant is behind the gateway
+
+Pocket ID refuses plain-http callback URLs —
+`ALLOW_INSECURE_CALLBACK_URLS: "false"` in
+[`apps/common/pocket-id/deployment.yaml`](../../apps/common/pocket-id/deployment.yaml),
+deliberately, because an http callback silently downgrades a login. An attempt
+to use `http://<lan-ip>:8123/auth/oidc/callback` is rejected at the authorize
+step with:
+
+```
+error=invalid_request … Redirect URL is using an insecure protocol,
+http is only allowed for hosts with suffix 'localhost'
+```
+
+So Home Assistant is served over TLS on `homeassistant.${domain}` like every
+other OIDC client here. Two consequences:
+
+- **Start the login at `https://homeassistant.${domain}/`**, not at the
+  LoadBalancer IP. `${homeassistant_ip}:8123` still works for everything else;
+  SSO is the exception, because the component derives its redirect URI from the
+  incoming request.
+- Home Assistant moved out of the `apps/staging` bundle into its own Flux
+  Kustomization, because the cert and SecretStore components are keyed on
+  `${APP}` and the bundle sets no `APP`. Same split as node-red, zot and
+  pocketid. Production is untouched — it runs `apps/production/ha-dev`, and
+  `apps/production/kustomization.yaml` keeps `../common/homeassistant`
+  commented out.
+
+The hostname is `homeassistant.${domain}` rather than something shorter because
+`components/pki-certman-letsencrypt` issues for `${APP}.${domain}`; a shorter
+name would need a cert-hostname patch like pocket-id has.
 
 ## Installing
 
+> [!IMPORTANT]
+> **Install from the release zip, never from a git clone.** This component sets
+> `"zip_release": true` in `hacs.json`: `static/style.css` is compiled from
+> `static/input.css` by its release workflow and **is not in the git tree**. A
+> cloned install loads fine, completes OIDC discovery, and then returns **HTTP
+> 500 on the welcome page** with `ValueError: Static file
+> '…/static/style.css' not found`. Learned the hard way, 2026-10-04.
+
 ```sh
-./pocketid.py --env staging --env-file <env file>   # in setup/pocketid, registers the client
-./install-custom-component.sh https://github.com/christiaangoossens/hass-oidc-auth auth_oidc homeassistant
+# 1. Register the groups and the OIDC client in Pocket ID (from setup/pocketid)
+./pocketid.py --env staging --env-file <env file> --dry-run
+./pocketid.py --env staging --env-file <env file>
+
+# 2. Install the component from the pinned release zip
+./install-custom-component.sh \
+  https://github.com/christiaangoossens/hass-oidc-auth/releases/download/v1.2.1/hass-oidc-auth.zip \
+  auth_oidc homeassistant
 ```
 
-`install-custom-component.sh` clones the default branch, so this tracks `main`
-rather than a release (v1.2.1 at the time of writing). For something sitting on
-the front door, prefer checking out the tag by hand and copying
-`custom_components/auth_oidc` from it.
+`install-custom-component.sh` takes a release-zip URL as well as a git URL. The
+zip's root *is* the component (no `custom_components/` prefix), which is the
+HACS `zip_release` convention, so the component name has to be passed
+explicitly — nothing in the archive names it.
+
+Using the zip also pins the install to a release rather than tracking `main`,
+which is what you want for something on the front door.
 
 The component declares `aiofiles`, `jinja2` and `joserfc` as requirements, which
 Home Assistant pip-installs on first start — `pypi.org`,
 `files.pythonhosted.org` and `wheels.home-assistant.io` are already allowed in
 the egress policy.
 
-Then, once, on the PVC's `configuration.yaml` (it is not in git):
+Then, once, on the PVC's `configuration.yaml` (it is not in git) — **both**
+lines, the `http:` one included, or logins through the gateway fail:
 
 ```yaml
+http: !include http.yaml
 auth_oidc: !include auth_oidc.yaml
 ```
 
 and restart the deployment. Changes to `auth_oidc.yaml` need a restart too — an
 auth provider cannot be reloaded.
+
+Before the first login, `terraform apply` in [`setup/vault`](../vault) so
+`secret/homeassistant-cf-api-token` exists — cert-manager cannot complete the
+DNS-01 challenge without it, and the gateway has no certificate until it does.
 
 ## Notes
 

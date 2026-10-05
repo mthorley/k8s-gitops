@@ -1,11 +1,18 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
+#
+# Built by clusters/staging/homeassistant.yaml (APP=homeassistant), not by the
+# apps/staging bundle - the cert and SecretStore components below are keyed on
+# ${APP}. Production does not build this at all; it runs apps/production/ha-dev.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: homeassistant
 resources:
   - namespace.yaml
+  - serviceaccount.yaml
   - home-assistant-stack.yaml
   - auth-oidc-config.yaml
+  - http-config.yaml
+  - gateway.yaml
   - backup-cron.yaml
   - lb.yaml
   - allow-local-egress-unifi-netpol.yaml
@@ -13,3 +20,27 @@ resources:
   - allow-ext-egress-netpol.yaml
   - allow-ext-egress-components-netpol.yaml
   - deny-all-egress-netpol.yaml
+
+components:
+  # Provides the SecretStore and service-account token Secret that the
+  # *-cf-api-token ExternalSecret below depends on.
+  - ../../../components/secrets-eso-vault
+  # Issues homeassistant.${domain} from Let's Encrypt via the Cloudflare
+  # DNS-01 solver, as secret ${APP}-tls-prod for gateway.yaml.
+  - ../../../components/pki-certman-letsencrypt
+
+# Home Assistant keeps its own secrets on the config PVC and its Pocket ID
+# client is public (no secret), so the generic external-secret-${APP} from
+# secrets-eso-vault has nothing to sync and would sit in SecretSyncedError
+# forever. Drop just that resource and keep the rest of the component, the
+# same way adguard and zot do.
+patches:
+  - target:
+      kind: ExternalSecret
+      name: ^external-secret-\$\{APP\}$
+    patch: |-
+      $patch: delete
+      apiVersion: external-secrets.io/v1beta1
+      kind: ExternalSecret
+      metadata:
+        name: external-secret-${APP}

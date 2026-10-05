@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+#
+# Home Assistant was part of the apps/staging bundle until it needed a TLS
+# hostname. The cert and SecretStore components are keyed on ${APP}, and
+# apps.yaml sets no APP (it builds a dozen apps at once), so it gets its own
+# Kustomization here - same split as node-red, zot and pocketid.
+#
+# Production deliberately does not have an equivalent: it runs
+# apps/production/ha-dev instead, and apps/production/kustomization.yaml keeps
+# ../common/homeassistant commented out.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: homeassistant
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: infrastructure
+    - name: gateway-api-crds
+  interval: 30m0s
+  path: ./apps/common/homeassistant
+  prune: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars
+    substitute:
+      APP: "homeassistant"
+      ACME_EMAIL: "matt.thorley@gmail.com"
+      homeassistant_ip: 192.168.3.19
+      # backup-cron.yaml writes to <qnap>:/k8s/backup/${cluster_id} - these must
+      # stay identical to the values apps.yaml was passing, or the nightly
+      # backup silently starts writing somewhere new.
+      qnap_ip: 192.168.1.147
+      cluster_id: cluster1
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: homeassistant
+  wait: false

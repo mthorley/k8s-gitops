@@ -22,6 +22,17 @@ data:
     client_id: home-assistant
     discovery_url: https://auth.${domain}/.well-known/openid-configuration
 
+    # The component builds its redirect URI from the incoming request, so
+    # signing in must be started at https://homeassistant.${domain}/ (through
+    # the gateway), not at the LoadBalancer IP. Reaching HA on
+    # ${homeassistant_ip}:8123 still works for everything except SSO - Pocket ID
+    # rejects plain-http callbacks, which is why the gateway exists.
+    #
+    # http.yaml sets use_x_forwarded_for/trusted_proxies so X-Forwarded-Proto
+    # from envoy is honoured and the URI comes out as https. If a redirect ever
+    # comes out as http anyway, set features.force_https: true rather than
+    # loosening Pocket ID.
+
     # Shown as "Login with Pocket ID" on the welcome and login screens.
     display_name: Pocket ID
 

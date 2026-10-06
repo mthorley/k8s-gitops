@@ -40,6 +40,18 @@ frontend:
 # proxy was received ... but your HTTP integration is not set-up for
 # reverse proxies" (HTTP 400), and hass-oidc-auth builds its redirect URI
 # from the wrong scheme and host.
+#
+# CAUTION - this block is only read ONCE per volume. Since 2026.x Home
+# Assistant keeps HTTP settings in /config/.storage/http and imports YAML into
+# it on the first boot only, then sets yaml_migration_done and ignores YAML
+# `http:` for good (raising a "yaml_still_present_after_migration" repair
+# warning). YAML http support is removed entirely in 2027.2.0.
+#
+# So: on a fresh PVC this block is migrated automatically, which is why it is
+# kept here. But editing it later does nothing - change the settings in the
+# Home Assistant UI, or delete .storage/http and restart to re-import from
+# here. Before 2027.2.0 this block has to go and the storage file becomes the
+# only source of truth.
 http:
   use_x_forwarded_for: true
   trusted_proxies:

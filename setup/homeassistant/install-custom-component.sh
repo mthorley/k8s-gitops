@@ -102,6 +102,12 @@ echo "==> Copying $COMPONENT_NAME into $POD:/config/custom_components/$COMPONENT
 # Clear any previous install first: `kubectl cp <dir> pod:<existing-dir>` nests
 # the source inside the destination rather than populating it, so the target
 # must not already exist when cp runs.
+#
+# The parent must exist, though: on a fresh PVC there is no
+# /config/custom_components, and `kubectl cp <dir> pod:/config/custom_components/`
+# then creates custom_components *as* the component directory - its files land
+# loose in custom_components/ and HA never finds the integration.
+kubectl exec -n "$NAMESPACE" "$POD" -- mkdir -p /config/custom_components
 kubectl exec -n "$NAMESPACE" "$POD" -- rm -rf "/config/custom_components/$COMPONENT_NAME"
 kubectl cp "$SRC_DIR" "$NAMESPACE/$POD:/config/custom_components/" --no-preserve=true
 

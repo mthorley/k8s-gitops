@@ -147,10 +147,16 @@ spec:
           mountPath: /usr/local/etc/php/conf.d
         # First start rsyncs ~600MB of PHP onto NFS and runs the installer,
         # which takes several minutes on a Pi - hence the long startup window.
+        #
+        # status.php answers 400 to any Host that is not in trusted_domains, and
+        # the kubelet would otherwise send the pod IP - hence the Host header.
         startupProbe:
           httpGet:
             path: /status.php
             port: http
+            httpHeaders:
+            - name: Host
+              value: "nextcloud.${domain}"
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 90
@@ -158,12 +164,18 @@ spec:
           httpGet:
             path: /status.php
             port: http
+            httpHeaders:
+            - name: Host
+              value: "nextcloud.${domain}"
           periodSeconds: 15
           timeoutSeconds: 5
         livenessProbe:
           httpGet:
             path: /status.php
             port: http
+            httpHeaders:
+            - name: Host
+              value: "nextcloud.${domain}"
           periodSeconds: 30
           timeoutSeconds: 10
           failureThreshold: 6

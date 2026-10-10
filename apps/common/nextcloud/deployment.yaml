@@ -51,6 +51,21 @@ spec:
           capabilities:
             drop:
             - ALL
+      # With REDIS_HOST set, the entrypoint writes redis-session.ini into
+      # PHP's conf.d, which only root can write. Seed a writable copy of the
+      # image's conf.d (opcache, apcu, memory limits, ...) for it to land in.
+      - name: php-conf
+        image: zot.${domain}/nextcloud:34.0.4-apache
+        imagePullPolicy: IfNotPresent
+        command: ["cp", "-a", "/usr/local/etc/php/conf.d/.", "/php-conf.d/"]
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: php-conf
+          mountPath: /php-conf.d
       containers:
       - name: nextcloud
         image: zot.${domain}/nextcloud:34.0.4-apache
@@ -126,6 +141,8 @@ spec:
           mountPath: /var/www/nextcloud-data
         - name: hooks
           mountPath: /docker-entrypoint-hooks.d/post-installation
+        - name: php-conf
+          mountPath: /usr/local/etc/php/conf.d
         # First start rsyncs ~600MB of PHP onto NFS and runs the installer,
         # which takes several minutes on a Pi - hence the long startup window.
         startupProbe:
@@ -178,6 +195,16 @@ spec:
             drop:
             - ALL
         env:
+        # config/redis.config.php reads these at runtime, so without them
+        # background jobs would lock files in the database while the web
+        # container locks them in Valkey.
+        - name: REDIS_HOST
+          value: nextcloud-valkey
+        - name: REDIS_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-nextcloud
+              key: valkey-password
         - name: PHP_MEMORY_LIMIT
           value: 512M
         - name: TZ
@@ -204,3 +231,5 @@ spec:
         configMap:
           name: nextcloud-hooks
           defaultMode: 0755
+      - name: php-conf
+        emptyDir: {}

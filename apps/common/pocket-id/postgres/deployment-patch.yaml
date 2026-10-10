@@ -15,7 +15,9 @@ spec:
         command:
         - /bin/sh
         - -c
-        - until pg_isready -h pocket-id-postgres -p 5432; do sleep 2; done
+        # -U is required: without it pg_isready takes the OS user name, and uid
+        # 999 has no passwd entry here, so it exits 3 ("no attempt") forever.
+        - until pg_isready -h pocket-id-postgres -p 5432 -U pocketid; do sleep 2; done
         securityContext:
           runAsUser: 999
           runAsNonRoot: true

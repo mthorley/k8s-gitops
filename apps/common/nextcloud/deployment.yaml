@@ -57,7 +57,9 @@ spec:
       - name: php-conf
         image: zot.${domain}/nextcloud:34.0.4-apache
         imagePullPolicy: IfNotPresent
-        command: ["cp", "-a", "/usr/local/etc/php/conf.d/.", "/php-conf.d/"]
+        # Plain cp of the files: -a would also try to stamp the emptyDir root,
+        # which is owned by root, and fail.
+        command: ["sh", "-c", "cp /usr/local/etc/php/conf.d/*.ini /php-conf.d/"]
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

@@ -1,0 +1,54 @@
+# Nightly pg_dump to the QNAP, alongside the tarballs components/backup-cron-nfs
+# writes for other apps. The Postgres volume itself is on managed-nfs-storage on
+# a worker node, so this is the copy that survives losing that node.
+#
+# Needs qnap_ip and cluster_id substituted by clusters/<env>/pocketid.yaml.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pocket-id-postgres-backup
+  namespace: pocket-id
+spec:
+  schedule: "30 1 * * *"
+  timeZone: "${cluster_tz}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pg-dump
+            image: docker.io/library/postgres:18.6-alpine3.23
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: PGHOST
+              value: pocket-id-postgres
+            - name: PGUSER
+              value: pocketid
+            - name: PGDATABASE
+              value: pocketid
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-pocketid
+                  key: postgres-password
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              mkdir -p /backup/pocketid
+              DATE="$(date +%Y%m%d_%H%M%S)"
+              # Custom format: compressed, and restorable table by table with pg_restore.
+              pg_dump -Fc -f "/backup/pocketid/pocketid_$DATE.dump.tmp"
+              mv "/backup/pocketid/pocketid_$DATE.dump.tmp" "/backup/pocketid/pocketid_$DATE.dump"
+              cd /backup/pocketid && ls -1t pocketid_*.dump | tail -n +15 | xargs -r rm -f
+            volumeMounts:
+            - name: nfs-volume
+              mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+          - name: nfs-volume
+            nfs:
+              server: "${qnap_ip}"
+              path: "/k8s/backup/${cluster_id}"

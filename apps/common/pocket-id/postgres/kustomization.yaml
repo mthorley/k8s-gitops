@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+#
+# Moves Pocket ID off SQLite onto a single-instance Postgres. SQLite runs in WAL
+# mode, which needs shared-memory locking that NFS cannot provide, and
+# managed-nfs-storage is the only storage class - so concurrent writes from
+# Pocket ID's own hourly jobs stalled on locks long enough to fail its health
+# check and kill the process. Postgres is the only client of its own files, so
+# NFS locking never comes into it.
+#
+# Enabled per cluster through `spec.components` in clusters/<env>/pocketid.yaml,
+# so it can be rolled out one cluster at a time. pocket-id-claim stays: it still
+# holds UPLOAD_PATH (avatars) and the export zip used for the migration.
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - statefulset.yaml
+  - service.yaml
+  - backup-cronjob.yaml
+
+patches:
+  - path: deployment-patch.yaml

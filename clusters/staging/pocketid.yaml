@@ -11,6 +11,10 @@ spec:
     - name: envoy-gateway
   interval: 30m0s
   path: ./apps/common/pocket-id
+  # Postgres instead of SQLite-on-NFS - see apps/common/pocket-id/postgres.
+  # Staging first; production still runs SQLite until this line is added there.
+  components:
+    - postgres
   prune: true
   postBuild:
     substituteFrom:
@@ -22,6 +26,10 @@ spec:
       # hostname - cert-hostname-patch.yaml pins that to auth.${domain}.
       APP: "pocketid"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # postgres/backup-cronjob.yaml writes to <qnap>:/k8s/backup/${cluster_id},
+      # the same share homeassistant.yaml backs up to.
+      qnap_ip: 192.168.1.147
+      cluster_id: cluster1
   sourceRef:
     kind: GitRepository
     name: flux-system

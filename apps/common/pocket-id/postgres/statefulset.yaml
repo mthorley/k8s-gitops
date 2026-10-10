@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pocket-id-postgres
+  namespace: pocket-id
+  labels:
+    app: pocket-id-postgres
+spec:
+  serviceName: pocket-id-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pocket-id-postgres
+  template:
+    metadata:
+      labels:
+        app: pocket-id-postgres
+    spec:
+      # Same image and uid as kagent's Postgres, which already runs on
+      # managed-nfs-storage in both clusters. Starting as a non-root uid matters
+      # on NFS: the entrypoint's chown of PGDATA fails under root_squash, whereas
+      # a uid that creates PGDATA itself already owns it.
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: postgres
+        image: docker.io/library/postgres:18.6-alpine3.23
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        # Sized for one small IdP database on a Pi 4 - the defaults reserve
+        # memory for 100 connections that never come.
+        args:
+        - -c
+        - shared_buffers=32MB
+        - -c
+        - effective_cache_size=128MB
+        - -c
+        - work_mem=2MB
+        - -c
+        - maintenance_work_mem=16MB
+        - -c
+        - wal_buffers=1MB
+        - -c
+        - max_connections=20
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: pocketid
+        - name: POSTGRES_USER
+          value: pocketid
+        # Only read by initdb on an empty volume - changing it in Vault later
+        # does not change the role's password.
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-pocketid
+              key: postgres-password
+        # A subdirectory, so initdb never sees anything the provisioner left at
+        # the volume root.
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "pocketid", "-d", "pocketid"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "pocketid", "-d", "pocketid"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 6
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: managed-nfs-storage
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi

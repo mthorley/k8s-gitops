@@ -151,6 +151,12 @@ variable "POCKETID_ENCRYPTION_KEY" {
   sensitive   = true
 }
 
+variable "POCKETID_POSTGRES_PASSWORD" {
+  type        = string
+  description = "Password of the pocketid role in Pocket ID's Postgres (`openssl rand -hex 24`). Only applied by initdb on an empty volume - changing it later needs an ALTER ROLE too."
+  sensitive   = true
+}
+
 variable "FRIGATE_RTSP_USERNAME" {
   type = string
   description = "FRIGATE_RTSP_USERNAME"
@@ -848,13 +854,16 @@ resource "vault_kv_secret_v2" "zig2mqtt" {
 }
 
 # Consumed by apps/common/pocket-id as the secret-pocketid Secret. Pocket ID
-# stores nothing else sensitive outside its own database.
+# stores nothing else sensitive outside its own database. The postgres keys are
+# only read on clusters that enable apps/common/pocket-id/postgres.
 resource "vault_kv_secret_v2" "pocketid" {
   mount     = vault_mount.kvv2.path
   name      = "pocketid"
   data_json = jsonencode(
     {
-      encryption-key = var.POCKETID_ENCRYPTION_KEY
+      encryption-key       = var.POCKETID_ENCRYPTION_KEY
+      postgres-password    = var.POCKETID_POSTGRES_PASSWORD
+      db-connection-string = "postgres://pocketid:${urlencode(var.POCKETID_POSTGRES_PASSWORD)}@pocket-id-postgres:5432/pocketid?sslmode=disable"
     }
   )
 }

@@ -61,6 +61,46 @@ it is worth including in whatever backs up `managed-nfs-storage`.
 `strategy: Recreate`: SQLite tolerates exactly one writer, so the old pod has to
 be gone before the replacement starts. Do not scale `replicas` above 1.
 
+## Postgres (component)
+
+SQLite on `managed-nfs-storage` crashed Pocket ID: SQLite runs in WAL mode,
+whose shared-memory locking does not work over NFS, so writes from Pocket ID's
+own hourly jobs (the `:35` SCIM sync, the `:56` cleanup cron) blocked on locks
+for 30s+, the actor-host health check timed out and the process exited.
+
+`postgres/` is a kustomize Component that adds a single-replica
+`postgres:18.6-alpine` StatefulSet (same image/uid as kagent's, which already
+runs on this NFS), points `DB_CONNECTION_STRING` at it, and adds a nightly
+`pg_dump` to `<qnap>:/k8s/backup/${cluster_id}/pocketid`. A cluster opts in with
+`components: [postgres]` in `clusters/<env>/pocketid.yaml`, which also has to
+substitute `qnap_ip` and `cluster_id`. Enabled on: **staging**.
+
+`pocket-id-claim` stays - it still holds uploads.
+
+### Migrating a cluster from SQLite
+
+1. Set the `POCKETID_POSTGRES_PASSWORD` terraform variable (`openssl rand -hex 24`)
+   and `terraform apply` in that cluster's `setup/vault` workspace, then check
+   `secret-pocketid` has `postgres-password` and `db-connection-string`
+   (ExternalSecret refresh is 10m). Doing this first matters: without those keys
+   the pods sit in `CreateContainerConfigError`.
+2. Export from the still-running SQLite instance onto the volume. `kubectl exec`
+   runs as root, which NFS squashes to `nobody` and locks out of the
+   `drwx------` uploads dir - so drop to the server's uid with `su-exec`, as the
+   image's entrypoint does:
+   `kubectl exec -n pocket-id deploy/pocket-id -- su-exec 1000:1000 /app/pocket-id export -p /app/data/sqlite-export.zip`
+3. Add `components: [postgres]` (plus `qnap_ip`/`cluster_id`) to
+   `clusters/<env>/pocketid.yaml` and let Flux apply it. Pocket ID starts on an
+   empty Postgres and creates its tables.
+4. Import, then restart:
+   `kubectl exec -n pocket-id deploy/pocket-id -- su-exec 1000:1000 /app/pocket-id import -p /app/data/sqlite-export.zip --forcefully-acquire-lock -y`
+   `kubectl rollout restart -n pocket-id deploy/pocket-id`
+5. Log in with an existing passkey and through an OIDC client (Node-RED) to
+   confirm users, passkeys, clients and signing keys came across. Then remove
+   `sqlite-export.zip` and the old `pocket-id.db*` files from the volume.
+
+Rollback before step 5: drop the component line; the SQLite files are untouched.
+
 ## Secrets
 
 `ENCRYPTION_KEY` (encrypts TOTP secrets and API keys at rest) comes from Vault

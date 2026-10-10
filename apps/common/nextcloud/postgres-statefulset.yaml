@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nextcloud-postgres
+  namespace: nextcloud
+  labels:
+    app: nextcloud-postgres
+spec:
+  serviceName: nextcloud-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextcloud-postgres
+  template:
+    metadata:
+      labels:
+        app: nextcloud-postgres
+    spec:
+      # Same image and uid as pocket-id's and kagent's Postgres, which already
+      # run on managed-nfs-storage. Starting as a non-root uid matters on NFS:
+      # the entrypoint's chown of PGDATA fails under root_squash, whereas a uid
+      # that creates PGDATA itself already owns it.
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: postgres
+        image: zot.${domain}/postgres:18.6-alpine3.23
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        # Sized for a family-sized Nextcloud on a Pi 4. A little more headroom
+        # than pocket-id's: calendar/contacts sync and file scans are chattier
+        # than an IdP.
+        args:
+        - -c
+        - shared_buffers=64MB
+        - -c
+        - effective_cache_size=256MB
+        - -c
+        - work_mem=4MB
+        - -c
+        - maintenance_work_mem=32MB
+        - -c
+        - wal_buffers=2MB
+        - -c
+        - max_connections=40
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: nextcloud
+        - name: POSTGRES_USER
+          value: nextcloud
+        # Only read by initdb on an empty volume - changing it in Vault later
+        # does not change the role's password.
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-nextcloud
+              key: postgres-password
+        # A subdirectory, so initdb never sees anything the provisioner left at
+        # the volume root.
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "nextcloud", "-d", "nextcloud"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "nextcloud", "-d", "nextcloud"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 6
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: managed-nfs-storage
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi

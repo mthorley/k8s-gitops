@@ -1,0 +1,62 @@
+# Nightly tarball of the data volume to the QNAP, after the 01:15 pg_dump.
+#
+# Not components/backup-cron-nfs: that runs as root, which NFS squashes to
+# nobody, and Nextcloud keeps its data directory 0770 www-data - so it would
+# archive nothing. This is the same job running as uid 33.
+#
+# Needs qnap_ip and cluster_id substituted by clusters/<env>/nextcloud.yaml.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nextcloud-data-backup
+  namespace: nextcloud
+spec:
+  schedule: "45 1 * * *"
+  timeZone: "${cluster_tz}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: tar
+            image: zot.${domain}/alpine:3.23
+            imagePullPolicy: IfNotPresent
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              mkdir -p /backup/nextcloud-data
+              DATE="$(date +%Y%m%d_%H%M%S)"
+              # Skip the preview cache: large, and regenerated on demand.
+              tar czf "/backup/nextcloud-data/nextcloud-data_$DATE.tar.gz.tmp" \
+                --exclude='./data/appdata_*/preview' -C /source .
+              mv "/backup/nextcloud-data/nextcloud-data_$DATE.tar.gz.tmp" "/backup/nextcloud-data/nextcloud-data_$DATE.tar.gz"
+              cd /backup/nextcloud-data && ls -1t nextcloud-data_*.tar.gz | tail -n +11 | xargs -r rm -f
+            volumeMounts:
+            - name: source
+              mountPath: /source
+              readOnly: true
+            - name: nfs-volume
+              mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+          - name: source
+            persistentVolumeClaim:
+              claimName: nextcloud-data
+          - name: nfs-volume
+            nfs:
+              server: "${qnap_ip}"
+              path: "/k8s/backup/${cluster_id}"

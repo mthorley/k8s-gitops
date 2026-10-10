@@ -157,6 +157,24 @@ variable "POCKETID_POSTGRES_PASSWORD" {
   sensitive   = true
 }
 
+variable "NEXTCLOUD_POSTGRES_PASSWORD" {
+  type        = string
+  description = "Password of the nextcloud superuser role in Nextcloud's Postgres (`openssl rand -hex 24`). Only applied by initdb on an empty volume - changing it later needs an ALTER ROLE too."
+  sensitive   = true
+}
+
+variable "NEXTCLOUD_ADMIN_PASSWORD" {
+  type        = string
+  description = "Password of Nextcloud's initial `admin` account (`openssl rand -base64 24`). Only applied by the installer on first start - change it later in the web UI."
+  sensitive   = true
+}
+
+variable "NEXTCLOUD_VALKEY_PASSWORD" {
+  type        = string
+  description = "Password for Nextcloud's Valkey cache (`openssl rand -hex 24`). Safe to rotate: Valkey and Nextcloud both re-read it on restart."
+  sensitive   = true
+}
+
 variable "FRIGATE_RTSP_USERNAME" {
   type = string
   description = "FRIGATE_RTSP_USERNAME"
@@ -451,6 +469,34 @@ resource "vault_kubernetes_auth_backend_role" "pocketid" {
   bound_service_account_namespaces = ["pocket-id"]
   token_ttl                        = 86400
   token_policies                   = ["pocketid-secrets-policy"]
+}
+
+# -----------------------------------------------------------------------------
+# nextcloud
+
+resource "vault_policy" "nextcloud-secrets-policy" {
+  name = "nextcloud-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/nextcloud" {
+  capabilities = ["read", "list"]
+}
+path "secret/data/nextcloud-cf-api-token" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "nextcloud" {
+  backend   = vault_auth_backend.kubernetes.path
+  role_name = "nextcloud-secrets-role"
+  # "nextcloud" matches the APP substitution in clusters/staging/nextcloud.yaml,
+  # which components/secrets-eso-vault uses for both the role name and the
+  # ServiceAccount it authenticates as (apps/common/nextcloud/serviceaccount.yaml).
+  bound_service_account_names      = ["nextcloud"]
+  bound_service_account_namespaces = ["nextcloud"]
+  token_ttl                        = 86400
+  token_policies                   = ["nextcloud-secrets-policy"]
 }
 
 # -----------------------------------------------------------------------------
@@ -873,6 +919,34 @@ resource "vault_kv_secret_v2" "pocketid" {
 resource "vault_kv_secret_v2" "pocketid-cf-api-token" {
   mount     = vault_mount.kvv2.path
   name      = "pocketid-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
+    }
+  )
+}
+
+# Consumed by apps/common/nextcloud as the secret-nextcloud Secret. The
+# postgres and admin passwords are only read on first start (initdb and the
+# Nextcloud installer); after that the live values are in Postgres and in
+# config.php on the nextcloud-html volume.
+resource "vault_kv_secret_v2" "nextcloud" {
+  mount     = vault_mount.kvv2.path
+  name      = "nextcloud"
+  data_json = jsonencode(
+    {
+      postgres-password = var.NEXTCLOUD_POSTGRES_PASSWORD
+      admin-password    = var.NEXTCLOUD_ADMIN_PASSWORD
+      valkey-password   = var.NEXTCLOUD_VALKEY_PASSWORD
+    }
+  )
+}
+
+# ACME DNS-01 token for nextcloud.${var.INTERNAL_DOMAIN}, consumed by
+# components/pki-certman-letsencrypt with APP=nextcloud.
+resource "vault_kv_secret_v2" "nextcloud-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "nextcloud-cf-api-token"
   data_json = jsonencode(
     {
       dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN

@@ -1,0 +1,35 @@
+# The Nextcloud install itself: PHP source rsynced from the image on first
+# start and on every version bump, plus config/config.php (instance id, secret,
+# the generated DB password) and apps installed from the app store. Losing it
+# loses config.php, which is the only copy of the instance secret.
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nextcloud-html
+  namespace: nextcloud
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+# User files. Calendars and contacts live in Postgres, not here.
+#
+# managed-nfs-storage has reclaimPolicy Delete and no volume expansion: deleting
+# this claim deletes the files, and outgrowing it means a new claim plus a copy.
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nextcloud-data
+  namespace: nextcloud
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi

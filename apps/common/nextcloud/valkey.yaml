@@ -1,0 +1,94 @@
+# File-locking and cache backend for Nextcloud. Pure cache: no persistence, so
+# a restart only costs a cold cache (and drops in-flight locks, which Nextcloud
+# re-takes).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-valkey
+  namespace: nextcloud
+  labels:
+    app: nextcloud-valkey
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextcloud-valkey
+  template:
+    metadata:
+      labels:
+        app: nextcloud-valkey
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        # the image's own valkey user
+        runAsUser: 999
+        runAsGroup: 1000
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: valkey
+        image: zot.${domain}/valkey/valkey:9.0.6-alpine3.24
+        imagePullPolicy: IfNotPresent
+        args:
+        - --requirepass
+        - $(VALKEY_PASSWORD)
+        - --save
+        - ""
+        - --appendonly
+        - "no"
+        - --maxmemory
+        - 64mb
+        - --maxmemory-policy
+        - allkeys-lru
+        env:
+        - name: VALKEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-nextcloud
+              key: valkey-password
+        ports:
+        - name: valkey
+          containerPort: 6379
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        readinessProbe:
+          tcpSocket:
+            port: valkey
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: valkey
+          periodSeconds: 30
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-valkey
+  namespace: nextcloud
+  labels:
+    app: nextcloud-valkey
+spec:
+  type: ClusterIP
+  selector:
+    app: nextcloud-valkey
+  ports:
+  - name: valkey
+    port: 6379
+    targetPort: valkey

@@ -1,0 +1,17 @@
+# Only Nextcloud may reach its cache - see allow-ingress-postgres.yaml.
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-ingress-valkey"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: nextcloud-valkey
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: nextcloud
+    toPorts:
+    - ports:
+      - port: "6379"
+        protocol: TCP

@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: nextcloud
+
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - gateway.yaml
+  - postgres-statefulset.yaml
+  - postgres-service.yaml
+  - postgres-backup-cronjob.yaml
+  - data-backup-cronjob.yaml
+  - valkey.yaml
+  - netpol
+
+# Runs once, right after the first `occ maintenance:install` - see the script.
+# The generated name carries a content hash, so an edit rolls the pod; the hook
+# itself still only ever fires on a fresh install.
+configMapGenerator:
+  - name: nextcloud-hooks
+    files:
+      - post-installation.sh
+
+components:
+  - ../../../components/secrets-eso-vault
+  - ../../../components/pki-certman-letsencrypt

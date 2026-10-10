@@ -1,0 +1,21 @@
+# Selecting the endpoint for ingress makes Cilium default-deny everything else
+# inbound: only Nextcloud (including its wait-for-postgres init container) and
+# the nightly pg_dump may reach the database.
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-ingress-postgres"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: nextcloud-postgres
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: nextcloud
+    - matchLabels:
+        app: nextcloud-postgres-backup
+    toPorts:
+    - ports:
+      - port: "5432"
+        protocol: TCP

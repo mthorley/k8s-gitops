@@ -1,0 +1,32 @@
+# Default-deny egress for Hermes except DNS and the public internet (its web/browser
+# tools need it; api.anthropic.com is public so is covered too). Nothing private:
+# pod/service CIDRs, the LAN, CGNAT and link-local stay blocked. CIDR rules only ever
+# match "world", never in-cluster endpoints.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: hermes-egress
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: hermes
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toCIDRSet:
+        - cidr: 0.0.0.0/0
+          except:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - 100.64.0.0/10
+            - 169.254.0.0/16

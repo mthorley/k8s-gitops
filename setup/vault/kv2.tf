@@ -213,6 +213,23 @@ variable "KAGENT_POSTGRES_PASSWORD" {
   description = "Password for kagent's bundled PostgreSQL instance (kagent-postgresql), pulled in via ExternalSecret"
 }
 
+variable "HERMES_DASHBOARD_PASSWORD" {
+  type        = string
+  sensitive   = true
+  description = "Basic-auth password (user: hermes) for the Hermes Agent dashboard (apps/common/hermes)"
+}
+
+variable "HERMES_TELEGRAM_BOT_TOKEN" {
+  type        = string
+  sensitive   = true
+  description = "Telegram bot token (from @BotFather) for the Hermes Agent gateway"
+}
+
+variable "HERMES_TELEGRAM_ALLOWED_USERS" {
+  type        = string
+  description = "Comma-separated numeric Telegram user IDs allowed to talk to the Hermes gateway"
+}
+
 variable "NEO4J_USERNAME" {
   type        = string
   description = "Neo4j admin username for ccm's graph (apps/common/ccm)"
@@ -730,6 +747,55 @@ resource "vault_kv_secret_v2" "kagent-sandbox" {
   data_json = jsonencode(
     {
       anthropic-apikey = var.KAGENT_ANTHROPIC_APIKEY
+    }
+  )
+}
+
+# -----------------------------------------------------------------------------
+# hermes - Nous Research Hermes Agent (apps/common/hermes), gVisor-sandboxed
+resource "vault_policy" "hermes-secrets-policy" {
+  name = "hermes-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/hermes" {
+  capabilities = ["read", "list"]
+}
+path "secret/data/hermes-cf-api-token" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "hermes" {
+  backend   = vault_auth_backend.kubernetes.path
+  role_name = "hermes-secrets-role"
+  # "hermes" matches the APP substitution in clusters/staging/hermes.yaml, which
+  # components/secrets-eso-vault uses for both the role name and the ServiceAccount.
+  bound_service_account_names      = ["hermes"]
+  bound_service_account_namespaces = ["hermes"]
+  token_ttl                        = 86400
+  token_policies                   = ["hermes-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "hermes" {
+  mount     = vault_mount.kvv2.path
+  name      = "hermes"
+  data_json = jsonencode(
+    {
+      anthropic-apikey       = var.KAGENT_ANTHROPIC_APIKEY
+      dashboard-password     = var.HERMES_DASHBOARD_PASSWORD
+      telegram-bot-token     = var.HERMES_TELEGRAM_BOT_TOKEN
+      telegram-allowed-users = var.HERMES_TELEGRAM_ALLOWED_USERS
+    }
+  )
+}
+
+resource "vault_kv_secret_v2" "hermes-cf-api-token" {
+  mount     = vault_mount.kvv2.path
+  name      = "hermes-cf-api-token"
+  data_json = jsonencode(
+    {
+      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
     }
   )
 }

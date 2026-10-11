@@ -1,0 +1,15 @@
+# HERMES_HOME (/opt/data): config.yaml, memory, skills, sessions, the generated
+# API_SERVER_KEY in .env. The image chowns this to the hermes user at boot, which
+# needs the NFS export to allow root to chown (no root_squash).
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: hermes-data
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

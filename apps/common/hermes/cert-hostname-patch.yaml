@@ -1,0 +1,10 @@
+# The pki-certman-letsencrypt component already defaults the certificate to
+# "${APP}.${domain}" = hermes.${domain}; pinned here so the hostname doesn't silently
+# change if APP is ever renamed (APP also drives the Vault paths and secrets role).
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${APP}-tls-prod"
+spec:
+  dnsNames:
+    - "hermes.${domain}"

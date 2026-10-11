@@ -1,3 +1,5 @@
+# Currently unused - the Deployment runs on emptyDir while the gVisor + root-squashed NFS
+# problem is sorted out (see deployment.yaml). Kept so the volume and its directory survive.
 # HERMES_HOME (/opt/data): config.yaml, memory, skills, sessions, the generated
 # API_SERVER_KEY in .env. The image chowns this to the hermes user at boot, which
 # needs the NFS export to allow root to chown (no root_squash).

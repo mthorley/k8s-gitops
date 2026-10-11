@@ -82,6 +82,13 @@ spec:
             - name: data
               mountPath: /opt/data
       volumes:
+        # TESTING: emptyDir - memory/skills/config are lost on every restart.
+        # hermes-data (NFS) fails under gVisor: the gofer chowns each new file to the
+        # sandbox uid and the root-squashed export refuses it (EPERM on mkdir).
+        # Switch back once the export allows it (all_squash,anonuid=10000 or no_root_squash).
         - name: data
-          persistentVolumeClaim:
-            claimName: hermes-data
+          emptyDir:
+            sizeLimit: 5Gi
+        # - name: data
+        #   persistentVolumeClaim:
+        #     claimName: hermes-data

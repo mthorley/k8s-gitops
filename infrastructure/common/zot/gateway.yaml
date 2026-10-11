@@ -32,6 +32,11 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      # Large layer uploads (chunked PATCH) run well past envoy's default; at 30s
+      # envoy reset the stream mid-blob and zot logged "unexpected EOF". 0s = no timeout.
+      timeouts:
+        request: "0s"
+        backendRequest: "0s"
       backendRefs:
         - name: zot
           port: 5000

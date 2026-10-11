@@ -9,7 +9,7 @@ spec:
     - name: kagent
     - name: agent-sandbox
   interval: 30m0s
-  path: ./infrastructure/common/kagent-sandbox
+  path: ./apps/common/kagent-sandbox
   prune: true
   postBuild:
     substitute:

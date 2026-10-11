@@ -1,0 +1,32 @@
+# Agents created or edited from the kagent UI must live in kagent-sandbox (gVisor).
+# The UI has no namespace restriction and writes through the controller's service
+# account (no impersonation), so match on that identity. Flux-managed agents
+# (kustomize-controller) are unaffected, and the controller only writes agents/status,
+# which isn't matched.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: kagent-ui-sandbox-only
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["kagent.dev"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["agents", "sandboxagents"]
+  matchConditions:
+    - name: from-kagent-controller
+      expression: "request.userInfo.username == 'system:serviceaccount:kagent:kagent-controller'"
+  validations:
+    - expression: "request.namespace == 'kagent-sandbox'"
+      message: "Agents created from the kagent UI must be in the kagent-sandbox namespace."
+      reason: Forbidden
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: kagent-ui-sandbox-only
+spec:
+  policyName: kagent-ui-sandbox-only
+  validationActions: [Deny]

@@ -6,6 +6,7 @@ resources:
   - namespace.yaml
   - service-account.yaml
   - modelconfig.yaml
+  - ui-namespace-policy.yaml
 
 components:
   - ../../../components/secrets-eso-vault

@@ -1,6 +1,9 @@
-# Sets runtimeClassName: gvisor on any pod labelled sandbox.gvisor=true at creation.
-# Lets kagent agents (whose CRD has no runtimeClassName field) opt in via
-# spec.declarative.deployment.labels.
+# Sets runtimeClassName: gvisor at creation on pods that are either:
+#   - labelled sandbox.gvisor=true (kagent agents opt in via spec.declarative.deployment.labels,
+#     as the Agent CRD has no runtimeClassName field), or
+#   - in a namespace labelled sandbox.gvisor=true (e.g. kagent-sandbox, so agents created
+#     from the kagent UI are sandboxed without needing labels)
+# Selection is done by the two bindings; a pod matching both is mutated to the same value.
 # Alpha on 1.33 - kube-apiserver needs --feature-gates=MutatingAdmissionPolicy=true
 # and --runtime-config=admissionregistration.k8s.io/v1alpha1=true
 apiVersion: admissionregistration.k8s.io/v1alpha1
@@ -14,9 +17,6 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE"]
         resources: ["pods"]
-  matchConditions:
-    - name: opted-in
-      expression: "object.metadata.?labels[?'sandbox.gvisor'].orValue('') == 'true'"
   failurePolicy: Fail
   reinvocationPolicy: Never
   mutations:
@@ -35,3 +35,18 @@ metadata:
   name: gvisor-runtimeclass
 spec:
   policyName: gvisor-runtimeclass
+  matchResources:
+    objectSelector:
+      matchLabels:
+        sandbox.gvisor: "true"
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: gvisor-runtimeclass-namespace
+spec:
+  policyName: gvisor-runtimeclass
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        sandbox.gvisor: "true"

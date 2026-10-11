@@ -703,6 +703,37 @@ resource "vault_kv_secret_v2" "kagent-cf-api-token" {
   )
 }
 
+# kagent-sandbox - gVisor-sandboxed kagent agents. Own path so the namespace only
+# gets the Anthropic key, not kagent's postgres password.
+resource "vault_policy" "kagent-sandbox-secrets-policy" {
+  name = "kagent-sandbox-secrets-policy"
+
+  policy = <<EOT
+path "secret/data/kagent-sandbox" {
+  capabilities = ["read", "list"]
+}
+EOT
+}
+
+resource "vault_kubernetes_auth_backend_role" "kagent-sandbox" {
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "kagent-sandbox-secrets-role"
+  bound_service_account_names      = ["kagent-sandbox"]
+  bound_service_account_namespaces = ["kagent-sandbox"]
+  token_ttl                        = 86400
+  token_policies                   = ["kagent-sandbox-secrets-policy"]
+}
+
+resource "vault_kv_secret_v2" "kagent-sandbox" {
+  mount     = vault_mount.kvv2.path
+  name      = "kagent-sandbox"
+  data_json = jsonencode(
+    {
+      anthropic-apikey = var.KAGENT_ANTHROPIC_APIKEY
+    }
+  )
+}
+
 # -----------------------------------------------------------------------------
 # victoria-metrics
 #

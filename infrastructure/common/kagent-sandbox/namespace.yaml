@@ -1,0 +1,7 @@
+# Every pod in this namespace runs under gVisor - see agent-sandbox/gvisor-mutating-policy.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kagent-sandbox
+  labels:
+    sandbox.gvisor: "true"

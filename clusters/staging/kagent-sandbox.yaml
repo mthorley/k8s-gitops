@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kagent-sandbox
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: kagent
+    - name: agent-sandbox
+  interval: 30m0s
+  path: ./infrastructure/common/kagent-sandbox
+  prune: true
+  postBuild:
+    substitute:
+      APP: "kagent-sandbox"
+  sourceRef:
+    kind: GitRepository
+    name: flux-system

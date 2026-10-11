@@ -1,0 +1,13 @@
+# Same as kagent/default-model-config; agents resolve ModelConfigs and their key Secret
+# in their own namespace. Secret secret-kagent-sandbox comes from the secrets-eso-vault
+# component (Vault secret/kagent-sandbox).
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: default-model-config
+  namespace: kagent-sandbox
+spec:
+  provider: Anthropic
+  model: claude-sonnet-4-5
+  apiKeySecret: secret-kagent-sandbox
+  apiKeySecretKey: anthropic-apikey

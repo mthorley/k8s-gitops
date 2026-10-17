@@ -18,6 +18,7 @@ spec:
     - matchPattern: "wheels.home-assistant.io"
     - matchPattern: "brands.home-assistant.io"      # integration logos - fetched server-side since 2026.10; Add Integration hangs without it
     - matchPattern: "alerts.home-assistant.io"      # homeassistant_alerts (repairs) - times out at startup without it
+    - matchPattern: "vector.openstreetmap.org"      # map tiles (location picker, map cards) - proxied server-side since 2026.10
   - toCIDR:
     - 239.255.255.250/32   # multicast IP for UPnP: https://www.grc.com/port_1900.htm
     - 255.255.255.255/32   # local broadcast IP 

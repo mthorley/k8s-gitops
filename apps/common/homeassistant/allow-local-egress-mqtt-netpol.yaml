@@ -1,0 +1,21 @@
+# The mqtt config entry points at this cluster's broker (mqtt-mosquitto.mqtt.svc).
+# Cilium evaluates egress against the destination pod, so the 192.168.0.0/16 CIDR
+# allow in allow-ext-egress-netpol.yaml does not cover it - not even via the
+# mqtt-mosquitto-public LoadBalancer IP.
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-local-egress-mqtt"
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: home-assistant
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        "k8s:io.kubernetes.pod.namespace": mqtt
+        "app.kubernetes.io/name": mosquitto
+    toPorts:
+    - ports:
+      - port: "1883"
+        protocol: TCP

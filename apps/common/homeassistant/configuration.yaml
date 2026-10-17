@@ -30,6 +30,11 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
+# Hemma dashboard: its helpers live in packages/hemma_helpers.yaml on the PVC
+# (copied from the Hemma repo, and rewritten by Hemma when rooms are saved).
+homeassistant:
+  packages: !include_dir_named packages
+
 # Load frontend themes from the themes folder
 frontend:
   themes: !include_dir_merge_named themes
@@ -107,3 +112,42 @@ auth_oidc:
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+
+# --- Mirrored from production's (unmanaged) configuration.yaml so the integrations
+# and dashboards copied from production resolve here too. The MQTT entities talk to
+# this cluster's broker (the mqtt config entry points at mqtt-mosquitto.mqtt.svc), so
+# they only have data if something publishes to staging MQTT.
+mqtt:
+  sensor:
+    - name: "Downstairs Temperature"
+      state_topic: "downstairs/hvac/temperature"
+  climate:
+    - name: Downstairs
+      modes:
+        - "off"
+        - "heat"
+        - "cool"
+      mode_command_topic: "downstairs/hvac/mode/set"
+      mode_state_topic: "downstairs/hvac/mode"
+      temperature_command_topic: "downstairs/hvac/temperature/set"
+      temperature_state_topic: "downstairs/hvac/temperature/target"
+      current_temperature_topic: "downstairs/hvac/temperature"
+      precision: 0.1
+      temperature_unit: C
+      min_temp: 4
+      max_temp: 30
+
+# The same physical speakers production uses - staging controls the real Sonos.
+sonos:
+  media_player:
+    hosts:
+      - 192.168.1.26
+      - 192.168.1.31
+      - 192.168.1.63
+      - 192.168.1.239
+
+input_boolean:
+  retreat_tv_hdmi1_auto_off:
+    name: Retreat TV HDMI1 auto off
+    icon: mdi:television-off
+    initial: true

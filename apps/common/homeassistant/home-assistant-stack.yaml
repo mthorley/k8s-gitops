@@ -77,11 +77,12 @@ spec:
       enableServiceLinks: true
       containers:
         - name: home-assistant
-          # Same tag as apps/production/ha-dev. Bumped from the chart's 2022.5.4
-          # because hass-oidc-auth needs 2025.11+ (setup/homeassistant/README.md).
+          # Ahead of apps/production/ha-dev (2026.8.3): the Hemma dashboard needs
+          # 2026.9+ and its uix dependency 2026.10+. Bumped from the chart's 2022.5.4
+          # originally because hass-oidc-auth needs 2025.11+ (setup/homeassistant/README.md).
           # The recorder schema migration on first start is one-way - going back
-          # to 2022.5.4 means restoring the home-assistant-config PVC.
-          image: "ghcr.io/home-assistant/home-assistant:2026.8.3"
+          # means restoring the home-assistant-config PVC.
+          image: "ghcr.io/home-assistant/home-assistant:2026.10.2"
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: null

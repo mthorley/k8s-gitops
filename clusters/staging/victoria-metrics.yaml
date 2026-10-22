@@ -21,3 +21,6 @@ spec:
     substitute:
       APP: "victoria-metrics"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "victoria-metrics-victoria-metrics-single-server"
+      GATEWAY_PORT: "8428"

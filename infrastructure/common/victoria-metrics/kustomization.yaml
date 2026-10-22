@@ -7,12 +7,12 @@ resources:
   - serviceaccount.yaml
   - helmrepository.yaml
   - helmrelease.yaml
-  - gateway.yaml
   - grafana-datasource.yaml
 
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
+  - ../../../components/gateway-envoy
 
 # Same as adguard: no app-level secret in Vault (only the cf-api-token), so the
 # generic external-secret-${APP} from secrets-eso-vault has nothing to sync and

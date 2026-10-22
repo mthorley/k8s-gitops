@@ -27,6 +27,9 @@ spec:
     substitute:
       APP: "homeassistant"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "home-assistant"
+      GATEWAY_PORT: "8123"
       homeassistant_ip: 192.168.3.19
       # backup-cron.yaml writes to <qnap>:/k8s/backup/${cluster_id} - these must
       # stay identical to the values apps.yaml was passing, or the nightly

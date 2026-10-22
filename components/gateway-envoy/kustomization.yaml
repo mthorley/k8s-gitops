@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 #
 # Standard envoy-gateway exposure for one app: an HTTPS Gateway on
-# ${APP}.${domain} (cert ${APP}-tls-prod from pki-certman-letsencrypt) and an
+# ${APP}.${domain} (cert ${APP}-tls-prod from pki-certman-letsencrypt or pki-certman-vault) and an
 # HTTPRoute sending everything to one Service.
 #
 # Needs these Flux postBuild substitutions on the app's Kustomization:

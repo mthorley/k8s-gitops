@@ -20,9 +20,12 @@ spec:
         name: cluster-vars
     substitute:
       # Drives the Vault paths (secret/hermes, secret/hermes-cf-api-token), the secrets
-      # role, the ServiceAccount and the Certificate name.
+      # role, the ServiceAccount, the Certificate name and the Gateway/host.
       APP: "hermes"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "hermes"
+      GATEWAY_PORT: "9119"
   sourceRef:
     kind: GitRepository
     name: flux-system

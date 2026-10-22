@@ -9,12 +9,9 @@ resources:
   - pvc.yaml
   - deployment.yaml
   - service.yaml
-  - gateway.yaml
   - egress-netpol.yaml
 
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
-
-patches:
-  - path: cert-hostname-patch.yaml
+  - ../../../components/gateway-envoy

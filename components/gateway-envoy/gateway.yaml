@@ -1,0 +1,36 @@
+# See kustomization.yaml for the substitutions this needs. external-dns
+# (unifi-dns, source gateway-httproute) creates the A record from the route.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: "${APP}-gateway"
+spec:
+  gatewayClassName: envoy
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "${APP}.${domain}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: "${APP}-tls-prod"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: "${APP}"
+spec:
+  parentRefs:
+    - name: "${APP}-gateway"
+  hostnames:
+    - "${APP}.${domain}"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: "${GATEWAY_SERVICE}"
+          port: ${GATEWAY_PORT}

@@ -28,6 +28,15 @@ configMapGenerator:
   - name: home-assistant-configuration
     files:
       - configuration.yaml
+  # Theme files, mounted as a directory at /config/themes/parchment. No content
+  # hash on purpose (unlike above): a directory mount refreshes in the running
+  # pod, so a theme edit only needs Reload themes, not a Home Assistant restart.
+  # The flux postBuild substitution would otherwise not touch it - it has no ${}.
+  - name: home-assistant-theme-parchment
+    files:
+      - themes/parchment.yaml
+    options:
+      disableNameSuffixHash: true
 
 components:
   - ../../../components/secrets-eso-vault

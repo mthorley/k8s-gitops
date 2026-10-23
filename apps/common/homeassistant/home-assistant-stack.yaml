@@ -77,11 +77,11 @@ spec:
       enableServiceLinks: true
       containers:
         - name: home-assistant
-          # Ahead of apps/production/ha-dev (2026.8.3): the Hemma dashboard needs
-          # 2026.9+ and its uix dependency 2026.10+. Bumped from the chart's 2022.5.4
-          # originally because hass-oidc-auth needs 2025.11+ (setup/homeassistant/README.md).
-          # The recorder schema migration on first start is one-way - going back
-          # means restoring the home-assistant-config PVC.
+          # Ahead of apps/production/ha-dev (2026.8.3) - staging went to 2026.10 for a
+          # (since removed) dashboard trial and stays there; it cannot go back anyway.
+          # Bumped from the chart's 2022.5.4 originally because hass-oidc-auth needs
+          # 2025.11+ (setup/homeassistant/README.md). The recorder schema migration on
+          # first start is one-way - going back means restoring the home-assistant-config PVC.
           image: "ghcr.io/home-assistant/home-assistant:2026.10.2"
           imagePullPolicy: IfNotPresent
           securityContext:
@@ -104,6 +104,12 @@ spec:
             - name: ha-configuration
               mountPath: /config/configuration.yaml
               subPath: configuration.yaml
+              readOnly: true
+            # Git-managed theme(s), picked up by frontend: themes:
+            # !include_dir_merge_named themes. A directory mount (not subPath) so
+            # edits refresh in the running pod; Reload themes applies them.
+            - name: ha-theme-parchment
+              mountPath: /config/themes/parchment
               readOnly: true
           livenessProbe:
             tcpSocket:
@@ -133,3 +139,6 @@ spec:
         - name: ha-configuration
           configMap:
             name: home-assistant-configuration
+        - name: ha-theme-parchment
+          configMap:
+            name: home-assistant-theme-parchment

@@ -13,10 +13,6 @@ resources:
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
-  # Dashboard (plain HTTP) on ccm.${domain} -> ccm-dashboard:8080
-  # (GATEWAY_* in clusters/production/ccm.yaml). Neo4j's Bolt port cannot go
-  # this way - raw TCP needs TCPRoute/TLSRoute from the experimental Gateway
-  # API channel - hence the separate MetalLB Service in loadbalancer.yaml.
   - ../../../components/gateway-envoy
 
 patches:

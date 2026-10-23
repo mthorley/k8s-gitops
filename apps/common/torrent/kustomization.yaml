@@ -12,5 +12,4 @@ resources:
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
-  # torrent.${domain} -> torrent-internal:80 (GATEWAY_* in clusters/production/torrent.yaml).
   - ../../../components/gateway-envoy

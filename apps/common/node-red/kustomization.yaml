@@ -24,5 +24,4 @@ configMapGenerator:
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
-  # nodered.${domain} -> nodered-internal:80 (GATEWAY_* in clusters/*/node-red.yaml).
   - ../../../components/gateway-envoy

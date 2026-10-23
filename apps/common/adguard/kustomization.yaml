@@ -9,11 +9,12 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - services.yaml
-  - gateway.yaml
 
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
+  # adguard.${domain} -> adguard-home-web:80 (GATEWAY_* in clusters/production/adguard.yaml).
+  - ../../../components/gateway-envoy
 
 # AdGuard Home has no app-level secret data to pull, so the generic
 # external-secret-${APP} from secrets-eso-vault has nothing to sync and just

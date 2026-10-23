@@ -19,6 +19,9 @@ spec:
     substitute:
       APP: "adguard"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "adguard-home-web"
+      GATEWAY_PORT: "80"
       adguard_dns_ip: 192.168.2.17
   sourceRef:
     kind: GitRepository

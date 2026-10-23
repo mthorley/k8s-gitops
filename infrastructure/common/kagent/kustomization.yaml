@@ -8,9 +8,10 @@ resources:
   - kagent-crds-stack.yaml
   - kagent-stack.yaml
   - mcp-fetch.yaml
-  - gateway.yaml
   - postgresql-external-secret.yaml
 
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
+  # kagent.${domain} -> kagent-ui:8080 (GATEWAY_* in clusters/*/kagent.yaml).
+  - ../../../components/gateway-envoy

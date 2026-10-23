@@ -7,7 +7,6 @@ resources:
   - serviceaccount.yaml
   - helmrepository.yaml
   - helmrelease.yaml
-  - gateway.yaml
   - netpol.yaml
 
 components:
@@ -16,8 +15,19 @@ components:
   # letsencrypt cert ${APP}-tls-prod for the gateway listener; reads
   # secret/${APP}-cf-api-token through that SecretStore (setup/vault/kv2.tf)
   - ../../../components/pki-certman-letsencrypt
+  # zot.${domain} -> zot:5000 (GATEWAY_* in clusters/*/zot.yaml).
+  - ../../../components/gateway-envoy
 
 patches:
+  # Large layer uploads (chunked PATCH) run well past envoy's default; at 30s
+  # envoy reset the stream mid-blob and zot logged "unexpected EOF". 0s = no timeout.
+  # zot's own http readTimeout/writeTimeout (helmrelease.yaml) must allow it too.
+  - target:
+      kind: HTTPRoute
+    patch: |
+      - op: add
+        path: /spec/rules/0/timeouts
+        value: {"request": "0s", "backendRequest": "0s"}
   # the secrets-eso-vault component ships an ExternalSecret for secret/${APP};
   # zot has no credentials of its own, only the cloudflare token the
   # letsencrypt component reads, so drop it rather than leave it permanently

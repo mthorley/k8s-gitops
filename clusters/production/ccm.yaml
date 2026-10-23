@@ -18,6 +18,9 @@ spec:
         name: cluster-vars
     substitute:
       APP: "ccm"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "ccm-dashboard"
+      GATEWAY_PORT: "8080"
       # Used by the pki-certman-letsencrypt component's ACME Issuer.
       ACME_EMAIL: "matt.thorley@gmail.com"
       # Bolt + Browser UI for Neo4j Desktop (apps/common/ccm/loadbalancer.yaml).

@@ -18,6 +18,9 @@ spec:
     substitute:
       APP: "nodered"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "nodered-internal"
+      GATEWAY_PORT: "80"
       # under test here before production takes it
       nodered_image_tag: "72bd1650edb6a318e13d9d56bec8b8f9af852834"
       mqtt_ip: 192.168.3.14

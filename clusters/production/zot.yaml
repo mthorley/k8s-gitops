@@ -22,3 +22,6 @@ spec:
     substitute:
       APP: "zot"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "zot"
+      GATEWAY_PORT: "5000"

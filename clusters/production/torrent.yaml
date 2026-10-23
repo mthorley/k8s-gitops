@@ -19,6 +19,9 @@ spec:
     substitute:
       APP: "torrent"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "torrent-internal"
+      GATEWAY_PORT: "80"
       qnap_ip: 192.168.1.147
       cluster_id: cluster0
   sourceRef:

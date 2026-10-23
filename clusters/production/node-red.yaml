@@ -19,6 +19,9 @@ spec:
     substitute:
       APP: "nodered"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "nodered-internal"
+      GATEWAY_PORT: "80"
       # pinned: staging tests newer builds first, see clusters/staging/node-red.yaml
       nodered_image_tag: "173acf81507b5b87a32f85320214af2c3eb28fd2"
       mqtt_ip: 192.168.2.11

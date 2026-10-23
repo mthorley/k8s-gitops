@@ -9,8 +9,22 @@ resources:
   - neo4j.yaml
   - loadbalancer.yaml
   - ccm-dashboard.yaml
-  - gateway.yaml
 
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
+  # Dashboard (plain HTTP) on ccm.${domain} -> ccm-dashboard:8080
+  # (GATEWAY_* in clusters/production/ccm.yaml). Neo4j's Bolt port cannot go
+  # this way - raw TCP needs TCPRoute/TLSRoute from the experimental Gateway
+  # API channel - hence the separate MetalLB Service in loadbalancer.yaml.
+  - ../../../components/gateway-envoy
+
+patches:
+  # Explicit, rather than inheriting the gateway default, to leave headroom
+  # for large graph queries.
+  - target:
+      kind: HTTPRoute
+    patch: |
+      - op: add
+        path: /spec/rules/0/timeouts
+        value: {"request": "30s"}

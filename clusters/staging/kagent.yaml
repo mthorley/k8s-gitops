@@ -19,6 +19,9 @@ spec:
     substitute:
       APP: "kagent"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "kagent-ui"
+      GATEWAY_PORT: "8080"
   sourceRef:
     kind: GitRepository
     name: flux-system

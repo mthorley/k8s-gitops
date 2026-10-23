@@ -1,0 +1,126 @@
+# Parchment - a calm, warm theme in the spirit of Claude's interface: cream paper,
+# ink-dark text, one muted terracotta accent, serif headings over a clean sans body,
+# flat cards with hairline borders and generous rounding. Light and dark modes.
+#
+# Mounted into /config/themes/parchment/ from a ConfigMap (see kustomization.yaml);
+# edits land in the running pod within ~a minute - then Developer tools > YAML >
+# Reload themes. Pick it under Profile > Theme.
+Parchment:
+  # --- typography (system fonts only: nothing fetched from the internet)
+  ha-font-family-heading: '"Iowan Old Style", "Charter", "Palatino Linotype", Georgia, "Times New Roman", serif'
+  ha-font-family-body: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+  ha-font-family-code: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace'
+  paper-font-common-base_-_font-family: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+
+  # --- shape: flat paper cards, hairline border, no drop shadow
+  ha-card-border-radius: "16px"
+  ha-card-border-width: "1px"
+  ha-card-box-shadow: "none"
+  ha-dialog-border-radius: "20px"
+
+  modes:
+    light:
+      # paper
+      primary-background-color: "#F5F4ED"
+      secondary-background-color: "#EDEBE3"
+      card-background-color: "#FAF9F5"
+      ha-card-background: "#FAF9F5"
+      ha-card-border-color: "#E3DFD3"
+      divider-color: "#E3DFD3"
+      # ink
+      primary-text-color: "#1F1E1D"
+      secondary-text-color: "#6B6862"
+      disabled-text-color: "#A8A59B"
+      text-primary-color: "#FAF9F5"
+      # accent (terracotta)
+      primary-color: "#C96442"
+      dark-primary-color: "#A9502F"
+      light-primary-color: "#E9B9A3"
+      accent-color: "#D97757"
+      rgb-primary-color: "201, 100, 66"
+      rgb-accent-color: "217, 119, 87"
+      rgb-primary-text-color: "31, 30, 29"
+      mdc-theme-primary: "#C96442"
+      switch-checked-color: "#C96442"
+      switch-checked-button-color: "#C96442"
+      switch-checked-track-color: "#E9B9A3"
+      # chrome
+      app-header-background-color: "#F5F4ED"
+      app-header-text-color: "#1F1E1D"
+      app-header-border-bottom: "1px solid #E3DFD3"
+      sidebar-background-color: "#EFEDE5"
+      sidebar-text-color: "#3D3929"
+      sidebar-icon-color: "#6B6862"
+      sidebar-selected-background-color: "#E6E2D6"
+      sidebar-selected-text-color: "#1F1E1D"
+      sidebar-selected-icon-color: "#C96442"
+      # states and inputs
+      state-icon-color: "#6B6862"
+      state-active-color: "#C96442"
+      state-light-on-color: "#D97757"
+      state-switch-on-color: "#C96442"
+      state-climate-heat-color: "#C96442"
+      state-climate-cool-color: "#5B7C99"
+      input-fill-color: "#F0EEE6"
+      input-ink-color: "#1F1E1D"
+      input-idle-line-color: "#C9C5B8"
+      code-editor-background-color: "#F0EEE6"
+      markdown-code-background-color: "#F0EEE6"
+      # status colours, softened to sit on cream
+      success-color: "#5E8B5A"
+      warning-color: "#C98A2E"
+      error-color: "#B5463A"
+      info-color: "#5B7C99"
+
+    dark:
+      # paper
+      primary-background-color: "#262624"
+      secondary-background-color: "#1F1E1D"
+      card-background-color: "#30302E"
+      ha-card-background: "#30302E"
+      ha-card-border-color: "#3E3D39"
+      divider-color: "#3E3D39"
+      # ink
+      primary-text-color: "#F5F4ED"
+      secondary-text-color: "#A8A59B"
+      disabled-text-color: "#6B6862"
+      text-primary-color: "#1F1E1D"
+      # accent (terracotta, lifted for contrast on dark)
+      primary-color: "#D97757"
+      dark-primary-color: "#C96442"
+      light-primary-color: "#E9B9A3"
+      accent-color: "#E08A6B"
+      rgb-primary-color: "217, 119, 87"
+      rgb-accent-color: "224, 138, 107"
+      rgb-primary-text-color: "245, 244, 237"
+      mdc-theme-primary: "#D97757"
+      switch-checked-color: "#D97757"
+      switch-checked-button-color: "#D97757"
+      switch-checked-track-color: "#7A4A39"
+      # chrome
+      app-header-background-color: "#262624"
+      app-header-text-color: "#F5F4ED"
+      app-header-border-bottom: "1px solid #3E3D39"
+      sidebar-background-color: "#1F1E1D"
+      sidebar-text-color: "#C2C0B6"
+      sidebar-icon-color: "#A8A59B"
+      sidebar-selected-background-color: "#30302E"
+      sidebar-selected-text-color: "#F5F4ED"
+      sidebar-selected-icon-color: "#D97757"
+      # states and inputs
+      state-icon-color: "#A8A59B"
+      state-active-color: "#D97757"
+      state-light-on-color: "#E08A6B"
+      state-switch-on-color: "#D97757"
+      state-climate-heat-color: "#D97757"
+      state-climate-cool-color: "#7FA0BC"
+      input-fill-color: "#2B2B29"
+      input-ink-color: "#F5F4ED"
+      input-idle-line-color: "#55534D"
+      code-editor-background-color: "#1F1E1D"
+      markdown-code-background-color: "#1F1E1D"
+      # status colours
+      success-color: "#7FA77A"
+      warning-color: "#D9A04A"
+      error-color: "#D2675A"
+      info-color: "#7FA0BC"

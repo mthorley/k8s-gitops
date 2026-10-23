@@ -8,8 +8,8 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - service.yaml
-  - gateway.yaml
 
 components:
   - ../../../components/secrets-eso-vault
   - ../../../components/pki-certman-letsencrypt
+  - ../../../components/gateway-envoy

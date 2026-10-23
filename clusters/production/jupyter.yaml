@@ -19,6 +19,9 @@ spec:
     substitute:
       APP: "jupyter"
       ACME_EMAIL: "matt.thorley@gmail.com"
+      # components/gateway-envoy backend
+      GATEWAY_SERVICE: "jupyter-internal"
+      GATEWAY_PORT: "80"
   sourceRef:
     kind: GitRepository
     name: flux-system

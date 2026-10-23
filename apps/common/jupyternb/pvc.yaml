@@ -3,9 +3,8 @@ apiVersion: v1
 metadata:
   name: jupyternb-claim
   namespace: jupyter
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
 spec:
+  storageClassName: managed-nfs-storage
   accessModes:
   - ReadWriteMany
   resources:

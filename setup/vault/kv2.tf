@@ -230,15 +230,6 @@ variable "HERMES_TELEGRAM_ALLOWED_USERS" {
   description = "Comma-separated numeric Telegram user IDs allowed to talk to the Hermes gateway"
 }
 
-variable "WINDMILL_POSTGRES_PASSWORD" {
-  type        = string
-  sensitive   = true
-  description = "Superuser password for Windmill's Postgres (apps/common/windmill). Goes into DATABASE_URL verbatim, so keep it URL-safe (alphanumeric)"
-  validation {
-    condition     = can(regex("^[A-Za-z0-9]{16,}$", var.WINDMILL_POSTGRES_PASSWORD))
-    error_message = "WINDMILL_POSTGRES_PASSWORD must be at least 16 alphanumeric characters (it is embedded in a postgres:// URL)."
-  }
-}
 
 variable "NEO4J_USERNAME" {
   type        = string
@@ -810,51 +801,6 @@ resource "vault_kv_secret_v2" "hermes-cf-api-token" {
   )
 }
 
-# -----------------------------------------------------------------------------
-# windmill (apps/common/windmill)
-resource "vault_policy" "windmill-secrets-policy" {
-  name = "windmill-secrets-policy"
-
-  policy = <<EOT
-path "secret/data/windmill" {
-  capabilities = ["read", "list"]
-}
-path "secret/data/windmill-cf-api-token" {
-  capabilities = ["read", "list"]
-}
-EOT
-}
-
-resource "vault_kubernetes_auth_backend_role" "windmill" {
-  backend   = vault_auth_backend.kubernetes.path
-  role_name = "windmill-secrets-role"
-  # "windmill" matches the APP substitution in clusters/staging/windmill.yaml, which
-  # components/secrets-eso-vault uses for both the role name and the ServiceAccount.
-  bound_service_account_names      = ["windmill"]
-  bound_service_account_namespaces = ["windmill"]
-  token_ttl                        = 86400
-  token_policies                   = ["windmill-secrets-policy"]
-}
-
-resource "vault_kv_secret_v2" "windmill" {
-  mount     = vault_mount.kvv2.path
-  name      = "windmill"
-  data_json = jsonencode(
-    {
-      postgres-password = var.WINDMILL_POSTGRES_PASSWORD
-    }
-  )
-}
-
-resource "vault_kv_secret_v2" "windmill-cf-api-token" {
-  mount     = vault_mount.kvv2.path
-  name      = "windmill-cf-api-token"
-  data_json = jsonencode(
-    {
-      dns-api-token = var.CLOUDFLARE_DNS_API_TOKEN
-    }
-  )
-}
 
 # -----------------------------------------------------------------------------
 # victoria-metrics

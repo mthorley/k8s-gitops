@@ -11,6 +11,10 @@ spec:
         name: windmill
       version: "4.0.293"   # app 1.847.0; images are multi-arch incl. linux/arm64
   interval: 1h0m0s
+  # The windmill image is ~1.5 GB (arm64, compressed); the first pull onto a pi takes
+  # well over helm's default 5m wait, and a timed-out install is uninstalled and retried,
+  # which throws the half-pulled pods away and starts the pull again.
+  timeout: 20m
   install:
     remediation:
       retries: 3

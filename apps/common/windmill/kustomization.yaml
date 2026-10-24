@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+#
+# Windmill (scripts -> endpoints, flows, apps) from the upstream chart, sized for
+# the pis. Built by clusters/staging/windmill.yaml (APP=windmill).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: windmill
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - helmrepository.yaml
+  - helmrelease.yaml
+  - database-url-externalsecret.yaml
+
+components:
+  # SecretStore (role windmill-secrets-role) + secret-windmill from secret/windmill,
+  # which carries postgres-password (setup/vault/kv2.tf).
+  - ../../../components/secrets-eso-vault
+  # Let's Encrypt cert windmill-tls-prod for the gateway listener.
+  - ../../../components/pki-certman-letsencrypt
+  # windmill.${domain} -> windmill-app:8000 (GATEWAY_* in clusters/staging/windmill.yaml).
+  - ../../../components/gateway-envoy

@@ -1,0 +1,127 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: windmill
+spec:
+  chart:
+    spec:
+      chart: windmill
+      sourceRef:
+        kind: HelmRepository
+        name: windmill
+      version: "4.0.293"   # app 1.847.0; images are multi-arch incl. linux/arm64
+  interval: 1h0m0s
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  # Postgres superuser password from Vault (secret/windmill, via the secrets-eso-vault
+  # component's secret-windmill). Postgres only reads it on first initdb, so rotating it
+  # in Vault later also needs an ALTER USER in the database.
+  valuesFrom:
+    - kind: Secret
+      name: secret-windmill
+      valuesKey: postgres-password
+      targetPath: postgresql.auth.postgresPassword
+  # Images come from the in-cluster zot mirror (linux/arm64 only, copied with
+  # `crane copy --platform linux/arm64`). The chart hardcodes postgres:18 with no
+  # value to override it, so that one is repointed after rendering.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: StatefulSet
+              name: windmill-postgresql
+            patch: |
+              - op: replace
+                path: /spec/template/spec/containers/0/image
+                value: zot.${domain}/library/postgres:18
+  values:
+    # reached through the gateway-envoy component, not the chart's Ingress
+    ingress:
+      enabled: false
+
+    postgresql:
+      enabled: true
+      auth:
+        postgresUser: postgres
+        database: windmill
+      resources:
+        requests:
+          memory: "256Mi"
+        limits:
+          memory: "768Mi"
+      # Persisted on NFS (the only StorageClass here), like pocket-id's and kagent's
+      # Postgres. Without persistence the chart runs a throwaway demo Deployment instead.
+      persistence:
+        enabled: true
+        storageClass: managed-nfs-storage
+        size: 5Gi
+
+    windmill:
+      baseDomain: "windmill.${domain}"
+      baseProtocol: https
+      databaseUrlSecretName: windmill-database
+      databaseUrlSecretKey: url
+      # zot mirror; tag pinned rather than following the chart's appVersion, so a
+      # chart bump cannot point at a tag that has not been copied into zot yet.
+      image: "zot.${domain}/windmill-labs/windmill"
+      tag: "1.847.0"
+      imagePullPolicy: IfNotPresent
+
+      appReplicas: 1
+      # windmill-extra (editor language servers): 2.3 GB image, not needed
+      extraReplicas: 0
+      # Workers run unprivileged. privileged is only there for per-job PID isolation
+      # (unshare); turning that off means scripts cannot touch the node.
+      disableUnsharePid: true
+
+      app:
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "384Mi"
+          limits:
+            memory: "1Gi"
+
+      # Full-text search over jobs/logs - an Enterprise feature.
+      indexer:
+        enabled: false
+
+      # Overriding this list replaces the chart's three groups, so every group the
+      # chart ships is listed. privileged must be set explicitly: the chart treats a
+      # missing key as true.
+      workerGroups:
+        - name: "default"
+          controller: "Deployment"
+          replicas: 1
+          privileged: false
+          mode: "worker"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "384Mi"
+            limits:
+              memory: "1536Mi"
+        - name: "native"
+          controller: "Deployment"
+          replicas: 1
+          privileged: false
+          mode: "worker"
+          extraEnv:
+            - name: NATIVE_MODE
+              value: "true"
+            - name: SLEEP_QUEUE
+              value: "200"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "512Mi"
+        - name: "gpu"
+          controller: "Deployment"
+          replicas: 0
+          privileged: false

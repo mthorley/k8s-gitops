@@ -29,9 +29,16 @@ spec:
       name: secret-windmill
       valuesKey: postgres-password
       targetPath: postgresql.auth.postgresPassword
-  # Images come from the in-cluster zot mirror (linux/arm64 only, copied with
-  # `crane copy --platform linux/arm64`). The chart hardcodes postgres:18 with no
-  # value to override it, so that one is repointed after rendering.
+  # The chart's Postgres StatefulSet exposes neither its image nor a securityContext,
+  # so both are set after rendering:
+  #  - image: from the in-cluster zot mirror (linux/arm64 only, copied with
+  #    `crane copy --platform linux/arm64`), like the windmill image below.
+  #  - uid 999 instead of root, as apps/common/pocket-id/postgres does: the image's
+  #    entrypoint chowns PGDATA when started as root, which root_squash on the NFS
+  #    export refuses ("chown ... Operation not permitted"). A uid that creates PGDATA
+  #    itself already owns it.
+  #  - PGDATA in a pg18 subdirectory: the root-run attempts left a pgdata dir owned by
+  #    the squashed uid that 999 cannot write to.
   postRenderers:
     - kustomize:
         patches:
@@ -39,9 +46,24 @@ spec:
               kind: StatefulSet
               name: windmill-postgresql
             patch: |
-              - op: replace
-                path: /spec/template/spec/containers/0/image
-                value: zot.${domain}/library/postgres:18
+              apiVersion: apps/v1
+              kind: StatefulSet
+              metadata:
+                name: windmill-postgresql
+              spec:
+                template:
+                  spec:
+                    securityContext:
+                      runAsUser: 999
+                      runAsGroup: 999
+                      fsGroup: 999
+                      runAsNonRoot: true
+                    containers:
+                      - name: postgres
+                        image: zot.${domain}/library/postgres:18
+                        env:
+                          - name: PGDATA
+                            value: /var/lib/postgresql/data/pg18
   values:
     # reached through the gateway-envoy component, not the chart's Ingress
     ingress:

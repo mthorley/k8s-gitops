@@ -1,0 +1,142 @@
+# Glass - frosted translucent cards over a soft colour-mesh background. Dark mode is
+# the showcase (deep navy with indigo / pink / teal glows); light mode is the same
+# idea in frosted white over pastels.
+#
+# Built-in Home Assistant theme variables only - no card-mod or other custom cards.
+# The frost itself is --ha-card-backdrop-filter, which ha-card applies natively.
+#
+# Mounted into /config/themes/glass/ from a ConfigMap (see kustomization.yaml), the
+# same way as parchment: edits land in the running pod within ~a minute, then
+# Developer tools > YAML > Reload themes. The Home dashboard
+# (dashboards/glass.yaml) sets this theme on its view; to use it everywhere else,
+# pick it under Profile > Theme.
+#
+# Blur is GPU work: if an old wall tablet stutters, lower the blur radius below
+# before reaching for anything else.
+Glass:
+  # --- typography (system fonts only: nothing fetched from the internet)
+  ha-font-family-body: 'ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+  ha-font-family-heading: 'ui-sans-serif, system-ui, -apple-system, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+  ha-font-family-code: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace'
+  paper-font-common-base_-_font-family: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+
+  # --- shape: large radius, hairline border, frost, soft lift
+  ha-card-border-radius: "24px"
+  ha-card-border-width: "1px"
+  ha-card-backdrop-filter: "blur(24px) saturate(160%)"
+  ha-card-features-border-radius: "14px"
+  ha-dialog-border-radius: "28px"
+
+  modes:
+    dark:
+      # background: colour glows over deep navy - this is what the frost blurs
+      primary-background-color: "#0B1020"
+      secondary-background-color: "#121831"
+      lovelace-background: "radial-gradient(ellipse 60% 50% at 12% 8%, rgba(99, 102, 241, 0.45), transparent 70%), radial-gradient(ellipse 50% 45% at 88% 18%, rgba(236, 72, 153, 0.28), transparent 70%), radial-gradient(ellipse 60% 50% at 55% 100%, rgba(20, 184, 166, 0.30), transparent 70%), #0B1020"
+      # glass
+      ha-card-background: "rgba(255, 255, 255, 0.06)"
+      ha-card-border-color: "rgba(255, 255, 255, 0.10)"
+      ha-card-box-shadow: "0 8px 32px rgba(0, 0, 0, 0.28)"
+      # dialogs, menus and pickers also use this - keep it near-opaque so they stay legible
+      card-background-color: "rgba(20, 25, 46, 0.96)"
+      divider-color: "rgba(255, 255, 255, 0.08)"
+      # ink
+      primary-text-color: "#F1F3F9"
+      secondary-text-color: "rgba(241, 243, 249, 0.62)"
+      disabled-text-color: "rgba(241, 243, 249, 0.35)"
+      text-primary-color: "#0B1020"
+      # accent (soft indigo)
+      primary-color: "#8B9CFF"
+      dark-primary-color: "#6E7FF3"
+      light-primary-color: "#C3CBFF"
+      accent-color: "#F472B6"
+      rgb-primary-color: "139, 156, 255"
+      rgb-accent-color: "244, 114, 182"
+      rgb-primary-text-color: "241, 243, 249"
+      mdc-theme-primary: "#8B9CFF"
+      switch-checked-color: "#8B9CFF"
+      switch-checked-button-color: "#8B9CFF"
+      switch-checked-track-color: "#4A55A8"
+      # chrome: translucent header so the background runs under it
+      app-header-background-color: "rgba(11, 16, 32, 0.55)"
+      app-header-text-color: "#F1F3F9"
+      app-header-border-bottom: "1px solid rgba(255, 255, 255, 0.06)"
+      sidebar-background-color: "#0B1020"
+      sidebar-text-color: "rgba(241, 243, 249, 0.80)"
+      sidebar-icon-color: "rgba(241, 243, 249, 0.55)"
+      sidebar-selected-background-color: "rgba(139, 156, 255, 0.14)"
+      sidebar-selected-text-color: "#F1F3F9"
+      sidebar-selected-icon-color: "#8B9CFF"
+      # states and inputs
+      state-icon-color: "rgba(241, 243, 249, 0.70)"
+      state-active-color: "#8B9CFF"
+      state-light-on-color: "#FFC46B"
+      state-switch-on-color: "#8B9CFF"
+      state-climate-heat-color: "#FF8A65"
+      state-climate-cool-color: "#5EC8F2"
+      input-fill-color: "rgba(255, 255, 255, 0.06)"
+      input-ink-color: "#F1F3F9"
+      input-idle-line-color: "rgba(255, 255, 255, 0.18)"
+      code-editor-background-color: "#0F1428"
+      markdown-code-background-color: "rgba(255, 255, 255, 0.06)"
+      # status colours
+      success-color: "#4ADE80"
+      warning-color: "#FBBF24"
+      error-color: "#F87171"
+      info-color: "#60A5FA"
+
+    light:
+      # background: pastel glows over cool off-white
+      primary-background-color: "#EEF1F8"
+      secondary-background-color: "#E4E8F3"
+      lovelace-background: "radial-gradient(ellipse 60% 50% at 12% 8%, rgba(129, 140, 248, 0.35), transparent 70%), radial-gradient(ellipse 50% 45% at 88% 18%, rgba(244, 114, 182, 0.25), transparent 70%), radial-gradient(ellipse 60% 50% at 55% 100%, rgba(45, 212, 191, 0.28), transparent 70%), #EEF1F8"
+      # glass
+      ha-card-background: "rgba(255, 255, 255, 0.55)"
+      ha-card-border-color: "rgba(255, 255, 255, 0.75)"
+      ha-card-box-shadow: "0 8px 32px rgba(31, 38, 135, 0.10)"
+      card-background-color: "rgba(255, 255, 255, 0.97)"
+      divider-color: "rgba(15, 23, 42, 0.08)"
+      # ink
+      primary-text-color: "#0F172A"
+      secondary-text-color: "#5B6478"
+      disabled-text-color: "#A3AABB"
+      text-primary-color: "#FFFFFF"
+      # accent (indigo)
+      primary-color: "#4F5BD5"
+      dark-primary-color: "#3B46B8"
+      light-primary-color: "#C3CBFF"
+      accent-color: "#DB2777"
+      rgb-primary-color: "79, 91, 213"
+      rgb-accent-color: "219, 39, 119"
+      rgb-primary-text-color: "15, 23, 42"
+      mdc-theme-primary: "#4F5BD5"
+      switch-checked-color: "#4F5BD5"
+      switch-checked-button-color: "#4F5BD5"
+      switch-checked-track-color: "#C3CBFF"
+      # chrome
+      app-header-background-color: "rgba(238, 241, 248, 0.60)"
+      app-header-text-color: "#0F172A"
+      app-header-border-bottom: "1px solid rgba(15, 23, 42, 0.06)"
+      sidebar-background-color: "#EEF1F8"
+      sidebar-text-color: "#334155"
+      sidebar-icon-color: "#64748B"
+      sidebar-selected-background-color: "rgba(79, 91, 213, 0.10)"
+      sidebar-selected-text-color: "#0F172A"
+      sidebar-selected-icon-color: "#4F5BD5"
+      # states and inputs
+      state-icon-color: "#64748B"
+      state-active-color: "#4F5BD5"
+      state-light-on-color: "#F59E0B"
+      state-switch-on-color: "#4F5BD5"
+      state-climate-heat-color: "#F2704E"
+      state-climate-cool-color: "#2A9FD6"
+      input-fill-color: "rgba(255, 255, 255, 0.60)"
+      input-ink-color: "#0F172A"
+      input-idle-line-color: "rgba(15, 23, 42, 0.18)"
+      code-editor-background-color: "#F5F7FC"
+      markdown-code-background-color: "rgba(15, 23, 42, 0.05)"
+      # status colours
+      success-color: "#16A34A"
+      warning-color: "#D97706"
+      error-color: "#DC2626"
+      info-color: "#2563EB"

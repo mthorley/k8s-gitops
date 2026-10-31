@@ -34,6 +34,20 @@ default_config:
 frontend:
   themes: !include_dir_merge_named themes
 
+# Git-managed dashboards, alongside the UI-managed (storage mode) ones like
+# Overview, which are untouched. Each file is a ConfigMap directory mount - see
+# kustomization.yaml. Only adding or removing an entry here needs a restart;
+# edits to the dashboard file itself just need a page reload.
+lovelace:
+  dashboards:
+    home-glass:
+      mode: yaml
+      title: Home
+      icon: mdi:home-variant
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/glass/glass.yaml
+
 # Reverse proxy settings. Required now that traffic arrives through
 # envoy-gateway rather than only on the LoadBalancer IP: without it Home
 # Assistant rejects every proxied request with "a request from a reverse

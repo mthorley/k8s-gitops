@@ -111,6 +111,13 @@ spec:
             - name: ha-theme-parchment
               mountPath: /config/themes/parchment
               readOnly: true
+            - name: ha-theme-glass
+              mountPath: /config/themes/glass
+              readOnly: true
+            # YAML-mode Home dashboard (lovelace: dashboards: in configuration.yaml).
+            - name: ha-dashboard-glass
+              mountPath: /config/dashboards/glass
+              readOnly: true
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -142,3 +149,9 @@ spec:
         - name: ha-theme-parchment
           configMap:
             name: home-assistant-theme-parchment
+        - name: ha-theme-glass
+          configMap:
+            name: home-assistant-theme-glass
+        - name: ha-dashboard-glass
+          configMap:
+            name: home-assistant-dashboard-glass

@@ -37,6 +37,20 @@ configMapGenerator:
       - themes/parchment.yaml
     options:
       disableNameSuffixHash: true
+  # Same again for the Glass theme (/config/themes/glass) and the Home dashboard
+  # that uses it (/config/dashboards/glass, registered in configuration.yaml's
+  # lovelace: dashboards:) - directory mounts, so edits only need Reload themes
+  # or a page reload respectively.
+  - name: home-assistant-theme-glass
+    files:
+      - themes/glass.yaml
+    options:
+      disableNameSuffixHash: true
+  - name: home-assistant-dashboard-glass
+    files:
+      - dashboards/glass.yaml
+    options:
+      disableNameSuffixHash: true
 
 components:
   - ../../../components/secrets-eso-vault

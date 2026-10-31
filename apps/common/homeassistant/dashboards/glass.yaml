@@ -1,0 +1,361 @@
+# Home - the glass dashboard. A YAML-mode dashboard (see lovelace: dashboards: in
+# configuration.yaml), so this file is the source of truth and the dashboard is not
+# editable from the Home Assistant UI. To prototype a change, build it in a scratch
+# UI dashboard, then copy its YAML (Edit > Raw configuration editor) into here.
+#
+# Mounted into /config/dashboards/glass/ from a ConfigMap (see kustomization.yaml);
+# edits land in the running pod within ~a minute, then reload the page.
+#
+# Built-in cards only (sections view, heading, tile + features, thermostat, weather,
+# history graph) - no HACS / custom cards to install or keep updated. The look comes
+# from the Glass theme (themes/glass.yaml), set on the view below.
+#
+# Entities are staging's: mostly the Tasmota relays, Hue lights, Sonos and LG TVs
+# copied over from production, plus the MQTT climate from configuration.yaml.
+title: Home
+views:
+  - title: Home
+    path: home
+    icon: mdi:home-variant
+    type: sections
+    theme: Glass
+    max_columns: 4
+    dense_section_placement: true
+
+    header:
+      layout: responsive
+      badges_position: bottom
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # {% set h = now().hour %}{{ 'Good morning' if h < 12 else 'Good afternoon' if h < 18 else 'Good evening' }}
+          {{ now().strftime('%A %-d %B') }} · {{ states('weather.forecast_home') | replace('-', ' ') | title }}, {{ state_attr('weather.forecast_home', 'temperature') | round(0) }}°
+
+    badges:
+      - type: entity
+        entity: person.matt
+        show_name: false
+      - type: entity
+        entity: sensor.downstairs_temperature
+        name: Downstairs
+        show_name: true
+        color: orange
+      - type: entity
+        entity: sensor.motion_sensor_1_temperature
+        name: Sensor
+        show_name: true
+      - type: entity
+        entity: binary_sensor.motion_sensor_1_motion
+        show_name: false
+        color: green
+      - type: entity
+        entity: sensor.poolswitcha_energy_power
+        name: Pool A
+        show_name: true
+        color: teal
+
+    sections:
+      # --- climate + weather: the "at a glance" column
+      - type: grid
+        cards:
+          - type: heading
+            heading: Climate
+            icon: mdi:thermostat
+          - type: thermostat
+            entity: climate.downstairs
+            name: Downstairs
+            features:
+              - type: climate-hvac-modes
+                hvac_modes:
+                  - "off"
+                  - heat
+                  - cool
+          - type: tile
+            entity: sensor.downstairs_temperature
+            name: Downstairs
+            grid_options:
+              columns: 12
+            features:
+              - type: trend-graph
+            features_position: bottom
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Weather
+            icon: mdi:weather-partly-cloudy
+          - type: weather-forecast
+            entity: weather.forecast_home
+            forecast_type: daily
+            show_current: true
+            show_forecast: true
+            grid_options:
+              columns: 12
+          - type: tile
+            entity: sensor.motion_sensor_1_illuminance
+            name: Light level
+            icon: mdi:brightness-6
+          - type: tile
+            entity: sensor.motion_sensor_1_temperature
+            name: Sensor temp
+
+      # --- lights: dimmable ones get a brightness slider, the spots are compact
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Lights
+            icon: mdi:lightbulb-group
+          - type: tile
+            entity: light.retreat
+            name: Retreat
+            features:
+              - type: light-brightness
+            features_position: bottom
+          - type: tile
+            entity: light.zac_bedroom
+            name: Zac's bedroom
+            features:
+              - type: light-brightness
+            features_position: bottom
+          - type: tile
+            entity: light.hue_color_lamp_2
+            name: Colour lamp
+            features:
+              - type: light-brightness
+            features_position: bottom
+          - type: tile
+            entity: light.garden_lights
+            name: Garden
+            features:
+              - type: light-brightness
+            features_position: bottom
+          - type: tile
+            entity: light.hue_color_spot_1
+            name: Spot 1
+            vertical: true
+            grid_options: { columns: 2, rows: 2 }
+          - type: tile
+            entity: light.hue_color_spot_2
+            name: Spot 2
+            vertical: true
+            grid_options: { columns: 2, rows: 2 }
+          - type: tile
+            entity: light.hue_color_spot_3
+            name: Spot 3
+            vertical: true
+            grid_options: { columns: 2, rows: 2 }
+          - type: tile
+            entity: light.hue_color_spot_4
+            name: Spot 4
+            vertical: true
+            grid_options: { columns: 2, rows: 2 }
+          - type: tile
+            entity: light.hue_color_spot_5
+            name: Spot 5
+            vertical: true
+            grid_options: { columns: 2, rows: 2 }
+          - type: tile
+            entity: light.hue_color_spot_6
+            name: Spot 6
+            vertical: true
+            grid_options: { columns: 2, rows: 2 }
+
+      # --- Retreat scenes: tap to activate (toggle on a scene = scene.turn_on)
+      - type: grid
+        cards:
+          - type: heading
+            heading: Retreat scenes
+            icon: mdi:palette
+          - type: tile
+            entity: scene.retreat_bright
+            name: Bright
+            icon: mdi:white-balance-sunny
+            tap_action: { action: toggle }
+            hide_state: true
+          - type: tile
+            entity: scene.retreat_relax
+            name: Relax
+            icon: mdi:sofa
+            tap_action: { action: toggle }
+            hide_state: true
+          - type: tile
+            entity: scene.retreat_read
+            name: Read
+            icon: mdi:book-open-variant
+            tap_action: { action: toggle }
+            hide_state: true
+          - type: tile
+            entity: scene.retreat_movie
+            name: Movie
+            icon: mdi:movie-open
+            tap_action: { action: toggle }
+            hide_state: true
+          - type: tile
+            entity: scene.retreat_dimmed
+            name: Dimmed
+            icon: mdi:brightness-4
+            tap_action: { action: toggle }
+            hide_state: true
+          - type: tile
+            entity: scene.retreat_nightlight
+            name: Nightlight
+            icon: mdi:weather-night
+            tap_action: { action: toggle }
+            hide_state: true
+
+      # --- rooms: the Tasmota light relays, grouped by floor
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Downstairs
+            icon: mdi:home-floor-g
+          - type: tile
+            entity: switch.loungetable
+            name: Lounge table
+            icon: mdi:ceiling-light
+          - type: tile
+            entity: switch.diningroom
+            name: Dining room
+            icon: mdi:ceiling-light
+          - type: tile
+            entity: switch.pantry
+            name: Pantry
+            icon: mdi:ceiling-light
+          - type: tile
+            entity: switch.laundry
+            name: Laundry
+            icon: mdi:washing-machine
+          - type: tile
+            entity: switch.hallbathroom
+            name: Hall bathroom
+            icon: mdi:shower
+          - type: tile
+            entity: switch.whiskyroom
+            name: Whisky room
+            icon: mdi:glass-tulip
+          - type: tile
+            entity: switch.masterlight
+            name: Master bedroom
+            icon: mdi:bed-king
+          - type: tile
+            entity: switch.masterbedleft
+            name: Master bed left
+            icon: mdi:lamp
+          - type: tile
+            entity: switch.ensuite
+            name: Ensuite
+            icon: mdi:shower-head
+          - type: tile
+            entity: switch.walkinrobe
+            name: Walk-in robe
+            icon: mdi:hanger
+          - type: heading
+            heading: Upstairs
+            icon: mdi:home-floor-1
+            heading_style: subtitle
+          - type: tile
+            entity: switch.upstairsstudy
+            name: Study
+            icon: mdi:desk
+          - type: tile
+            entity: switch.upstairsbathroom
+            name: Bathroom
+            icon: mdi:shower
+          - type: tile
+            entity: switch.upstairsbedfront
+            name: Front bedroom
+            icon: mdi:bed
+          - type: tile
+            entity: switch.upstairsbedback
+            name: Back bedroom
+            icon: mdi:bed
+
+      # --- media: Sonos with playback + volume, TVs as plain tiles
+      - type: grid
+        cards:
+          - type: heading
+            heading: Media
+            icon: mdi:speaker-multiple
+          - type: tile
+            entity: media_player.family_room
+            name: Family room
+            grid_options:
+              columns: 12
+            features:
+              - type: media-player-playback
+              - type: media-player-volume-slider
+            features_position: bottom
+          - type: tile
+            entity: media_player.dining_room
+            name: Dining room
+            grid_options:
+              columns: 12
+            features:
+              - type: media-player-volume-slider
+            features_position: bottom
+          - type: tile
+            entity: media_player.whisky_room
+            name: Whisky room
+            grid_options:
+              columns: 12
+            features:
+              - type: media-player-volume-slider
+            features_position: bottom
+          - type: tile
+            entity: media_player.lg_webos_smart_tv_3
+            name: Downstairs TV
+            icon: mdi:television
+          - type: tile
+            entity: media_player.lg_webos_tv_oled55b6psa_aauqljd
+            name: Master TV
+            icon: mdi:television
+          - type: tile
+            entity: media_player.lg_webos_smart_tv
+            name: Retreat TV
+            icon: mdi:television
+
+      # --- pool + outside power
+      - type: grid
+        cards:
+          - type: heading
+            heading: Pool & outside
+            icon: mdi:pool
+          - type: tile
+            entity: switch.poolswitcha
+            name: Pool A
+            icon: mdi:pump
+          - type: tile
+            entity: switch.poolswitchb
+            name: Pool B
+            icon: mdi:pump
+          - type: tile
+            entity: switch.externalswitcha
+            name: External
+            icon: mdi:power-socket-au
+          - type: tile
+            entity: switch.outsideequip
+            name: Outside equipment
+            icon: mdi:toolbox
+          - type: history-graph
+            title: Power (24h)
+            hours_to_show: 24
+            grid_options:
+              columns: 12
+            entities:
+              - entity: sensor.poolswitcha_energy_power
+                name: Pool A
+              - entity: sensor.poolswitchb_energy_power
+                name: Pool B
+              - entity: sensor.externalswitcha_energy_power
+                name: External
+          - type: tile
+            entity: sensor.poolswitcha_energy_today
+            name: Pool A today
+            icon: mdi:lightning-bolt
+          - type: tile
+            entity: sensor.poolswitchb_energy_today
+            name: Pool B today
+            icon: mdi:lightning-bolt

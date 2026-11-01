@@ -6,6 +6,7 @@ resources:
   - metallb.yaml
   - ../common/nfs-storage
   - ../common/metrics-server  # metrics.k8s.io, replaces the retired prometheus-adapter
+  - ../common/descheduler
   - ../common/vault
 #  - ../common/mongodb
   - ../common/influxdb

@@ -1,0 +1,84 @@
+# The scheduler only places pods at creation, so a node that was down while pods
+# were recreated stays empty. Descheduler periodically evicts pods from nodes over
+# targetThresholds so they reschedule onto nodes under thresholds. Utilisation is
+# measured from pod *requests*, not actual usage, so BestEffort pods are only
+# counted by the pods threshold.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: descheduler
+spec:
+  chart:
+    spec:
+      chart: descheduler
+      sourceRef:
+        kind: HelmRepository
+        name: descheduler
+      version: "0.37.0"
+  interval: 1h0m0s
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    kind: CronJob
+    schedule: "*/30 * * * *"
+    successfulJobsHistoryLimit: 1
+    failedJobsHistoryLimit: 1
+    # chart default is 500m/256Mi, far more than a run needs on a pi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: null  # drop the chart's default cpu limit
+        memory: 256Mi
+    deschedulerPolicy:
+      # move a few pods per run so single-replica apps aren't all bounced at once
+      maxNoOfPodsToEvictPerNode: 3
+      profiles:
+        - name: default
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                podProtections:
+                  defaultDisabled:
+                    - "PodsWithLocalStorage"  # emptyDir is fine to lose
+                  extraEnabled:
+                    - "PodsWithPVC"  # leave statefulsets (prometheus, influxdb) alone
+            - name: RemoveDuplicates
+            - name: RemovePodsHavingTooManyRestarts
+              args:
+                podRestartThreshold: 100
+                includingInitContainers: true
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                  - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingTopologySpreadConstraint
+            - name: LowNodeUtilization
+              args:
+                # under all of these = underutilised (eviction target)
+                thresholds:
+                  cpu: 20
+                  memory: 20
+                  pods: 20
+                # over any of these = overutilised (evicted from)
+                targetThresholds:
+                  cpu: 50
+                  memory: 50
+                  pods: 50
+          plugins:
+            balance:
+              enabled:
+                - RemoveDuplicates
+                - RemovePodsViolatingTopologySpreadConstraint
+                - LowNodeUtilization
+            deschedule:
+              enabled:
+                - RemovePodsHavingTooManyRestarts
+                - RemovePodsViolatingNodeTaints
+                - RemovePodsViolatingNodeAffinity

@@ -19,6 +19,22 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  # the chart hardcodes liveness/readiness with the default 1s timeout. The daily
+  # cve-db update on NFS stalls /livez past that, the restart then re-runs dedupe
+  # over every blob, and the I/O burst starves the other NFS-backed databases
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: StatefulSet
+              name: zot
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/livenessProbe/timeoutSeconds
+                value: 10
+              - op: add
+                path: /spec/template/spec/containers/0/readinessProbe/timeoutSeconds
+                value: 10
   values:
     # the chart's default image is a multi-arch manifest that includes
     # linux/arm64, so it runs on the pis unchanged

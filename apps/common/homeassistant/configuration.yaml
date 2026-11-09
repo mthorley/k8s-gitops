@@ -149,11 +149,16 @@ mqtt:
 # The same physical speakers production uses - staging controls the real Sonos.
 sonos:
   media_player:
+    # pinned because hostNetwork is off, so SSDP discovery can't see IP changes -
+    # a stale entry here is retried forever. Keep in step with the DHCP leases
     hosts:
-      - 192.168.1.26
-      - 192.168.1.31
-      - 192.168.1.63
-      - 192.168.1.239
+      - 192.168.1.31   # Dining Room Play:5 (6B1A)
+      - 192.168.1.63   # Retreat Era 300 (5268)
+      - 192.168.1.121  # Retreat Era 300 (68BC)
+      - 192.168.1.133  # Retreat Arc
+      - 192.168.1.183  # Whisky Room Play:1 (1948)
+      - 192.168.1.201  # Dining Room Play:5 (6B2C), was .26
+      - 192.168.1.238  # Whisky Room Play:1 (18F0)
 
 input_boolean:
   retreat_tv_hdmi1_auto_off:
